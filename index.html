@@ -3346,29 +3346,14 @@ async function fetchHtmlViaFastestProxy(rawUrl) {
   try { return await fetchHtmlOnce(rawUrl); }
   catch (e) { try { return await fetchHtmlOnce(rawUrl); } catch (e2) { return ''; } }
 }
-function extractStreamsFromHtml(html, pageUrl) {
-  const found = { stream: '', embed: '' };
-  if (!html) return found;
-  const abs = (u) => { try { return new URL(u, pageUrl).href; } catch (e) { return ''; } };
-  const patterns = [
-    /<meta[^>]+property=["']og:video(?::secure_url)?["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+name=["']twitter:player:stream["'][^>]+content=["']([^"']+)["']/i,
-    /<video[^>]+src=["']([^"']+)["']/i,
-    /<source[^>]+src=["']([^"']+\.(?:mp4|m3u8)[^"']*)["']/i,
-    /["'](?:file|videoUrl|video_url|src|url)["']\s*:\s*["']([^"']+\.(?:mp4|m3u8)[^"']*)["']/i,
-    /https?:[^\s"'\\]+\.(?:m3u8|mp4)(?:\?[^\s"'\\]*)?/i
-  ];
-  for (const p of patterns) {
-    const m = html.match(p);
-    if (m) { const u = abs((m[1] || m[0]).replace(/\\u002F/g, '/').replace(/\\\//g, '/')); if (u) { found.stream = u; break; } }
-  }
-  const em = html.match(/<meta[^>]+property=["']og:video:embed["'][^>]+content=["']([^"']+)["']/i) || html.match(/<link[^>]+rel=["']embed["'][^>]+href=["']([^"']+)["']/i);
-  if (em) found.embed = abs(em[1]);
-  return found;
-}
 function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', bestEmbed = '', preScrollPercent = 0) {
   let html = String(rawHtml || '');
   html = html.replace(/<meta[^>]+http-equiv=["']?(?:Content-Security-Policy|X-Frame-Options)["']?[^>]*>/gi, '');
+  /* Fence the page in: drop the page's OWN <base> (only the one injected
+     below may resolve its relative URLs) and any meta-refresh — an automatic
+     redirect that can point at junk and drag the frame somewhere useless. */
+  html = html.replace(/<base\b[^>]*>/gi, '');
+  html = html.replace(/<meta[^>]+http-equiv=["']?refresh["']?[^>]*>/gi, '');
   const shim = `
 <script>
 (function(){
@@ -3385,15 +3370,9 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
       if (u) parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: u, kind: media.tagName === 'VIDEO' ? 'video' : 'image' }, '*');
     }
   }, true);
-  var seen = {};
-  function scan(){
-    document.querySelectorAll('video,source').forEach(function(el){
-      var u = el.currentSrc || el.src || '';
-      if (u && /\\.(mp4|m3u8|webm)/i.test(u) && !seen[u]) { seen[u] = 1; parent.postMessage({ type: 'REELFLOW_VIDEO_FOUND', url: u }, '*'); }
-    });
-  }
-  setInterval(scan, 1800); setTimeout(scan, 600);
-  try { new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true }); } catch(e){}
+  /* No in-page video scanner: auto video fetch was removed 2026-11-09.
+     Videos inside a page are linked manually (Paste & Link / Teach) or
+     captured by tapping them — this shim only reports explicit taps. */
   var dock = document.createElement('div');
   dock.id = 'rf-inpage-drop-dock';
   dock.textContent = 'Drop image here to save to @profile';
@@ -3413,17 +3392,18 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
     [class*="popup-ad"],[id*="popup"],.ad-slot,.adsbygoogle,[data-ad-slot],[data-ad-client]{display:none!important}
     #rf-inpage-drop-dock{pointer-events:none}
   </style>`;
-  if (/<head[^>]*>/i.test(html)) html = html.replace(/<head[^>]*>/i, m => `${m}<base href="${pageUrl}">${adCss}`);
-  else html = `<base href="${pageUrl}">${adCss}` + html;
+  const guard = `<script>
+  /* ReelFlow fence — injected before the page's own scripts: the page
+     renders inside the app and stays there. window.open (pop-ups and
+     pop-unders) is neutralised here; the frame's sandbox attribute, set by
+     the app, blocks top-window navigation outright. */
+  (function(){ try { Object.defineProperty(window, 'open', { value: function(){ return null; }, writable: false, configurable: false }); } catch(e){ try { window.open = function(){ return null; }; } catch(e2){} } })();
+  <\/script>`;
+  if (/<head[^>]*>/i.test(html)) html = html.replace(/<head[^>]*>/i, m => `${m}${guard}<base href="${pageUrl}">${adCss}`);
+  else html = `${guard}<base href="${pageUrl}">${adCss}` + html;
   if (/<\/body>/i.test(html)) html = html.replace(/<\/body>/i, shim + '</body>');
   else html += shim;
   return html;
-}
-async function attemptWebpageVideoExtraction(item) {
-  const html = await fetchHtmlViaFastestProxy(item.sourceLink || item.url);
-  if (!html) return { stream: '', html: '' };
-  const streams = extractStreamsFromHtml(html, item.sourceLink || item.url);
-  return { stream: streams.stream, embed: streams.embed, html };
 }
 function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
   if (!item || !videoUrl) return;
@@ -3463,6 +3443,12 @@ async function mountWebpageCard(section, item, visIdx) {
     const iframe = document.createElement('iframe');
     iframe.className = 'feed-web';
     iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
+    /* The fence: page scripts may run (pages need them to render) and the
+       frame keeps its origin for the capture bridge, but a sandboxed frame
+       WITHOUT allow-top-navigation and allow-popups can never navigate the
+       app's tab away, spawn pop-unders, or unload the app. Self-navigation
+       inside the card still works. */
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
     if (srcdocHtml) iframe.srcdoc = srcdocHtml; else iframe.src = item.url;
     holder.appendChild(iframe);
@@ -3475,10 +3461,14 @@ async function mountWebpageCard(section, item, visIdx) {
     section._iframe = iframe;
   };
   try {
-    const { stream, embed, html } = await attemptWebpageVideoExtraction(item);
+    /* Page display only. Auto video fetch was REMOVED 2026-11-09 at Kendall's
+       direction: the proxy still fetches the page so it can be VIEWED in-app,
+       but nothing scans it for streams and nothing auto-converts the card.
+       Linking a video is a manual act (Paste & Link / Teach) — slower, but
+       it never fires on the wrong stream or yanks the view mid-browse. */
+    const html = await fetchHtmlViaFastestProxy(item.sourceLink || item.url);
     if (section.dataset.hydrated !== '1') return;
-    if (stream) { bindAndReplaceWithDirectMp4(item, stream); return; }
-    if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, item.sourceLink || item.url, stream, embed, item.preScrollPercent)); return; }
+    if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, item.sourceLink || item.url, '', '', item.preScrollPercent)); return; }
   } catch (e) {}
   if (section.dataset.hydrated !== '1') return;
   /* Last resort: direct iframe (works for frame-friendly sites). If it never
@@ -3557,15 +3547,19 @@ function setupDropZone(el, item) {
 }
 window.addEventListener('message', (e) => {
   const d = e.data || {};
+  if (stockCoverActive) return; /* House B is showing — no webpage frame is mounted, so no bridge message can be legitimate */
   if (d.type === 'REELFLOW_CAPTURE_PROFILE_MEDIA' && d.url) {
     const item = getCurrentItem();
     appendCapturedMediaToProfile(d.url, item?.profile?.handle || '');
   }
-  if (d.type === 'REELFLOW_VIDEO_FOUND' && d.url) {
-    const item = getCurrentItem();
-    if (item && item.type === 'webpage' && !item.extractedVideoUrl) bindAndReplaceWithDirectMp4(item, d.url, { jump: true });
-  }
+  /* REELFLOW_VIDEO_FOUND is retired: pages no longer report streams for
+     auto-binding (auto video fetch removed 2026-11-09). Manual links only. */
 });
+
+/* Last-chance persistence: session, taught bindings and settings are saved
+   at every mutation already — this catches anything still in flight if the
+   tab is discarded or navigated despite the fence. */
+window.addEventListener('pagehide', () => { try { saveCurrentSessionToStorage(); persistTaught(); persistAppSettings(); } catch (e) {} });
 
 /* ---- house switching + gate + 10-minute idle ---- */
 function openGate() {
