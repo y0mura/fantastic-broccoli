@@ -71,6 +71,8 @@ img{display:block}
 .glass-bubble svg{width:20px;height:20px}
 .glass-bubble.small{width:34px;height:34px}.glass-bubble.small svg{width:16px;height:16px}
 .glass-bubble.active{background:linear-gradient(135deg,rgba(232,121,249,.5),rgba(129,140,248,.5));border-color:rgba(232,121,249,.65)}
+/* Sound ON must be unmissable — the one state that can surprise you */
+#btn-rail-mute.sound-on{background:rgba(143,208,255,.22);border-color:rgba(143,208,255,.9);color:#eaf7ff;box-shadow:0 0 0 1.5px rgba(143,208,255,.85),0 0 16px rgba(143,208,255,.8)}
 .glass-bubble.glow{animation:pulseGlow 1.6s ease-in-out infinite;border-color:var(--a-hot);color:var(--a-hot)}
 .glass-pill{
   display:inline-flex;align-items:center;gap:5px;padding:0 12px;height:38px;border-radius:999px;white-space:nowrap;
@@ -217,6 +219,10 @@ textarea.field{resize:vertical;line-height:1.5}
 .bank-row button.sel{background:linear-gradient(135deg,rgba(232,121,249,.4),rgba(129,140,248,.4));border-color:rgba(232,121,249,.55);color:#fff}
 .bank-row button.has{box-shadow:inset 0 -3px 0 rgba(52,211,153,.7)}
 .queue-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:13px;background:rgba(255,255,255,.045);font-size:11px}
+.pm-thumb{width:46px;height:46px;border-radius:10px;object-fit:cover;background:#14141f;flex-shrink:0}
+.pm-thumb-icon{width:46px;height:46px;border-radius:10px;background:#14141f;display:flex;align-items:center;justify-content:center;color:#8f8fa5;flex-shrink:0}
+.pm-move-bar{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:7px}
+.pm-move-bar .field{flex:1;min-width:120px}
 .queue-item .qurl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c6c6d4}
 .queue-item .qhandle{color:var(--a-accent);font-weight:800;flex-shrink:0}
 .switch{position:relative;width:44px;height:25px;border-radius:99px;background:rgba(255,255,255,.14);transition:background .2s;flex-shrink:0}
@@ -813,7 +819,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
     <button type="button" class="glass-bubble small" id="btn-rail-prev" title="Previous"><svg class="ic sm"><use href="#i-chev-up"/></svg></button>
     <button type="button" class="glass-bubble small" id="btn-rail-next" title="Next"><svg class="ic sm"><use href="#i-chev-down"/></svg></button>
     <div class="rail-sep"></div>
-    <button type="button" class="glass-bubble small" id="btn-rail-mute" title="Mute / Unmute (universal)"><svg class="ic sm"><use href="#i-vol"/></svg></button>
+    <button type="button" class="glass-bubble small" id="btn-rail-mute" title="Mute / Unmute (universal)"><svg class="ic sm"><use href="#i-vol-x"/></svg></button>
     <button type="button" class="glass-bubble small" id="btn-rail-hfs" title="Horizontal Fullscreen"><svg class="ic sm"><use href="#i-max"/></svg></button>
     <div class="rail-sep"></div>
     <button type="button" class="glass-bubble small" id="btn-rail-hideui" title="Hide All UI"><svg class="ic sm"><use href="#i-eye-off"/></svg></button>
@@ -875,6 +881,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
     </span>
     <button type="button" class="glass-pill" id="btn-grid-rename" style="height:34px">Rename</button>
     <button type="button" class="glass-pill" id="btn-grid-addmedia" style="height:34px">Add Media</button>
+    <button type="button" class="glass-pill" id="btn-grid-pmedia" style="height:34px">Media List</button>
     <button type="button" class="glass-pill" id="btn-grid-collage" style="height:34px">Collage</button>
     <button type="button" class="glass-pill" id="btn-grid-size" style="height:34px" title="Tile Size">Size · <span id="grid-size-label">M</span></button>
     <button type="button" class="glass-pill" id="btn-grid-bounce" style="height:34px">L-Bounce</button>
@@ -1048,6 +1055,17 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
   </div>
 </div>
 
+<!-- Profile media list modal: per-item open / delete / move (reroute) -->
+<div id="pmedia-modal" class="modal-veil hidden">
+  <div class="modal-sheet" style="max-width:520px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div><h3 id="pmedia-title">@profile</h3><p class="sub" id="pmedia-sub">Media filed under this profile in the active feed.</p></div>
+      <button type="button" class="sheet-close" id="btn-pmedia-close">✕</button>
+    </div>
+    <div id="pmedia-list" style="display:flex;flex-direction:column;gap:5px;margin-top:12px;max-height:55vh;overflow-y:auto"></div>
+  </div>
+</div>
+
 <input type="file" id="file-import-txt" accept=".txt,text/plain" class="hidden" />
 <div class="toast" id="toast"></div>
 
@@ -1217,18 +1235,35 @@ function extractProfileInfo(url, customHandle) {
   try {
     const u = new URL(url);
     const parts = u.pathname.split('/').filter(Boolean).map(p => decodeURIComponent(p));
-    const stop = new Set(['watch','video','videos','photo','photos','p','reel','reels','clip','clips','itm','listing','products','shop','user','users','profile','models','model','channel','c','post','posts','status','album','gallery','file','files','view','play','embed','media','item','dp','gp','s','search']);
-    let handle = '';
-    for (const p of parts) {
-      const low = p.toLowerCase().replace(/\.(mp4|m4v|webm|mov|m3u8|jpe?g|png|gif|webp|html?)$/i, '');
-      if (!low || stop.has(low) || /^\d+$/.test(low) || low.length < 2) continue;
-      handle = p.replace(/\.(mp4|m4v|webm|mov|m3u8|jpe?g|png|gif|webp|html?)$/i, '');
-      break;
+    const stop = new Set(['watch','video','videos','photo','photos','p','reel','reels','clip','clips','itm','listing','products','shop','user','users','profile','models','model','channel','c','post','posts','status','album','gallery','file','files','view','play','embed','media','item','dp','gp','s','search','content','home','index','default','en','us','amp','new','trending','popular','latest','feed','tag','tags','category','categories']);
+    const clean = (p) => p.replace(/\.(mp4|m4v|webm|mov|m3u8|jpe?g|png|gif|webp|html?)$/i, '');
+    /* A bare media file (site.com/movie.mp4) has no profile attached —
+       it files under @untitled, never under the filename or the host. */
+    if (parts.length === 1 && /\.(mp4|m4v|webm|mov|m3u8|jpe?g|png|gif|webp)$/i.test(parts[0])) {
+      return { handle: resolveAliasedHandle('untitled'), profileUrl: u.origin + '/' };
     }
-    if (!handle) handle = u.hostname.replace(/^www\./, '').split('.')[0];
-    return { handle: resolveAliasedHandle(handle), profileUrl: u.origin + (parts.length ? '/' + parts[0] : '') };
+    /* Kendall's rule (2026-11-09): generic filler segments — 'content' and
+       its kin, plus ANY one- or two-letter segment sitting before the name
+       (/a/name, /ab/name) — are never the profile. The handle is the first
+       real segment after them. */
+    let handle = '', handleIdx = -1;
+    for (let i = 0; i < parts.length; i++) {
+      const low = clean(parts[i]).toLowerCase();
+      if (!low || stop.has(low) || /^\d+$/.test(low) || low.length <= 2) continue;
+      handle = clean(parts[i]); handleIdx = i; break;
+    }
+    if (!handle) {
+      /* last resort: first non-filler segment of any length */
+      for (let i = 0; i < parts.length; i++) {
+        const low = clean(parts[i]).toLowerCase();
+        if (!low || stop.has(low) || /^\d+$/.test(low)) continue;
+        handle = clean(parts[i]); handleIdx = i; break;
+      }
+    }
+    if (!handle) return { handle: resolveAliasedHandle('untitled'), profileUrl: u.origin + '/' };
+    return { handle: resolveAliasedHandle(handle), profileUrl: u.origin + '/' + parts.slice(0, handleIdx + 1).join('/') };
   } catch (e) {
-    return { handle: resolveAliasedHandle('creator'), profileUrl: url || '' };
+    return { handle: resolveAliasedHandle('untitled'), profileUrl: url || '' };
   }
 }
 /* Fenced URL extraction: House B sections + banks NEVER leak into the feed */
@@ -2123,6 +2158,7 @@ function renderProfileList() {
       <span class="qhandle">@${esc(h)}</span>
       <span style="color:#8f8fa5;font-weight:700">${n} item${n === 1 ? '' : 's'}</span>
       <span style="flex:1"></span>
+      <button type="button" class="btn small" data-pmedia="${esc(h)}">Media</button>
       <button type="button" class="btn small" data-prename="${esc(h)}">Rename</button>
       <button type="button" class="btn small danger" data-pdel="${esc(h)}">Delete</button>
     </div>`).join('') || '<div style="font-size:11.5px;color:#71718a;padding:6px 2px">No @profiles in the active feed.</div>';
@@ -2136,6 +2172,68 @@ function renderUnlinkedList() {
       <span class="qurl mono">${esc(stripInternalHashes(it.sourceLink || it.url))}</span>
       <button type="button" class="btn small" data-teach="${i}">Teach Video</button>
     </div>`).join('') || '<div style="font-size:11.5px;color:#71718a;padding:6px 2px">Every webpage in the feed has a linked video.</div>';
+}
+/* ---- profile media list: per-item open / delete / move (reroute) ----
+   Built for cleaning up @untitled, works for any profile. Operates on the
+   ACTIVE feed list; persistence follows the Discovery guard (never save the
+   transient discovery list over the stored main session). */
+let profileMediaHandle = '';
+let profileMediaMoveIdx = -1;
+function profileMediaThumb(it) {
+  if (it.type === 'image') return `<img class="pm-thumb" loading="lazy" src="${esc(it.url)}" alt="">`;
+  const vsrc = it.extractedVideoUrl || (it.type === 'video' ? it.url : '');
+  if (vsrc) return `<video class="pm-thumb" muted playsinline preload="metadata" src="${esc(vsrc)}"></video>`;
+  return `<span class="pm-thumb-icon"><svg class="ic sm"><use href="#i-globe"/></svg></span>`;
+}
+function openProfileMediaList(handle) {
+  profileMediaHandle = handle || '';
+  profileMediaMoveIdx = -1;
+  renderProfileMediaList();
+  $('pmedia-modal').classList.remove('hidden');
+}
+function closeProfileMediaList() { $('pmedia-modal').classList.add('hidden'); profileMediaMoveIdx = -1; }
+function renderProfileMediaList() {
+  const el = $('pmedia-list'); if (!el) return;
+  const h = profileMediaHandle;
+  $('pmedia-title').textContent = `@${h}`;
+  const rows = allFeedItems.map((it, i) => ({ it, i })).filter(({ it }) => (it.profile?.handle || '') === h);
+  $('pmedia-sub').textContent = rows.length
+    ? `${rows.length} item${rows.length === 1 ? '' : 's'} under @${h} in the active feed. Move reroutes an item to another profile — or a brand-new one.`
+    : `Nothing left under @${h} — all cleaned up.`;
+  const others = [...new Set(allFeedItems.map(it => it.profile?.handle).filter(x => x && x !== h))].sort((a, b) => a.localeCompare(b));
+  el.innerHTML = rows.map(({ it, i }) => `
+    <div class="queue-item" style="flex-wrap:wrap">
+      ${profileMediaThumb(it)}
+      <span style="flex:1;min-width:120px;overflow:hidden">
+        <span class="qurl mono" style="display:block">${esc(it.title || stripInternalHashes(it.sourceLink || it.url))}</span>
+        <span style="font-size:10.5px;color:#8f8fa5;font-weight:700">${esc(deckTypeMeta(it).label)} · @${esc(it.profile?.handle || '')}</span>
+      </span>
+      <button type="button" class="btn small" data-pm-open="${i}">Open</button>
+      <button type="button" class="btn small danger" data-pm-del="${i}">Delete</button>
+      <button type="button" class="btn small" data-pm-move="${i}">Move to…</button>
+      ${profileMediaMoveIdx === i ? `
+      <span class="pm-move-bar">
+        <select class="field pm-existing">
+          <option value="">Existing profile…</option>
+          ${others.map(o => `<option value="${esc(o)}">@${esc(o)}</option>`).join('')}
+        </select>
+        <input class="field pm-newname" type="text" placeholder="or new profile name" autocomplete="off" autocapitalize="none">
+        <button type="button" class="btn small primary" data-pm-confirm="${i}">Move</button>
+        <button type="button" class="btn small" data-pm-cancel="1">Cancel</button>
+      </span>` : ''}
+    </div>`).join('') || '<div style="font-size:11.5px;color:#71718a;padding:6px 2px">No media under this profile.</div>';
+}
+function persistAfterProfileMediaChange() {
+  if (!discoveryFeedModeActive) { saveCurrentSessionToStorage(); renderFeedSkeleton(); updateVirtualWindowMedia(); }
+  renderProfileList(); renderProfileMediaList(); markUnexported();
+}
+function moveFeedItemToProfile(idx, newHandle) {
+  const it = allFeedItems[idx]; if (!it || !newHandle) return;
+  it.customHandle = newHandle;
+  it.profile = extractProfileInfo(it.sourceLink || it.url, newHandle);
+  profileMediaMoveIdx = -1;
+  persistAfterProfileMediaChange();
+  showToast(`Moved to @${newHandle}`);
 }
 function renderDiscoveryList() {
   const el = $('discovery-list'); if (!el) return;
@@ -2260,10 +2358,20 @@ function applyAddMedia() {
     return it;
   }).filter(Boolean);
   if (items.length) {
-    allFeedItems = [...allFeedItems, ...items];
-    saveCurrentSessionToStorage(); renderFeedSkeleton(); updateVirtualWindowMedia();
+    if (discoveryFeedModeActive && Array.isArray(mainFeedBackup)) {
+      /* Discovery is a browsing mode: adds file into the MAIN feed (same rule
+         as captures) and persist the MAIN list. The previous version appended
+         to the transient discovery list and then saved THAT over the stored
+         main session — quietly replacing the collection with browse items. */
+      mainFeedBackup.push(...items);
+      saveJSON(STORAGE_KEY, slimSessionList(mainFeedBackup));
+      showToast(`Added ${items.length} item${items.length === 1 ? '' : 's'} to @${addMediaHandle} — saved to your main feed`);
+    } else {
+      allFeedItems = [...allFeedItems, ...items];
+      saveCurrentSessionToStorage(); renderFeedSkeleton(); updateVirtualWindowMedia();
+      showToast(`Added ${items.length} item${items.length === 1 ? '' : 's'} to @${addMediaHandle}`);
+    }
     renderQueueList(); renderProfileList(); markUnexported();
-    showToast(`Added ${items.length} item${items.length === 1 ? '' : 's'} to @${addMediaHandle}`);
   }
   $('addmedia-modal').classList.add('hidden');
 }
@@ -2662,10 +2770,18 @@ function setEnhanceLevel(l) {
 /* ---- HUD rows 2 & 3 (contextual by media type) ---- */
 let webpageLockPages = false;
 function updateFilterAndModeUIState() { applyFilterSortUI(); updateHUD(); }
+/* The rail mute button must always SHOW the true state: muted icon by
+   default (the app starts muted), and a glowing button when sound is on. */
+function syncMuteButton() {
+  const b = $('btn-rail-mute'); if (!b) return;
+  b.innerHTML = `<svg class="ic sm"><use href="#${globalMuted ? 'i-vol-x' : 'i-vol'}"/></svg>`;
+  b.classList.toggle('sound-on', !globalMuted);
+}
 function updateHUD() {
   const item = getCurrentItem();
   const leftSlot = $('hud-left-slot'), row2L = $('row2-left'), row2R = $('row2-right'), row3 = $('hud-row3');
   if (!leftSlot) return;
+  syncMuteButton();
   /* command bar left slot: discovery exit only — everything else is iconic */
   leftSlot.innerHTML = discoveryFeedModeActive
     ? `<button type="button" class="cmd-btn" id="hud-exit-discovery" title="Back to Main Feed"><svg class="ic sm"><use href="#i-chev-down" style="transform:rotate(90deg)"/></svg><span class="st">Main</span></button><span class="cmd-sep"></span>`
@@ -3242,6 +3358,7 @@ function wireGridAndCollage() {
     if (h) openRenameModal(h); else showToast('No @profile selected');
   });
   $('btn-grid-addmedia').addEventListener('click', () => openAddMediaModal(getCurrentItem()?.profile?.handle || ''));
+  $('btn-grid-pmedia').addEventListener('click', () => openProfileMediaList(getCurrentItem()?.profile?.handle || ''));
   $('btn-grid-collage').addEventListener('click', () => setCollageMode(true));
   $('grid-tiles').addEventListener('click', (e) => {
     const tile = e.target.closest('[data-goto]');
@@ -3362,14 +3479,35 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
     Object.keys(flags).forEach(function(k){ try { localStorage.setItem(k, flags[k]); } catch(e){} try { document.cookie = k + '=' + flags[k] + ';path=/;max-age=31536000'; } catch(e){} });
   } catch(e){}
   document.addEventListener('click', function(e){
-    var a = e.target && e.target.closest ? e.target.closest('a[target="_blank"]') : null;
-    if (a) a.removeAttribute('target');
     var media = e.target && e.target.closest ? e.target.closest('img,video') : null;
     if (media) {
       var u = media.currentSrc || media.src || '';
-      if (u) parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: u, kind: media.tagName === 'VIDEO' ? 'video' : 'image' }, '*');
+      if (u) {
+        /* A tap on media IS the save gesture — the in-app equivalent of
+           copy-paste: report the media to the app and SWALLOW the click, so
+           the frame does not follow the wrapping link and open the raw file
+           as a page. The app confirms with a REELFLOW_CAPTURED badge. */
+        e.preventDefault(); e.stopPropagation();
+        parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: u, kind: media.tagName === 'VIDEO' ? 'video' : 'image' }, '*');
+        return;
+      }
     }
+    var a = e.target && e.target.closest ? e.target.closest('a[target="_blank"]') : null;
+    if (a) a.removeAttribute('target');
   }, true);
+  window.addEventListener('message', function(ev){
+    var d = ev.data || {};
+    if (d.type !== 'REELFLOW_CAPTURED') return;
+    var old = document.getElementById('rf-saved-badge'); if (old) old.remove();
+    var b = document.createElement('div');
+    b.id = 'rf-saved-badge';
+    b.setAttribute('style', 'position:fixed;left:50%;bottom:54px;transform:translateX(-50%) translateY(8px);z-index:2147483647;background:rgba(7,22,15,.93);color:#d1fae5;font:700 12.5px system-ui;padding:9px 15px;border-radius:999px;border:1px solid rgba(52,211,153,.55);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .18s ease,transform .18s ease;pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.45)');
+    b.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#34d399"/><path d="M7 12.5l3.2 3L17 8.5" stroke="#06281a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span>';
+    b.querySelector('span').textContent = 'Saved to @' + (d.handle || 'profile');
+    if (document.body) document.body.appendChild(b);
+    requestAnimationFrame(function(){ b.style.opacity = '1'; b.style.transform = 'translateX(-50%) translateY(0)'; });
+    setTimeout(function(){ b.style.opacity = '0'; setTimeout(function(){ if (b.parentNode) b.remove(); }, 260); }, 1700);
+  });
   /* No in-page video scanner: auto video fetch was removed 2026-11-09.
      Videos inside a page are linked manually (Paste & Link / Teach) or
      captured by tapping them — this shim only reports explicit taps. */
@@ -3397,7 +3535,19 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
      renders inside the app and stays there. window.open (pop-ups and
      pop-unders) is neutralised here; the frame's sandbox attribute, set by
      the app, blocks top-window navigation outright. */
-  (function(){ try { Object.defineProperty(window, 'open', { value: function(){ return null; }, writable: false, configurable: false }); } catch(e){ try { window.open = function(){ return null; }; } catch(e2){} } })();
+  (function(){
+    try { Object.defineProperty(window, 'open', { value: function(){ return null; }, writable: false, configurable: false }); } catch(e){ try { window.open = function(){ return null; }; } catch(e2){} }
+    /* The frame runs in an opaque origin (sandbox without allow-same-origin),
+       where real localStorage/sessionStorage throw — and plenty of page
+       scripts crash on that throw. Stand in in-memory storage when the real
+       thing is unusable, so pages render instead of dying. */
+    function fakeStorage(){ var m = {}; return { getItem: function(k){ return Object.prototype.hasOwnProperty.call(m, String(k)) ? m[String(k)] : null; }, setItem: function(k, v){ m[String(k)] = String(v); }, removeItem: function(k){ delete m[String(k)]; }, clear: function(){ m = {}; }, key: function(i){ var ks = Object.keys(m); return i < ks.length ? ks[i] : null; }, get length(){ return Object.keys(m).length; } }; }
+    ['localStorage', 'sessionStorage'].forEach(function(name){
+      var ok = false;
+      try { var s = window[name]; s.setItem('__rf_probe__', '1'); s.removeItem('__rf_probe__'); ok = true; } catch(e) { ok = false; }
+      if (!ok) { try { Object.defineProperty(window, name, { value: fakeStorage(), configurable: true }); } catch(e) {} }
+    });
+  })();
   <\/script>`;
   if (/<head[^>]*>/i.test(html)) html = html.replace(/<head[^>]*>/i, m => `${m}${guard}<base href="${pageUrl}">${adCss}`);
   else html = `${guard}<base href="${pageUrl}">${adCss}` + html;
@@ -3443,12 +3593,15 @@ async function mountWebpageCard(section, item, visIdx) {
     const iframe = document.createElement('iframe');
     iframe.className = 'feed-web';
     iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
-    /* The fence: page scripts may run (pages need them to render) and the
-       frame keeps its origin for the capture bridge, but a sandboxed frame
-       WITHOUT allow-top-navigation and allow-popups can never navigate the
-       app's tab away, spawn pop-unders, or unload the app. Self-navigation
-       inside the card still works. */
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    /* The fence, hardened 2026-11-09: NO allow-top-navigation and NO
+       allow-popups (the tab can never be steered or unloaded), and NO
+       allow-same-origin either — the page runs in an opaque origin, so its
+       scripts physically cannot reach the app's window, document, or
+       storage. The capture bridge is postMessage-only, which works fine
+       across origins. Page scripts still run (pages need them to render)
+       and in-card self-navigation still works. The trade: a page script
+       that insists on real localStorage gets the guard's in-memory shim. */
+    iframe.setAttribute('sandbox', 'allow-scripts allow-forms');
     iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
     if (srcdocHtml) iframe.srcdoc = srcdocHtml; else iframe.src = item.url;
     holder.appendChild(iframe);
@@ -3523,7 +3676,7 @@ function appendCapturedMediaToProfile(url, handle) {
     /* unfiltered, unsorted feed: grow the skeleton in place so the card is
        really there — scroll position and current card are untouched */
     const fc = feedContainer();
-    if (fc && activeFilterType === 'all' && activeSortOrder === 'default' && !activeProfileFilter) {
+    if (fc && activeFilterType === 'all' && activeSortOrder === 'default') {
       const s = document.createElement('section');
       s.className = 'feed-card'; s.dataset.vis = allFeedItems.length - 1; s.dataset.hydrated = '0';
       s.innerHTML = '<div class="media-holder"></div>';
@@ -3531,7 +3684,9 @@ function appendCapturedMediaToProfile(url, handle) {
     }
   }
   renderQueueList(); renderProfileList(); markUnexported();
-  showToast(`Saved to @${handle || item.profile.handle}`);
+  const savedHandle = handle || item.profile.handle;
+  showToast(`Saved to @${savedHandle}`);
+  return savedHandle;
 }
 function setupDropZone(el, item) {
   el.addEventListener('click', () => showToast('Drag an image onto this button — or tap a picture inside the page to save it'));
@@ -3550,7 +3705,10 @@ window.addEventListener('message', (e) => {
   if (stockCoverActive) return; /* House B is showing — no webpage frame is mounted, so no bridge message can be legitimate */
   if (d.type === 'REELFLOW_CAPTURE_PROFILE_MEDIA' && d.url) {
     const item = getCurrentItem();
-    appendCapturedMediaToProfile(d.url, item?.profile?.handle || '');
+    const saved = appendCapturedMediaToProfile(d.url, item?.profile?.handle || '');
+    /* Confirm INSIDE the page, where the user's eyes are: the frame shows a
+       check badge naming the profile the media filed under. */
+    if (saved && e.source && e.source.postMessage) { try { e.source.postMessage({ type: 'REELFLOW_CAPTURED', handle: saved }, '*'); } catch (err) {} }
   }
   /* REELFLOW_VIDEO_FOUND is retired: pages no longer report streams for
      auto-binding (auto video fetch removed 2026-11-09). Manual links only. */
@@ -3697,6 +3855,8 @@ function wirePasteModal() {
   });
   $('feed-profile-search').addEventListener('input', renderProfileList);
   $('profile-list').addEventListener('click', (e) => {
+    const pm = e.target.closest('[data-pmedia]');
+    if (pm) { openProfileMediaList(pm.dataset.pmedia); return; }
     const ren = e.target.closest('[data-prename]');
     if (ren) { openRenameModal(ren.dataset.prename); return; }
     const del = e.target.closest('[data-pdel]');
@@ -3704,7 +3864,8 @@ function wirePasteModal() {
       if (del.dataset.armed === '1') {
         const h = del.dataset.pdel;
         allFeedItems = allFeedItems.filter(it => it.profile?.handle !== h);
-        saveCurrentSessionToStorage(); renderFeedSkeleton(); updateVirtualWindowMedia();
+        if (!discoveryFeedModeActive) saveCurrentSessionToStorage(); /* never save the transient discovery list over the main session */
+        renderFeedSkeleton(); updateVirtualWindowMedia();
         renderQueueList(); renderProfileList(); renderUnlinkedList(); syncPasteBoxFromFeed(); markUnexported();
         showToast(`Deleted all @${h} items from the feed`);
       } else {
@@ -3737,6 +3898,38 @@ function wirePasteModal() {
   $('btn-addmedia-close').addEventListener('click', () => $('addmedia-modal').classList.add('hidden'));
   $('btn-addmedia-cancel').addEventListener('click', () => $('addmedia-modal').classList.add('hidden'));
   $('btn-addmedia-save').addEventListener('click', applyAddMedia);
+  /* profile media list (per-item open / delete / move) */
+  $('btn-pmedia-close').addEventListener('click', closeProfileMediaList);
+  $('pmedia-list').addEventListener('click', (e) => {
+    const open = e.target.closest('[data-pm-open]');
+    if (open) { const it = allFeedItems[Number(open.dataset.pmOpen)]; if (it) window.open(it.sourceLink || it.url, '_blank', 'noopener'); return; }
+    const mv = e.target.closest('[data-pm-move]');
+    if (mv) { profileMediaMoveIdx = Number(mv.dataset.pmMove); renderProfileMediaList(); return; }
+    if (e.target.closest('[data-pm-cancel]')) { profileMediaMoveIdx = -1; renderProfileMediaList(); return; }
+    const conf = e.target.closest('[data-pm-confirm]');
+    if (conf) {
+      const row = conf.closest('.queue-item');
+      const sel = row ? row.querySelector('.pm-existing') : null;
+      const inp = row ? row.querySelector('.pm-newname') : null;
+      const name = (((inp && inp.value.trim()) || (sel && sel.value) || '')).replace(/^@+/, '').trim();
+      if (!name) { showToast('Pick an existing profile or type a new name'); return; }
+      moveFeedItemToProfile(Number(conf.dataset.pmConfirm), name);
+      return;
+    }
+    const del = e.target.closest('[data-pm-del]');
+    if (del) {
+      if (del.dataset.armed === '1') {
+        allFeedItems.splice(Number(del.dataset.pmDel), 1);
+        if (currentCardIndex >= allFeedItems.length) currentCardIndex = Math.max(0, allFeedItems.length - 1);
+        profileMediaMoveIdx = -1;
+        persistAfterProfileMediaChange();
+        showToast(`Deleted from @${profileMediaHandle}`);
+      } else {
+        del.dataset.armed = '1'; del.textContent = 'Sure?';
+        setTimeout(() => { if (del.isConnected) { del.dataset.armed = ''; del.textContent = 'Delete'; } }, 2600);
+      }
+    }
+  });
   /* shared file import */
   $('file-import-txt').addEventListener('change', (e) => {
     const file = e.target.files && e.target.files[0];
@@ -3773,10 +3966,11 @@ function wireHouseAChrome() {
   });
   $('btn-rail-prev').addEventListener('click', () => advanceFeed(-1));
   $('btn-rail-next').addEventListener('click', () => advanceFeed(1));
-  $('btn-rail-mute').addEventListener('click', (e) => {
+  $('btn-rail-mute').addEventListener('click', () => {
     globalMuted = !globalMuted;
-    e.currentTarget.innerHTML = `<svg class="ic sm"><use href="#${globalMuted ? 'i-vol-x' : 'i-vol'}"/></svg>`;
+    syncMuteButton();
     document.querySelectorAll('#feed-container video').forEach(v => { v.muted = globalMuted; });
+    persistAppSettings();
     showToast(globalMuted ? 'Muted' : 'Sound on');
   });
   $('btn-rail-hfs').addEventListener('click', () => { if (hfsState) exitHorizontalFullscreen(); else enterHorizontalFullscreen(); });
