@@ -18,9 +18,9 @@
   --hb-mint:#34d399; --hb-mint-soft:rgba(52,211,153,.16);
   --hb-sky:#38bdf8; --hb-amber:#fbbf24; --hb-rose:#fb7185;
   --hb-text:#eef4fb; --hb-dim:#9db2c8; --hb-faint:#647d96;
-  --a-bg:#07070c; --a-glass:rgba(18,18,28,.58); --a-glass-strong:rgba(14,14,24,.86);
-  --a-line:rgba(255,255,255,.14); --a-line-soft:rgba(255,255,255,.08);
-  --a-accent:#e879f9; --a-accent-2:#818cf8; --a-mint:#34d399;
+  --a-bg:#0b0c11; --a-glass:rgba(24,25,33,.32); --a-glass-strong:rgba(20,21,29,.84);
+  --a-line:rgba(255,255,255,.11); --a-line-soft:rgba(255,255,255,.07);
+  --a-accent:#8fd0ff; --a-accent-2:#a3b8cc; --a-mint:#34d399; --a-hot:#ffb36b; --a-ink:#eceae4;
   --spring:cubic-bezier(.22,1.36,.36,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
@@ -71,7 +71,7 @@ img{display:block}
 .glass-bubble svg{width:20px;height:20px}
 .glass-bubble.small{width:34px;height:34px}.glass-bubble.small svg{width:16px;height:16px}
 .glass-bubble.active{background:linear-gradient(135deg,rgba(232,121,249,.5),rgba(129,140,248,.5));border-color:rgba(232,121,249,.65)}
-.glass-bubble.glow{animation:pulseGlow 1.6s ease-in-out infinite;border-color:var(--a-accent);color:#fbcfe8}
+.glass-bubble.glow{animation:pulseGlow 1.6s ease-in-out infinite;border-color:var(--a-hot);color:var(--a-hot)}
 .glass-pill{
   display:inline-flex;align-items:center;gap:5px;padding:0 12px;height:38px;border-radius:999px;white-space:nowrap;
   background:var(--a-glass);border:1px solid var(--a-line);backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);
@@ -277,7 +277,8 @@ textarea.field{resize:vertical;line-height:1.5}
 
 /* zoom slideshow */
 #zoom-overlay{position:fixed;inset:0;z-index:140;background:#000;display:flex;align-items:center;justify-content:center}
-#zoom-overlay .zstage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+#zoom-overlay .zstage{position:absolute;inset:0}
+#zoom-overlay .zstage>*{position:absolute;inset:0;margin:auto}
 #zoom-overlay img,#zoom-overlay video{width:100%;height:100%;object-fit:contain}
 #zoom-overlay .zfade{transition:opacity .65s var(--ease-out)}
 #zoom-top-controls{position:fixed;top:calc(10px + var(--sat));left:10px;z-index:145;display:flex;gap:7px;flex-wrap:wrap;max-width:calc(100vw - 70px)}
@@ -501,7 +502,7 @@ svg.ic.lg{width:22px;height:22px}
 .cmd-btn.icon-only{width:34px;padding:0;justify-content:center}
 .cmd-btn .st{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
 .cmd-btn.add-btn{color:#f0abfc}
-.cmd-btn.add-btn.glow{animation:pulseGlow 1.6s ease-in-out infinite;color:#fff}
+.cmd-btn.add-btn.glow{animation:pulseGlow 1.6s ease-in-out infinite;color:var(--a-hot);border-color:var(--a-hot)}
 .cmd-chip{
   display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 11px;border-radius:999px;flex-shrink:0;max-width:44vw;
   color:#fff;font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
@@ -528,8 +529,8 @@ svg.ic.lg{width:22px;height:22px}
 #bottom-deck{
   position:fixed;left:10px;right:10px;bottom:calc(10px + var(--sab));z-index:72;max-width:560px;margin:0 auto;
   border-radius:22px;padding:10px 12px 11px;
-  background:rgba(11,11,20,.78);border:1px solid var(--a-line);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);
-  box-shadow:0 18px 44px rgba(0,0,0,.55);
+  background:rgba(11,11,20,.42);border:1px solid var(--a-line);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);
+  box-shadow:0 14px 34px rgba(0,0,0,.35);
   transition:opacity .3s,transform .35s var(--ease-out);
 }
 #bottom-deck.faded{opacity:0;pointer-events:none;transform:translateY(10px)}
@@ -543,6 +544,10 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
 .deck-scrub .fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--a-accent),var(--a-accent-2))}
 .deck-scrub .knob{position:absolute;top:50%;left:0%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.55)}
 .deck-row{display:flex;align-items:center;gap:5px}
+.deck-vrow{justify-content:space-between}
+.deck-mid{display:flex;align-items:center;gap:5px}
+.deck-btn.edge{min-width:66px;height:42px;border-radius:14px;font-weight:800}
+.deck-btn.edge .cap{font-size:11px}
 .deck-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:5px;height:40px;min-width:40px;padding:0 10px;border-radius:13px;
   background:rgba(255,255,255,.07);color:#e9e9f2;font-size:11px;font-weight:800;transition:transform .15s var(--spring),background .18s;flex-shrink:0;
@@ -781,7 +786,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
         <button type="button" class="cmd-btn" id="zoom-pill" title="Feed Zoom — tap cycles, hold for menu"><svg class="ic sm"><use href="#i-search"/></svg><span class="st" id="zoom-label">Off</span></button>
         <button type="button" class="cmd-btn" id="as-pill" title="Auto-Scroll — tap cycles, hold for menu"><svg class="ic sm"><use href="#i-clock"/></svg><span class="st" id="as-label">Off</span></button>
         <button type="button" class="cmd-btn" id="filter-pill" title="Media Filter — tap cycles, hold for menu"><svg class="ic sm"><use href="#i-filter"/></svg><span class="st" id="filter-label">All</span></button>
-        <button type="button" class="cmd-btn" id="sort-pill" title="Sort Order — tap cycles, hold for menu"><svg class="ic sm"><use href="#i-sort"/></svg><span class="st" id="sort-label">Default</span></button>
+        <button type="button" class="cmd-btn" id="sort-pill" title="Sort Order — tap cycles, hold for menu"><svg class="ic sm"><use href="#i-sort"/></svg><span class="st" id="sort-label">Off</span></button>
         <span class="cmd-sep"></span>
         <button type="button" class="cmd-btn icon-only" id="btn-grid" title="Grid / Collage"><svg class="ic sm"><use href="#i-grid"/></svg></button>
         <button type="button" class="cmd-btn icon-only" id="btn-shuffle" title="Shuffle Feed"><svg class="ic sm"><use href="#i-shuffle"/></svg></button>
@@ -823,6 +828,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
     <p>Choose which part of this video loops as its grid / collage preview.</p>
     <div class="tp-label">Start point — <span id="tp-start-val">0.0s</span></div>
     <input type="range" id="tp-start-range" min="0" max="120" step="0.5" value="0" />
+    <button type="button" class="btn small" id="btn-tp-usenow" style="margin-top:7px">Start at current time</button>
     <div class="tp-label">Loop length</div>
     <div class="tp-chips" id="tp-loop-chips">
       <button type="button" data-loop="5">5s</button>
@@ -938,6 +944,11 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
         <button type="button" class="btn small" id="btn-paste-copy">Copy All</button>
         <button type="button" class="btn small" id="btn-manual-lock" style="margin-left:auto"><svg class="ic sm" style="display:inline;vertical-align:-3px"><use href="#i-lock"/></svg> Lock</button>
       </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-top:9px">
+        <input id="proxy-input" class="field mono" style="flex:1;min-width:0" placeholder="My proxy — https://…workers.dev/?url=" autocomplete="off" autocapitalize="off" />
+        <button type="button" class="btn small" id="btn-proxy-save">Save proxy</button>
+      </div>
+      <p class="sub" style="margin-top:5px">Your own fetch proxy is leg #1 for in-app webpage display. It's saved in the app and travels inside every export's settings.</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
         <button type="button" class="btn mint" id="btn-start-feed" style="flex:1">Start Feed</button>
         <button type="button" class="btn" id="btn-append-bottom"><svg class="ic sm" style="display:inline;vertical-align:-3px"><use href="#i-chev-down"/></svg> Append Bottom</button>
@@ -1052,6 +1063,7 @@ const PROFILE_ALIASES_KEY = 'reelflow_profile_aliases_v1';
 const DISCOVERY_PROFILES_KEY = 'reelflow_discovery_profiles_v1';
 const VIDEO_THUMB_TRIM_KEY = 'reelflow_video_thumb_trim_v1';
 const HOUSE_B_CARDS_KEY = 'reelflow_house_b_cards_v1';
+const APP_SETTINGS_KEY = 'reelflow_app_settings_v1';   /* additive key: settings persistence (other builds ignore it) */
 const HOUSE_B_DELETIONS_KEY = 'reelflow_house_b_deletions_v1';
 const DEFAULT_R2_PREFIX = 'https://pub-2c94d1aa1f3944f8a0d85d6ae75c3c56.r2.dev';
 
@@ -1169,6 +1181,13 @@ function isVideoPostPageUrl(u) {
   if (host === 'leakgallery.com' || host.endsWith('.leakgallery.com')) {
     return /^\/[^\/]+\/[^\/]*video[^\/]*$/i.test(path);
   }
+  /* General rules for any other host (marketplaces & video platforms blocked). */
+  if (/(^|\.)(ebay|depop|poshmark|mercari|grailed|youtube|youtu|vimeo|tiktok|twitch|dailymotion|streamable|redgifs|wikipedia|wikimedia|github|google)\./i.test(host + '.')) return false;
+  if (/^\/video\//i.test(path)) return true;
+  const segs = path.split('/').filter(Boolean);
+  const last = segs[segs.length - 1] || '';
+  if (/video/i.test(last) && /[-_]/.test(last) && last.length > 8) return true;
+  if (segs.length === 2 && /^\d{5,}$/.test(segs[1]) && !/^\d+$/.test(segs[0])) return true;
   return false;
 }
 function resolveWithR2Prefix(raw) {
@@ -1765,6 +1784,9 @@ function updateUnexportedChangesUI() {
 function persistBanks() { saveJSON(BANKS_STORAGE_KEY, memoryBanks); }
 function persistTaught() { saveJSON(TAUGHT_VIDEOS_KEY, taughtVideos); }
 function persistTrims() { saveJSON(VIDEO_THUMB_TRIM_KEY, videoThumbTrimMap); }
+let extraSections = [];   /* unknown fenced sections from an import, preserved verbatim for re-export */
+let customProxyTemplate = '';   /* the user's own proxy prefix (ends with ?url= or contains {url}); leg #1 of the fetch race */
+function persistAppSettings() { try { saveJSON(APP_SETTINGS_KEY, cfgGet()); } catch (e) {} }
 function persistDiscovery() { saveJSON(DISCOVERY_PROFILES_KEY, discoveryProfileLinks); }
 function getVideoThumbTrim(itemOrUrl) {
   const rawUrl = typeof itemOrUrl === 'string' ? itemOrUrl : (itemOrUrl ? (itemOrUrl.url || itemOrUrl.sourceLink || '') : '');
@@ -1845,14 +1867,14 @@ function getVisibleFeedItems() {
 }
 
 /* ---- session persistence ---- */
-function saveCurrentSessionToStorage() {
-  const slim = allFeedItems.map(it => ({
+function slimSessionList(list) {
+  return (list || []).map(it => ({
     url: it.url, sourceLink: it.sourceLink, customHandle: it.customHandle, type: it.type,
     extractedVideoUrl: it.extractedVideoUrl, preScrollPercent: it.preScrollPercent,
     batchSessionId: it.batchSessionId, sessionBreakBefore: it.sessionBreakBefore, addedSeq: it.addedSeq
   }));
-  saveJSON(STORAGE_KEY, slim);
 }
+function saveCurrentSessionToStorage() { saveJSON(STORAGE_KEY, slimSessionList(allFeedItems)); }
 function restoreSessionFromStorage() {
   const raw = loadJSON(STORAGE_KEY, null);
   if (!Array.isArray(raw) || !raw.length) { allFeedItems = []; return; }
@@ -1873,8 +1895,8 @@ function restoreSessionFromStorage() {
 /* ---- transcript.txt : full fenced parse ---- */
 function parseTranscriptText(text) {
   const decoded = decodeAppOnlyTextPayload(text || '');
-  const res = { feedLines: [], aliases: {}, discovery: [], trims: {}, banks: {}, hbCards: null, hbDeletions: null };
-  let section = 'feed', blanks = 0;
+  const res = { feedLines: [], aliases: {}, discovery: [], trims: {}, banks: {}, hbCards: null, hbDeletions: null, settings: null, taughtPairs: [], extraSections: [] };
+  let section = 'feed', blanks = 0, extraCur = null;
   for (const rawLine of decoded.split(/\r?\n/)) {
     const line = rawLine.trim();
     if (!line) { blanks++; continue; }
@@ -1886,7 +1908,12 @@ function parseTranscriptText(text) {
     if (bm) { section = 'bank' + bm[1]; res.banks[bm[1]] = res.banks[bm[1]] || []; continue; }
     if (line.startsWith('# [HOUSE_B_CARDS]')) { section = 'hbcards'; res.hbCards = []; continue; }
     if (line.startsWith('# [HOUSE_B_DELETIONS]')) { section = 'hbdel'; res.hbDeletions = []; continue; }
-    if (line.startsWith('#')) continue;
+    if (line.startsWith('# [TAUGHT_VIDEOS]')) { section = 'taught'; continue; }
+    if (line.startsWith('# [APP_SETTINGS]')) { section = 'settings'; continue; }
+    if (line.startsWith('# [')) { /* unknown fence: preserve verbatim, and END the current section */
+      section = 'extra'; extraCur = { header: line, lines: [] }; res.extraSections.push(extraCur); continue;
+    }
+    if (line.startsWith('#')) { if (section === 'extra' && extraCur) extraCur.lines.push(line); continue; }
     if (section === 'feed') { for (const sub of line.split(/%(?=https?:\/\/)/gi)) { const s = sub.trim(); if (s) res.feedLines.push({ line: s, breakBefore: blanks >= 2 }); } }
     else if (section === 'aliases') { const i = line.indexOf('='); if (i > 0) res.aliases[line.slice(0, i).trim()] = line.slice(i + 1).trim(); }
     else if (section === 'discovery') res.discovery.push(line);
@@ -1900,13 +1927,56 @@ function parseTranscriptText(text) {
     else if (section.startsWith('bank')) res.banks[section.slice(4)].push(line);
     else if (section === 'hbcards') { try { const o = JSON.parse(line); if (o && o.id) res.hbCards.push(o); } catch (e) {} }
     else if (section === 'hbdel') { try { const o = JSON.parse(line); if (o && o.url) res.hbDeletions.push(o); } catch (e) {} }
+    else if (section === 'taught') { const i = line.indexOf('|'); if (i > 0) { const pg = line.slice(0, i).trim(), vd = line.slice(i + 1).trim(); if (pg && vd) res.taughtPairs.push({ page: pg, video: vd }); } }
+    else if (section === 'settings') { try { const o = JSON.parse(line); if (o && typeof o === 'object') res.settings = o; } catch (e) {} }
+    else if (section === 'extra') { if (extraCur) extraCur.lines.push(line); }
     blanks = 0;
   }
   return res;
 }
+/* ---- APP_SETTINGS (transcript fence, JSON) — field names shared with the other build ---- */
+function cfgGet() {
+  return {
+    zoom: zoomMode, auto: autoScrollSec, loop: loopMode === 'loop', rate: defaultRate,
+    muted: globalMuted, mask: pasteBoxAppOnlyMask,
+    enh: enhanceLevel, exp: exposureSteps, sharp: sharpAdjust,
+    gsize: gridSize, sort: activeSortOrder, filter: activeFilterType,
+    proxy: customProxyTemplate
+  };
+}
+function applyAppSettings(c) {
+  if (!c || typeof c !== 'object') return;
+  if (typeof c.muted === 'boolean') globalMuted = c.muted;
+  if (typeof c.mask === 'boolean') { pasteBoxAppOnlyMask = c.mask; const mb = $('btn-mask-toggle'); if (mb) mb.textContent = pasteBoxAppOnlyMask ? 'App-Only' : 'Plain https'; }
+  if (typeof c.rate === 'number' && [0.5, 0.75, 1, 1.25, 1.5, 2].includes(c.rate)) defaultRate = c.rate;
+  if (typeof c.loop === 'boolean') loopMode = c.loop ? 'loop' : 'scroll';
+  if (typeof c.auto === 'number' && c.auto >= 0 && c.auto <= 30) {
+    autoScrollSec = c.auto;
+    const l = $('autoscroll-label'); if (l) l.textContent = autoScrollSec > 0 ? autoScrollSec + 's' : 'Off';
+    const p = $('autoscroll-pill'); if (p) p.classList.toggle('active', autoScrollSec > 0);
+  }
+  if (typeof c.enh === 'number') enhanceLevel = clamp(Math.round(c.enh), 0, 3);
+  if (typeof c.exp === 'number') exposureSteps = clamp(Math.round(c.exp), -4, 4);
+  if (typeof c.sharp === 'number') { sharpAdjust = clamp(Math.round(c.sharp), -3, 3); updateSvgSharpnessKernels(); }
+  if (typeof c.gsize === 'string' && ['s', 'm', 'l', 'xl'].includes(c.gsize)) gridSize = c.gsize;
+  if (typeof c.sort === 'string' && ['default', 'new', 'az'].includes(c.sort)) activeSortOrder = c.sort;
+  if (typeof c.filter === 'string' && ['all', 'image', 'video', 'webpage'].includes(c.filter)) activeFilterType = c.filter;
+  if (typeof c.zoom === 'string' && ZOOM_MODES.some(z => z.id === c.zoom)) setZoomMode(c.zoom);
+  if (typeof c.proxy === 'string' && (c.proxy === '' || /^https?:\/\//i.test(c.proxy))) { customProxyTemplate = c.proxy; const pi = $('proxy-input'); if (pi) pi.value = customProxyTemplate; }
+  applyFilterSortUI(); updateHUD(); applyEnhanceToCurrent();
+}
 function importTranscriptText(text) {
   const p = parseTranscriptText(text);
   let touched = [];
+  if (p.settings) { applyAppSettings(p.settings); touched.push('settings'); }
+  if (p.taughtPairs.length) {
+    for (const pr of p.taughtPairs) {
+      const pg = stripInternalHashes(pr.page), vd = stripInternalHashes(pr.video);
+      if (pg && vd) { taughtVideos[pg] = vd; taughtVideos[normalizeUrlKey(pg)] = vd; }
+    }
+    persistTaught(); touched.push(`taught bindings (${p.taughtPairs.length})`);
+  }
+  if (p.extraSections.length) { extraSections = p.extraSections; touched.push(`preserved sections (${p.extraSections.length})`); }
   if (Object.keys(p.aliases).length) { profileAliasMap = { ...profileAliasMap, ...p.aliases }; persistProfileAliases(); touched.push('aliases'); }
   if (p.discovery.length) { discoveryProfileLinks = p.discovery.map(u => resolveWithR2Prefix(u)).filter(Boolean); persistDiscovery(); renderDiscoveryList(); touched.push('discovery'); }
   if (Object.keys(p.trims).length) { videoThumbTrimMap = { ...videoThumbTrimMap, ...p.trims }; persistTrims(); touched.push('trims'); }
@@ -1954,6 +2024,15 @@ function buildFullExportTxtContent() {
     const list = memoryBanks[b] || [];
     if (list.length) { plain.push(''); plain.push(`# [BANK_${b}]`); list.forEach(u => { if (!isCorruptedUrlToken(u)) plain.push(u); }); }
   }
+  /* the COMPLETE taught-binding map — including bindings whose page is not in the feed */
+  const taughtCanon = new Map();
+  for (const [k, v] of Object.entries(taughtVideos || {})) {
+    const nk = normalizeUrlKey(k);
+    if (nk && v && !taughtCanon.has(nk)) taughtCanon.set(nk, [stripInternalHashes(k), stripInternalHashes(v)]);
+  }
+  if (taughtCanon.size) { plain.push(''); plain.push('# [TAUGHT_VIDEOS]'); for (const pair of taughtCanon.values()) plain.push(`${pair[0]} | ${pair[1]}`); }
+  plain.push(''); plain.push('# [APP_SETTINGS]'); plain.push(JSON.stringify(cfgGet()));
+  for (const sec of extraSections) { plain.push(''); plain.push(sec.header); (sec.lines || []).forEach(l => plain.push(l)); }
   if (houseBCards.length) {
     plain.push(''); plain.push('# [HOUSE_B_CARDS]');
     houseBCards.forEach(card => { const copy = { ...card }; if (copy.photoUrl && copy.photoUrl.startsWith('data:image/svg+xml')) delete copy.photoUrl; plain.push(JSON.stringify(copy)); });
@@ -2194,8 +2273,9 @@ function applyAddMedia() {
    ================================================================ */
 const feedContainer = () => $('feed-container');
 let currentCardIndex = 0;
-let globalMuted = false;
+let globalMuted = true;   /* muted by default — the app is mostly used without audio */
 let loopMode = 'loop';               /* 'loop' | 'scroll' */
+let defaultRate = 1;                 /* session playback-rate default (APP_SETTINGS 'rate') */
 let autoScrollSec = 0;               /* 0 = off */
 let autoScrollTimer = null;
 let scrollRafPending = false;
@@ -2256,7 +2336,7 @@ function triggerActiveCardVideoPlayback() {
   for (let i = 0; i < fc.children.length; i++) {
     const v = fc.children[i]._video;
     if (!v) continue;
-    if (i === currentCardIndex) { v.muted = globalMuted; const p = v.play(); if (p) p.catch(() => {}); }
+    if (i === currentCardIndex) { v.muted = globalMuted; const p = v.play(); if (p) p.catch(() => { if (!globalMuted) { globalMuted = true; v.muted = true; updateHUD(); v.play().catch(() => {}); } }); }
     else { try { v.pause(); } catch (e) {} }
   }
 }
@@ -2319,7 +2399,7 @@ function mountVideoCard(section, item, visIdx) {
   const video = document.createElement('video');
   video.className = 'feed-media';
   video.src = src; video.playsInline = true; video.setAttribute('playsinline', '');
-  video.muted = globalMuted; video.loop = (loopMode === 'loop');
+  video.muted = globalMuted; video.loop = (loopMode === 'loop'); video.playbackRate = defaultRate;
   video.preload = 'auto';
   if (/\.m3u8($|\?)/i.test(src) && window.Hls && !video.canPlayType('application/vnd.apple.mpegurl')) {
     try { const hls = new window.Hls({ maxBufferLength: 12 }); hls.loadSource(src); hls.attachMedia(video); section._hls = hls; } catch (e) {}
@@ -2384,6 +2464,14 @@ function wireTrimPopover() {
     const b = e.target.closest('[data-loop]'); if (!b) return;
     trimDraft.loopSec = Number(b.dataset.loop);
     document.querySelectorAll('#tp-loop-chips button').forEach(x => x.classList.toggle('sel', x === b));
+  });
+  $('btn-tp-usenow').addEventListener('click', () => {
+    const v = currentVideoEl();
+    if (!v || !isFinite(v.currentTime)) { showToast('No video playing'); return; }
+    trimDraft.startSec = Math.round(v.currentTime * 2) / 2;
+    const range = $('tp-start-range');
+    range.value = trimDraft.startSec;
+    $('tp-start-val').textContent = trimDraft.startSec.toFixed(1) + 's';
   });
   $('btn-tp-close').addEventListener('click', hideTrimPopover);
   $('btn-tp-reset').addEventListener('click', () => {
@@ -2508,7 +2596,7 @@ function autoScrollDropdown() {
 const FILTER_STEPS = ['all', 'image', 'video', 'webpage'];
 const FILTER_LABELS = { all: 'All', image: 'IMG', video: 'VID', webpage: 'LINK' };
 const SORT_STEPS = ['default', 'new', 'az'];
-const SORT_LABELS = { default: 'Default', new: 'New', az: 'A–Z' };
+const SORT_LABELS = { default: 'Off', new: 'New', az: 'A–Z' };
 function applyFilterSortUI() {
   $('filter-label').textContent = FILTER_LABELS[activeFilterType];
   $('sort-label').textContent = SORT_LABELS[activeSortOrder];
@@ -2588,14 +2676,35 @@ function updateHUD() {
   let l2 = '', r2 = '';
   if (item) {
     l2 = `<button type="button" class="cmd-chip" id="hud-profile-chip" title="Rename @profile"><span class="at">@</span><span style="overflow:hidden;text-overflow:ellipsis">${esc(item.profile?.handle || '')}</span></button>`;
-    if (item.type !== 'image') {
+    if (item.type === 'image') {
+      r2 = `<button type="button" class="glass-pill" id="btn-hud-slideshow" style="height:34px" title="Slideshow"><svg class="ic sm"><use href="#i-play"/></svg>Slideshow</button>
+            <button type="button" class="glass-pill ${enhanceDrawerOpen ? 'active' : ''}" id="btn-hud-enhance" style="height:34px" title="Enhance"><svg class="ic sm"><use href="#i-sliders"/></svg>Enhance</button>`;
+    } else {
       const isAuto = item.type === 'video' || !!item.extractedVideoUrl || item.webpageMode === 'autoplay';
-      r2 = `<button type="button" class="glass-pill ${isAuto ? 'active' : ''}" id="btn-mode-toggle" style="height:34px" title="Autoplay Video / Webpage mode"><svg class="ic sm"><use href="#${isAuto ? 'i-play' : 'i-globe'}"/></svg>${isAuto ? 'Autoplay' : 'Webpage'}</button>
-            <span class="glass-pill" style="height:34px;gap:8px" title="Session Webpage Lock">Lock <button type="button" class="switch ${webpageLockPages ? 'on' : ''}" id="sw-web-lock" aria-label="Webpage Lock"></button></span>`;
+      r2 = `<button type="button" class="glass-pill ${isAuto ? 'active' : ''}" id="btn-mode-toggle" style="height:34px" title="Autoplay Video / Webpage mode"><svg class="ic sm"><use href="#${isAuto ? 'i-play' : 'i-globe'}"/></svg>${isAuto ? 'Autoplay' : 'Webpage'}</button>`;
     }
   }
   row2L.innerHTML = l2; row2R.innerHTML = r2;
-  if (row3) { row3.innerHTML = ''; row3.classList.add('hidden'); }
+  /* row 3: the Enhance console lives at the top edge for images */
+  if (row3) {
+    if (item && item.type === 'image' && enhanceDrawerOpen) {
+      row3.innerHTML = `<span class="deck-seg" id="hud-enh-seg">
+          <button type="button" data-lvl="1" class="${enhanceLevel === 1 ? 'sel' : ''}">L1</button>
+          <button type="button" data-lvl="2" class="${enhanceLevel === 2 ? 'sel' : ''}">L2</button>
+          <button type="button" data-lvl="3" class="${enhanceLevel === 3 ? 'sel' : ''}">L3</button>
+        </span>
+        <button type="button" class="glass-pill" id="hud-exp-m" style="height:34px">Exp −</button>
+        <button type="button" class="glass-pill" id="hud-exp-p" style="height:34px">Exp +</button>
+        <button type="button" class="glass-pill" id="hud-sh-m" style="height:34px">Sharp −</button>
+        <button type="button" class="glass-pill" id="hud-sh-p" style="height:34px">Sharp +</button>`;
+      row3.classList.remove('hidden');
+      $('hud-enh-seg').addEventListener('click', (e) => { const b = e.target.closest('[data-lvl]'); if (b) { setEnhanceLevel(enhanceLevel === Number(b.dataset.lvl) ? 0 : Number(b.dataset.lvl)); updateHUD(); } });
+      $('hud-exp-m').addEventListener('click', () => { exposureSteps = clamp(exposureSteps - 1, -4, 4); applyEnhanceToCurrent(); });
+      $('hud-exp-p').addEventListener('click', () => { exposureSteps = clamp(exposureSteps + 1, -4, 4); applyEnhanceToCurrent(); });
+      $('hud-sh-m').addEventListener('click', () => { sharpAdjust = clamp(sharpAdjust - 1, -3, 3); updateSvgSharpnessKernels(); applyEnhanceToCurrent(); });
+      $('hud-sh-p').addEventListener('click', () => { sharpAdjust = clamp(sharpAdjust + 1, -3, 3); updateSvgSharpnessKernels(); applyEnhanceToCurrent(); });
+    } else { row3.innerHTML = ''; row3.classList.add('hidden'); }
+  }
   const chip = $('hud-profile-chip');
   if (chip && item) chip.addEventListener('click', () => openRenameModal(item.profile?.handle || ''));
   const modeBtn = $('btn-mode-toggle');
@@ -2606,8 +2715,10 @@ function updateHUD() {
     if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, currentCardIndex); triggerActiveCardVideoPlayback(); }
     updateHUD();
   });
-  const lockSw = $('sw-web-lock');
-  if (lockSw) lockSw.addEventListener('click', () => { webpageLockPages = !webpageLockPages; lockSw.classList.toggle('on', webpageLockPages); showToast(webpageLockPages ? 'Webpage Lock on — pages capture swipes' : 'Webpage Lock off'); });
+  const ssBtn = $('btn-hud-slideshow');
+  if (ssBtn) ssBtn.addEventListener('click', () => openZoomSlideshow(currentCardIndex));
+  const enhBtn = $('btn-hud-enhance');
+  if (enhBtn) enhBtn.addEventListener('click', () => { enhanceDrawerOpen = !enhanceDrawerOpen; updateHUD(); });
   updateFeedProgress();
   renderDeck();
 }
@@ -2785,56 +2896,30 @@ function renderDeck() {
   const metaHtml = `<div class="deck-meta"><span class="dm-type"><svg class="ic sm"><use href="#${meta.icon}"/></svg>${meta.label}</span><span class="dm-handle">@${esc(item.profile?.handle || '')}</span><span class="dm-right">${currentCardIndex + 1} / ${vis.length}${aspect}</span></div>`;
   const isVideo = item.type === 'video' || !!item.extractedVideoUrl;
   if (isVideo) {
-    deck.innerHTML = metaHtml + `
+    deck.innerHTML = `
       <div class="deck-scrub" id="deck-scrub"><div class="track"><div class="fill" id="deck-fill"></div><div class="knob" id="deck-knob"></div></div></div>
-      <div class="deck-row">
-        <button type="button" class="deck-btn" id="deck-rew" title="Back 8 seconds"><svg class="ic sm"><use href="#i-rew"/></svg><span class="cap">8s</span></button>
-        <button type="button" class="deck-btn primary" id="deck-play" title="Play / Pause"><svg class="ic"><use href="#i-pause"/></svg></button>
-        <button type="button" class="deck-btn" id="deck-ff" title="Forward 8 seconds"><svg class="ic sm"><use href="#i-ff"/></svg><span class="cap">8s</span></button>
-        <span class="deck-time" id="deck-time" title="Tap: elapsed / remaining">0:00 / 0:00</span>
-        <span class="deck-spacer"></span>
-        <button type="button" class="deck-btn ${loopMode === 'loop' ? 'active' : ''}" id="deck-loop" title="Loop / advance on end"><svg class="ic sm"><use href="#i-repeat"/></svg></button>
-        <button type="button" class="deck-btn" id="deck-speed" title="Playback speed">1x</button>
-        <button type="button" class="deck-btn" id="deck-trim" title="Thumbnail Preview Trim"><svg class="ic sm"><use href="#i-scissors"/></svg></button>
-        <button type="button" class="deck-btn" id="deck-paste" title="Quick Paste &amp; Link Video"><svg class="ic sm"><use href="#i-clip"/></svg></button>
-        <button type="button" class="deck-btn" id="deck-open" title="Open Source"><svg class="ic sm"><use href="#i-ext"/></svg></button>
+      <div class="deck-row deck-vrow">
+        <button type="button" class="deck-btn edge" id="deck-rew" title="Back 8 seconds"><svg class="ic sm"><use href="#i-rew"/></svg><span class="cap">8s</span></button>
+        <div class="deck-mid">
+          <button type="button" class="deck-btn primary" id="deck-play" title="Play / Pause"><svg class="ic"><use href="#i-pause"/></svg></button>
+          <span class="deck-time" id="deck-time" title="Tap: elapsed / remaining">0:00</span>
+          <button type="button" class="deck-btn ${loopMode === 'loop' ? 'active' : ''}" id="deck-loop" title="Loop / advance on end"><svg class="ic sm"><use href="#i-repeat"/></svg></button>
+          <button type="button" class="deck-btn" id="deck-speed" title="Playback speed">${defaultRate}x</button>
+          <button type="button" class="deck-btn" id="deck-trim" title="Thumbnail Preview Trim"><svg class="ic sm"><use href="#i-scissors"/></svg></button>
+        </div>
+        <button type="button" class="deck-btn edge" id="deck-ff" title="Forward 8 seconds"><span class="cap">8s</span><svg class="ic sm"><use href="#i-ff"/></svg></button>
       </div>`;
     wireDeckVideo(item);
   } else if (item.type === 'image') {
-    deck.innerHTML = metaHtml + `
-      <div class="deck-row">
-        <button type="button" class="deck-btn primary wide" id="deck-slideshow"><svg class="ic sm"><use href="#i-play"/></svg>Slideshow</button>
-        <button type="button" class="deck-btn ${enhanceDrawerOpen ? 'active' : ''}" id="deck-enhance"><svg class="ic sm"><use href="#i-sliders"/></svg>Enhance</button>
-        <button type="button" class="deck-btn" id="deck-open" title="Open Source"><svg class="ic sm"><use href="#i-ext"/></svg></button>
-      </div>
-      ${enhanceDrawerOpen ? `<div class="deck-row" style="margin-top:7px">
-        <span class="deck-seg" id="deck-enh-seg">
-          <button type="button" data-lvl="1" class="${enhanceLevel === 1 ? 'sel' : ''}">L1</button>
-          <button type="button" data-lvl="2" class="${enhanceLevel === 2 ? 'sel' : ''}">L2</button>
-          <button type="button" data-lvl="3" class="${enhanceLevel === 3 ? 'sel' : ''}">L3</button>
-        </span>
-        <button type="button" class="deck-btn" id="deck-exp-m">Exp −</button>
-        <button type="button" class="deck-btn" id="deck-exp-p">Exp +</button>
-        <button type="button" class="deck-btn" id="deck-sh-m">Sharp −</button>
-        <button type="button" class="deck-btn" id="deck-sh-p">Sharp +</button>
-      </div>` : ''}`;
-    $('deck-slideshow').addEventListener('click', () => openZoomSlideshow(currentCardIndex));
-    $('deck-enhance').addEventListener('click', () => { enhanceDrawerOpen = !enhanceDrawerOpen; renderDeck(); });
-    $('deck-open').addEventListener('click', () => window.open(item.sourceLink || item.url, '_blank', 'noopener'));
-    if (enhanceDrawerOpen) {
-      $('deck-enh-seg').addEventListener('click', (e) => { const b = e.target.closest('[data-lvl]'); if (b) { setEnhanceLevel(enhanceLevel === Number(b.dataset.lvl) ? 0 : Number(b.dataset.lvl)); renderDeck(); } });
-      $('deck-exp-m').addEventListener('click', () => { exposureSteps = clamp(exposureSteps - 1, -4, 4); applyEnhanceToCurrent(); });
-      $('deck-exp-p').addEventListener('click', () => { exposureSteps = clamp(exposureSteps + 1, -4, 4); applyEnhanceToCurrent(); });
-      $('deck-sh-m').addEventListener('click', () => { sharpAdjust = clamp(sharpAdjust - 1, -3, 3); updateSvgSharpnessKernels(); applyEnhanceToCurrent(); });
-      $('deck-sh-p').addEventListener('click', () => { sharpAdjust = clamp(sharpAdjust + 1, -3, 3); updateSvgSharpnessKernels(); applyEnhanceToCurrent(); });
-    }
-    deck.classList.remove('faded');
+    /* Images have NO bottom toolbar — Slideshow lives in the top bar and
+       Enhance in the top rows (see updateHUD). */
+    deck.classList.add('hidden'); deckVideo = null; return;
   } else {
-    deck.innerHTML = metaHtml + `
+    deck.innerHTML = `
       <div class="deck-row">
         <button type="button" class="deck-btn primary wide" id="deck-paste-link"><svg class="ic sm"><use href="#i-clip"/></svg>Paste &amp; Link Video</button>
         <button type="button" class="deck-btn" id="deck-add-profile"><svg class="ic sm"><use href="#i-plus"/></svg><span>@${esc(item.profile?.handle || 'profile')}</span></button>
-        <button type="button" class="deck-btn ${item.interactiveScroll ? 'active' : ''}" id="deck-scrollmode" title="Page scroll / feed swipe"><svg class="ic sm"><use href="#i-move-v"/></svg></button>
+        <button type="button" class="deck-btn ${item.interactiveScroll ? 'active' : ''}" id="deck-scrollmode" title="Toggle between scrolling the page and swiping the feed"><svg class="ic sm"><use href="#i-move-v"/></svg><span>${item.interactiveScroll ? 'Page Scroll' : 'Feed Swipe'}</span></button>
         <button type="button" class="deck-btn" id="deck-drop" title="Drop / Save image to this profile"><svg class="ic sm"><use href="#i-image"/></svg></button>
         <button type="button" class="deck-btn" id="deck-open" title="Open Source"><svg class="ic sm"><use href="#i-ext"/></svg></button>
       </div>`;
@@ -2845,7 +2930,7 @@ function renderDeck() {
       const s = cardSection(currentCardIndex);
       if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, currentCardIndex); }
       renderDeck();
-      showToast(item.interactiveScroll ? 'Page mode: touch scrolls the page' : 'Page mode: touch swipes the feed');
+      showToast(item.interactiveScroll ? 'Page Scroll on — touch scrolls the page' : 'Feed Swipe on — touch swipes the feed');
     });
     setupDropZone($('deck-drop'), item);
     $('deck-open').addEventListener('click', () => window.open(item.sourceLink || item.url, '_blank', 'noopener'));
@@ -2865,7 +2950,7 @@ function wireDeckVideo(item) {
       if (fill) fill.style.width = pct + '%';
       if (knob) knob.style.left = pct + '%';
     }
-    if (time) time.textContent = deckShowRemaining ? `-${fmtTime((v.duration || 0) - v.currentTime)} / ${fmtTime(v.duration || 0)}` : `${fmtTime(v.currentTime)} / ${fmtTime(v.duration || 0)}`;
+    if (time) time.textContent = deckShowRemaining ? `-${fmtTime(Math.max(0, (v.duration || 0) - v.currentTime))}` : fmtTime(v.currentTime);
     if (sp) sp.textContent = v.playbackRate + 'x';
   };
   if (v && !v._deckBound) {
@@ -2890,11 +2975,9 @@ function wireDeckVideo(item) {
   });
   $('deck-speed').addEventListener('click', (e) => {
     if (!v) return;
-    openDropdown(e.currentTarget, [0.5, 0.75, 1, 1.25, 1.5, 2].map(s => ({ label: s + 'x', sel: v.playbackRate === s, fn: () => { v.playbackRate = s; sync(); } })), 'up');
+    openDropdown(e.currentTarget, [0.5, 0.75, 1, 1.25, 1.5, 2].map(s => ({ label: s + 'x', sel: v.playbackRate === s, fn: () => { v.playbackRate = s; defaultRate = s; sync(); } })), 'up');
   });
   $('deck-trim').addEventListener('click', openTrimPopover);
-  $('deck-paste').addEventListener('click', () => oneTapPasteAndLinkItem(item));
-  $('deck-open').addEventListener('click', () => window.open(item.sourceLink || item.url, '_blank', 'noopener'));
   const scrub = $('deck-scrub');
   if (scrub) {
     const seek = (e) => {
@@ -3221,25 +3304,47 @@ function shuffleFeed() {
 /* ================================================================
    SECTION 7 — Webpage engine (proxy race + srcdoc), gate, init
    ================================================================ */
-const PROXY_BUILDERS = [
-  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
-  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`
+/* Proxy race — first VALID page wins (Promise.any semantics: junk, error
+   bodies, and challenge pages reject and the race continues). The 2026 proxy
+   landscape is degraded — corsproxy.io went API-key-only — so the race runs
+   six legs and the whole race is retried once before giving up. */
+const PROXY_FETCHERS = [
+  u => ({ url: `https://corsproxy.io/?${encodeURIComponent(u)}` }),
+  u => ({ url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}` }),
+  u => ({ url: `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}` }),
+  u => ({ url: `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, json: true }),
+  u => ({ url: `https://api.cors.lol/?url=${encodeURIComponent(u)}` }),
+  u => ({ url: `https://proxy.corsfix.com/?${u}` })
 ];
-function fetchHtmlViaFastestProxy(rawUrl) {
-  return new Promise((resolve) => {
-    let done = false, pending = PROXY_BUILDERS.length;
-    const finish = (val) => { if (!done) { done = true; resolve(val); } };
-    PROXY_BUILDERS.forEach(build => {
-      const ctrl = new AbortController();
-      const to = setTimeout(() => ctrl.abort(), 10000);
-      fetch(build(rawUrl), { signal: ctrl.signal })
-        .then(r => r.ok ? r.text() : Promise.reject(new Error('bad status')))
-        .then(txt => { clearTimeout(to); if (txt && txt.length > 60) finish(txt); else if (--pending === 0) finish(''); })
-        .catch(() => { clearTimeout(to); if (--pending === 0) finish(''); });
-    });
-    setTimeout(() => finish(''), 11000);
-  });
+function proxyFetchers() {
+  const legs = [];
+  if (customProxyTemplate) legs.push(u => ({ url: customProxyTemplate.includes('{url}') ? customProxyTemplate.replace('{url}', encodeURIComponent(u)) : customProxyTemplate + encodeURIComponent(u) }));
+  legs.push(...PROXY_FETCHERS);
+  return legs;
+}
+function fetchHtmlOnce(rawUrl) {
+  const fetchOne = async (build) => {
+    const spec = build(rawUrl);
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 6000);
+    try {
+      const resp = await fetch(spec.url, { signal: ctrl.signal });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      let text = '';
+      if (spec.json) { const data = await resp.json(); text = data && data.contents ? String(data.contents) : ''; }
+      else text = await resp.text();
+      if (!text || text.length < 120) throw new Error('empty body');
+      if (/<title>\s*(?:Just a moment|Attention Required|Access Denied|403 Forbidden)/i.test(text) && text.length < 15000) throw new Error('challenge page');
+      return text;
+    } finally { clearTimeout(to); }
+  };
+  const tasks = proxyFetchers().map(b => fetchOne(b));
+  if (typeof Promise.any === 'function') return Promise.any(tasks);
+  return (async () => { for (const t of tasks) { try { return await t; } catch (e) {} } throw new Error('all proxies failed'); })();
+}
+async function fetchHtmlViaFastestProxy(rawUrl) {
+  try { return await fetchHtmlOnce(rawUrl); }
+  catch (e) { try { return await fetchHtmlOnce(rawUrl); } catch (e2) { return ''; } }
 }
 function extractStreamsFromHtml(html, pageUrl) {
   const found = { stream: '', embed: '' };
@@ -3320,16 +3425,28 @@ async function attemptWebpageVideoExtraction(item) {
   const streams = extractStreamsFromHtml(html, item.sourceLink || item.url);
   return { stream: streams.stream, embed: streams.embed, html };
 }
-function bindAndReplaceWithDirectMp4(item, videoUrl) {
+function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
   if (!item || !videoUrl) return;
   item.extractedVideoUrl = videoUrl;
   item.isExtractedFromWebpage = true;
   const key1 = normalizeUrlKey(item.sourceLink || item.url), key2 = stripInternalHashes(item.sourceLink || item.url);
   taughtVideos[key1] = videoUrl; taughtVideos[key2] = videoUrl;
   persistTaught(); saveCurrentSessionToStorage(); markUnexported();
+  /* Explicit links (Paste & Link, in-page video finds) JUMP to the video in
+     the feed so its loading is confirmed on screen. Automatic extraction
+     stays silent and in place. */
+  const jump = !!opts.jump;
+  const inMainList = !discoveryFeedModeActive || (Array.isArray(mainFeedBackup) && mainFeedBackup.includes(item));
+  if (jump && discoveryFeedModeActive && inMainList) exitDiscoveryFeed();
   const vis = getVisibleFeedItems();
   const idx = vis.indexOf(item);
-  if (idx >= 0) { const s = cardSection(idx); if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, idx); triggerActiveCardVideoPlayback(); } }
+  if (idx >= 0) {
+    if (jump && idx !== currentCardIndex) scrollToCard(idx, false);
+    const s = cardSection(idx);
+    if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, idx); }
+    triggerActiveCardVideoPlayback();
+    if (jump) { updateHUD(); showToast('Linked — here is the video'); }
+  }
   renderUnlinkedList();
   renderDeck();
 }
@@ -3352,7 +3469,7 @@ async function mountWebpageCard(section, item, visIdx) {
     if (!item.interactiveScroll && !webpageLockPages) {
       const shield = document.createElement('div');
       shield.style.cssText = 'position:absolute;inset:0;z-index:3;background:transparent';
-      shield.title = 'Swipe mode — tap ↕ on the rail to scroll this page';
+      shield.title = 'Swipe mode — turn on Page Scroll in the bar below to scroll this page';
       holder.appendChild(shield);
     }
     section._iframe = iframe;
@@ -3363,14 +3480,37 @@ async function mountWebpageCard(section, item, visIdx) {
     if (stream) { bindAndReplaceWithDirectMp4(item, stream); return; }
     if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, item.sourceLink || item.url, stream, embed, item.preScrollPercent)); return; }
   } catch (e) {}
-  if (section.dataset.hydrated === '1') mountIframe('');
+  if (section.dataset.hydrated !== '1') return;
+  /* Last resort: direct iframe (works for frame-friendly sites). If it never
+     signals a load — e.g. X-Frame-Options — swap in an actionable placeholder
+     instead of leaving a silent blank card. */
+  mountIframe('');
+  const ifr = section._iframe;
+  let loaded = false;
+  if (ifr) ifr.addEventListener('load', () => { loaded = true; });
+  setTimeout(() => {
+    if (section.dataset.hydrated !== '1' || loaded || !holder.isConnected || section._iframe !== ifr) return;
+    holder.innerHTML = '';
+    let host = item.url; try { host = new URL(item.url).hostname; } catch (e) {}
+    const ph = document.createElement('div');
+    ph.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#0a0a12;padding:24px;text-align:center;z-index:2';
+    ph.innerHTML = `<div style="font-size:13px;font-weight:800;color:#e9e9f4">Page didn't load in-app</div>
+      <div style="font-size:11.5px;line-height:1.5;color:#9d9db2;max-width:300px">${esc(host)} — the fetch failed or the site blocks embedding. The link itself is valid; open it directly or try again.</div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn small primary" data-act="retry">Retry</button>
+        <button type="button" class="btn small" data-act="open">Open page ↗</button>
+      </div>`;
+    holder.appendChild(ph);
+    ph.querySelector('[data-act="retry"]').addEventListener('click', () => { ph.remove(); mountWebpageCard(section, item, visIdx); });
+    ph.querySelector('[data-act="open"]').addEventListener('click', () => window.open(item.sourceLink || item.url, '_blank', 'noopener'));
+  }, 6500);
 }
 async function oneTapPasteAndLinkItem(item) {
   if (!item) return;
   try {
     const text = await navigator.clipboard.readText();
     const url = resolveWithR2Prefix((text || '').trim());
-    if (url && /^https?:\/\//i.test(url)) { bindAndReplaceWithDirectMp4(item, url); showToast('Pasted video linked to this page'); return; }
+    if (url && /^https?:\/\//i.test(url)) { bindAndReplaceWithDirectMp4(item, url, { jump: true }); showToast('Pasted video linked to this page'); return; }
     showToast('Clipboard has no URL — opening Teach instead');
   } catch (e) { showToast('Clipboard blocked — opening Teach instead'); }
   const idx = allFeedItems.indexOf(item);
@@ -3378,14 +3518,29 @@ async function oneTapPasteAndLinkItem(item) {
 }
 function appendCapturedMediaToProfile(url, handle) {
   if (!url || !/^https?:\/\//i.test(url)) return;
-  const sess = Date.now();
-  const item = makeFeedItem(url, sess);
+  const item = makeFeedItem(url, Date.now());
   if (!item) return;
   if (handle) { item.customHandle = handle; item.profile = extractProfileInfo(url, handle); }
   item.isLinkOrigin = false;
-  allFeedItems.push(item);
-  saveCurrentSessionToStorage();
-  renderFeedSkeleton(); updateVirtualWindowMedia(); renderQueueList(); renderProfileList(); markUnexported();
+  /* Capturing an image files it away WITHOUT switching the view — browsing
+     continues exactly where it was (feed or discovery). */
+  if (discoveryFeedModeActive && Array.isArray(mainFeedBackup)) {
+    mainFeedBackup.push(item);
+    saveJSON(STORAGE_KEY, slimSessionList(mainFeedBackup));
+  } else {
+    allFeedItems.push(item);
+    saveCurrentSessionToStorage();
+    /* unfiltered, unsorted feed: grow the skeleton in place so the card is
+       really there — scroll position and current card are untouched */
+    const fc = feedContainer();
+    if (fc && activeFilterType === 'all' && activeSortOrder === 'default' && !activeProfileFilter) {
+      const s = document.createElement('section');
+      s.className = 'feed-card'; s.dataset.vis = allFeedItems.length - 1; s.dataset.hydrated = '0';
+      s.innerHTML = '<div class="media-holder"></div>';
+      fc.appendChild(s);
+    }
+  }
+  renderQueueList(); renderProfileList(); markUnexported();
   showToast(`Saved to @${handle || item.profile.handle}`);
 }
 function setupDropZone(el, item) {
@@ -3408,7 +3563,7 @@ window.addEventListener('message', (e) => {
   }
   if (d.type === 'REELFLOW_VIDEO_FOUND' && d.url) {
     const item = getCurrentItem();
-    if (item && item.type === 'webpage' && !item.extractedVideoUrl) bindAndReplaceWithDirectMp4(item, d.url);
+    if (item && item.type === 'webpage' && !item.extractedVideoUrl) bindAndReplaceWithDirectMp4(item, d.url, { jump: true });
   }
 });
 
@@ -3507,7 +3662,16 @@ function wirePasteModal() {
     document.querySelectorAll('#paste-tabs button').forEach(x => x.classList.toggle('sel', x === b));
     ['feed', 'discovery', 'unlinked', 'profiles'].forEach(p => $('pane-' + p).classList.toggle('hidden', p !== b.dataset.pane));
   }));
-  $('btn-mask-toggle').addEventListener('click', () => { pasteBoxAppOnlyMask = !pasteBoxAppOnlyMask; syncPasteBoxFromFeed(); showToast(pasteBoxAppOnlyMask ? 'Paste box masked (App-Only rf1$)' : 'Paste box shows plain https'); });
+  $('btn-mask-toggle').addEventListener('click', () => { pasteBoxAppOnlyMask = !pasteBoxAppOnlyMask; syncPasteBoxFromFeed(); persistAppSettings(); showToast(pasteBoxAppOnlyMask ? 'Paste box masked (App-Only rf1$)' : 'Paste box shows plain https'); });
+  const proxyInput = $('proxy-input');
+  if (proxyInput) proxyInput.value = customProxyTemplate;
+  $('btn-proxy-save').addEventListener('click', () => {
+    const v = (proxyInput.value || '').trim();
+    if (v && !/^https?:\/\//i.test(v)) { showToast('Proxy should start with https://'); return; }
+    customProxyTemplate = v;
+    persistAppSettings();
+    showToast(v ? 'Proxy saved — it now leads the webpage fetch' : 'Proxy cleared — public proxies only');
+  });
   $('btn-start-feed').addEventListener('click', () => { processPastedUrls('replace'); closePasteModal(); });
   $('btn-append-bottom').addEventListener('click', () => processPastedUrls('bottom'));
   $('btn-append-top').addEventListener('click', () => processPastedUrls('top'));
@@ -3672,6 +3836,7 @@ function wireHouseAChrome() {
   wireTrimPopover();
   wireGateAndIdle();
   renderFeedSkeleton();
+  try { const storedCfg = loadJSON(APP_SETTINGS_KEY, null); if (storedCfg) applyAppSettings(storedCfg); } catch (e) {}
   syncPasteBoxFromFeed();
   renderBankRow(); renderQueueList(); renderProfileList(); renderUnlinkedList(); renderDiscoveryList();
   updateUnexportedChangesUI();
