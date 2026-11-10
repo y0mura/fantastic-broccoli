@@ -3516,47 +3516,85 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
      redirect that can point at junk and drag the frame somewhere useless. */
   html = html.replace(/<base\b[^>]*>/gi, '');
   html = html.replace(/<meta[^>]+http-equiv=["']?refresh["']?[^>]*>/gi, '');
+  /* Pages run THEIR OWN code inside a sealed (opaque) origin — the model
+     Kendall device-verified 2026-11-10 ("next pages load as one page"):
+     the site's infinite scroll and widgets work because its scripts run,
+     while the origin wall keeps it from the app. What is removed/rewritten
+     before display: known ad-network scripts (the hijack vectors), nested
+     frames/objects/embeds, forms, javascript: links, the classic
+     frame-buster lines (edited out of the source text), target="_blank"
+     (defused to same-frame), integrity/crossorigin attributes (they break
+     CDN scripts inside srcdoc), and rocket-loader script types. Lazy
+     image sources are promoted to real src at the HTML level. */
+  html = html.replace(/<script[^>]+(?:exoclick|juicyads|trafficjunky|popunder|doubleclick|googlesyndication|adsystem|adserver|popads|popcash|clickadu|hilltopads|magsrv|realsrv|tsyndicate|acscdn)[^>]*>[\s\S]*?<\/script>/gi, '');
+  html = html.replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe\s*>/gi, '');
+  html = html.replace(/<iframe\b[^>]*>/gi, '');
+  html = html.replace(/<(object|embed)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
+  html = html.replace(/<(object|embed)\b[^>]*>/gi, '');
+  html = html.replace(/<\/?form\b[^>]*>/gi, '');
+  html = html.replace(/(href\s*=\s*["'])\s*javascript:[^"']*/gi, '$1#');
+  html = html.replace(/\btarget=["']?_blank["']?/gi, 'data-rf-target="self"');
+  html = html.replace(/\s+(?:integrity|crossorigin)=["'][^"']*["']/gi, '');
+  html = html.replace(/type=["'][0-9a-fA-F]{16,}-text\/javascript["']/gi, 'type="text/javascript"');
+  html = html.replace(/window\.top\s*!==?\s*window\.self/g, 'false').replace(/window\.self\s*!==?\s*window\.top/g, 'false');
+  html = html.replace(/\btop\s*!==?\s*self\b/g, 'false').replace(/\bself\s*!==?\s*top\b/g, 'false');
+  html = html.replace(/window\.top\s*===?\s*window\.self/g, 'true').replace(/\btop\s*===?\s*self\b/g, 'true');
+  html = html.replace(/top\.location\.replace\s*\(/g, 'void(').replace(/top\.location\.href\s*=/g, 'window.__rf_noop =');
+  html = html.replace(/<(img|video|source)([^>]*?)\sdata-(?:src|original|lazy-src|lazysrc)=["'](https?:\/\/[^"']+|\/[^"']+)["']([^>]*)>/gi,
+    (f, t, b, l, a) => /\ssrc=["']https?:\/\//i.test(b + a) ? f : `<${t}${b} src="${l}"${a}>`);
   const shim = `
 <script>
 (function(){
+  var RF_PAGE_URL = __RF_URL__;
   try {
     var flags = { age_verified: 'true', adult: 'true', age_confirmed: '1', over18: 'true', 'age-gate': 'passed' };
     Object.keys(flags).forEach(function(k){ try { localStorage.setItem(k, flags[k]); } catch(e){} try { document.cookie = k + '=' + flags[k] + ';path=/;max-age=31536000'; } catch(e){} });
   } catch(e){}
-  document.addEventListener('click', function(e){
-    var media = e.target && e.target.closest ? e.target.closest('img,video') : null;
-    if (media) {
-      var u = media.currentSrc || media.src || '';
-      if (u) {
-        /* A tap on media IS the save gesture — the in-app equivalent of
-           copy-paste: report the media to the app and SWALLOW the click, so
-           the frame does not follow the wrapping link and open the raw file
-           as a page. The app confirms with a REELFLOW_CAPTURED badge. */
-        e.preventDefault(); e.stopPropagation();
-        parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: u, kind: media.tagName === 'VIDEO' ? 'video' : 'image' }, '*');
-        return;
+  /* Best-image resolution for a tap (ported from the approach Kendall
+     device-verified 2026-11-10): a wrapping link to a full-size file wins,
+     then data-full / data-large / data-highres, then the largest srcset
+     candidate, then lazy sources, then the rendered source — and if the
+     "image" is a CSS background, walk up the ancestors for it. */
+  function rfBest(t){
+    if (!t || !t.closest) return '';
+    var img = t.closest('img');
+    var a = t.closest('a');
+    if (!img && a) img = a.querySelector('img');
+    if (!img && t.querySelector) img = t.querySelector('img');
+    if (a && a.href && /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(a.href)) return a.href;
+    if (img) {
+      var cand = img.getAttribute('data-full') || img.getAttribute('data-large') || img.getAttribute('data-highres') || '';
+      if (!cand) {
+        var ss = img.getAttribute('srcset') || img.getAttribute('data-srcset') || '';
+        if (ss) { var parts = ss.split(',').map(function(s){ return s.trim().split(/\s+/); }).filter(function(p){ return p[0]; });
+          parts.sort(function(x, y){ return (parseInt(y[1], 10) || 0) - (parseInt(x[1], 10) || 0); });
+          if (parts[0]) cand = parts[0][0]; }
+      }
+      if (!cand) cand = img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('data-lazy-src') || img.currentSrc || img.src || '';
+      if (cand && cand.indexOf('data:image/svg') !== 0 && !/sprite|blank|spacer|pixel/i.test(cand)) {
+        try { return new URL(cand, RF_PAGE_URL).href; } catch (e) { return cand; }
       }
     }
-    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-    if (a) {
-      var rawHref = a.getAttribute('href') || '';
-      var resolved = a.href || '';
-      if (rawHref && rawHref.charAt(0) !== '#' && /^https?:\/\//i.test(resolved)) {
-        if (/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(resolved)) {
-          /* A link straight to an image file is a save gesture too. */
-          e.preventDefault(); e.stopPropagation();
-          parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: resolved, kind: 'image' }, '*');
-          return;
-        }
-        /* In-card navigation: pagination and post links are handed to the
-           app, which loads that page into THIS card through the proxy —
-           the frame never navigates itself (the source sites block that
-           with frame rules anyway, which is why Next Page looked dead). */
-        e.preventDefault(); e.stopPropagation();
-        parent.postMessage({ type: 'REELFLOW_NAVIGATE', url: resolved }, '*');
-        return;
-      }
-      if (a.target === '_blank') a.removeAttribute('target');
+    var el = t;
+    for (var d = 0; d < 4 && el && el !== document.body; d++, el = el.parentElement) {
+      try {
+        var bg = getComputedStyle(el).backgroundImage;
+        if (bg && bg !== 'none') { var m = bg.match(/url\(["']?([^"')]+)["']?\)/i); if (m && m[1].indexOf('data:image/svg') !== 0) { try { return new URL(m[1], RF_PAGE_URL).href; } catch (e) {} } }
+      } catch (e) {}
+    }
+    return '';
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a') : null;
+    if (a && a.getAttribute('target') === '_blank') a.removeAttribute('target');
+    var u = rfBest(e.target);
+    if (u && /^https?:\/\//i.test(u)) {
+      /* A tap on media IS the save gesture: report the best full-size URL
+         and swallow the click so the frame never follows the wrapping link
+         and opens the raw file as a page. Non-media clicks pass through —
+         the site's own scripts handle its buttons and pagination. */
+      e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: u, kind: 'image' }, '*');
     }
   }, true);
   window.addEventListener('message', function(ev){
@@ -3575,6 +3613,31 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
   /* No in-page video scanner: auto video fetch was removed 2026-11-09.
      Videos inside a page are linked manually (Paste & Link / Teach) or
      captured by tapping them — this shim only reports explicit taps. */
+  /* Page conditioning (runs alongside the site's own scripts): unhide a
+     body the age gate blurred/locked, click age-confirm buttons whose
+     text matches, and promote lazy image sources the site's loader may
+     not reach inside the frame. */
+  function rfHydrate(){
+    try {
+      if (document.body) { var s = document.body.style; s.setProperty('display', 'block', 'important'); s.setProperty('visibility', 'visible', 'important'); s.setProperty('opacity', '1', 'important'); s.setProperty('overflow', 'auto', 'important'); }
+      var rx = /^(?:i am 18|i'm 18|enter|i agree|agree & enter|yes, i am over 18|continue to site|confirm age|18\+ enter|accept & continue|yes|enter site|proceed)$/i;
+      document.querySelectorAll('button,a,input[type=button],input[type=submit],[role=button],.btn').forEach(function(b){
+        var t = (b.innerText || b.value || '').trim();
+        if (rx.test(t) || (t.length && t.length < 32 && /(?:18\+|over 18|enter site|i am old enough|verify age|i agree|confirm age)/i.test(t))) {
+          var h = b.getAttribute && b.getAttribute('href');
+          if (!h || h === '#' || h.indexOf('javascript:') === 0 || /verify|enter|confirm|18/i.test(h)) { try { b.click(); } catch (e) {} }
+        }
+      });
+      document.querySelectorAll('img').forEach(function(img){
+        var ds = img.getAttribute('data-src') || img.getAttribute('data-original') || img.getAttribute('data-lazy-src');
+        var cur = img.getAttribute('src') || '';
+        if (ds && (!cur || /blank|placeholder|spacer|1x1|loading/i.test(cur) || cur.indexOf('data:') === 0)) img.setAttribute('src', ds);
+        var dss = img.getAttribute('data-srcset');
+        if (dss && !img.getAttribute('srcset')) img.setAttribute('srcset', dss);
+      });
+    } catch (e) {}
+  }
+  document.addEventListener('DOMContentLoaded', rfHydrate); [150, 500, 1200].forEach(function(t){ setTimeout(rfHydrate, t); });
   var dock = document.createElement('div');
   dock.id = 'rf-inpage-drop-dock';
   dock.textContent = 'Drop image here to save to @profile';
@@ -3592,6 +3655,9 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
   const adCss = `<style>
     [id*="advert"],[class*="advert"],[id*="banner-ad"],[class*="banner-ad"],[class*="ad-container"],[id*="ad-container"],
     [class*="popup-ad"],[id*="popup"],.ad-slot,.adsbygoogle,[data-ad-slot],[data-ad-client]{display:none!important}
+    [id*="age-gate" i],[class*="age-gate" i],[id*="age_gate" i],[class*="age_gate" i],[id*="age-verify" i],[class*="age-verify" i],[id*="age_verification" i],[class*="age_verification" i],[id*="age-confirmation" i],[class*="age-confirmation" i],[id*="over18" i],[class*="over18" i],[class*="age-modal" i],[class*="adult-warning" i],[id*="splash-overlay" i],[class*="interstitial" i],[id*="cookie-consent" i],[class*="cookie-banner" i]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+    html,body{overflow:auto!important;position:static!important;filter:none!important;opacity:1!important;visibility:visible!important}
+    body.modal-open,body.no-scroll,body.age-locked,body.blurred{overflow:auto!important;filter:none!important}
     #rf-inpage-drop-dock{pointer-events:none}
   </style>`;
   const guard = `<script>
@@ -3619,13 +3685,17 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
        about:srcdoc) — one thrown pushState can white-screen the whole page.
        Swallow those calls. */
     try { var hp = history.pushState, hr = history.replaceState; history.pushState = function(){ try { return hp.apply(history, arguments); } catch(e){} }; history.replaceState = function(){ try { return hr.apply(history, arguments); } catch(e){} }; } catch(e){}
+    /* Identity spoof: the frame's real URL is about:srcdoc, which breaks
+       site scripts that route or fetch by document.URL — report the
+       page's real URL and referrer instead (device-verified approach). */
+    try { Object.defineProperty(document, 'URL', { get: function(){ return __RF_URL__; }, configurable: true }); Object.defineProperty(document, 'referrer', { get: function(){ return __RF_URL__; }, configurable: true }); } catch(e){}
   })();
   <\/script>`;
   if (/<head[^>]*>/i.test(html)) html = html.replace(/<head[^>]*>/i, m => `${m}${guard}<base href="${pageUrl}">${adCss}`);
   else html = `${guard}<base href="${pageUrl}">${adCss}` + html;
   if (/<\/body>/i.test(html)) html = html.replace(/<\/body>/i, shim + '</body>');
   else html += shim;
-  return html;
+  return html.split('__RF_URL__').join(JSON.stringify(pageUrl));
 }
 function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
   if (!item || !videoUrl) return;
@@ -3652,16 +3722,18 @@ function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
   renderUnlinkedList();
   renderDeck();
 }
-/* The webpage frame fence. The flags alone are NOT the whole fence: a
-   scripted page that shares the app origin can reach its own <iframe>
-   element, delete the sandbox attribute, and reload unfenced (the classic
-   sandbox escape — and the reason tab hijacks persisted after the flags
-   were set). Two countermeasures, applied to every webpage frame:
-   (1) the in-page guard hides window.frameElement, and (2) this observer
-   watches the attribute from the app side and restores it the moment it
-   changes — mutation callbacks run before any reload the page queued, so
-   the reload comes back fenced. */
-const IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms';
+/* The webpage frame fence (posture set 2026-11-10 PM, adopting the model
+   Kendall device-verified in a comparison build): the frame is an
+   ISOLATED (opaque) origin — the wall that actually holds, since page
+   content physically cannot touch the app's window, document, or
+   storage — and the page's own scripts RUN inside it (that's what makes
+   the sites' infinite scroll and widgets work), conditioned by the
+   srcdoc builder: ad-network scripts and frame-buster lines removed,
+   identity spoofed (document.URL/referrer report the real page),
+   window.open nulled by the guard. allow-top-navigation stays OFF, so
+   the tab still cannot be steered. The observer below stays as a belt:
+   it restores the sandbox attribute if anything ever changes it. */
+const IFRAME_SANDBOX = 'allow-scripts allow-forms allow-popups';
 function armIframeFence(iframe) {
   if (!iframe || iframe._fenceArmed) return;
   iframe._fenceArmed = true;
@@ -3809,6 +3881,11 @@ function extractImageUrlsFromHtml(html, pageUrl) {
   };
   const imgBest = (tag) => {
     const attr = (n) => { const mm = tag.match(new RegExp(n + '=["\']([^"\']+)["\']', 'i')); return mm ? mm[1] : ''; };
+    /* The tap extractor's priority (ported): the page's own full-size
+       pointers first, then the largest srcset candidate, then lazy
+       sources, then the rendered src. */
+    const full = attr('data-full') || attr('data-large') || attr('data-highres');
+    if (full) return full;
     const srcset = attr('srcset') || attr('data-srcset');
     if (srcset) {
       const parts = srcset.split(',').map(s => s.trim().split(/\s+/)).filter(p => p[0]);
@@ -3835,6 +3912,44 @@ function extractImageUrlsFromHtml(html, pageUrl) {
   const og = String(html).match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
   if (og) push(og[1]);
   return out.filter(u => !/sprite|logo|icon|avatar|emoji|blank|placeholder|1x1|pixel|spinner|loading/i.test(u)).slice(0, 60);
+}
+/* The scrape winner: ONE target image per page (Kendall's rule — the
+   full-size or largest image that is most likely THE image of the page;
+   no extras). Scored signals: a full-size anchor link (100) > the page's
+   own data-full/data-highres pointer (90) > og:image (85) > largest
+   srcset candidate (50+, scaled by width) > lazy source (40) > rendered
+   src (10). Junk (logos/icons/avatars/sprites) is never eligible. */
+function extractMainImageFromHtml(html, pageUrl) {
+  const junk = /sprite|logo|icon|avatar|emoji|blank|placeholder|1x1|pixel|spinner|loading/i;
+  const abs = (u) => { try { return new URL(u, pageUrl).href; } catch (e) { return ''; } };
+  let best = null;
+  const consider = (u, score) => {
+    if (!u || !String(u).trim()) return;
+    const a = abs(String(u).trim());
+    if (!a || !/^https?:\/\//i.test(a) || junk.test(a)) return;
+    if (!best || score > best.score) best = { url: a, score };
+  };
+  for (const m of String(html).matchAll(/<a\b[^>]+href=["']([^"']+)["']/gi)) {
+    if (/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(m[1])) consider(m[1], 100);
+  }
+  const og = String(html).match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
+  if (og) consider(og[1], 85);
+  for (const m of String(html).matchAll(/<img\b[^>]*>/gi)) {
+    const tag = m[0];
+    const attr = (n) => { const mm = tag.match(new RegExp(n + '=["\']([^"\']+)["\']', 'i')); return mm ? mm[1] : ''; };
+    const full = attr('data-full') || attr('data-large') || attr('data-highres');
+    if (full) { consider(full, 90); continue; }
+    const srcset = attr('srcset') || attr('data-srcset');
+    if (srcset) {
+      const parts = srcset.split(',').map(s => s.trim().split(/\s+/)).filter(p => p[0]);
+      parts.sort((a, b) => (parseInt(b[1], 10) || 0) - (parseInt(a[1], 10) || 0));
+      if (parts[0]) { consider(parts[0][0], 50 + Math.min(25, (parseInt(parts[0][1], 10) || 0) / 50)); continue; }
+    }
+    const lazy = attr('data-src') || attr('data-original') || attr('data-lazy-src');
+    if (lazy) { consider(lazy, 40); continue; }
+    consider(attr('src'), 10);
+  }
+  return best ? best.url : '';
 }
 /* Post-page links on a grid/index page: same-host anchors that wrap a
    thumbnail or look like post URLs. These are where the real images live. */
@@ -3865,25 +3980,27 @@ async function scrapeCurrentPageImages() {
   const html = await fetchHtmlViaFastestProxy(pageUrl);
   if (!html) { showToast('Scrape failed — the page could not be fetched'); return; }
   let urls = [];
+  let gridMode = false;
   const postLinks = extractPostPageLinks(html, pageUrl);
   if (postLinks.length >= 3) {
-    /* Grid/index page: its own <img> tags are thumbnails — ruled out. The
-       real images live one level down on the post pages, so follow them
-       (in small batches through the proxy) and take each post's images. */
-    showToast(`Grid page — following ${postLinks.length} posts for the full images…`);
+    /* Grid/index page: its own images are thumbnails — ruled out. Follow
+       the posts (small batches through the proxy) and take each post's
+       ONE target image. */
+    gridMode = true;
+    showToast(`Grid page — following ${postLinks.length} posts for their main images…`);
     const perPost = [];
     for (let i = 0; i < postLinks.length; i += 4) {
       const batch = postLinks.slice(i, i + 4);
       const pages = await Promise.all(batch.map(u => fetchHtmlViaFastestProxy(u)));
-      pages.forEach((ph, j) => { if (ph) perPost.push(...extractImageUrlsFromHtml(ph, batch[j]).slice(0, 2)); });
+      pages.forEach((ph, j) => { if (ph) { const main = extractMainImageFromHtml(ph, batch[j]); if (main) perPost.push(main); } });
     }
-    urls = [...new Set(perPost)];
-    if (!urls.length) urls = extractImageUrlsFromHtml(html, pageUrl); /* fallback: on-page images */
+    urls = [...new Set(perPost)].slice(0, 24);
+    if (!urls.length) { const m = extractMainImageFromHtml(html, pageUrl); if (m) urls = [m]; }
   } else {
-    urls = extractImageUrlsFromHtml(html, pageUrl);
+    const m = extractMainImageFromHtml(html, pageUrl);
+    if (m) urls = [m];
   }
-  urls = urls.slice(0, 60);
-  if (!urls.length) { showToast('No images found on this page'); return; }
+  if (!urls.length) { showToast('No main image found on this page'); return; }
   const handle = item.profile?.handle || '';
   const sess = Date.now();
   const items = urls.map(u => {
@@ -3895,7 +4012,9 @@ async function scrapeCurrentPageImages() {
     return it;
   }).filter(Boolean);
   fileCapturedItems(items);
-  showToast(`Scraped ${items.length} full image${items.length === 1 ? '' : 's'} to @${handle || 'untitled'}`);
+  showToast(gridMode
+    ? `Scraped ${items.length} main image${items.length === 1 ? '' : 's'} (one per post) to @${handle || 'untitled'}`
+    : `Scraped the main image to @${handle || 'untitled'}`);
 }
 function setupDropZone(el, item) {
   el.addEventListener('click', () => showToast('Drag an image onto this button — or tap a picture inside the page to save it'));
