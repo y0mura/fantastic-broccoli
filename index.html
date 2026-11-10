@@ -83,6 +83,8 @@ body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 #gs::-webkit-scrollbar{display:none}#grid.iscol #gs{padding-top:0}
 .gem{padding:40vh 20px;text-align:center;color:var(--dim)}
 .tile{position:relative;overflow:hidden;background:#14151d;contain:layout paint;content-visibility:auto}
+.tile.selon{outline:3px solid var(--acc);outline-offset:-3px}
+.tile .selb{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#07131d;font:900 13px/22px sans-serif;text-align:center;z-index:5;pointer-events:none}
 .tile .tm{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tile .ph{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;color:var(--dim);padding:8px;background:radial-gradient(120% 80% at 50% 0,#1c2030,#101117);font-size:11px;word-break:break-all}
 .tile .ph b{color:var(--ink);font-size:12px}
@@ -264,7 +266,13 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <div class="row" id="gb2" hidden>
    <button class="pill" data-act="pback"><i data-i="back"></i>Profiles</button><span class="lab" id="gpn"></span>
    <a class="pill" id="gpl" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>Visit page</a>
-   <button class="pill" data-act="ren">Rename</button><button class="pill" data-act="addm">Add media</button>
+   <button class="pill" data-act="ren">Rename</button><button class="pill" data-act="addm">Add media</button><button class="pill" data-act="sel">Select</button>
+  </div>
+  <div class="row" id="gbs" hidden>
+   <span class="lab" id="gsn">0 selected</span><span class="sp"></span>
+   <button class="pill" data-act="selall">All</button>
+   <button class="pill on" data-act="send">Send to…</button>
+   <button class="pill" data-act="seldone">Done</button>
   </div>
   <div class="row" id="gbc" hidden>
    <button class="pill" data-act="cback" title="Back to grid" aria-label="Back to grid"><i data-i="back"></i></button>
@@ -299,7 +307,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
-  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="ma">+ Append</button><button class="pill on" id="mk"><i data-i="lock"></i>App-Only</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
+  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><button class="pill on" id="mk"><i data-i="lock"></i>App-Only</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
   <textarea id="ta" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste image, video or page links, or bare R2 filenames. One per line."></textarea>
   <div class="row" style="justify-content:space-between"><span id="dc" style="color:var(--dim)">0 URLs</span><button class="pill" id="mx">Clear</button></div>
   <details class="opt"><summary>Options</summary>
@@ -387,7 +395,7 @@ function classify(u){const l=strip(u).toLowerCase();
 const nextSeq=()=>S.items.reduce((m,i)=>Math.max(m,i.seq),0)+1;
 function mk(raw,ch,sess,seq){const k=resKnown(raw),url=k||raw,src=k&&strip(k)!==strip(raw)?strip(raw):'';return{id:'i'+seq,url,source:src,type:k?'video':classify(raw)==='webpage'&&isVideoPostPage(raw)?'video':classify(raw),ch:ch||'',handle:'',seq,sess}}
 function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[],4:[],5:[]},trims={},disc=[],hbc=[],hbd=[];let hbp=null,cfg=null,sec='feed',blank=0,sess=Date.now(),n=nextSeq(),first=false,sub='o';
- const add=(u,ch)=>{u=dash(u);if(!u||bad(u))return;const it=mk(u,ch,sess,n),k=normKey(it.url);if(seen.has(k))return;seen.add(k);n++;items.push(it)};
+ const add=(u,ch,nm)=>{u=dash(u);if(!u||bad(u))return;const it=mk(u,ch,sess,n);if(nm)it.name=nm;const k=normKey(it.url);if(seen.has(k))return;seen.add(k);n++;items.push(it)};
  for(const l0 of dt(raw).split(/\r?\n/)){const l=l0.trim();
   if(!l){if(sec==='feed'&&first)blank++;else if(sec==='x'&&sub==='o')extra.push('');continue}
   if(/^#\s*\[?(?:BANK[ _-]?[1-5]|PROFILE_ALIASES|PROFILE_DISCOVERY(?:_LINKS)?|VIDEO_THUMB_TRIMS|APP_SETTINGS|HOUSE_B_CARDS|HOUSE_B_DELETIONS|HOUSE_B_PREFS)\]?/i.test(l)){sec='x';const bm=l.match(/BANK[ _-]?([1-5])/i);sub=bm?'b'+bm[1]:/DISCOVERY/i.test(l)?'dc':/ALIASES/i.test(l)?'al':/THUMB/i.test(l)?'tr':/APP_SETTINGS/i.test(l)?'cf':/HOUSE_B_CARDS/i.test(l)?'hc':/HOUSE_B_DELETIONS/i.test(l)?'hd':/HOUSE_B_PREFS/i.test(l)?'hp':'o';if(sub==='o')extra.push(l);continue}
@@ -408,16 +416,16 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
    if(p.length>=2){const v=/^(https?:|data:)/i.test(p[1])?dash(p[1]):(MEDIA.test(p[1])&&!/\s/.test(p[1])?r2(p[1]):'');
     if(v&&isDirect(v)){const pg=strip(p[0]);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=strip(v);add(v,profOf(pg));continue}}}
   for(const t of l.replace(/%(?=https?:\/\/)/gi,'\n').replace(/(?<!source=)(https?:\/\/)/gi,'\n$1').split(/[\s,;|]+|(?:%20)+|%(?![0-9a-fA-F]{2})/g)){
-   const hm=t.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);let c=t.trim().replace(/^%+/,'').replace(/%+$/,'').replace(/[);,>\]"']+$/,'').replace(/[#&]profile=[^&#]*/gi,'');
+   const hm=t.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i),nm=t.match(/[#&]name=([^&#]+)/i);let c=t.trim().replace(/^%+/,'').replace(/%+$/,'').replace(/[);,>\]"']+$/,'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]name=[^&#]*/gi,'');
    let cand='';if(/^(https?:\/\/|data:image\/)/i.test(c))cand=c;
    else if(/^[a-zA-Z0-9-]+\.(?:com|org|net|io|dev|me|co|tv|gg|app|xyz|info|biz|cc|ly|to)\/\S+/i.test(c))cand='https://'+c;
    else if(MEDIA.test(c)&&!c.includes('='))cand=r2(c);
-   if(cand)add(cand.replace(/&source=https$/i,''),hm?hm[1]:'')}
+   if(cand)add(cand.replace(/&source=https$/i,''),hm?hm[1]:'',nm?(()=>{let d=nm[1];try{d=decodeURIComponent(d)}catch(e){}try{d=decodeURIComponent(d)}catch(e){}return d})():'')}
   }catch(err){console.warn('skipped bad line',err)}}
  items.forEach(i=>i.handle=i.ch?alias(i.ch):profOf(i.source||i.url));
  return{items,extra,banks,trims,cfg,disc,hbc,hbd,hbp}}
 function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.cfg){cfgSet(p.cfg);mkUI()}}
-const lineOf=it=>it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'');
+const lineOf=it=>it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'')+(it.name?'#name='+encodeURIComponent(it.name).replace(/%20/g,'%2520'):'');
 function boxText(){const o=[];let p=null;for(const it of S.items){if(p!==null&&it.sess!==p)o.push('','');p=it.sess;const l=lineOf(it);o.push(S.mask?enc(l):l)}return o.join('\n')}
 function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'];let p=null;
  for(const it of S.items){if(p!==null&&it.sess!==p)L.push('','');p=it.sess;L.push(lineOf(it))}
@@ -592,6 +600,7 @@ ta.addEventListener('input',count);
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
 $('#bp').onclick=openModal;$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
+$('#mr2').onclick=()=>{closeModal();r2Flow()};
 $('#ma').onclick=()=>{const p=post(parse(ta.value)),have=new Set(S.items.map(i=>i.url));const add=p.items.filter(i=>!have.has(i.url));
  if(!add.length){toast('Nothing new to add');return}S.items=S.items.concat(add);if(!S.extra.length)S.extra=p.extra;commit();ta.value=boxText();count();toast(`Added ${add.length}`)};
 $('#mp').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim())return toast('Clipboard is empty');
@@ -630,7 +639,7 @@ function loadM(m,t){if(m.getAttribute('src')){if(m.tagName==='VIDEO'&&m.paused)m
   m.addEventListener('loadedmetadata',()=>{try{m.currentTime=c.startSec}catch(e){}setZs(m)},{once:true});m.play().catch(()=>{});PLAY.push(m);if(PLAY.length>8)dropM(PLAY.shift())}}
 function mkIO(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;t._vis=e.isIntersecting;t.querySelectorAll('.tm').forEach(m=>{if(e.isIntersecting)loadM(m,t);else if(m.tagName==='VIDEO'&&m.getAttribute('src')){dropM(m);const k=PLAY.indexOf(m);if(k>=0)PLAY.splice(k,1)}})}),{root:gs,rootMargin:'30% 30%'})}
 function mkTile(it,i){const t=document.createElement('div');t.className='tile';t._i=i;t._it=it;t.style.setProperty('--ad',(-(Math.random()*9)).toFixed(2)+'s');
- t.innerHTML=thumb(it)+`<span class="hd">@${esc(it.handle)}</span>`;
+ t.innerHTML=thumb(it)+`<span class="hd">${it.name?esc(it.name):'@'+esc(it.handle)}</span>`;
  t.querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>{if(!im.dataset.r){im.dataset.r=1;im.src='https://wsrv.nl/?url='+encodeURIComponent(im.dataset.s)}},{once:true});im.addEventListener('load',()=>setZs(im))});io.observe(t);return t}
 const TC=new Map(),OVH='<div class="ov"><button data-o="open">'+svg('play')+'Open</button><button data-o="blow">'+svg('expand')+'Blow up</button></div>';
 function getTile(it,k){let t=TC.get(it.id);if(!t){t=mkTile(it,k);TC.set(it.id,t)}t._i=k;return t}
@@ -678,16 +687,16 @@ function renderGrid(keep){const y=keep?gs.scrollTop:0,x=keep?gs.scrollLeft:0;if(
    if(cw){gt.style.setProperty('--z',G.cz/100);gt.style.setProperty('--u',CS[G.cs].u);L.forEach((it,k)=>{const t=getTile(it,k);TM.set(it.id,t);f.appendChild(t)});gt.appendChild(f);applyCollage(false);rlN=0;probe(L,48).then(()=>{if(G.open&&G.col&&G.tab==='items')applyCollage(true)})}
    else if(G.size==='l'&&G.ebb){for(let k=0;k<L.length;k+=2){const r=document.createElement('div');r.className='erow '+((k/2)%2?'e':'o');for(const j of [k,k+1])if(L[j]){const t=getTile(L[j],j);t.style.gridColumn=t.style.gridRow='';r.appendChild(t)}f.appendChild(r)}gt.appendChild(f)}
    else{L.forEach((it,k)=>{const t=getTile(it,k);t.style.gridColumn=t.style.gridRow='';f.appendChild(t)});gt.appendChild(f)}}}
- gbUI();requestAnimationFrame(()=>{gs.scrollTo(x,y);sbUpdate()})}
+ gbUI();selPaint();requestAnimationFrame(()=>{gs.scrollTo(x,y);sbUpdate()})}
 const ZL={1:'In1',2:'In2',3:'In3',out:'Out1','out-2':'Out2',dynamic:'Dyn',4:'Boom','bounce-zoom':'Bnc'};
-function gbUI(){const on={tabi:G.tab==='items',tabp:G.tab==='profiles',col:G.col,crawl:G.crawl,ebb:G.ebb,pan:G.pan,zoom:G.zoom!=='0',sort:S.filter!=='all'||S.sort!=='default'};
+function gbUI(){const on={tabi:G.tab==='items',tabp:G.tab==='profiles',col:G.col,crawl:G.crawl,ebb:G.ebb,pan:G.pan,zoom:G.zoom!=='0',sort:S.filter!=='all'||S.sort!=='default',sel:!!G.sel};
  gr.querySelectorAll('[data-act]').forEach(b=>{const a=b.dataset.act;if(a in on)b.classList.toggle('on',!!on[a]);if(a==='cs')b.classList.toggle('on',+b.dataset.v===G.cs)});
  $('#gsl').textContent=G.size.toUpperCase();$('#gzl').textContent=$('#gzl2').textContent=ZL[G.zoom]||'';$('#gczl').textContent=G.cz+'%';$('#gcz').value=G.cz;
  gr.querySelector('[data-act=ebb]').hidden=!(G.size==='l'&&G.tab==='items'&&!G.col);gr.querySelector('[data-act=col]').hidden=G.tab!=='items';
  $('#gpn').textContent=G.prof?'@'+G.prof:'';const a=G.prof&&V.find(i=>i.handle===G.prof&&(i.source||i.type==='webpage')),l=$('#gpl');
  try{const u=new URL(strip(a.source||a.url)),s=u.pathname.split('/').filter(Boolean)[0];l.href=u.origin+(s?'/'+s+'/':'/');l.hidden=false}catch(e){l.hidden=true}}
 function openGrid(){V=vis();G.open=1;gr.hidden=false;feed.querySelectorAll('video').forEach(v=>v.pause());clearTimeout(AT);renderGrid(1);if(G.sy)requestAnimationFrame(()=>{gs.scrollTop=G.sy;sbUpdate()});barShow(1,1);if(G.crawl)startCrawl();if(G.pan&&G.col)startPan()}
-function closeGrid(){G.sy=gs.scrollTop;G.open=0;gr.hidden=true;gt.querySelectorAll('.pt').forEach(t=>clearTimeout(t._ft));PLAY.splice(0).forEach(dropM);io&&io.disconnect();io=null;TC.clear();TM.clear();gt.textContent='';cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();if(FEEDDIRTY){FEEDDIRTY=0;render()}else sync()}
+function closeGrid(){G.sy=gs.scrollTop;G.open=0;G.sel=0;SEL.clear();gr.hidden=true;gt.querySelectorAll('.pt').forEach(t=>clearTimeout(t._ft));PLAY.splice(0).forEach(dropM);io&&io.disconnect();io=null;TC.clear();TM.clear();gt.textContent='';cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();if(FEEDDIRTY){FEEDDIRTY=0;render()}else sync()}
 function openFromGrid(it){const i=V.indexOf(it);if(i<0)return;FROM=G.col&&G.tab==='items'?'collage':'grid';closeGrid();S.idx=i;jump(i,false);sync()}
 function barShow(v,force){if(G.bar===v&&!force)return;G.bar=v;gbar.classList.toggle('hid',!v);$('#gshow').hidden=!!v||(G.col&&G.tab==='items')}
 let sRaf=0;gs.addEventListener('scroll',()=>{if(sRaf)return;sRaf=requestAnimationFrame(()=>{sRaf=0;const y=gs.scrollTop,d=y-spy;spy=y;if(y<=36||d<-12)barShow(1);else if(y>56&&d>12&&!G.crawl&&!G.col)barShow(0);sbPos()})},{passive:true});addEventListener('resize',()=>{if(G.open)sbUpdate()});
@@ -715,7 +724,13 @@ $('#gcz').oninput=e=>setCz(+e.target.value);
 {const PP=new Map();let d0=0,z0=100;gs.addEventListener('pointerdown',e=>{PP.set(e.pointerId,[e.clientX,e.clientY]);if(PP.size===2){d0=dist(PP);z0=G.cz}});
  gs.addEventListener('pointermove',e=>{if(!PP.has(e.pointerId))return;PP.set(e.pointerId,[e.clientX,e.clientY]);if(PP.size===2&&G.col&&G.tab==='items')setCz(z0*dist(PP)/d0)});
  const up=e=>PP.delete(e.pointerId);gs.addEventListener('pointerup',up);gs.addEventListener('pointercancel',up)}
-gt.addEventListener('click',e=>{const t=e.target.closest('.tile');if(!t)return;
+let lpT=0,lpFired=false;
+gt.addEventListener('pointerdown',e=>{const t=e.target.closest('.tile');if(!t||t.classList.contains('pt')||G.sel)return;clearTimeout(lpT);lpT=setTimeout(()=>{const it=t._it;if(!it)return;lpFired=true;
+ ask({title:'Rename',desc:'A display name for this item, shown on its tile in the folder. The file and the link are untouched. Clear the box to remove the name.',ph:'Display name',val:it.name||'',ok:'Save name',onOk:v=>{const nv=v.trim();it.name=nv||undefined;save();setDirty(true);gt.querySelectorAll('.tile').forEach(x=>{if(x._it===it){const hd=x.querySelector('.hd');if(hd)hd.textContent=nv||('@'+it.handle)}});renderGrid(1);toast(nv?'Renamed':'Name cleared')}})},650)});
+['pointerup','pointercancel','pointermove'].forEach(ev2=>gt.addEventListener(ev2,()=>clearTimeout(lpT),{passive:true}));
+gt.addEventListener('contextmenu',e=>{if(e.target.closest('.tile'))e.preventDefault()});
+gt.addEventListener('click',e=>{if(lpFired){lpFired=false;return}const t=e.target.closest('.tile');if(!t)return;
+ if(G.sel){if(t.classList.contains('pt'))return;const it=t._it;if(!it)return;SEL.has(it.id)?SEL.delete(it.id):SEL.add(it.id);selPaint();return}
  if(t.classList.contains('pt')){G.prof=t._h;G.tab='items';renderGrid();gs.scrollTop=0;return}
  const o=e.target.closest('[data-o]');if(o){if(o.dataset.o==='open')openFromGrid(t._it);else{const it=t._it;G.blow[it.id]=((G.blow[it.id]||0)+1)%3;G.salt++;gt.querySelectorAll('.ovon').forEach(x=>x.classList.remove('ovon'));applyCollage(true)}return}
  if(G.col){if(!t.querySelector('.ov'))t.insertAdjacentHTML('beforeend',OVH);const on=t.classList.contains('ovon');gt.querySelectorAll('.ovon').forEach(x=>x.classList.remove('ovon'));if(!on)t.classList.add('ovon');return}
@@ -742,6 +757,15 @@ function slideshow(){const L=GL.filter(i=>i.type==='image'||(i.type==='video'&&(
  ss._stop=()=>{clearTimeout(ssT);ss.hidden=true;ss.innerHTML='';ss._stop=null};step()}
 $('#ss').addEventListener('click',()=>{const s=$('#ss');s._stop&&s._stop()});
 function profNorm(n){return String(n||'').trim().replace(/^@/,'').toLowerCase().replace(/[^a-z0-9_.-]/g,'_').slice(0,28)}
+/* folder triage: select tiles in a profile view and send them to another
+   profile (existing or new) — @r2 is the holding cell this was built for,
+   but it works from any profile folder. One selected = individual move. */
+const SEL=new Set();
+function selPaint(){gt.querySelectorAll('.tile').forEach(t=>{const on=!!(G.sel&&t._it&&SEL.has(t._it.id));t.classList.toggle('selon',on);let b=t.querySelector('.selb');if(on&&!b){b=document.createElement('span');b.className='selb';b.textContent='✓';t.appendChild(b)}if(!on&&b)b.remove()});
+ const bar=$('#gbs');if(bar)bar.hidden=!G.sel;const lab=$('#gsn');if(lab)lab.textContent=SEL.size+' selected'}
+function setSel(on){G.sel=on?1:0;if(!on)SEL.clear();selPaint()}
+function moveSelected(target){let n=0;for(const it of S.items){if(SEL.has(it.id)){it.ch=target;it.handle=alias(target);n++}}
+ SEL.clear();G.sel=0;save();setDirty(true);V=vis();renderGrid(1);selPaint();toast(n?`Moved ${n} to @${target}`:'Nothing moved')}
 let FEEDDIRTY=0;const refreshAll=()=>{S.idx=0;V=vis();FEEDDIRTY=1;renderGrid()};
 gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
  if(a==='close')closeGrid();
@@ -762,6 +786,13 @@ gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)r
  else if(a==='sort')menu(b,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;refreshAll()}},{t:'Sort',o:[['default','Default'],['new','New'],['az','A–Z']],cur:()=>S.sort,set:v=>{S.sort=v;refreshAll()}}]);
  else if(a==='shuf'){if(S.mode!=='main')return toast('Shuffle works on your main feed');if(G.prof){const ix=[];S.items.forEach((x,k)=>{if(x.handle===G.prof)ix.push(k)});const vals=shuf(ix.map(k=>S.items[k]));ix.forEach((k,j)=>S.items[k]=vals[j])}else shuf(S.items);save();setDirty(true);refreshAll();toast('Shuffled')}
  else if(a==='ren'){ask({title:'Rename profile',desc:'Updates every item in @'+G.prof+' and is saved in transcript.txt',ph:'New profile name',val:G.prof,ok:'Save name',onOk:v=>{const n=profNorm(v);if(!n||n===G.prof)return;ALIAS[G.prof]=n;S.items.forEach(i=>{if(i.handle===G.prof){i.handle=n;if(i.ch)i.ch=n}});G.prof=n;save();setDirty(true);V=vis();renderGrid(1);toast('Renamed to @'+n)}})}
+ else if(a==='sel'){if(S.mode==='disc')return toast('Selection works on your main-feed folders');setSel(G.sel?0:1)}
+ else if(a==='seldone')setSel(0);
+ else if(a==='selall'){GL.forEach(i=>SEL.add(i.id));selPaint()}
+ else if(a==='send'){if(!SEL.size)return toast('Tap tiles to select first');
+  const profs=[...new Set(S.items.map(i=>i.handle))].filter(h=>h&&h!==G.prof).sort();
+  menu(b,[{t:'Send '+SEL.size+' to profile',o:profs.map(h=>[h,'@'+h]),cur:()=>'',set:v=>moveSelected(v)},
+   {t:'New profile',o:[['__new','+ Create new profile…']],cur:()=>'',set:()=>{ask({title:'New profile',desc:'The selected items move to this profile.',ph:'profile name',ok:'Move',onOk:v=>{const n=profNorm(v);if(!n){toast('Enter a name');return false}moveSelected(n)}})}}])}
  else if(a==='addm')addMediaModal(G.prof,()=>{V=vis();renderGrid(1)})});
 $('#bgd').onclick=()=>{FROM='';G.prof=null;G.tab='items';openGrid()};
 $('#bkg').onclick=()=>{const w=FROM;FROM='';G.col=w==='collage';openGrid()};
@@ -774,6 +805,21 @@ const pasteInto=async i=>{try{const t=await navigator.clipboard.readText();i.val
 function attach(list,hd){const have=new Set(S.items.map(i=>normKey(i.url)));let at=S.items.length;S.items.forEach((x,k)=>{if(x.handle===hd)at=k+1});const sess=(S.items.find(x=>x.handle===hd)||{}).sess||Date.now(),add=[];let seq=nextSeq();
  for(const raw of list){const it=mk(dash(raw),hd,sess,seq);if(bad(it.url))continue;const k=normKey(it.url);if(have.has(k))continue;have.add(k);it.handle=alias(hd);it.seq=seq++;it.id='i'+it.seq;add.push(it)}
  if(add.length){S.items.splice(at,0,...add);save();setDirty(true)}return add.length}
+/* R2 fast lane: bare filenames get the bucket prefix, the built links are
+   shown back for confirmation, and confirmed links file under @r2 as
+   direct feed videos — never webpage cards, whatever the Mode option says. */
+function r2Flow(){ask({title:'Paste R2 filenames',desc:'One filename (or full link) per line. Your R2 prefix is added, then every built link is shown back for confirmation before anything is filed.',multi:1,ph:'clip.mp4',ok:'Preview links',extra:[['Paste',pasteInto]],onOk:t=>{
+ const names=t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length){toast('No filenames');return false}
+ const urls=names.map(n=>/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,'')));
+ ask({title:'Confirm R2 links',desc:'These file under @r2 as direct feed videos — autoplay, no webpage view. Edit any line that looks wrong, or Cancel.',multi:1,val:urls.join('\n'),ok:'File under @r2',onOk:t2=>{
+  const lines=t2.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!lines.length){toast('Nothing to file');return false}
+  const n=attach(lines,'r2'),keys=new Set(lines.map(u=>normKey(u)));let forced=false;
+  S.items.forEach(i=>{if(i.handle==='r2'&&keys.has(normKey(i.url))&&i.type!=='video'){i.type='video';forced=true}});
+  if(forced)save();
+  closeModal();
+  if(n){if(S.mode!=='main'){S.mode='main'}render();toast(`Filed ${n} R2 video${n===1?'':'s'} under @r2`)}else toast('Already filed under @r2');
+ }});
+}})}
 function addMediaModal(hd,done){ask({title:'Add media to @'+hd,desc:'Paste links (images, videos, pages) or bare R2 filenames, one per line.',multi:1,ph:'https://…',ok:'+ Attach to profile',extra:[['Paste',pasteInto]],onOk:t=>{const n=attach(parse(t).items.map(i=>i.url),hd);toast(n?`Added ${n} to @${hd}`:'Nothing new to add');if(n&&done)done();chips()}})}
 function bindVideo(pg,full){full=strip(full);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=full;S.items.forEach(x=>{if(strip(x.url)===pg&&(x.type==='webpage'||(x.type==='video'&&!isDirect(x.url)))){x.source=pg;x.url=full;x.type='video';delete x.stream}});save();setDirty(true);chips()}
 const isVidUrl=u=>isDirect(u)||/\.(mp4|webm|m4v|mov|m3u8)(\?|#|$)/i.test(u);
