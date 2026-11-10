@@ -810,14 +810,20 @@ function attach(list,hd){const have=new Set(S.items.map(i=>normKey(i.url)));let 
    direct feed videos — never webpage cards, whatever the Mode option says. */
 function r2Flow(){ask({title:'Paste R2 filenames',desc:'One filename (or full link) per line. Your R2 prefix is added, then every built link is shown back for confirmation before anything is filed.',multi:1,ph:'clip.mp4',ok:'Preview links',extra:[['Paste',pasteInto]],onOk:t=>{
  const names=t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length){toast('No filenames');return false}
- const urls=names.map(n=>/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,'')));
+ const urls=names.map(n=>(/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,''))).replace(/ /g,'%20'));
  ask({title:'Confirm R2 links',desc:'These file under @r2 as direct feed videos — autoplay, no webpage view. Edit any line that looks wrong, or Cancel.',multi:1,val:urls.join('\n'),ok:'File under @r2',onOk:t2=>{
-  const lines=t2.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!lines.length){toast('Nothing to file');return false}
-  const n=attach(lines,'r2'),keys=new Set(lines.map(u=>normKey(u)));let forced=false;
-  S.items.forEach(i=>{if(i.handle==='r2'&&keys.has(normKey(i.url))&&i.type!=='video'){i.type='video';forced=true}});
-  if(forced)save();
+  const lines=t2.split(/\r?\n/).map(s=>s.trim().replace(/ /g,'%20')).filter(Boolean);if(!lines.length){toast('Nothing to file');return false}
+  attach(lines,'r2');
+  /* Claim every confirmed URL into @r2 as a video, wherever it currently
+     lives: attach() skips URLs already in the feed (e.g. a stray card from
+     an earlier batch-box paste, under a junk profile and the wrong type),
+     and Paste R2's contract is that the video ENDS UP under @r2. */
+  const keys=new Set(lines.map(u=>normKey(u)));let claimed=0;
+  S.items.forEach(i=>{if(keys.has(normKey(i.url))&&(i.handle!=='r2'||i.type!=='video')){i.ch='r2';i.handle=alias('r2');i.type='video';claimed++}});
+  if(claimed)save();
+  const total=S.items.filter(i=>i.handle==='r2'&&keys.has(normKey(i.url))).length;
   closeModal();
-  if(n){if(S.mode!=='main'){S.mode='main'}render();toast(`Filed ${n} R2 video${n===1?'':'s'} under @r2`)}else toast('Already filed under @r2');
+  if(total){if(S.mode!=='main'){S.mode='main'}render();toast(`Filed ${total} R2 video${total===1?'':'s'} under @r2`)}else toast('Nothing filed — check the links');
  }});
 }})}
 function addMediaModal(hd,done){ask({title:'Add media to @'+hd,desc:'Paste links (images, videos, pages) or bare R2 filenames, one per line.',multi:1,ph:'https://…',ok:'+ Attach to profile',extra:[['Paste',pasteInto]],onOk:t=>{const n=attach(parse(t).items.map(i=>i.url),hd);toast(n?`Added ${n} to @${hd}`:'Nothing new to add');if(n&&done)done();chips()}})}
