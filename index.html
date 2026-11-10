@@ -559,13 +559,13 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
 .deck-btn.edge{min-width:66px;height:42px;border-radius:14px;font-weight:800}
 .deck-btn.edge .cap{font-size:11px}
 .deck-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:5px;height:40px;min-width:40px;padding:0 10px;border-radius:13px;
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;height:40px;min-width:40px;padding:0 10px;border-radius:13px;white-space:nowrap;
   background:rgba(255,255,255,.07);color:#e9e9f2;font-size:11px;font-weight:800;transition:transform .15s var(--spring),background .18s;flex-shrink:0;
 }
 .deck-btn:active{transform:scale(.9)}
 .deck-btn.active{background:linear-gradient(135deg,rgba(232,121,249,.45),rgba(129,140,248,.45));color:#fff}
 .deck-btn.primary{background:linear-gradient(135deg,#d946ef,#6366f1);color:#fff;box-shadow:0 8px 20px rgba(217,70,239,.3)}
-.deck-btn.wide{flex:1}
+.deck-btn.wide{flex:1 1 auto;min-width:max-content}
 .deck-btn .cap{font-size:9.5px;font-weight:900}
 .deck-time{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;color:#d8d8e6;padding:0 4px;white-space:nowrap;cursor:pointer}
 .deck-seg{display:inline-flex;gap:3px;padding:3px;border-radius:12px;background:rgba(255,255,255,.05)}
@@ -3537,8 +3537,27 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
         return;
       }
     }
-    var a = e.target && e.target.closest ? e.target.closest('a[target="_blank"]') : null;
-    if (a) a.removeAttribute('target');
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (a) {
+      var rawHref = a.getAttribute('href') || '';
+      var resolved = a.href || '';
+      if (rawHref && rawHref.charAt(0) !== '#' && /^https?:\/\//i.test(resolved)) {
+        if (/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(resolved)) {
+          /* A link straight to an image file is a save gesture too. */
+          e.preventDefault(); e.stopPropagation();
+          parent.postMessage({ type: 'REELFLOW_CAPTURE_PROFILE_MEDIA', url: resolved, kind: 'image' }, '*');
+          return;
+        }
+        /* In-card navigation: pagination and post links are handed to the
+           app, which loads that page into THIS card through the proxy —
+           the frame never navigates itself (the source sites block that
+           with frame rules anyway, which is why Next Page looked dead). */
+        e.preventDefault(); e.stopPropagation();
+        parent.postMessage({ type: 'REELFLOW_NAVIGATE', url: resolved }, '*');
+        return;
+      }
+      if (a.target === '_blank') a.removeAttribute('target');
+    }
   }, true);
   window.addEventListener('message', function(ev){
     var d = ev.data || {};
@@ -3582,10 +3601,14 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
      the app, blocks top-window navigation outright. */
   (function(){
     try { Object.defineProperty(window, 'open', { value: function(){ return null; }, writable: false, configurable: false }); } catch(e){ try { window.open = function(){ return null; }; } catch(e2){} }
-    /* The frame runs in an opaque origin (sandbox without allow-same-origin),
-       where real localStorage/sessionStorage throw — and plenty of page
-       scripts crash on that throw. Stand in in-memory storage when the real
-       thing is unusable, so pages render instead of dying. */
+    /* Hide the frame element itself: a page allowed scripts + its origin
+       can otherwise reach its own <iframe> tag, strip the sandbox
+       attribute, and reload unfenced — the classic sandbox escape. The
+       app also watches the attribute from outside and restores it. */
+    try { Object.defineProperty(window, 'frameElement', { value: null, configurable: false }); } catch(e){}
+    /* Where real localStorage/sessionStorage are unusable (they throw in
+       some embedded contexts) plenty of page scripts crash on the throw.
+       Stand in in-memory storage then, so pages render instead of dying. */
     function fakeStorage(){ var m = {}; return { getItem: function(k){ return Object.prototype.hasOwnProperty.call(m, String(k)) ? m[String(k)] : null; }, setItem: function(k, v){ m[String(k)] = String(v); }, removeItem: function(k){ delete m[String(k)]; }, clear: function(){ m = {}; }, key: function(i){ var ks = Object.keys(m); return i < ks.length ? ks[i] : null; }, get length(){ return Object.keys(m).length; } }; }
     ['localStorage', 'sessionStorage'].forEach(function(name){
       var ok = false;
@@ -3629,6 +3652,35 @@ function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
   renderUnlinkedList();
   renderDeck();
 }
+/* The webpage frame fence. The flags alone are NOT the whole fence: a
+   scripted page that shares the app origin can reach its own <iframe>
+   element, delete the sandbox attribute, and reload unfenced (the classic
+   sandbox escape — and the reason tab hijacks persisted after the flags
+   were set). Two countermeasures, applied to every webpage frame:
+   (1) the in-page guard hides window.frameElement, and (2) this observer
+   watches the attribute from the app side and restores it the moment it
+   changes — mutation callbacks run before any reload the page queued, so
+   the reload comes back fenced. */
+const IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms';
+function armIframeFence(iframe) {
+  if (!iframe || iframe._fenceArmed) return;
+  iframe._fenceArmed = true;
+  new MutationObserver(() => {
+    if (iframe.getAttribute('sandbox') !== IFRAME_SANDBOX) {
+      iframe.setAttribute('sandbox', IFRAME_SANDBOX);
+      if (!iframe._fenceToastShown) { iframe._fenceToastShown = true; showToast('Blocked a page trying to break out of its card'); }
+    }
+  }).observe(iframe, { attributes: true, attributeFilter: ['sandbox'] });
+}
+function navigateCardToPage(item, pageUrl) {
+  if (!item || !/^https?:\/\//i.test(pageUrl || '')) return;
+  item._pageUrl = pageUrl;
+  const vis = getVisibleFeedItems();
+  const idx = vis.indexOf(item);
+  if (idx < 0) return;
+  const s = cardSection(idx);
+  if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, idx); }
+}
 async function mountWebpageCard(section, item, visIdx) {
   const holder = section.querySelector('.media-holder');
   if (!holder) return;
@@ -3642,16 +3694,13 @@ async function mountWebpageCard(section, item, visIdx) {
     const iframe = document.createElement('iframe');
     iframe.className = 'feed-web';
     iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
-    /* The fence: NO allow-top-navigation and NO allow-popups — the tab can
-       never be steered or unloaded by page content, and window.open is
-       stubbed by the guard. allow-same-origin stays ON (revised 2026-11-09
-       PM): the opaque-origin experiment broke the sites' own scripts —
-       load-more pagination looped and first loads white-screened — while
-       the tab-theft vectors remain blocked by the missing flags above.
-       The capture bridge is postMessage-only either way. */
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    /* Fence flags: NO allow-top-navigation, NO allow-popups. The attribute
+       is additionally policed by armIframeFence (see above) because a
+       same-origin scripted page can otherwise strip it and reload free. */
+    iframe.setAttribute('sandbox', IFRAME_SANDBOX);
+    armIframeFence(iframe);
     iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-    if (srcdocHtml) iframe.srcdoc = srcdocHtml; else iframe.src = item.url;
+    if (srcdocHtml) iframe.srcdoc = srcdocHtml; else iframe.src = item._pageUrl || item.url;
     holder.appendChild(iframe);
     if (!item.interactiveScroll && !webpageLockPages) {
       const shield = document.createElement('div');
@@ -3667,9 +3716,10 @@ async function mountWebpageCard(section, item, visIdx) {
        but nothing scans it for streams and nothing auto-converts the card.
        Linking a video is a manual act (Paste & Link / Teach) — slower, but
        it never fires on the wrong stream or yanks the view mid-browse. */
-    const html = await fetchHtmlViaFastestProxy(item.sourceLink || item.url);
+    const pageTarget = item._pageUrl || item.sourceLink || item.url;
+    const html = await fetchHtmlViaFastestProxy(pageTarget);
     if (section.dataset.hydrated !== '1') return;
-    if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, item.sourceLink || item.url, '', '', item.preScrollPercent)); return; }
+    if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, pageTarget, '', '', item.preScrollPercent)); return; }
   } catch (e) {}
   if (section.dataset.hydrated !== '1') return;
   /* Last resort: direct iframe (works for frame-friendly sites). If it never
@@ -3810,7 +3860,7 @@ function extractPostPageLinks(html, pageUrl) {
 async function scrapeCurrentPageImages() {
   const item = getCurrentItem();
   if (!item || item.type !== 'webpage') { showToast('Open a webpage card first'); return; }
-  const pageUrl = item.sourceLink || item.url;
+  const pageUrl = item._pageUrl || item.sourceLink || item.url;
   showToast('Scraping page images…');
   const html = await fetchHtmlViaFastestProxy(pageUrl);
   if (!html) { showToast('Scrape failed — the page could not be fetched'); return; }
@@ -3868,6 +3918,18 @@ window.addEventListener('message', (e) => {
     /* Confirm INSIDE the page, where the user's eyes are: the frame shows a
        check badge naming the profile the media filed under. */
     if (saved && e.source && e.source.postMessage) { try { e.source.postMessage({ type: 'REELFLOW_CAPTURED', handle: saved }, '*'); } catch (err) {} }
+  }
+  if (d.type === 'REELFLOW_NAVIGATE' && d.url) {
+    /* In-card navigation: find the card whose frame asked, and load the
+       target page into that same card (through the proxy). */
+    let item = null;
+    if (e.source) {
+      document.querySelectorAll('section.feed-card').forEach(sec => {
+        if (sec._iframe && sec._iframe.contentWindow === e.source) item = getVisibleFeedItems()[Number(sec.dataset.vis)] || item;
+      });
+    }
+    if (!item) { const cur = getCurrentItem(); if (cur && cur.type === 'webpage') item = cur; }
+    if (item) navigateCardToPage(item, d.url);
   }
   /* REELFLOW_VIDEO_FOUND is retired: pages no longer report streams for
      auto-binding (auto video fetch removed 2026-11-09). Manual links only. */
