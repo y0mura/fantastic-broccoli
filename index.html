@@ -933,8 +933,8 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
   <div class="modal-sheet">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
       <div>
-        <h3>Batch URLs &amp; Memory Banks</h3>
-        <p class="sub">Paste URLs, R2 filenames, or <span class="mono">rf1$</span> app-only tokens. One per line. Add <span class="mono">#profile=handle</span> to tag a creator.</p>
+        <h3>Home — Batch Menu</h3>
+        <p class="sub">This menu is home base. Main Feed and Discovery are separate modes — you start one or the other from here, and leaving a mode brings you back here. Paste URLs, R2 filenames, or <span class="mono">rf1$</span> app-only tokens, one per line; add <span class="mono">#profile=handle</span> to tag a creator.</p>
       </div>
       <button type="button" class="sheet-close" id="btn-paste-close">✕</button>
     </div>
@@ -964,7 +964,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
       </div>
       <p class="sub" style="margin-top:5px">Your own fetch proxy is leg #1 for in-app webpage display. It's saved in the app and travels inside every export's settings.</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
-        <button type="button" class="btn mint" id="btn-start-feed" style="flex:1">Start Feed</button>
+        <button type="button" class="btn mint" id="btn-start-feed" style="flex:1">Start Main Feed</button>
         <button type="button" class="btn" id="btn-append-bottom"><svg class="ic sm" style="display:inline;vertical-align:-3px"><use href="#i-chev-down"/></svg> Append Bottom</button>
         <button type="button" class="btn" id="btn-append-top"><svg class="ic sm" style="display:inline;vertical-align:-3px"><use href="#i-chev-up"/></svg> Insert Top</button>
       </div>
@@ -996,7 +996,7 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
       <textarea id="discovery-input" class="field mono" rows="4" placeholder="https://site.com/models/creator_one"></textarea>
       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
         <button type="button" class="btn small primary" id="btn-discovery-save">Save Profiles</button>
-        <button type="button" class="btn small mint" id="btn-discovery-feed">Open Discovery Feed</button>
+        <button type="button" class="btn small mint" id="btn-discovery-feed">Open Discovery List</button>
         <button type="button" class="btn small" id="btn-discovery-exit" disabled>← Main Feed</button>
       </div>
       <div id="discovery-list" style="display:flex;flex-direction:column;gap:5px;margin-top:11px;max-height:200px;overflow-y:auto"></div>
@@ -1058,6 +1058,47 @@ body.ui-hidden #bottom-deck,body.ui-hidden #feed-progress{opacity:0;pointer-even
     <div style="display:flex;gap:7px;margin-top:12px">
       <button type="button" class="btn" id="btn-addmedia-cancel" style="flex:1">Cancel</button>
       <button type="button" class="btn primary" id="btn-addmedia-save" style="flex:2">Add Media</button>
+    </div>
+  </div>
+</div>
+
+<!-- Discovery list panel: links first, webpage second, menu behind it -->
+<div id="disc-panel" class="modal-veil hidden" style="z-index:210">
+  <div class="modal-sheet" style="max-width:520px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div><h3>Discovery</h3><p class="sub">Tap a profile to open its page in the app. Back returns here; back again returns to the menu.</p></div>
+      <button type="button" class="sheet-close" id="btn-disc-close">✕</button>
+    </div>
+    <div id="disc-list" style="display:flex;flex-direction:column;gap:5px;margin-top:12px;max-height:55vh;overflow-y:auto"></div>
+    <div class="row" style="margin-top:14px">
+      <button type="button" class="btn" id="btn-disc-menu">‹ Batch Menu</button>
+      <button type="button" class="btn" id="btn-disc-browse-all">Browse All as Feed</button>
+    </div>
+  </div>
+</div>
+
+<!-- Discovery save prompt: first save toward a new profile asks first -->
+<div id="disc-save-modal" class="modal-veil hidden" style="z-index:230">
+  <div class="modal-sheet" style="max-width:420px">
+    <h3 id="disc-save-title">New profile?</h3>
+    <p class="sub" id="disc-save-sub"></p>
+    <img id="disc-save-img" alt="" style="width:100%;max-height:300px;object-fit:contain;border-radius:12px;background:#0a0a12;margin-top:10px" />
+    <div class="row" style="margin-top:14px">
+      <button type="button" class="btn" id="btn-disc-save-bucket">@discovery instead</button>
+      <button type="button" class="btn primary" id="btn-disc-save-create">Create profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scrape preview: the winning image, confirmed before it files -->
+<div id="scrape-modal" class="modal-veil hidden" style="z-index:225">
+  <div class="modal-sheet" style="max-width:440px">
+    <h3>Scrape result</h3>
+    <p class="sub" id="scrape-sub"></p>
+    <img id="scrape-img" alt="" style="width:100%;max-height:340px;object-fit:contain;border-radius:12px;background:#0a0a12;margin-top:10px" />
+    <div class="row" style="margin-top:14px">
+      <button type="button" class="btn" id="btn-scrape-cancel">Cancel</button>
+      <button type="button" class="btn primary" id="btn-scrape-save">Save</button>
     </div>
   </div>
 </div>
@@ -1808,6 +1849,7 @@ let taughtVideos = loadJSON(TAUGHT_VIDEOS_KEY, {}) || {};
 let videoThumbTrimMap = loadJSON(VIDEO_THUMB_TRIM_KEY, {}) || {};
 let discoveryProfileLinks = loadJSON(DISCOVERY_PROFILES_KEY, []) || [];
 let discoveryFeedModeActive = false;
+let discoverySingleUrl = '';
 let mainFeedBackup = null;
 let activeFilterType = 'all';           /* all | image | video | webpage */
 let activeSortOrder = 'default';        /* default | new | az */
@@ -1916,7 +1958,14 @@ function slimSessionList(list) {
     batchSessionId: it.batchSessionId, sessionBreakBefore: it.sessionBreakBefore, addedSeq: it.addedSeq
   }));
 }
-function saveCurrentSessionToStorage() { saveJSON(STORAGE_KEY, slimSessionList(allFeedItems)); }
+function saveCurrentSessionToStorage() {
+  /* The saved session is ALWAYS the main feed — while Discovery is active
+     the visible list is transient and the main list lives in the backup.
+     (Saving the visible list here is what used to leak Discovery pages
+     into the restored main feed.) */
+  const list = (discoveryFeedModeActive && Array.isArray(mainFeedBackup)) ? mainFeedBackup : allFeedItems;
+  saveJSON(STORAGE_KEY, slimSessionList(list));
+}
 function restoreSessionFromStorage() {
   const raw = loadJSON(STORAGE_KEY, null);
   if (!Array.isArray(raw) || !raw.length) { allFeedItems = []; return; }
@@ -1932,6 +1981,14 @@ function restoreSessionFromStorage() {
     item.profile = extractProfileInfo(item.sourceLink || item.url, item.customHandle);
     return item;
   }).filter(Boolean);
+  /* One-time scrub of the historical leak: if the ENTIRE restored feed is
+     discovery profile pages, it was a Discovery session saved over the
+     main session by an old build — those pages live in Discovery, not in
+     the main feed. A mixed feed is left exactly as found. */
+  if (allFeedItems.length && discoveryProfileLinks.length) {
+    const dset = new Set(discoveryProfileLinks.map(u => normalizeUrlKey(u)));
+    if (allFeedItems.every(it => dset.has(normalizeUrlKey(it.sourceLink || it.url)))) allFeedItems = [];
+  }
 }
 
 /* ---- transcript.txt : full fenced parse ---- */
@@ -2264,13 +2321,46 @@ function buildDiscoveryFeedItems() {
 function enterDiscoveryFeed() {
   if (!discoveryProfileLinks.length) { showToast('Save at least one discovery profile first'); return; }
   if (!discoveryFeedModeActive) { mainFeedBackup = allFeedItems; discoveryFeedModeActive = true; }
+  discoverySingleUrl = '';
   allFeedItems = buildDiscoveryFeedItems();
   renderFeedSkeleton(); scrollToCard(0, false); updateVirtualWindowMedia(); renderDiscoveryList();
   closePasteModal(); updateModeResetButton(); showToast('Discovery Feed — browsing saved @profiles');
 }
+/* ---- Discovery as a LIST (Kendall's flow, 2026-11-10): menu → link list →
+   the profile's page in the app → back to the list → back to the menu.
+   No discovery grid; the list is the hub. ---- */
+function renderDiscoveryPanel() {
+  const el = $('disc-list'); if (!el) return;
+  el.innerHTML = discoveryProfileLinks.map((u, i) => `
+    <div class="queue-item">
+      <button type="button" data-dopen="${i}" style="flex:1;text-align:left;display:flex;flex-direction:column;gap:1px;min-width:0;background:none;border:none;cursor:pointer;padding:2px">
+        <span style="font-weight:900;color:#eceaf2">@${esc(extractProfileInfo(u).handle)}</span>
+        <span class="qurl mono">${esc(u)}</span>
+      </button>
+      <span style="color:#8fd0ff;font-weight:900;flex-shrink:0">›</span>
+      <button type="button" data-ddel2="${i}" style="color:#fda4af;font-weight:900;padding:2px 6px;flex-shrink:0">✕</button>
+    </div>`).join('') || '<div style="font-size:11.5px;color:#71718a;padding:6px 2px">No discovery profiles saved yet. Add them in the Batch menu Discovery tab.</div>';
+}
+function openDiscoveryPanel() { renderDiscoveryPanel(); $('disc-panel').classList.remove('hidden'); }
+function closeDiscoveryPanel() { $('disc-panel').classList.add('hidden'); }
+function enterDiscoveryProfile(url) {
+  if (!discoveryFeedModeActive) { mainFeedBackup = allFeedItems; discoveryFeedModeActive = true; }
+  discoverySingleUrl = url;
+  const item = makeFeedItem(url, currentBatchSessionId);
+  if (item) { item.isDiscoveryProfilePage = true; item.type = 'webpage'; }
+  allFeedItems = item ? [item] : [];
+  closeDiscoveryPanel(); closePasteModal();
+  renderFeedSkeleton(); scrollToCard(0, false); updateVirtualWindowMedia(); updateHUD(); updateModeResetButton();
+  showToast(`Discovery — @${item?.profile?.handle || 'profile'}`);
+}
+function backToDiscoveryList() {
+  exitDiscoveryFeed();
+  openDiscoveryPanel();
+}
 function exitDiscoveryFeed() {
   if (!discoveryFeedModeActive) return;
   discoveryFeedModeActive = false;
+  discoverySingleUrl = '';
   allFeedItems = mainFeedBackup || []; mainFeedBackup = null;
   renderFeedSkeleton(); scrollToCard(0, false); updateVirtualWindowMedia(); renderDiscoveryList();
   updateModeResetButton();
@@ -2285,10 +2375,15 @@ function updateModeResetButton() {
   b.classList.toggle('hidden', !(discoveryFeedModeActive || activeFilterType !== 'all'));
 }
 function resetToDefaultFeed() {
-  if (discoveryFeedModeActive) exitDiscoveryFeed();
-  activeFilterType = 'all';
   closeGridModal();
   closeProfileMediaList();
+  if (discoveryFeedModeActive) {
+    /* Modes never cross directly: leaving Discovery lands at Home. */
+    exitDiscoveryFeed();
+    openPasteModal();
+    return;
+  }
+  activeFilterType = 'all';
   applyFilterSortUI(); renderFeedSkeleton(); updateVirtualWindowMedia(); updateHUD();
   showToast('Back to your full feed');
 }
@@ -2794,6 +2889,16 @@ function setEnhanceLevel(l) {
 /* ---- HUD rows 2 & 3 (contextual by media type) ---- */
 let webpageLockPages = false;
 function updateFilterAndModeUIState() { applyFilterSortUI(); updateHUD(); }
+/* Page Scroll mode locks the FEED itself: every gesture belongs to the
+   page, so the site's own scroll-driven loading (infinite scroll) can
+   actually fire instead of the feed swiping away mid-page. Programmatic
+   jumps (rail arrows) still move between cards. Feed Swipe unlocks. */
+function syncFeedScrollLock() {
+  const fc = feedContainer(); if (!fc) return;
+  const it = getCurrentItem();
+  const lock = !!it && it.type === 'webpage' && !it.extractedVideoUrl && it.interactiveScroll !== false;
+  fc.style.overflowY = lock ? 'hidden' : '';
+}
 /* The rail mute button must always SHOW the true state: muted icon by
    default (the app starts muted), and a glowing button when sound is on. */
 function syncMuteButton() {
@@ -2806,16 +2911,19 @@ function updateHUD() {
   const leftSlot = $('hud-left-slot'), row2L = $('row2-left'), row2R = $('row2-right'), row3 = $('hud-row3');
   if (!leftSlot) return;
   syncMuteButton();
-  /* command bar left slot: discovery exit only — everything else is iconic */
+  /* command bar left slot: Discovery gets its breadcrumb — ‹ List returns
+     to the link list, Main returns to the main feed */
   leftSlot.innerHTML = discoveryFeedModeActive
-    ? `<button type="button" class="cmd-btn" id="hud-exit-discovery" title="Back to Main Feed"><svg class="ic sm"><use href="#i-chev-down" style="transform:rotate(90deg)"/></svg><span class="st">Main</span></button><span class="cmd-sep"></span>`
+    ? `<button type="button" class="cmd-btn" id="hud-disc-list" title="Back to the Discovery list"><svg class="ic sm"><use href="#i-chev-down" style="transform:rotate(-90deg)"/></svg><span class="st">List</span></button><button type="button" class="cmd-btn" id="hud-exit-discovery" title="Leave Discovery — back to Home (Batch menu)"><svg class="ic sm"><use href="#i-home"/></svg><span class="st">Home</span></button><span class="cmd-sep"></span>`
     : '';
   const exitBtn = $('hud-exit-discovery');
-  if (exitBtn) exitBtn.addEventListener('click', exitDiscoveryFeed);
-  /* context row: @profile chip (tap = rename) + state toggles for video/webpage */
+  if (exitBtn) exitBtn.addEventListener('click', () => { exitDiscoveryFeed(); openPasteModal(); });
+  const listBtn = $('hud-disc-list');
+  if (listBtn) listBtn.addEventListener('click', backToDiscoveryList);
+  /* context row: @profile chip (tap = that profile's grid view) + toggles */
   let l2 = '', r2 = '';
   if (item) {
-    const chip = `<button type="button" class="cmd-chip" id="hud-profile-chip" title="Rename @profile"><span class="at">@</span><span style="overflow:hidden;text-overflow:ellipsis">${esc(item.profile?.handle || '')}</span></button>`;
+    const chip = `<button type="button" class="cmd-chip" id="hud-profile-chip" title="View @profile media"><span class="at">@</span><span style="overflow:hidden;text-overflow:ellipsis">${esc(item.profile?.handle || '')}</span></button>`;
     if (item.type === 'image') {
       l2 = chip;
       r2 = `<button type="button" class="glass-pill" id="btn-hud-slideshow" style="height:34px" title="Slideshow"><svg class="ic sm"><use href="#i-play"/></svg>Slideshow</button>
@@ -2852,7 +2960,7 @@ function updateHUD() {
     } else { row3.innerHTML = ''; row3.classList.add('hidden'); }
   }
   const chip = $('hud-profile-chip');
-  if (chip && item) chip.addEventListener('click', () => openRenameModal(item.profile?.handle || ''));
+  if (chip && item) chip.addEventListener('click', () => openProfileGrid(item.profile?.handle || ''));
   const modeBtn = $('btn-mode-toggle');
   if (modeBtn) modeBtn.addEventListener('click', () => {
     if (!item) return;
@@ -2875,6 +2983,7 @@ function updateHUD() {
   const hfsB = $('btn-rail-hfs'), hideB = $('btn-rail-hideui');
   if (hfsB) hfsB.classList.toggle('hidden', isWebpageCard);
   if (hideB) hideB.classList.toggle('hidden', isWebpageCard);
+  syncFeedScrollLock();
   updateModeResetButton();
   updateFeedProgress();
   renderDeck();
@@ -3077,7 +3186,8 @@ function renderDeck() {
         <button type="button" class="deck-btn primary wide" id="deck-paste-link"><svg class="ic sm"><use href="#i-clip"/></svg>Paste &amp; Link Video</button>
         <button type="button" class="deck-btn" id="deck-add-profile"><svg class="ic sm"><use href="#i-plus"/></svg><span>@${esc(item.profile?.handle || 'profile')}</span></button>
         <button type="button" class="deck-btn ${item.interactiveScroll ? 'active' : ''}" id="deck-scrollmode" title="Toggle between scrolling the page and swiping the feed"><svg class="ic sm"><use href="#i-move-v"/></svg><span>${item.interactiveScroll ? 'Page Scroll' : 'Feed Swipe'}</span></button>
-        <button type="button" class="deck-btn" id="deck-scrape" title="Scrape this page's images into this profile"><svg class="ic sm"><use href="#i-image"/></svg><span>Scrape</span></button>
+        <button type="button" class="deck-btn" id="deck-scrape" title="Scrape this page's main image"><svg class="ic sm"><use href="#i-image"/></svg><span>Scrape</span></button>
+        <button type="button" class="deck-btn ${item._liveView ? 'active' : ''}" id="deck-live" title="Shielded loads the page through your proxy, fenced. Live loads the site directly and natively — if a page's loader spins forever in Shielded, try Live."><svg class="ic sm"><use href="#i-globe"/></svg><span>${item._liveView ? 'Live' : 'Shielded'}</span></button>
       </div>`;
     $('deck-paste-link').addEventListener('click', () => oneTapPasteAndLinkItem(item));
     $('deck-add-profile').addEventListener('click', () => openAddMediaModal(item.profile?.handle || ''));
@@ -3086,9 +3196,17 @@ function renderDeck() {
       const s = cardSection(currentCardIndex);
       if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, currentCardIndex); }
       renderDeck();
-      showToast(item.interactiveScroll ? 'Page Scroll on — touch scrolls the page' : 'Feed Swipe on — touch swipes the feed');
+      syncFeedScrollLock();
+      showToast(item.interactiveScroll ? 'Page Scroll on — the page scrolls and auto-loads; the feed is locked' : 'Feed Swipe on — touch swipes the feed');
     });
     $('deck-scrape').addEventListener('click', () => scrapeCurrentPageImages());
+    $('deck-live').addEventListener('click', () => {
+      item._liveView = !item._liveView;
+      const s = cardSection(currentCardIndex);
+      if (s) { dehydrateCardDOM(s); hydrateCardDOM(s, currentCardIndex); }
+      renderDeck();
+      showToast(item._liveView ? 'Live view — the site loads directly. If it blanks, the site forbids framing; flip back to Shielded.' : 'Shielded view — page loads through your proxy');
+    });
     deck.classList.remove('faded');
   }
   pokeDeck();
@@ -3213,7 +3331,7 @@ function renderGridModal() {
     const groups = new Map();
     items.forEach(it => { const h = it.profile?.handle || 'unknown'; if (!groups.has(h)) groups.set(h, []); groups.get(h).push(it); });
     for (const [h, gItems] of groups) {
-      html += `<div class="gtile profile-head" data-gprofile="${esc(h)}" title="Open @${esc(h)} in the feed"><span class="ph-name">@${esc(h)}</span><span class="ph-count">${gItems.length} item${gItems.length === 1 ? '' : 's'} · Open ›</span></div>`;
+      html += `<div class="gtile profile-head" id="ph-${esc(h)}" data-gprofile="${esc(h)}" title="Open @${esc(h)} in the feed"><span class="ph-name">@${esc(h)}</span><span class="ph-count">${gItems.length} item${gItems.length === 1 ? '' : 's'} · Open ›</span></div>`;
       html += gItems.map(it => `<div class="gtile" data-goto="${esc(it.id)}">${tileMediaHtml(it)}<span class="gtag">${esc(it.title || '')}</span></div>`).join('');
     }
   } else {
@@ -3238,6 +3356,14 @@ function goToFeedItemById(id) {
   closeGridModal();
   scrollToCard(visIdx, false);
   updateVirtualWindowMedia();
+}
+/* @profile chip destination: the profile's section of the grid. The grid
+   is an overlay — closing it returns to whatever feed was underneath
+   (main or Discovery), untouched. Renaming lives in the Profiles panel. */
+function openProfileGrid(handle) {
+  gridViewMode = 'profiles';
+  openGridModal();
+  if (handle) requestAnimationFrame(() => { const el = document.getElementById('ph-' + handle); if (el) el.scrollIntoView({ block: 'start' }); });
 }
 function openGridModal() {
   $('grid-modal').classList.remove('hidden');
@@ -3667,6 +3793,13 @@ function buildAgeBypassedAndAdBlockedSrcdoc(rawHtml, pageUrl, bestStream = '', b
      the app, blocks top-window navigation outright. */
   (function(){
     try { Object.defineProperty(window, 'open', { value: function(){ return null; }, writable: false, configurable: false }); } catch(e){ try { window.open = function(){ return null; }; } catch(e2){} }
+    /* Age/consent cookies: written for real where possible; where the
+       frame's cookie access throws, a stand-in jar answers reads with the
+       same values — loaders that gate on a cookie find it either way. */
+    var seedMap = { age_verified: '1', ageVerified: '1', over18: '1', is_over_18: 'true', has_verified_age: '1', disclaimer_accepted: '1', ageGatePassed: '1', adult_confirmed: '1', verified_age: '1', age_ok: '1', splash: '1', interstitial: '1', cookie_consent: '1', viewed_cookie_policy: 'yes' };
+    var cookieOk = true;
+    try { void document.cookie; Object.keys(seedMap).forEach(function(k){ try { document.cookie = k + '=' + seedMap[k] + '; path=/; max-age=31536000'; } catch(e){} }); } catch(e) { cookieOk = false; }
+    if (!cookieOk) { try { Object.defineProperty(document, 'cookie', { configurable: true, get: function(){ return Object.keys(seedMap).map(function(k){ return k + '=' + seedMap[k]; }).join('; '); }, set: function(v){ var p = String(v || '').split(';')[0].split('='); if (p[0]) seedMap[p[0].trim()] = (p[1] || '').trim(); return v; } }); } catch(e){} }
     /* Hide the frame element itself: a page allowed scripts + its origin
        can otherwise reach its own <iframe> tag, strip the sandbox
        attribute, and reload unfenced — the classic sandbox escape. The
@@ -3709,7 +3842,7 @@ function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
      stays silent and in place. */
   const jump = !!opts.jump;
   const inMainList = !discoveryFeedModeActive || (Array.isArray(mainFeedBackup) && mainFeedBackup.includes(item));
-  if (jump && discoveryFeedModeActive && inMainList) exitDiscoveryFeed();
+  if (jump && discoveryFeedModeActive && inMainList) { exitDiscoveryFeed(); openPasteModal(); showToast('Linked — start it from Home → Main Feed'); }
   const vis = getVisibleFeedItems();
   const idx = vis.indexOf(item);
   if (idx >= 0) {
@@ -3734,6 +3867,7 @@ function bindAndReplaceWithDirectMp4(item, videoUrl, opts = {}) {
    the tab still cannot be steered. The observer below stays as a belt:
    it restores the sandbox attribute if anything ever changes it. */
 const IFRAME_SANDBOX = 'allow-scripts allow-forms allow-popups';
+const PAGE_HTML_CACHE = new Map();
 function armIframeFence(iframe) {
   if (!iframe || iframe._fenceArmed) return;
   iframe._fenceArmed = true;
@@ -3768,9 +3902,12 @@ async function mountWebpageCard(section, item, visIdx) {
     iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
     /* Fence flags: NO allow-top-navigation, NO allow-popups. The attribute
        is additionally policed by armIframeFence (see above) because a
-       same-origin scripted page can otherwise strip it and reload free. */
-    iframe.setAttribute('sandbox', IFRAME_SANDBOX);
-    armIframeFence(iframe);
+       same-origin scripted page can otherwise strip it and reload free.
+       Live view is the deliberate exception: a native, unfenced load. */
+    if (!(item._liveView && !srcdocHtml)) {
+      iframe.setAttribute('sandbox', IFRAME_SANDBOX);
+      armIframeFence(iframe);
+    }
     iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
     if (srcdocHtml) iframe.srcdoc = srcdocHtml; else iframe.src = item._pageUrl || item.url;
     holder.appendChild(iframe);
@@ -3789,9 +3926,27 @@ async function mountWebpageCard(section, item, visIdx) {
        Linking a video is a manual act (Paste & Link / Teach) — slower, but
        it never fires on the wrong stream or yanks the view mid-browse. */
     const pageTarget = item._pageUrl || item.sourceLink || item.url;
-    const html = await fetchHtmlViaFastestProxy(pageTarget);
+    /* Live view (per-card toggle): skip the proxy entirely and load the
+       site directly in the frame — the comparison build's alternate mode.
+       Sites that forbid framing will blank (the placeholder below covers
+       it); sites that allow it run completely natively, loaders included. */
+    if (!item._liveView) {
+    /* Page HTML is cached per URL: the first (cold) fetch used to outlive
+       the card's hydration window and its result was thrown away — the
+       white card that only a mode-flip remount could cure. Now the result
+       lands in the cache even if this mount has moved on, and every later
+       mount of the page is instant. */
+    let html = PAGE_HTML_CACHE.get(pageTarget) || '';
+    if (!html) {
+      html = await fetchHtmlViaFastestProxy(pageTarget);
+      if (html) {
+        PAGE_HTML_CACHE.set(pageTarget, html);
+        if (PAGE_HTML_CACHE.size > 6) PAGE_HTML_CACHE.delete(PAGE_HTML_CACHE.keys().next().value);
+      }
+    }
     if (section.dataset.hydrated !== '1') return;
     if (html) { mountIframe(buildAgeBypassedAndAdBlockedSrcdoc(html, pageTarget, '', '', item.preScrollPercent)); return; }
+    }
   } catch (e) {}
   if (section.dataset.hydrated !== '1') return;
   /* Last resort: direct iframe (works for frame-friendly sites). If it never
@@ -3854,15 +4009,64 @@ function fileCapturedItems(items) {
   }
   renderQueueList(); renderProfileList(); markUnexported();
 }
+/* ---- where a save lands, when it comes from Discovery browsing ----
+   The natural rule (Kendall, 2026-11-10): media saves under the profile
+   from its link, CREATING that profile in the main feed if it is not
+   there yet — but the FIRST save toward a not-yet-existing profile asks
+   first (the prompt shows the image). The choice is remembered for the
+   session. Media with no derivable name files under @discovery. In the
+   main feed none of this applies — saves file directly, as always. */
+const discProfileDecisions = new Map(); /* handle -> 'create' | 'bucket' */
+let pendingDiscSave = null;             /* { items, handle } */
+function mainFeedHasProfile(handle) {
+  const list = (discoveryFeedModeActive && Array.isArray(mainFeedBackup)) ? mainFeedBackup : allFeedItems;
+  return list.some(it => (it.profile?.handle || '') === handle);
+}
+function fileSavedItems(items, sourceHandle) {
+  if (!items || !items.length) return 'filed';
+  if (!discoveryFeedModeActive) { fileCapturedItems(items); return 'filed'; }
+  const h = String(sourceHandle || '').trim();
+  const retarget = (target) => { for (const it of items) { it.customHandle = target; it.profile = extractProfileInfo(it.url, target); } };
+  if (!h || h === 'untitled') { retarget('discovery'); fileCapturedItems(items); return 'filed'; }
+  const decision = discProfileDecisions.get(h);
+  if (decision === 'bucket') { retarget('discovery'); fileCapturedItems(items); return 'filed'; }
+  if (decision === 'create' || mainFeedHasProfile(h)) { retarget(h); fileCapturedItems(items); return 'filed'; }
+  pendingDiscSave = { items, handle: h };
+  openDiscSavePrompt();
+  return 'pending';
+}
+function openDiscSavePrompt() {
+  const p = pendingDiscSave; if (!p) return;
+  const first = p.items[0];
+  $('disc-save-title').textContent = `Create @${p.handle} in your main feed?`;
+  $('disc-save-sub').textContent = `This save is from @${p.handle}, which is not in your main feed yet. Create the profile there and save to it — or file it under @discovery instead. I will remember your choice for this profile.`;
+  const img = $('disc-save-img');
+  if (first && first.type === 'image') { img.src = first.url; img.classList.remove('hidden'); } else img.classList.add('hidden');
+  $('btn-disc-save-create').textContent = `Create @${p.handle}`;
+  $('disc-save-modal').classList.remove('hidden');
+}
+function closeDiscSavePrompt() { $('disc-save-modal').classList.add('hidden'); }
+function resolveDiscSave(create) {
+  const p = pendingDiscSave; pendingDiscSave = null;
+  closeDiscSavePrompt();
+  if (!p) return;
+  discProfileDecisions.set(p.handle, create ? 'create' : 'bucket');
+  const target = create ? p.handle : 'discovery';
+  for (const it of p.items) { it.customHandle = target; it.profile = extractProfileInfo(it.url, target); }
+  fileCapturedItems(p.items);
+  showToast(create ? `Created @${p.handle} in your main feed — saved there` : 'Saved to @discovery in your main feed');
+}
 function appendCapturedMediaToProfile(url, handle) {
   if (!url || !/^https?:\/\//i.test(url)) return;
   const item = makeFeedItem(url, Date.now());
   if (!item) return;
   if (handle) { item.customHandle = handle; item.profile = extractProfileInfo(url, handle); }
   item.isLinkOrigin = false;
-  fileCapturedItems([item]);
-  const savedHandle = handle || item.profile.handle;
-  showToast(`Saved to @${savedHandle}`);
+  const preHandle = item.profile.handle;
+  const result = fileSavedItems([item], preHandle);
+  if (result === 'pending') return preHandle; /* the prompt confirms where it lands */
+  const savedHandle = item.profile.handle;
+  showToast(discoveryFeedModeActive ? `Saved to @${savedHandle} in your main feed` : `Saved to @${savedHandle}`);
   return savedHandle;
 }
 /* ---- page image scrape: the one-tap, iOS-friendly save ----
@@ -3913,43 +4117,53 @@ function extractImageUrlsFromHtml(html, pageUrl) {
   if (og) push(og[1]);
   return out.filter(u => !/sprite|logo|icon|avatar|emoji|blank|placeholder|1x1|pixel|spinner|loading/i.test(u)).slice(0, 60);
 }
-/* The scrape winner: ONE target image per page (Kendall's rule — the
-   full-size or largest image that is most likely THE image of the page;
-   no extras). Scored signals: a full-size anchor link (100) > the page's
-   own data-full/data-highres pointer (90) > og:image (85) > largest
-   srcset candidate (50+, scaled by width) > lazy source (40) > rendered
-   src (10). Junk (logos/icons/avatars/sprites) is never eligible. */
+/* The scrape winner v2: ONE target image per page (Kendall's rule — the
+   full-size or largest image that is most likely THE image; no extras).
+   Passes, in order: (1) first full-size anchor in the content (the
+   classic gallery pattern — a thumbnail wrapped in a link to the real
+   file); (2) the page's own data-full/data-highres pointer; (3) the
+   largest DIMENSIONED candidate (>=700px from width/height attributes,
+   srcset widths, or size encoded in the URL); (4) og:image; (5) first
+   lazy source, else the first candidate. Header/nav/footer blocks are
+   stripped first — site chrome is not content (v1 let a chrome image
+   outscore the target and filed a random thumbnail). */
 function extractMainImageFromHtml(html, pageUrl) {
   const junk = /sprite|logo|icon|avatar|emoji|blank|placeholder|1x1|pixel|spinner|loading/i;
   const abs = (u) => { try { return new URL(u, pageUrl).href; } catch (e) { return ''; } };
-  let best = null;
-  const consider = (u, score) => {
-    if (!u || !String(u).trim()) return;
-    const a = abs(String(u).trim());
-    if (!a || !/^https?:\/\//i.test(a) || junk.test(a)) return;
-    if (!best || score > best.score) best = { url: a, score };
-  };
-  for (const m of String(html).matchAll(/<a\b[^>]+href=["']([^"']+)["']/gi)) {
-    if (/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(m[1])) consider(m[1], 100);
+  const ok = (u) => { if (!u || !String(u).trim()) return ''; const a = abs(String(u).trim()); return a && /^https?:\/\//i.test(a) && !junk.test(a) ? a : ''; };
+  const doc = String(html)
+    .replace(/<header\b[^>]*>[\s\S]*?<\/header\s*>/gi, '')
+    .replace(/<nav\b[^>]*>[\s\S]*?<\/nav\s*>/gi, '')
+    .replace(/<footer\b[^>]*>[\s\S]*?<\/footer\s*>/gi, '');
+  const urlDim = (u) => { const m = String(u).match(/(\d{3,4})x(\d{3,4})/); return m ? Math.max(+m[1], +m[2]) : 0; };
+  for (const m of doc.matchAll(/<a\b[^>]+href=["']([^"']+)["']/gi)) {
+    if (/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(m[1])) { const a = ok(m[1]); if (a) return a; }
   }
-  const og = String(html).match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
-  if (og) consider(og[1], 85);
-  for (const m of String(html).matchAll(/<img\b[^>]*>/gi)) {
+  const cands = [];
+  for (const m of doc.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0];
     const attr = (n) => { const mm = tag.match(new RegExp(n + '=["\']([^"\']+)["\']', 'i')); return mm ? mm[1] : ''; };
     const full = attr('data-full') || attr('data-large') || attr('data-highres');
-    if (full) { consider(full, 90); continue; }
+    let ssUrl = '', ssW = 0;
     const srcset = attr('srcset') || attr('data-srcset');
     if (srcset) {
       const parts = srcset.split(',').map(s => s.trim().split(/\s+/)).filter(p => p[0]);
       parts.sort((a, b) => (parseInt(b[1], 10) || 0) - (parseInt(a[1], 10) || 0));
-      if (parts[0]) { consider(parts[0][0], 50 + Math.min(25, (parseInt(parts[0][1], 10) || 0) / 50)); continue; }
+      if (parts[0]) { ssUrl = parts[0][0]; ssW = parseInt(parts[0][1], 10) || 0; }
     }
     const lazy = attr('data-src') || attr('data-original') || attr('data-lazy-src');
-    if (lazy) { consider(lazy, 40); continue; }
-    consider(attr('src'), 10);
+    const url = full || ssUrl || lazy || attr('src');
+    const a = ok(url); if (!a) continue;
+    const dim = Math.max(parseInt(attr('width'), 10) || 0, parseInt(attr('height'), 10) || 0, ssW, urlDim(a));
+    cands.push({ url: a, dim, full: !!full, lazyOnly: !!lazy && !full && !ssUrl, order: cands.length });
   }
-  return best ? best.url : '';
+  const f = cands.find(c => c.full); if (f) return f.url;
+  const big = cands.filter(c => c.dim >= 700).sort((x, y) => (y.dim - x.dim) || (x.order - y.order));
+  if (big.length) return big[0].url;
+  const og = String(html).match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
+  if (og) { const a = ok(og[1]); if (a) return a; }
+  const lz = cands.find(c => c.lazyOnly); if (lz) return lz.url;
+  return cands.length ? cands[0].url : '';
 }
 /* Post-page links on a grid/index page: same-host anchors that wrap a
    thumbnail or look like post URLs. These are where the real images live. */
@@ -4011,10 +4225,27 @@ async function scrapeCurrentPageImages() {
     }
     return it;
   }).filter(Boolean);
-  fileCapturedItems(items);
-  showToast(gridMode
-    ? `Scraped ${items.length} main image${items.length === 1 ? '' : 's'} (one per post) to @${handle || 'untitled'}`
-    : `Scraped the main image to @${handle || 'untitled'}`);
+  /* Preview before filing (Kendall, 2026-11-10): show the winner and let
+     him confirm — a wrong pick costs one tap, not a cleanup. */
+  pendingScrape = { items, gridMode, handle };
+  const img = $('scrape-img'); img.src = urls[0];
+  $('scrape-sub').textContent = gridMode
+    ? `Main images from ${items.length} post${items.length === 1 ? '' : 's'} — previewing the first. Save them all to @${handle || 'untitled'}?`
+    : `This is the page's main image. Save it to @${handle || 'untitled'}?`;
+  $('scrape-modal').classList.remove('hidden');
+}
+let pendingScrape = null;
+function resolveScrape(save) {
+  const p = pendingScrape; pendingScrape = null;
+  $('scrape-modal').classList.add('hidden');
+  if (!p) return;
+  if (!save) { showToast('Scrape cancelled — nothing saved'); return; }
+  const result = fileSavedItems(p.items, p.handle);
+  if (result === 'pending') return; /* the new-profile prompt takes it from here */
+  const filedHandle = p.items.length ? (p.items[0].profile?.handle || 'untitled') : 'untitled';
+  showToast(p.gridMode
+    ? `Scraped ${p.items.length} main image${p.items.length === 1 ? '' : 's'} (one per post) to @${filedHandle}`
+    : `Scraped the main image to @${filedHandle}`);
 }
 function setupDropZone(el, item) {
   el.addEventListener('click', () => showToast('Drag an image onto this button — or tap a picture inside the page to save it'));
@@ -4168,7 +4399,17 @@ function wirePasteModal() {
     persistAppSettings();
     showToast(v ? 'Proxy saved — it now leads the webpage fetch' : 'Proxy cleared — public proxies only');
   });
-  $('btn-start-feed').addEventListener('click', () => { processPastedUrls('replace'); closePasteModal(); });
+  $('btn-start-feed').addEventListener('click', () => {
+    /* Starting the main feed from home ends any Discovery session (the
+       two modes are separate; home is the only crossing point). */
+    if (($('batch-input').value || '').trim()) processPastedUrls('replace');
+    else if (discoveryFeedModeActive) exitDiscoveryFeed();
+    closePasteModal();
+  });
+  $('btn-disc-save-create').addEventListener('click', () => resolveDiscSave(true));
+  $('btn-disc-save-bucket').addEventListener('click', () => resolveDiscSave(false));
+  $('btn-scrape-save').addEventListener('click', () => resolveScrape(true));
+  $('btn-scrape-cancel').addEventListener('click', () => resolveScrape(false));
   $('btn-append-bottom').addEventListener('click', () => processPastedUrls('bottom'));
   $('btn-append-top').addEventListener('click', () => processPastedUrls('top'));
   $('btn-paste-export').addEventListener('click', triggerFullTxtExport);
@@ -4223,8 +4464,20 @@ function wirePasteModal() {
     if (t) openTeachModal(Number(t.dataset.teach));
   });
   $('btn-discovery-save').addEventListener('click', saveDiscoveryProfilesFromInput);
-  $('btn-discovery-feed').addEventListener('click', enterDiscoveryFeed);
+  $('btn-discovery-feed').addEventListener('click', () => { closePasteModal(); openDiscoveryPanel(); });
   $('btn-discovery-exit').addEventListener('click', exitDiscoveryFeed);
+  $('btn-disc-close').addEventListener('click', () => { closeDiscoveryPanel(); openPasteModal(); });
+  $('btn-disc-menu').addEventListener('click', () => { closeDiscoveryPanel(); openPasteModal(); });
+  $('btn-disc-browse-all').addEventListener('click', () => { closeDiscoveryPanel(); enterDiscoveryFeed(); });
+  $('disc-list').addEventListener('click', (e) => {
+    const open = e.target.closest('[data-dopen]');
+    if (open) { enterDiscoveryProfile(discoveryProfileLinks[Number(open.dataset.dopen)]); return; }
+    const del = e.target.closest('[data-ddel2]');
+    if (del) {
+      discoveryProfileLinks.splice(Number(del.dataset.ddel2), 1);
+      persistDiscovery(); renderDiscoveryList(); renderDiscoveryPanel();
+    }
+  });
   $('discovery-list').addEventListener('click', (e) => {
     const del = e.target.closest('[data-ddel]');
     if (!del) return;
