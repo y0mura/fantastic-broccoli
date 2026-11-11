@@ -303,7 +303,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button></span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button></span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
@@ -324,6 +324,12 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  </div>
  <div id="tp-unl" hidden><p class="lab" style="margin:8px 0">Pages and video posts with no direct video linked yet. Tap Link to attach a video file.</p><div class="list" id="ulist"></div></div>
  <div id="tp-act" hidden><input id="asq" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="list" id="alist"></div></div>
+ <div id="tp-r2" hidden>
+  <p class="lab" style="margin:8px 0">Your personal R2 storage. Filed items live under @r2 as direct feed videos — and in the main feed too. Clean up links shortens any R2 link to just the filename, dropping junk segments in the middle.</p>
+  <textarea id="rta" rows="3" style="width:100%" placeholder="One filename or link per line…"></textarea>
+  <div class="row"><button class="pill" id="rpc">Paste</button><button class="pill on" id="rfl">Preview &amp; file under @r2</button><button class="pill" id="rcl">Clean up links</button><button class="pill" id="rop">Open @r2 folder</button></div>
+  <div class="list" id="rlist"></div>
+ </div>
 </div></div>
 <div id="mm"></div>
 <div id="toast"></div>
@@ -808,9 +814,18 @@ function attach(list,hd){const have=new Set(S.items.map(i=>normKey(i.url)));let 
 /* R2 fast lane: bare filenames get the bucket prefix, the built links are
    shown back for confirmation, and confirmed links file under @r2 as
    direct feed videos — never webpage cards, whatever the Mode option says. */
-function r2Flow(){ask({title:'Paste R2 filenames',desc:'One filename (or full link) per line. Your R2 prefix is added, then every built link is shown back for confirmation before anything is filed.',multi:1,ph:'clip.mp4',ok:'Preview links',extra:[['Paste',pasteInto]],onOk:t=>{
- const names=t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length){toast('No filenames');return false}
- const urls=names.map(n=>(/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,''))).replace(/ /g,'%20'));
+/* R2 link hygiene. r2Slash repairs a missing slash after the bucket host
+   (…r2.devclip.mp4 — a paste Kendall flagged as breaking the chain).
+   r2clean additionally drops every path segment between the host and the
+   filename: some tools insert a junk numeric segment there, and the file
+   lives at the bucket root, so host + filename is the real link. */
+const r2Slash=u=>String(u||'').replace(/^(https?:\/\/[^\s/]*?\.r2\.dev)(?=[A-Za-z0-9])/i,'$1/');
+function r2clean(u){const s=r2Slash(strip(u||''));if(!/r2\.dev/i.test(s))return u;
+ try{const x=new URL(s);if(!/\.r2\.dev$/i.test(x.hostname))return s;const seg=x.pathname.split('/').filter(Boolean);
+  if(seg.length>1){x.pathname='/'+seg[seg.length-1];return x.toString()}return s}catch(e){return s}}
+const isR2Item=i=>i.handle==='r2'||/r2\.dev/i.test(i.url||'');
+function r2Confirm(names){
+ const urls=names.map(n=>r2Slash((/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,''))).replace(/ /g,'%20')));
  ask({title:'Confirm R2 links',desc:'These file under @r2 as direct feed videos — autoplay, no webpage view. Edit any line that looks wrong, or Cancel.',multi:1,val:urls.join('\n'),ok:'File under @r2',onOk:t2=>{
   const lines=t2.split(/\r?\n/).map(s=>s.trim().replace(/ /g,'%20')).filter(Boolean);if(!lines.length){toast('Nothing to file');return false}
   attach(lines,'r2');
@@ -822,10 +837,14 @@ function r2Flow(){ask({title:'Paste R2 filenames',desc:'One filename (or full li
   S.items.forEach(i=>{if(keys.has(normKey(i.url))&&(i.handle!=='r2'||i.type!=='video')){i.ch='r2';i.handle=alias('r2');i.type='video';claimed++}});
   if(claimed)save();
   const total=S.items.filter(i=>i.handle==='r2'&&keys.has(normKey(i.url))).length;
+  const rt=$('#rta');if(rt)rt.value='';chips();
   closeModal();
   if(total){if(S.mode!=='main'){S.mode='main'}render();toast(`Filed ${total} R2 video${total===1?'':'s'} under @r2`)}else toast('Nothing filed — check the links');
  }});
-}})}
+}
+function r2Flow(){ask({title:'Paste R2 filenames',desc:'One filename (or full link) per line. Your R2 prefix is added, then every built link is shown back for confirmation before anything is filed.',multi:1,ph:'clip.mp4',ok:'Preview links',extra:[['Paste',pasteInto]],onOk:t=>{
+ const names=t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length){toast('No filenames');return false}
+ r2Confirm(names)}})}
 function addMediaModal(hd,done){ask({title:'Add media to @'+hd,desc:'Paste links (images, videos, pages) or bare R2 filenames, one per line.',multi:1,ph:'https://…',ok:'+ Attach to profile',extra:[['Paste',pasteInto]],onOk:t=>{const n=attach(parse(t).items.map(i=>i.url),hd);toast(n?`Added ${n} to @${hd}`:'Nothing new to add');if(n&&done)done();chips()}})}
 function bindVideo(pg,full){full=strip(full);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=full;S.items.forEach(x=>{if(strip(x.url)===pg&&(x.type==='webpage'||(x.type==='video'&&!isDirect(x.url)))){x.source=pg;x.url=full;x.type='video';delete x.stream}});save();setDirty(true);chips()}
 const isVidUrl=u=>isDirect(u)||/\.(mp4|webm|m4v|mov|m3u8)(\?|#|$)/i.test(u);
@@ -909,15 +928,20 @@ const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;$('#pmx').hidden=true;rende
 /* ---------- batch tabs: discovery, unlinked, active feed ---------- */
 function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));S.idx=k||0;$('#pmx').hidden=false;closeModal();render()}
 const unlinked=()=>S.items.filter(i=>i.type==='webpage'||(i.type==='video'&&!isDirect(i.url)&&!TAUGHT[strip(i.url)]));
-function chips(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length}
+function chips(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=S.items.filter(isR2Item).length}
 const short=u=>{try{const x=new URL(strip(u));return x.hostname.replace(/^www\./,'')+x.pathname.replace(/\/$/,'')}catch(e){return u}};
 function renderDisc(){$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';chips()}
 function renderUnl(){const L=unlinked().slice(0,150);$('#ulist').innerHTML=L.map(it=>`<div class="li"><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-u="go" data-id="${it.id}">Go</button><button data-u="link" data-id="${it.id}">Link</button></div>`).join('')||'<p class="lab">Everything is linked.</p>';chips()}
 const ACTN=150;let delArm=null;
 function renderAct(){const q=$('#asq').value.trim().toLowerCase();let L=S.items;if(q)L=L.filter(i=>(i.handle+' '+i.url+' '+(i.source||'')).toLowerCase().includes(q));
- $('#alist').innerHTML=L.slice(0,ACTN).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-a="go" data-id="${it.id}">Go</button><button class="danger" data-a="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>ACTN?`<p class="lab">Showing ${ACTN} of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No matches.</p>';chips()}
+ $('#alist').innerHTML=L.slice(0,ACTN).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-a="go" data-id="${it.id}">Go</button><button data-a="edit" data-id="${it.id}">Edit</button><button class="danger" data-a="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>ACTN?`<p class="lab">Showing ${ACTN} of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No matches.</p>';chips()}
+function editLink(it){ask({title:'Edit link',desc:'@'+it.handle+' — fix this item\u2019s URL.',val:it.url,ok:'Save link',extra:[['Paste',pasteInto]],onOk:v=>{const nu=r2Slash((v||'').trim().replace(/ /g,'%20'));if(bad(nu)){toast('That is not a usable link');return false}
+ if(S.items.some(x=>x!==it&&normKey(x.url)===normKey(nu))){toast('Another item already uses that link');return false}
+ it.url=nu;it.source='';save();setDirty(true);chips();if(S.mode==='main'){V=vis();render()}if(!$('#tp-act').hidden)renderAct();if(!$('#tp-r2').hidden)renderR2();toast('Link updated')}})}
+function renderR2(){const L=S.items.filter(isR2Item).slice(0,150);
+ $('#rlist').innerHTML=L.map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">${esc(it.name||('@'+it.handle))}<small>${esc(short(it.url))}</small></div><button data-r="go" data-id="${it.id}">Go</button><button data-r="edit" data-id="${it.id}">Edit link</button></div>`).join('')||'<p class="lab">Nothing filed under @r2 yet.</p>';chips()}
 function goItem(id){let i=V.findIndex(x=>x.id===id);if(i<0&&S.mode==='main'){S.filter='all';S.sort='default';S.prof=null;V=vis();i=V.findIndex(x=>x.id===id);render()}if(i<0)return toast('Not in the current feed');closeModal();S.idx=i;jump(i,false);sync()}
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['paste','disc','unl','act'].forEach(k=>$('#tp-'+k).hidden=k!==t);if(t==='disc')renderDisc();if(t==='unl')renderUnl();if(t==='act')renderAct()});
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['paste','disc','unl','act','r2'].forEach(k=>$('#tp-'+k).hidden=k!==t);if(t==='disc')renderDisc();if(t==='unl')renderUnl();if(t==='act')renderAct();if(t==='r2')renderR2()});
 $('#asq').addEventListener('input',renderAct);
 $('#dpc').onclick=()=>pasteInto($('#dta'));
 $('#dsv').onclick=()=>{const u=dt($('#dta').value).split(/\s+/).map(strip).filter(t=>/^https?:\/\//i.test(t));if(!u.length)return toast('No page links found');const n0=S.disc.length;S.disc=[...new Set(S.disc.concat(u))];$('#dta').value='';save();setDirty(true);renderDisc();toast(`Saved ${S.disc.length-n0} profile${S.disc.length-n0===1?'':'s'}`)};
@@ -925,8 +949,19 @@ $('#dgo').onclick=()=>launchDisc(0);
 $('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);save();setDirty(true);renderDisc()}};
 $('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.u==='go')goItem(it.id);else teach(it)};
 $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id;if(b.dataset.a==='go')return goItem(id);
+ if(b.dataset.a==='edit'){const it=S.items.find(x=>x.id===id);if(it)editLink(it);return}
  if(delArm!==id){delArm=id;b.textContent='Confirm?';setTimeout(()=>{if(delArm===id){delArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  delArm=null;S.items=S.items.filter(x=>x.id!==id);save();setDirty(true);if(S.mode==='main'){V=vis();if(S.idx>=V.length)S.idx=0;render()}renderAct();toast('Deleted')};
+/* ---------- R2 tab: file, clean up, open folder ---------- */
+$('#rpc').onclick=()=>pasteInto($('#rta'));
+$('#rfl').onclick=()=>{const names=$('#rta').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length)return toast('Paste filenames or links first');r2Confirm(names)};
+$('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');closeModal();G.prof='r2';G.tab='items';openGrid()};
+$('#rcl').onclick=()=>{const seen=new Map();S.items.forEach(i=>{const k=normKey(i.url);if(!seen.has(k))seen.set(k,i)});let n=0,skip=0;
+ for(const it of S.items){if(!/r2\.dev/i.test(it.url||''))continue;const c=r2clean(it.url);if(c===it.url)continue;const ex=seen.get(normKey(c));if(ex&&ex!==it){skip++;continue}
+  seen.delete(normKey(it.url));it.url=c;it.source='';seen.set(normKey(c),it);n++}
+ if(n){save();setDirty(true);if(S.mode==='main'){V=vis();render()}}
+ renderR2();toast(n?`Cleaned ${n} R2 link${n===1?'':'s'}${skip?` — ${skip} skipped (would duplicate another item)`:''}`:'R2 links are already clean')};
+$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else editLink(it)};
 /* ---------- options ---------- */
 function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||''}
 $('#s-off').onchange=e=>{S.set.off=+e.target.value;save()};$('#s-mode').onchange=e=>{S.set.mode=e.target.value;save()};
