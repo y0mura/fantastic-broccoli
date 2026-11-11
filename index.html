@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b0c11"><title>ReelFlow</title>
 <style>
-:root{--bg:#0b0c11;--ink:#eceae4;--dim:#9a9aa6;--acc:#8fd0ff;--hot:#ffb36b;--glass:rgba(22,23,31,.74);--line:rgba(255,255,255,.11)}
+:root{--bg:#0b0c11;--ink:#eceae4;--dim:#9a9aa6;--acc:#8fd0ff;--hot:#ffb36b;--glass:rgba(22,23,31,.74);--line:rgba(255,255,255,.11);--field:#0d0e14;--panel:#14151d;--dock:rgba(10,10,20,.55)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:500 13px/1.3 ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden;overscroll-behavior:none;user-select:none;-webkit-user-select:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
@@ -18,7 +18,23 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;paddin
 .row{display:flex;gap:7px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .row::-webkit-scrollbar{display:none}
 .sp{flex:1}
-#rail{position:fixed;z-index:20;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;transition:opacity .25s}
+#rail{position:fixed;z-index:20;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 5px;border-radius:999px;background:var(--dock);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 12px 30px rgba(0,0,0,.4);transition:opacity .25s}
+#rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+#rail .pill:active{background:rgba(255,255,255,.1)}
+.rail-sep{width:18px;height:1px;background:var(--line);margin:3px auto}
+button,.pill{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#fh{position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:26;display:none}
+body.fs #fh{display:flex}
+body.cl #fh{opacity:.92}
+/* Themes: variable swaps only — Default is the :root palette above.
+   House B keeps its own hardcoded palette, so its text vars stay default. */
+body[data-theme="day"]{--bg:#f2f1ec;--ink:#191a1e;--dim:#63656e;--acc:#2563eb;--hot:#d97706;--glass:rgba(255,255,255,.78);--line:rgba(20,22,30,.14);--field:#ffffff;--panel:#ffffff;--dock:rgba(255,255,255,.6)}
+body[data-theme="pitch"]{--bg:#000;--ink:#ededed;--dim:#8f8f8f;--acc:#ffb224;--hot:#ff7847;--glass:rgba(0,0,0,.66);--line:rgba(255,255,255,.13);--field:#0a0a0a;--panel:#0a0a0a;--dock:rgba(0,0,0,.55)}
+body[data-theme="slate"]{--bg:#d9dade;--ink:#1d1e22;--dim:#5f6066;--acc:#0f766e;--hot:#b45309;--glass:rgba(238,238,240,.8);--line:rgba(0,0,0,.15);--field:#f4f4f5;--panel:#ececed;--dock:rgba(240,240,242,.6)}
+body[data-theme="matcha"]{--bg:#0b100d;--ink:#e8f0e6;--dim:#93a48f;--acc:#b7c46a;--hot:#e0a458;--glass:rgba(12,18,13,.74);--line:rgba(200,255,205,.11);--field:#10160f;--panel:#121a13;--dock:rgba(8,14,9,.55)}
+body[data-theme="ember"]{--bg:#120e0b;--ink:#f3eae0;--dim:#a89a8c;--acc:#ff7847;--hot:#ffc46b;--glass:rgba(22,16,12,.74);--line:rgba(255,205,160,.12);--field:#171008;--panel:#1a130d;--dock:rgba(16,11,8,.55)}
+body.hb{--ink:#eceae4;--dim:#9a9aa6}
+.tdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
 body.cl #top,body.cl #rail,body.cl .vb,body.cl .sw,body.zoomed #top,body.zoomed #rail,body.zoomed .vb,body.zoomed .sw{opacity:0;pointer-events:none}
 #rs{position:fixed;z-index:30;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);opacity:.55}
 #feed{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
@@ -52,7 +68,7 @@ video.main{background:#000}
 .main.eb{filter:brightness(var(--b,1))}
 .lab{color:var(--dim);padding:0 2px;flex:none}
 .pill.ic{padding:0 10px;gap:3px}.pill s{text-decoration:none;font-size:9px;opacity:.65}.pill em{font-style:normal;font-size:11px;font-weight:700}
-#pop{position:fixed;z-index:60;min-width:170px;max-width:84vw;padding:8px;border-radius:18px;background:rgba(22,23,31,.95);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top left;pointer-events:none;transition:opacity .16s,transform .16s}
+#pop{position:fixed;z-index:60;min-width:170px;max-width:84vw;padding:8px;border-radius:18px;background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top left;pointer-events:none;transition:opacity .16s,transform .16s}
 #pop.open{opacity:1;transform:none;pointer-events:auto}
 #pop h4{margin:6px 6px 5px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:700}
 #pop .g{display:flex;flex-wrap:wrap;gap:6px;padding:0 2px 4px}
@@ -75,7 +91,7 @@ video.main{background:#000}
 .card.hz .hzw{position:fixed;inset:auto;z-index:55;left:50%;top:50%;width:100vh;width:100dvh;height:100vw;transform:translate(-50%,-50%) rotate(90deg);background:#000}
 body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 
-#grid{position:fixed;inset:0;z-index:40;background:#09090b;display:flex;flex-direction:column}
+#grid{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column}
 #gbar{position:absolute;z-index:4;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 6px;display:flex;flex-direction:column;gap:7px;transition:transform .28s cubic-bezier(.2,.8,.2,1);background:linear-gradient(#09090bd9,#09090b00);pointer-events:none}
 #gbar>*{pointer-events:auto}#gbar.hid{transform:translateY(-130%)}
 #gshow{position:absolute;z-index:5;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);transform:translateX(-50%);height:28px;min-width:54px;opacity:.8}
@@ -126,10 +142,10 @@ body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 .li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700}.li .t small{display:block;color:var(--dim);font-size:10px;font-weight:500;overflow:hidden;text-overflow:ellipsis}
 .li button{height:30px;padding:0 11px;border-radius:15px;background:#2a2d3a;font-size:11px;font-weight:700;flex:none}.li button.danger{color:#ff8d8d}
 .opt{margin-top:8px;color:var(--dim)}.opt summary{padding:6px 2px;cursor:pointer}.opt .row{margin:6px 0}
-.opt select,.mm input,.mm textarea,#dta,#asq{background:#0d0e14;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:9px 10px;font:inherit;user-select:text;-webkit-user-select:text}
+.opt select,.mm input,.mm textarea,#dta,#asq{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:9px 10px;font:inherit;user-select:text;-webkit-user-select:text}
 .tg{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:14px;background:#1b1d27;border:1px solid var(--line);color:var(--ink)}
 #mm{position:fixed;inset:0;z-index:65;background:rgba(5,6,9,.62);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}#mm.open{display:flex}
-.mm{width:100%;max-width:420px;background:#14151d;border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.mm{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .mm h3{margin:0;font-size:16px}.mm p{margin:0;color:var(--dim);font-size:12px;word-break:break-all}.mm textarea{height:110px;resize:none}
 
 body.cl #top>*,body.hzon #top>*,body.zoomed #top>*{pointer-events:none}
@@ -204,7 +220,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
 .big.go{background:var(--acc);color:#07131d;border-color:transparent}
 .big.glow{border-color:var(--hot);color:var(--hot)}
 #ta{width:100%;height:34dvh;background:#0d0e14;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px;font:12px/1.45 ui-monospace,Menlo,monospace;resize:none;user-select:text;-webkit-user-select:text;white-space:pre;overflow:auto}
-#toast{position:fixed;z-index:70;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 80px);transform:translate(-50%,16px);padding:10px 16px;border-radius:20px;background:rgba(30,32,42,.92);border:1px solid var(--line);opacity:0;pointer-events:none;transition:.25s;max-width:86vw}
+#toast{position:fixed;z-index:70;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 80px);transform:translate(-50%,16px);padding:10px 16px;border-radius:20px;background:var(--panel);border:1px solid var(--line);opacity:0;pointer-events:none;transition:.25s;max-width:86vw}
 #toast.s{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head><body class="hb">
@@ -214,19 +230,19 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <button class="pill ic" id="bz" title="Feed zoom"><i data-i="zoom"></i><em id="zl"></em><s>▾</s></button>
   <button class="pill ic" id="ba" title="Auto-scroll"><i data-i="clock"></i><em id="au"></em><s>▾</s></button>
   <button class="pill ic" id="bgd" title="Grid & collage"><i data-i="grid"></i></button>
-  <button class="pill ic" id="bbag" title="Lock and return to Finds" aria-label="Lock"><i data-i="bag"></i></button>
   <button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button>
   <button class="pill ic" id="bx" hidden title="Clear filters">✕</button>
-  <button class="pill" id="pmx" hidden title="Leave Discovery and return to your main feed">Main feed</button>
+  <button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button>
   <span class="sp"></span>
   <button class="pill" id="bp" title="Batch URLs & banks"><i data-i="plus"></i><span id="cnt">0</span></button>
+  <button class="pill ic" id="bol" title="Open link — go off-platform"><i data-i="link"></i></button>
  </div>
  <div class="row r2">
-  <button class="pill on" id="bkg" hidden></button><button class="pill" id="pc" hidden></button><button class="pill" id="px" hidden>✕</button><button class="pill" id="bmd" hidden></button><button class="pill" id="blk" hidden></button><button class="pill" id="be" hidden>Enhance</button><button class="pill" id="bv" hidden>▾</button>
+  <button class="pill on" id="bkg" hidden></button><button class="pill" id="px" hidden>‹ Back</button><button class="pill" id="pc" hidden></button><button class="pill" id="bmd" hidden></button><button class="pill" id="blk" hidden></button><button class="pill" id="be" hidden>Enhance</button><button class="pill" id="bv" hidden>▾</button>
   <span class="sp"></span>
   <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
- <div class="row r2" id="pr" hidden><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psh">Shielded view</button><button class="pill" id="pm" hidden>Main feed</button></div>
+ <div class="row r2" id="pr" hidden><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psh">Shielded view</button><button class="pill" id="pm" hidden>‹ Back</button></div>
  <div class="row" id="dr" hidden>
   <button class="pill" data-l="1">1</button><button class="pill" data-l="2">2</button><button class="pill" data-l="3">3</button>
   <span class="lab">Bright</span><button class="pill" id="ed">−</button><span class="lab" id="el">100%</span><button class="pill" id="eu">+</button>
@@ -241,17 +257,22 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
 </defs></svg>
 <aside id="rail">
  <button class="pill" id="rp" title="Previous"><i data-i="up"></i></button>
+ <button class="pill" id="bbag" title="Lock and return to Finds" aria-label="Lock"><i data-i="bag"></i></button>
+ <div class="rail-sep"></div>
  <button class="pill" id="rm" title="Mute"><i data-i="muted"></i></button>
  <button class="pill" id="rk" title="Play / pause" hidden><i data-i="pause"></i></button>
  <button class="pill" id="rt" hidden title="Thumbnail loop"><i data-i="scissors"></i></button>
- <button class="pill" id="rn" title="Next"><i data-i="down"></i></button>
+ <button class="pill" id="rfs" title="Horizontal fullscreen"><i data-i="expand"></i></button>
+ <div class="rail-sep"></div>
  <button class="pill" id="rh" title="Hide UI"><i data-i="hide"></i></button>
+ <button class="pill" id="rn" title="Next"><i data-i="down"></i></button>
 </aside>
 <button class="pill" id="rs" hidden>Show UI</button>
-<main id="feed"></main>
+<main id="feed"><button class="pill ic" id="fh" title="Hide UI"><i data-i="hide"></i></button></main>
 <div id="grid" hidden>
  <div id="gbar">
   <div class="row" id="gb1">
+   <button class="pill" data-act="back"><i data-i="back"></i>Back</button><button class="pill" data-act="batch">Batch menu</button>
    <button class="pill ic" data-act="ss" title="Slide show" aria-label="Slide show"><i data-i="play"></i></button>
    <span class="seg"><button class="pill" data-act="tabi">All</button><button class="pill" data-act="tabp">Profiles</button></span>
    <span class="seg split"><button class="pill" data-act="sizec" title="Tap to cycle grid size"><span id="gsl">M</span></button><button class="pill" data-act="size" title="Choose size"><s>▾</s></button></span>
@@ -261,17 +282,18 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
    <button class="pill ic" data-act="ebb" title="L-grid bounce" hidden><i data-i="sort"></i></button>
    <button class="pill ic" data-act="shuf" title="Shuffle"><i data-i="shuffle"></i></button>
    <button class="pill ic" data-act="sort" title="Filter and sort"><i data-i="filter"></i><s>▾</s></button>
-   <span class="sp"></span><button class="pill ic" data-act="close" title="Close grid">✕</button>
+   <span class="sp"></span>
   </div>
   <div class="row" id="gb2" hidden>
-   <button class="pill" data-act="pback"><i data-i="back"></i>Profiles</button><span class="lab" id="gpn"></span>
+   <span class="lab" id="gpn"></span>
    <a class="pill" id="gpl" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>Visit page</a>
-   <button class="pill" data-act="ren">Rename</button><button class="pill" data-act="addm">Add media</button><button class="pill" data-act="sel">Select</button>
+   <button class="pill" data-act="sel">Edit media</button><button class="pill" data-act="addm">Add media</button><button class="pill" data-act="ren">Rename profile</button>
   </div>
   <div class="row" id="gbs" hidden>
    <span class="lab" id="gsn">0 selected</span><span class="sp"></span>
    <button class="pill" data-act="selall">All</button>
    <button class="pill on" data-act="send">Send to…</button>
+   <button class="pill" data-act="seldel">Delete</button>
    <button class="pill" data-act="seldone">Done</button>
   </div>
   <div class="row" id="gbc" hidden>
@@ -303,39 +325,62 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button></span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button><button class="pill" data-tab="prof">Profiles</button></span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
-  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><button class="pill on" id="mk"><i data-i="lock"></i>App-Only</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
+  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="mdc">Decrypt</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><button class="pill on" id="mk"><i data-i="lock"></i>App-Only</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
   <textarea id="ta" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste image, video or page links, or bare R2 filenames. One per line."></textarea>
   <div class="row" style="justify-content:space-between"><span id="dc" style="color:var(--dim)">0 URLs</span><button class="pill" id="mx">Clear</button></div>
   <details class="opt"><summary>Options</summary>
    <div class="row"><span class="lab">Page offset</span><select id="s-off"><option value="0">Top</option><option value="10">10%</option><option value="25">25%</option><option value="40">40%</option><option value="50">50%</option><option value="75">75%</option></select><span class="lab">Mode</span><select id="s-mode"><option value="auto">Auto-detect</option><option value="video">Force video</option><option value="image">Force image</option><option value="webpage">Force webpage</option></select></div>
    <div class="row"><label class="tg"><input type="checkbox" id="s-ad"> Ad &amp; popup shield</label><label class="tg"><input type="checkbox" id="s-mute"> Auto-mute</label><label class="tg"><input type="checkbox" id="s-shuf"> Shuffle on load</label><label class="tg"><input type="checkbox" id="s-sniff"> Auto-sniff stream</label></div>
-   <div class="row"><span class="lab">My proxy</span><input id="s-proxy" type="text" placeholder="https://…workers.dev/?url=" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0;background:#0d0e14;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:11px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text"></div>
+   <div class="row"><span class="lab">My proxy</span><input id="s-proxy" type="text" placeholder="https://…workers.dev/?url=" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:11px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text"><button class="pill on" id="s-pon" style="flex:none" title="Turn your proxy on or off (the address stays saved)">On</button></div>
+   <div class="row" id="thumbs" style="flex-wrap:wrap;gap:6px"><span class="lab">Theme</span><button class="pill" data-th="default"><span class="tdot" style="background:#8fd0ff"></span>Default</button><button class="pill" data-th="day"><span class="tdot" style="background:#2563eb"></span>Daylight</button><button class="pill" data-th="pitch"><span class="tdot" style="background:#ffb224"></span>Pitch</button><button class="pill" data-th="slate"><span class="tdot" style="background:#0f766e"></span>Slate</button><button class="pill" data-th="matcha"><span class="tdot" style="background:#b7c46a"></span>Matcha</button><button class="pill" data-th="ember"><span class="tdot" style="background:#ff7847"></span>Ember</button></div>
   </details>
  </div>
  <div id="tp-disc" hidden>
   <p class="lab" style="margin:8px 0">Paste creator or profile pages to browse. Tap any picture inside a page to save it under that @profile.</p>
   <textarea id="dta" rows="3" style="width:100%" placeholder="One profile page per line…"></textarea>
-  <div class="row"><button class="pill" id="dpc">Paste</button><button class="pill on" id="dsv">Save profiles</button><button class="big go" id="dgo" style="flex:none;padding:0 16px">Launch discovery feed</button></div>
+  <div class="row"><button class="pill" id="dpc">Paste</button><button class="pill on" id="dsv">Save profiles</button><button class="big go" id="dgo" style="flex:none;padding:0 16px">Open discovery list</button></div>
   <div class="list" id="dlist"></div>
  </div>
  <div id="tp-unl" hidden><p class="lab" style="margin:8px 0">Pages and video posts with no direct video linked yet. Tap Link to attach a video file.</p><div class="list" id="ulist"></div></div>
- <div id="tp-act" hidden><input id="asq" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="list" id="alist"></div></div>
+ <div id="tp-act" hidden><input id="asq" list="proflist" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="list" id="alist"></div></div>
  <div id="tp-r2" hidden>
   <p class="lab" style="margin:8px 0">Your personal R2 storage. Filed items live under @r2 as direct feed videos — and in the main feed too. Clean up links shortens any R2 link to just the filename, dropping junk segments in the middle.</p>
   <textarea id="rta" rows="3" style="width:100%" placeholder="One filename or link per line…"></textarea>
-  <div class="row"><button class="pill" id="rpc">Paste</button><button class="pill on" id="rfl">Preview &amp; file under @r2</button><button class="pill" id="rcl">Clean up links</button><button class="pill" id="rop">Open @r2 folder</button></div>
+  <div class="row"><button class="pill" id="rpc">Paste</button><button class="pill on" id="rfl">Preview &amp; file under @r2</button><button class="pill" id="rop">Open @r2 folder</button></div>
   <div class="list" id="rlist"></div>
+ </div>
+ <div id="tp-dup" hidden>
+  <p class="lab" style="margin:8px 0">Likely duplicates: items that share a filename (the same file filed twice under different links — e.g. a clean R2 link and one with junk in the middle) or that were linked from the same page. Delete the copies you don't want; the rest of the group stays.</p>
+  <div class="list" id="duplist"></div>
+ </div>
+ <div id="tp-prof" hidden>
+  <div id="prof-list">
+   <div class="row" style="margin:8px 0;gap:8px"><input id="psearch" list="proflist" placeholder="Search profiles…" autocomplete="off" style="flex:1"><select id="psel" style="flex:1;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px;font:inherit"></select></div>
+   <div class="list" id="profrows"></div>
+  </div>
+  <div id="prof-detail" hidden>
+   <div class="row" style="margin:8px 0;gap:8px"><button class="pill" id="pdbk">‹ Back</button><span class="lab" id="pdname" style="font-size:14px;color:var(--ink)"></span></div>
+   <div class="list" id="pdlist"></div>
+  </div>
+  <datalist id="proflist"></datalist>
  </div>
 </div></div>
 <div id="mm"></div>
 <div id="toast"></div>
+<button id="upill" class="pill" hidden style="position:fixed;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:96;background:var(--acc);color:#07131d;font-weight:800">Undo delete</button>
+<div id="dwrap" hidden style="position:fixed;inset:0;background:var(--bg);z-index:45;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 14px 24px">
+ <div style="display:flex;gap:8px;align-items:center;margin:4px 0 12px"><span class="lab" style="font-size:14px;color:var(--ink)">Discovery — your saved profile pages</span><span style="flex:1"></span><button class="pill on" id="dw-exit">‹ Back</button></div>
+ <p class="lab" style="margin:0 0 10px">Open a page to browse it and tap media inside to save it. The arrows move between list items — there is no grid here, by design.</p>
+ <div class="row" style="gap:8px;margin:0 0 12px"><input id="dwa" placeholder="Add a profile page link…" style="flex:1"><button class="pill on" id="dwadd">Add</button></div>
+ <div class="list" id="dwlist"></div>
+</div>
 <script>
 'use strict';
-const $=s=>document.querySelector(s),feed=$('#feed'),ta=$('#ta');
+const $=s=>document.querySelector(s),feed=$('#feed'),ta=$('#ta'),fhEl=$('#fh');
 /* ---------- app-only cipher (rf1$) — byte-compatible with the original ---------- */
 const ALPHA='Q9wE8rT7yU6iO5pA4sD3fG2hJ1kL0zXcVbNmMnBvCxZlKjHgFdSaPoIuYtReWq-_';
 const KEY=[0x52,0x65,0x65,0x6c,0x46,0x6c,0x6f,0x77,0x5f,0x56,0x61,0x75,0x6c,0x74,0x5f,0x76,0x31,0x32,0x21,0x9e,0x37,0x79,0xb9,0x7f];
@@ -354,7 +399,7 @@ function decTok(tok){const p=tok.slice(4),v=[];for(const ch of p){const k=DEC[ch
  return new TextDecoder().decode(o)}
 const dt=raw=>(!raw||(!raw.includes('rf1$')&&!raw.includes('~RF1~')))?(raw||''):raw.replace(/^\s*~RF1~\s*$/gm,'').replace(/rf1\$[A-Za-z0-9_-]+/g,decTok);
 /* ---------- state ---------- */
-const S={disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:''},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
+const S={disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
 const RATES=[1,1.25,1.5,2,.5,.75],AUTO=[0,3,5,8,15,30,1.5,1],FILT=['all','image','video','webpage'],FL={all:'All',image:'Img',video:'Vid',webpage:'Link'},SORT=['default','new','az'],SL={default:'Default',new:'New',az:'A–Z'};
 let V=[],AT=0,Z={on:0,s:1,x:0,y:0},inB=true;const HYD=new Set();
 const ICONS={bag:'M6 8h12l1 12H5zM9 8V6a3 3 0 016 0v2',lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z',unlock:'M7 11V8a5 5 0 019.5-2M5 11h14v9H5z',save:'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',drop:'M12 4v10m0 0l-4-4m4 4l4-4M5 19h14',link:'M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1',expand:'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',shrink:'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5',back8:'M12 5a7 7 0 11-6.5 4.4M5 4v5h5',fwd8:'M12 5a7 7 0 106.5 4.4M19 4v5h-5',up2:'M12 19V5m0 0l-5 5m5-5l5 5',down2:'M12 5v14m0 0l-5-5m5 5l5-5',image:'M4 5h16v14H4zM8 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 17l5-5 4 4 3-3 4 4',minus:'M5 12h14',back:'M19 12H5m0 0l6-6m-6 6l6 6',close:'M6 6l12 12M18 6L6 18',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',layout:'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',crawl:'M6 5l6 6 6-6M6 12l6 6 6-6',pan:'M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3M8 11h6M11 8v6',scissors:'M6 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12',filter:'M4 6h16M7 12h10M10 18h4',sort:'M7 4v16m0 0l-3-3m3 3l3-3M17 20V4m0 0l-3 3m3-3l3 3',clock:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM12 7.5v4.8l3.2 2',shuffle:'M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5',plus:'M12 5v14M5 12h14',up:'M6 15l6-6 6 6',down:'M6 9l6 6 6-6',unmuted:'M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 010 6M19 6a8 8 0 010 12',muted:'M4 9v6h4l5 4V5L8 9H4zM17 9l4 6m0-6l-4 6',play:'M8 5v14l11-7z',pause:'M8 5v14M16 5v14',hide:'M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a13 13 0 01-2.6 3.7M6.1 6.1A13 13 0 002.5 12c1 2.5 4.5 7 9.5 7 1.5 0 2.9-.4 4.1-1'};
@@ -441,7 +486,10 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  const tr=Object.entries(TRIMS);if(tr.length)L.push('','# [VIDEO_THUMB_TRIMS]',...tr.map(([u,t])=>u+' | '+t.startSec+','+t.loopSec));
  for(let n=1;n<=5;n++)if(S.banks[n].length)L.push('',`# [BANK_${n}]`,...S.banks[n]);
  if(HB.cards.length)L.push('','# [HOUSE_B_CARDS]',...HB.cards.map(c=>JSON.stringify(c)));if(HB.dels.length)L.push('','# [HOUSE_B_DELETIONS]',...HB.dels.map(d=>JSON.stringify(d)));if(HB.prefs)L.push('','# [HOUSE_B_PREFS]',JSON.stringify(HB.prefs));
- L.push('','# [APP_SETTINGS]',JSON.stringify(cfgGet()));
+ /* The export carries the library, not the view: APP_SETTINGS holds only the
+    proxy (infrastructure Kendall wants traveling with the file). View and
+    playback preferences stay on the device — Nov 11, Kendall's call. */
+ L.push('','# [APP_SETTINGS]',JSON.stringify({proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME}));
  return['~RF1~',...L.map(l=>l.trim()?enc(l):'')].join('\n')}
 const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]++);const bk=Object.values(p.banks||{}).filter(a=>a.length).length;return`${p.items.length} items: ${c.video} video, ${c.image} image, ${c.webpage} page`+(bk?` · ${bk} bank${bk>1?'s':''} loaded`:'')};
 /* ---------- persistence ---------- */
@@ -455,7 +503,7 @@ async function fetchHtml(url){const one=async(u,wrap)=>{const c=new AbortControl
   try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;const x=wrap?String((await r.json()).contents||''):await r.text();
    if(x.length<120||(/<title>\s*(?:Just a moment|Attention Required|Access Denied|403 Forbidden)/i.test(x)&&x.length<15000))throw 0;return x}finally{clearTimeout(t)}},e=encodeURIComponent(url),
   tasks=[one('https://corsproxy.io/?'+e),one('https://api.codetabs.com/v1/proxy?quest='+e),one('https://api.allorigins.win/raw?url='+e),one('https://api.allorigins.win/get?url='+e,1)];
- if(S.set.proxy){const p=S.set.proxy;tasks.unshift(one(p.includes('{url}')?p.split('{url}').join(e):p+e))}
+ if(S.set.proxy&&S.set.proxyOn!==false){const p=S.set.proxy;tasks.unshift(one(p.includes('{url}')?p.split('{url}').join(e):p+e))}
  if(Promise.any)return Promise.any(tasks);for(const t of tasks){try{return await t}catch(e){}}throw 0}
 function findStream(html,page){const b=new URL(page),C=[],fix=c=>{if(!c)return null;c=c.replace(/\\u002F/g,'/').replace(/\\\//g,'/').replace(/&amp;/g,'&').trim();if(c.startsWith('//'))return b.protocol+c;try{return new URL(c,page).href}catch(e){return null}},
  add=(c,s)=>{const r=fix(c);if(!r||/\.(swf|html?|php|jpe?g|png|gif|svg)(\?|$)/i.test(r)||/doubleclick|adserver|preroll|\/vast/i.test(r))return;if(/1080p|720p|hd|high|main|source|master/i.test(r))s+=30;else if(/480p|360p/i.test(r))s+=10;if(r.includes(b.hostname.replace(/^www\./,'')))s+=15;C.push([s,r])};let m;
@@ -468,7 +516,7 @@ function extract(it){const page=strip(it.source||it.url);if(EX.has(page))return 
 /* ---------- feed ---------- */
 function vis(){if(S.mode==='disc')return S.discItems;let a=S.items.filter(i=>(S.filter==='all'||i.type===S.filter)&&(!S.prof||i.handle===S.prof));
  if(S.sort==='new')a=[...a].sort((x,y)=>y.seq-x.seq);else if(S.sort==='az')a=[...a].sort((x,y)=>(x.handle||x.url).localeCompare(y.handle||y.url));return a}
-function render(){zout();V=vis();feed.textContent='';HYD.clear();if(inB)return;
+function render(){zout();V=vis();[...HYD].forEach(s=>{try{dehyd(s)}catch(e){}});feed.textContent='';HYD.clear();if(fhEl)feed.appendChild(fhEl);if(inB)return;
  if(!V.length){const e=document.createElement('section');e.className='card';
   e.innerHTML=`<div class="empty"><h2>${S.items.length?'Nothing matches':'Your feed is empty'}</h2><p>${S.items.length?'Clear the filter to see everything again.':'Paste image, video or page links to start scrolling.'}</p><div><button class="pill on" id="eb">${S.items.length?'Clear filter':'+ Add URLs'}</button></div></div>`;
   feed.appendChild(e);$('#eb').onclick=()=>S.items.length?clearFilters():openModal();hud();return}
@@ -494,7 +542,7 @@ function dehyd(s){HYD.delete(s);if(Z.sec===s)zout();if(s._hls){try{s._hls.destro
  s.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});s.textContent='';delete s.dataset.h}
 let hlsP;const loadHls=()=>hlsP||(hlsP=new Promise(r=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js';sc.onload=()=>r(window.Hls);sc.onerror=()=>r(null);document.head.appendChild(sc)}));
 function sync(){if(inB)return;for(const s of [...HYD]){const i=+s.dataset.i;if(Math.abs(i-S.idx)>1)dehyd(s)}
- for(let i=Math.max(0,S.idx-1);i<=S.idx+1&&i<V.length;i++){const s=feed.children[i];if(!s)continue;const d=Math.abs(i-S.idx);
+ for(let i=Math.max(0,S.idx-1);i<=S.idx+1&&i<V.length;i++){const s=feed.querySelector('section.card[data-i="'+i+'"]');if(!s)continue;const d=Math.abs(i-S.idx);
   if(!s.dataset.h)hyd(s,i);else if(s.dataset.pend&&d===0){dehyd(s);hyd(s,i)}else if(d===1&&s.querySelector('iframe')){dehyd(s);hyd(s,i)}
   const v=s.querySelector('video');if(v){if(i===S.idx){v.preload='auto';v.muted=S.muted;v.loop=S.loop;v.playbackRate=S.rate;if(G.open){v.pause();continue}v.play().catch(()=>{v.muted=true;S.muted=true;v.play().catch(()=>{});hud()})}else v.pause()}}
  hud();arm()}
@@ -562,7 +610,12 @@ $('#bx').onclick=clearFilters;
 $('#bh').onclick=()=>{if(S.items.length<2)return;const a=[...S.items];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}S.items=a;S.idx=0;save();setDirty(true);render();toast('Shuffled')};
 $('#pc').onclick=()=>{const it=V[S.idx];if(!it||!it.handle)return;G.prof=it.handle;G.tab='items';FROM='';openGrid()};
 $('#px').onclick=()=>{S.prof=null;S.idx=0;render()};
+$('#bgd').onclick=()=>{FROM='';G.fromHome=0;G.prof=null;G.tab='items';openGrid()};
+$('#bkg').onclick=()=>{const w=FROM;FROM='';G.fromHome=0;G.col=w==='collage';openGrid()};
 $('#rp').onclick=()=>go(-1);$('#rn').onclick=()=>go(1);
+$('#rfs').onclick=()=>{const v=feed.querySelector('section.card video');try{if(document.fullscreenElement)document.exitFullscreen();else if(feed.requestFullscreen){const p=feed.requestFullscreen();if(p&&p.catch)p.catch(()=>{});if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{})}else if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}catch(e){if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}}};
+document.addEventListener('fullscreenchange',()=>document.body.classList.toggle('fs',!!document.fullscreenElement));
+$('#fh').onclick=()=>{const cl=document.body.classList.toggle('cl');$('#rs').hidden=!cl};
 $('#rm').onclick=()=>{S.muted=!S.muted;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud()};
 $('#rk').onclick=()=>{const v=feed.querySelector(`.card[data-i="${S.idx}"] video`);if(v)tog(v)};
 $('#rh').onclick=()=>{document.body.classList.add('cl');$('#rs').hidden=false};
@@ -600,13 +653,15 @@ $('#sd').onclick=()=>{S.sharp=Math.max(-3,S.sharp-1);applyEnh()};$('#su').onclic
 /* ---------- batch modal ---------- */
 const modal=$('#modal');
 function openModal(){ta.value=boxText();count();bnk();chips();optUI();$('#bkp').hidden=true;modal.classList.add('open')}
-const closeModal=()=>modal.classList.remove('open');
+const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='main'&&!G.open){FEEDDIRTY=0;render()}};
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
 ta.addEventListener('input',count);
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
-$('#bp').onclick=openModal;$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
+$('#bp').onclick=openModal;$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
 $('#mr2').onclick=()=>{closeModal();r2Flow()};
+$('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already plain text');
+ ask({title:'Decrypt box',desc:'Enter the password to decode the obscured box text into plain text.',ph:'Password',ok:'Decrypt',onOk:v=>{if(v!=='Pie210'){toast('Wrong password');return false}ta.value=dt(ta.value);count();toast('Box decrypted — plain text')}})};
 $('#ma').onclick=()=>{const p=post(parse(ta.value)),have=new Set(S.items.map(i=>i.url));const add=p.items.filter(i=>!have.has(i.url));
  if(!add.length){toast('Nothing new to add');return}S.items=S.items.concat(add);if(!S.extra.length)S.extra=p.extra;commit();ta.value=boxText();count();toast(`Added ${add.length}`)};
 $('#mp').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim())return toast('Clipboard is empty');
@@ -624,16 +679,21 @@ $('#fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;const p=post(
 const G={open:0,tab:'items',size:'m',prof:null,sort:'default',ebb:0,crawl:0,zoom:'0',col:0,cs:2,cz:100,pan:0,bar:1,blow:{},salt:0,sy:0};
 let FROM='',GL=[],io=null,crawlRaf=0,panRaf=0,ssT=0,cl=0,ca=0,pl=0,px=0,py=0,pdx=1,pdy=1,ctp=0,spy=0,rlT=0,rlN=0;const PLAY=[],TM=new Map();
 const gr=$('#grid'),gs=$('#gs'),gt=$('#gt'),gbar=$('#gbar');
-const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,gsort:G.sort,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||''});
-function cfgSet(c){if(!c||typeof c!=='object')return;const n=(v,a,b,d)=>typeof v==='number'&&v>=a&&v<=b?v:d;
- S.zoom=String(c.zoom??S.zoom);S.auto=n(c.auto,0,60,S.auto);S.loop=c.loop!==false;S.rate=RATES.includes(c.rate)?c.rate:1;S.muted=c.muted!==false;S.mask=c.mask!==false;S.enh=n(c.enh,0,3,0);S.exp=n(c.exp,50,200,100);S.sharp=n(c.sharp,-3,6,0);
- G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';G.zoom=String(c.gzoom??'0');G.ebb=c.gebb?1:0;G.cs=n(c.gcs,1,3,2);G.cz=n(c.gcz,60,220,100);G.sort=['default','new','az'].includes(c.gsort)?c.gsort:'default';
- S.set.off=n(c.padj,0,100,0);S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';S.set.ad=c.ad!==false;S.set.shuf=!!c.shuf;S.set.sniff=!!c.sniff;S.set.proxy=typeof c.proxy==='string'?c.proxy:''}
+const THEMES=['default','day','pitch','slate','matcha','ember'];let THEME='default';
+function applyTheme(t){THEME=THEMES.includes(t)?t:'default';document.body.dataset.theme=THEME;document.querySelectorAll('#thumbs [data-th]').forEach(b=>b.classList.toggle('on',b.dataset.th===THEME))}
+const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME});
+function cfgSet(c){if(!c||typeof c!=='object')return;const n=(v,a,b,d)=>typeof v==='number'&&v>=a&&v<=b?v:d,h=k=>c[k]!==undefined;
+ /* Presence-based: a settings blob only changes the keys it carries, so a
+    slim export (proxy only) never resets the view prefs already on a device,
+    while full blobs from older exports still apply everything. */
+ if(h('zoom'))S.zoom=String(c.zoom);if(h('auto'))S.auto=n(c.auto,0,60,S.auto);if(h('loop'))S.loop=c.loop!==false;if(h('rate'))S.rate=RATES.includes(c.rate)?c.rate:1;if(h('muted'))S.muted=c.muted!==false;if(h('mask'))S.mask=c.mask!==false;if(h('enh'))S.enh=n(c.enh,0,3,0);if(h('exp'))S.exp=n(c.exp,50,200,100);if(h('sharp'))S.sharp=n(c.sharp,-3,6,0);
+ if(h('gsize'))G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';if(h('gzoom'))G.zoom=String(c.gzoom);if(h('gebb'))G.ebb=c.gebb?1:0;if(h('gcs'))G.cs=n(c.gcs,1,3,2);if(h('gcz'))G.cz=n(c.gcz,60,220,100);
+ if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('theme'))applyTheme(c.theme)}
 if(CFG0){cfgSet(CFG0);mkUI()}
 const host=it=>{try{return new URL(strip(it.source||it.url)).hostname.replace(/^www\./,'')}catch(e){return''}};
 const hashr=n=>{n=Math.imul(n^61,0x9e3779b1);n^=n>>>16;n=Math.imul(n,0x85ebca6b);n^=n>>>13;return(n>>>0)/4294967296};
 function thumb(it){const d=it.type==='video'&&(it.stream||isDirect(it.url));
- if(it.type==='image')return`<img class="tm" data-s="${esc(it.url.split('#')[0])}" alt="" decoding="async" referrerpolicy="no-referrer">`;
+ if(it.type==='image'){const o=it.url.split('#')[0];return`<img class="tm" data-s="${esc('https://wsrv.nl/?url='+encodeURIComponent(o)+'&w=320&q=70')}" data-o="${esc(o)}" alt="" decoding="async" referrerpolicy="no-referrer">`}
  if(d)return`<video class="tm" data-s="${esc((it.stream||it.url).split('#')[0])}" muted playsinline preload="metadata"></video>`;
  return`<div class="ph"><b>${it.type==='video'?'Video post':'Link'}</b><span>${esc(host(it))}</span></div>`}
 function setZs(m){const p=m.parentElement,w=m.naturalWidth||m.videoWidth,h=m.naturalHeight||m.videoHeight;if(!p||!w||!h)return;const r=p.getBoundingClientRect();if(!r.width)return;const a=w/h,b=r.width/r.height;
@@ -642,11 +702,11 @@ function dropM(m){try{m.pause();m.removeAttribute('src');m.load()}catch(e){}}
 function loadM(m,t){if(m.getAttribute('src')){if(m.tagName==='VIDEO'&&m.paused)m.play().catch(()=>{});return}if(!m.dataset.s)return;m.src=m.dataset.s;
  if(m.tagName==='VIDEO'){const it=t._it,c=TRIMS[tk(it.stream||it.url)]||{startSec:0,loopSec:8.5};m.loop=false;
   if(!m._w){m._w=1;m.addEventListener('timeupdate',()=>{if(m.currentTime>=c.startSec+c.loopSec)m.currentTime=c.startSec})}
-  m.addEventListener('loadedmetadata',()=>{try{m.currentTime=c.startSec}catch(e){}setZs(m)},{once:true});m.play().catch(()=>{});PLAY.push(m);if(PLAY.length>8)dropM(PLAY.shift())}}
+  m.addEventListener('loadedmetadata',()=>{try{m.currentTime=c.startSec}catch(e){}setZs(m)},{once:true});m.play().catch(()=>{});PLAY.push(m);if(PLAY.length>4)dropM(PLAY.shift())}}
 function mkIO(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;t._vis=e.isIntersecting;t.querySelectorAll('.tm').forEach(m=>{if(e.isIntersecting)loadM(m,t);else if(m.tagName==='VIDEO'&&m.getAttribute('src')){dropM(m);const k=PLAY.indexOf(m);if(k>=0)PLAY.splice(k,1)}})}),{root:gs,rootMargin:'30% 30%'})}
 function mkTile(it,i){const t=document.createElement('div');t.className='tile';t._i=i;t._it=it;t.style.setProperty('--ad',(-(Math.random()*9)).toFixed(2)+'s');
- t.innerHTML=thumb(it)+`<span class="hd">${it.name?esc(it.name):'@'+esc(it.handle)}</span>`;
- t.querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>{if(!im.dataset.r){im.dataset.r=1;im.src='https://wsrv.nl/?url='+encodeURIComponent(im.dataset.s)}},{once:true});im.addEventListener('load',()=>setZs(im))});io.observe(t);return t}
+ t.innerHTML=thumb(it)+`<span class="hd">@${esc(it.handle)}</span>`;
+ t.querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>{if(!im.dataset.r){im.dataset.r=1;im.src=im.dataset.o||im.dataset.s}},{once:true});im.addEventListener('load',()=>setZs(im))});io.observe(t);return t}
 const TC=new Map(),OVH='<div class="ov"><button data-o="open">'+svg('play')+'Open</button><button data-o="blow">'+svg('expand')+'Blow up</button></div>';
 function getTile(it,k){let t=TC.get(it.id);if(!t){t=mkTile(it,k);TC.set(it.id,t)}t._i=k;return t}
 const gtClass=()=>G.tab!=='items'?'g'+G.size.toUpperCase()+' gz-0':G.col?'cw c'+G.cs+' gz-'+G.zoom:(G.size==='l'&&G.ebb)?'gLe gz-'+(G.zoom==='bounce-zoom'?'bounce':G.zoom):'g'+G.size.toUpperCase()+' gz-'+(G.zoom==='bounce-zoom'?'0':G.zoom);
@@ -687,12 +747,14 @@ function renderGrid(keep){const y=keep?gs.scrollTop:0,x=keep?gs.scrollLeft:0;if(
   P.forEach(e=>{const pick=[...e.items.filter(i=>i.type==='image'),...e.items.filter(i=>i.type!=='image')].slice(0,3),t=document.createElement('div');t.className='tile pt';t._h=e.h;t._it=pick[0];t._pick=pick;
    t.innerHTML=pick.map((it,k)=>`<div class="fl${k?'':' a'}">${thumb(it)}</div>`).join('')+`<div class="pn"><span>@${esc(e.h)}</span><b>${e.items.length}</b></div>`;io.observe(t);f.appendChild(t);flipLoop(t)});
   gt.appendChild(f)}
- else{const L=GL=listItems();
+ else{const L=GL=listItems();G.chunkT=(G.chunkT||0)+1;if(TC.size>S.items.length+40){const live=new Set(S.items.map(i=>i.id));for(const id of[...TC.keys()])if(!live.has(id))TC.delete(id)}
   if(!L.length){gt.className='';gt.innerHTML='<div class="gem">Nothing in this profile</div>'}
   else{gt.className=gtClass();const f=document.createDocumentFragment();
    if(cw){gt.style.setProperty('--z',G.cz/100);gt.style.setProperty('--u',CS[G.cs].u);L.forEach((it,k)=>{const t=getTile(it,k);TM.set(it.id,t);f.appendChild(t)});gt.appendChild(f);applyCollage(false);rlN=0;probe(L,48).then(()=>{if(G.open&&G.col&&G.tab==='items')applyCollage(true)})}
    else if(G.size==='l'&&G.ebb){for(let k=0;k<L.length;k+=2){const r=document.createElement('div');r.className='erow '+((k/2)%2?'e':'o');for(const j of [k,k+1])if(L[j]){const t=getTile(L[j],j);t.style.gridColumn=t.style.gridRow='';r.appendChild(t)}f.appendChild(r)}gt.appendChild(f)}
-   else{L.forEach((it,k)=>{const t=getTile(it,k);t.style.gridColumn=t.style.gridRow='';f.appendChild(t)});gt.appendChild(f)}}}
+   else{let cold=0;for(const it of L)if(!TC.has(it.id))cold++;
+    if(cold>160){const tok=G.chunkT,put=(f2,a,b)=>{for(let k=a;k<b;k++){const t=getTile(L[k],k);t.style.gridColumn=t.style.gridRow='';f2.appendChild(t)}gt.appendChild(f2)},step=k0=>{if(tok!==G.chunkT||!G.open)return;const end=Math.min(L.length,k0+96);put(document.createDocumentFragment(),k0,end);sbUpdate();if(SEL.size)selPaint();if(end<L.length)setTimeout(()=>step(end),0);else if(keep)requestAnimationFrame(()=>gs.scrollTo(x,y))},end0=Math.min(L.length,120);put(f,0,end0);if(end0<L.length)setTimeout(()=>step(end0),0)}
+    else{L.forEach((it,k)=>{const t=getTile(it,k);t.style.gridColumn=t.style.gridRow='';f.appendChild(t)});gt.appendChild(f)}}}}
  gbUI();selPaint();requestAnimationFrame(()=>{gs.scrollTo(x,y);sbUpdate()})}
 const ZL={1:'In1',2:'In2',3:'In3',out:'Out1','out-2':'Out2',dynamic:'Dyn',4:'Boom','bounce-zoom':'Bnc'};
 function gbUI(){const on={tabi:G.tab==='items',tabp:G.tab==='profiles',col:G.col,crawl:G.crawl,ebb:G.ebb,pan:G.pan,zoom:G.zoom!=='0',sort:S.filter!=='all'||S.sort!=='default',sel:!!G.sel};
@@ -701,8 +763,44 @@ function gbUI(){const on={tabi:G.tab==='items',tabp:G.tab==='profiles',col:G.col
  gr.querySelector('[data-act=ebb]').hidden=!(G.size==='l'&&G.tab==='items'&&!G.col);gr.querySelector('[data-act=col]').hidden=G.tab!=='items';
  $('#gpn').textContent=G.prof?'@'+G.prof:'';const a=G.prof&&V.find(i=>i.handle===G.prof&&(i.source||i.type==='webpage')),l=$('#gpl');
  try{const u=new URL(strip(a.source||a.url)),s=u.pathname.split('/').filter(Boolean)[0];l.href=u.origin+(s?'/'+s+'/':'/');l.hidden=false}catch(e){l.hidden=true}}
-function openGrid(){V=vis();G.open=1;gr.hidden=false;feed.querySelectorAll('video').forEach(v=>v.pause());clearTimeout(AT);renderGrid(1);if(G.sy)requestAnimationFrame(()=>{gs.scrollTop=G.sy;sbUpdate()});barShow(1,1);if(G.crawl)startCrawl();if(G.pan&&G.col)startPan()}
-function closeGrid(){G.sy=gs.scrollTop;G.open=0;G.sel=0;SEL.clear();gr.hidden=true;gt.querySelectorAll('.pt').forEach(t=>clearTimeout(t._ft));PLAY.splice(0).forEach(dropM);io&&io.disconnect();io=null;TC.clear();TM.clear();gt.textContent='';cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();if(FEEDDIRTY){FEEDDIRTY=0;render()}else sync()}
+function openGrid(){if(S.mode==='disc')return toast('Discovery is a list — no grid there');V=vis();G.open=1;gr.hidden=false;feed.querySelectorAll('video').forEach(v=>v.pause());clearTimeout(AT);renderGrid(1);if(G.sy)requestAnimationFrame(()=>{gs.scrollTop=G.sy;sbUpdate()});barShow(1,1);if(G.crawl)startCrawl();if(G.pan&&G.col)startPan()}
+let FEEDDIRTY=0;const refreshAll=()=>{S.idx=0;V=vis();FEEDDIRTY=1;renderGrid()};
+/* grid bar dispatcher — every [data-act] in #gb1/#gb2/#gbc lands here.
+   Cases through 'ren' are Claude's originals (ported back verbatim from
+   index-2.html after the Nov 11 span-cut loss); back/batch/sel/send are
+   the folder-triage and redesign additions. */
+gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+ if(a==='close')closeGrid();
+ else if(a==='ss')slideshow();
+ else if(a==='tabi'){G.tab='items';G.prof=null;renderGrid()}
+ else if(a==='tabp'){G.tab='profiles';G.prof=null;renderGrid()}
+ else if(a==='pback'){G.prof=null;G.tab='profiles';renderGrid()}
+ else if(a==='sizec'){const o=['s','m','l','xl'];setSize(o[(o.indexOf(G.size)+1)%4])}
+ else if(a==='size')menu(b,[{t:'Grid size',o:[['s','S \u00b7 3 across'],['m','M \u00b7 2 across'],['l','L \u00b7 tall'],['xl','XL \u00b7 full width']],cur:()=>G.size,set:setSize}]);
+ else if(a==='col'){G.col=1;rlN=0;renderGrid();barShow(1)}
+ else if(a==='cback'){G.col=0;G.pan=0;renderGrid()}
+ else if(a==='cs'){G.cs=+b.dataset.v;rlN=0;save();setDirty(true);gt.className=gtClass();gt.style.setProperty('--u',CS[G.cs].u);applyCollage(true);gbUI()}
+ else if(a==='zm')setCz(G.cz-10);else if(a==='zp')setCz(G.cz+10);
+ else if(a==='pan'){G.pan=G.pan?0:1;if(G.pan)startPan();gbUI()}
+ else if(a==='crawl'){G.crawl=G.crawl?0:1;if(G.crawl)startCrawl();gbUI();toast(G.crawl?'Slow crawl on':'Slow crawl off')}
+ else if(a==='ebb'){G.ebb=G.ebb?0:1;G.zoom=G.ebb?'bounce-zoom':'dynamic';save();renderGrid()}
+ else if(a==='zoom')menu(b,[{t:G.col?'Tile zoom':'Grid zoom',o:gzOpts(),cur:()=>G.zoom,set:v=>{G.zoom=v;if(v==='bounce-zoom'&&G.size==='l'&&!G.ebb){G.ebb=1;save();renderGrid(1);return}save();applyGridClass()}}]);
+ else if(a==='sort')menu(b,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;refreshAll()}},{t:'Sort',o:[['default','Default'],['new','New'],['az','A\u2013Z']],cur:()=>S.sort,set:v=>{S.sort=v;refreshAll()}}]);
+ else if(a==='shuf'){if(S.mode!=='main')return toast('Shuffle works on your main feed');if(G.prof){const ix=[];S.items.forEach((x,k)=>{if(x.handle===G.prof)ix.push(k)});const vals=shuf(ix.map(k=>S.items[k]));ix.forEach((k,j)=>S.items[k]=vals[j])}else shuf(S.items);save();setDirty(true);refreshAll();toast('Shuffled')}
+ else if(a==='ren'){ask({title:'Rename profile',desc:'Updates every item in @'+G.prof+' and is saved in transcript.txt',ph:'New profile name',val:G.prof,ok:'Save name',onOk:v=>{const n=profNorm(v);if(!n||n===G.prof)return;ALIAS[G.prof]=n;S.items.forEach(i=>{if(i.handle===G.prof){i.handle=n;if(i.ch)i.ch=n}});G.prof=n;save();setDirty(true);V=vis();renderGrid(1);toast('Renamed to @'+n)}})}
+ else if(a==='back'){if(G.prof){G.prof=null;G.tab='profiles';renderGrid();gs.scrollTop=0}else if(G.fromHome){G.fromHome=0;closeGrid();openModal()}else closeGrid()}
+ else if(a==='batch'){closeGrid();openModal()}
+ else if(a==='sel'){if(S.mode==='disc')return toast('Selection works on your main-feed folders');setSel(G.sel?0:1)}
+ else if(a==='seldone')setSel(0);
+ else if(a==='selall'){GL.forEach(i=>SEL.add(i.id));selPaint()}
+ else if(a==='seldel'){if(!SEL.size)return toast('Tap tiles to select first');
+  menu(b,[{t:'Delete '+SEL.size+' selected item'+(SEL.size===1?'':'s')+'?',o:[['yes','Yes, delete'],['no','Cancel']],cur:()=>'',set:v=>{if(v==='yes'){const list=S.items.filter(i=>SEL.has(i.id));SEL.clear();G.sel=0;deleteItems(list);selPaint()}}}])}
+ else if(a==='send'){if(!SEL.size)return toast('Tap tiles to select first');
+  const profs=[...new Set(S.items.map(i=>i.handle))].filter(h=>h&&h!==G.prof).sort();
+  menu(b,[{t:'Send '+SEL.size+' to profile',o:profs.map(h=>[h,'@'+h]),cur:()=>'',set:v=>moveSelected(v)},
+   {t:'New profile',o:[['__new','+ Create new profile\u2026']],cur:()=>'',set:()=>{ask({title:'New profile',desc:'The selected items move to this profile.',ph:'profile name',ok:'Move',onOk:v=>{const n=profNorm(v);if(!n){toast('Enter a name');return false}moveSelected(n)}})}}])}
+ else if(a==='addm')addMediaModal(G.prof,()=>{V=vis();renderGrid(1)})});
+function closeGrid(){G.sy=gs.scrollTop;G.open=0;G.sel=0;SEL.clear();gr.hidden=true;gt.querySelectorAll('.pt').forEach(t=>clearTimeout(t._ft));PLAY.splice(0).forEach(dropM);io&&io.disconnect();io=null;TM.clear();gt.textContent='';if(warmV.dataset.u){warmV.dataset.u='';warmV.removeAttribute('src');try{warmV.load()}catch(e){}}cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();if(FEEDDIRTY){FEEDDIRTY=0;render()}else sync()}
 function openFromGrid(it){const i=V.indexOf(it);if(i<0)return;FROM=G.col&&G.tab==='items'?'collage':'grid';closeGrid();S.idx=i;jump(i,false);sync()}
 function barShow(v,force){if(G.bar===v&&!force)return;G.bar=v;gbar.classList.toggle('hid',!v);$('#gshow').hidden=!!v||(G.col&&G.tab==='items')}
 let sRaf=0;gs.addEventListener('scroll',()=>{if(sRaf)return;sRaf=requestAnimationFrame(()=>{sRaf=0;const y=gs.scrollTop,d=y-spy;spy=y;if(y<=36||d<-12)barShow(1);else if(y>56&&d>12&&!G.crawl&&!G.col)barShow(0);sbPos()})},{passive:true});addEventListener('resize',()=>{if(G.open)sbUpdate()});
@@ -730,12 +828,13 @@ $('#gcz').oninput=e=>setCz(+e.target.value);
 {const PP=new Map();let d0=0,z0=100;gs.addEventListener('pointerdown',e=>{PP.set(e.pointerId,[e.clientX,e.clientY]);if(PP.size===2){d0=dist(PP);z0=G.cz}});
  gs.addEventListener('pointermove',e=>{if(!PP.has(e.pointerId))return;PP.set(e.pointerId,[e.clientX,e.clientY]);if(PP.size===2&&G.col&&G.tab==='items')setCz(z0*dist(PP)/d0)});
  const up=e=>PP.delete(e.pointerId);gs.addEventListener('pointerup',up);gs.addEventListener('pointercancel',up)}
-let lpT=0,lpFired=false;
-gt.addEventListener('pointerdown',e=>{const t=e.target.closest('.tile');if(!t||t.classList.contains('pt')||G.sel)return;clearTimeout(lpT);lpT=setTimeout(()=>{const it=t._it;if(!it)return;lpFired=true;
- ask({title:'Rename',desc:'A display name for this item, shown on its tile in the folder. The file and the link are untouched. Clear the box to remove the name.',ph:'Display name',val:it.name||'',ok:'Save name',onOk:v=>{const nv=v.trim();it.name=nv||undefined;save();setDirty(true);gt.querySelectorAll('.tile').forEach(x=>{if(x._it===it){const hd=x.querySelector('.hd');if(hd)hd.textContent=nv||('@'+it.handle)}});renderGrid(1);toast(nv?'Renamed':'Name cleared')}})},650)});
-['pointerup','pointercancel','pointermove'].forEach(ev2=>gt.addEventListener(ev2,()=>clearTimeout(lpT),{passive:true}));
 gt.addEventListener('contextmenu',e=>{if(e.target.closest('.tile'))e.preventDefault()});
-gt.addEventListener('click',e=>{if(lpFired){lpFired=false;return}const t=e.target.closest('.tile');if(!t)return;
+/* Press-to-preload: the moment a finger lands on a video tile, start fetching
+   that video into a hidden element so the feed card opens with bytes (and a
+   warm connection) already in flight instead of starting cold on the click. */
+const warmV=document.createElement('video');warmV.preload='auto';warmV.muted=true;warmV.style.display='none';document.body.appendChild(warmV);
+gt.addEventListener('pointerdown',e=>{const t=e.target.closest('.tile');if(!t||!t._it)return;const it=t._it;if(it.type!=='video')return;const u=(it.stream||it.url).split('#')[0];if(!it.stream&&!/\.(mp4|webm|mov|m4v)(\?|$)/i.test(u)&&!/r2\.dev/i.test(u))return;if(warmV.dataset.u!==u){warmV.dataset.u=u;try{warmV.src=u}catch(x){}}},{passive:true});
+gt.addEventListener('click',e=>{const t=e.target.closest('.tile');if(!t)return;
  if(G.sel){if(t.classList.contains('pt'))return;const it=t._it;if(!it)return;SEL.has(it.id)?SEL.delete(it.id):SEL.add(it.id);selPaint();return}
  if(t.classList.contains('pt')){G.prof=t._h;G.tab='items';renderGrid();gs.scrollTop=0;return}
  const o=e.target.closest('[data-o]');if(o){if(o.dataset.o==='open')openFromGrid(t._it);else{const it=t._it;G.blow[it.id]=((G.blow[it.id]||0)+1)%3;G.salt++;gt.querySelectorAll('.ovon').forEach(x=>x.classList.remove('ovon'));applyCollage(true)}return}
@@ -770,40 +869,23 @@ const SEL=new Set();
 function selPaint(){gt.querySelectorAll('.tile').forEach(t=>{const on=!!(G.sel&&t._it&&SEL.has(t._it.id));t.classList.toggle('selon',on);let b=t.querySelector('.selb');if(on&&!b){b=document.createElement('span');b.className='selb';b.textContent='✓';t.appendChild(b)}if(!on&&b)b.remove()});
  const bar=$('#gbs');if(bar)bar.hidden=!G.sel;const lab=$('#gsn');if(lab)lab.textContent=SEL.size+' selected'}
 function setSel(on){G.sel=on?1:0;if(!on)SEL.clear();selPaint()}
-function moveSelected(target){let n=0;for(const it of S.items){if(SEL.has(it.id)){it.ch=target;it.handle=alias(target);n++}}
- SEL.clear();G.sel=0;save();setDirty(true);V=vis();renderGrid(1);selPaint();toast(n?`Moved ${n} to @${target}`:'Nothing moved')}
-let FEEDDIRTY=0;const refreshAll=()=>{S.idx=0;V=vis();FEEDDIRTY=1;renderGrid()};
-gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
- if(a==='close')closeGrid();
- else if(a==='ss')slideshow();
- else if(a==='tabi'){G.tab='items';G.prof=null;renderGrid()}
- else if(a==='tabp'){G.tab='profiles';G.prof=null;renderGrid()}
- else if(a==='pback'){G.prof=null;G.tab='profiles';renderGrid()}
- else if(a==='sizec'){const o=['s','m','l','xl'];setSize(o[(o.indexOf(G.size)+1)%4])}
- else if(a==='size')menu(b,[{t:'Grid size',o:[['s','S · 3 across'],['m','M · 2 across'],['l','L · tall'],['xl','XL · full width']],cur:()=>G.size,set:setSize}]);
- else if(a==='col'){G.col=1;rlN=0;renderGrid();barShow(1)}
- else if(a==='cback'){G.col=0;G.pan=0;renderGrid()}
- else if(a==='cs'){G.cs=+b.dataset.v;rlN=0;save();setDirty(true);gt.className=gtClass();gt.style.setProperty('--u',CS[G.cs].u);applyCollage(true);gbUI()}
- else if(a==='zm')setCz(G.cz-10);else if(a==='zp')setCz(G.cz+10);
- else if(a==='pan'){G.pan=G.pan?0:1;if(G.pan)startPan();gbUI()}
- else if(a==='crawl'){G.crawl=G.crawl?0:1;if(G.crawl)startCrawl();gbUI();toast(G.crawl?'Slow crawl on':'Slow crawl off')}
- else if(a==='ebb'){G.ebb=G.ebb?0:1;G.zoom=G.ebb?'bounce-zoom':'dynamic';save();renderGrid()}
- else if(a==='zoom')menu(b,[{t:G.col?'Tile zoom':'Grid zoom',o:gzOpts(),cur:()=>G.zoom,set:v=>{G.zoom=v;if(v==='bounce-zoom'&&G.size==='l'&&!G.ebb){G.ebb=1;save();renderGrid(1);return}save();applyGridClass()}}]);
- else if(a==='sort')menu(b,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;refreshAll()}},{t:'Sort',o:[['default','Default'],['new','New'],['az','A–Z']],cur:()=>S.sort,set:v=>{S.sort=v;refreshAll()}}]);
- else if(a==='shuf'){if(S.mode!=='main')return toast('Shuffle works on your main feed');if(G.prof){const ix=[];S.items.forEach((x,k)=>{if(x.handle===G.prof)ix.push(k)});const vals=shuf(ix.map(k=>S.items[k]));ix.forEach((k,j)=>S.items[k]=vals[j])}else shuf(S.items);save();setDirty(true);refreshAll();toast('Shuffled')}
- else if(a==='ren'){ask({title:'Rename profile',desc:'Updates every item in @'+G.prof+' and is saved in transcript.txt',ph:'New profile name',val:G.prof,ok:'Save name',onOk:v=>{const n=profNorm(v);if(!n||n===G.prof)return;ALIAS[G.prof]=n;S.items.forEach(i=>{if(i.handle===G.prof){i.handle=n;if(i.ch)i.ch=n}});G.prof=n;save();setDirty(true);V=vis();renderGrid(1);toast('Renamed to @'+n)}})}
- else if(a==='sel'){if(S.mode==='disc')return toast('Selection works on your main-feed folders');setSel(G.sel?0:1)}
- else if(a==='seldone')setSel(0);
- else if(a==='selall'){GL.forEach(i=>SEL.add(i.id));selPaint()}
- else if(a==='send'){if(!SEL.size)return toast('Tap tiles to select first');
-  const profs=[...new Set(S.items.map(i=>i.handle))].filter(h=>h&&h!==G.prof).sort();
-  menu(b,[{t:'Send '+SEL.size+' to profile',o:profs.map(h=>[h,'@'+h]),cur:()=>'',set:v=>moveSelected(v)},
-   {t:'New profile',o:[['__new','+ Create new profile…']],cur:()=>'',set:()=>{ask({title:'New profile',desc:'The selected items move to this profile.',ph:'profile name',ok:'Move',onOk:v=>{const n=profNorm(v);if(!n){toast('Enter a name');return false}moveSelected(n)}})}}])}
- else if(a==='addm')addMediaModal(G.prof,()=>{V=vis();renderGrid(1)})});
-$('#bgd').onclick=()=>{FROM='';G.prof=null;G.tab='items';openGrid()};
-$('#bkg').onclick=()=>{const w=FROM;FROM='';G.col=w==='collage';openGrid()};
-addEventListener('keydown',e=>{if(e.key==='Escape'&&G.open){const s=$('#ss');if(s._stop)s._stop();else closeGrid()}});
-/* ---------- generic modal, attach media, teach video ---------- */
+function moveItemsTo(list,target){let n=0;for(const it of list){it.ch=target;it.handle=alias(target);n++}
+ if(n){save();setDirty(true);FEEDDIRTY=1;V=vis();if(G.open)renderGrid(1)}return n}
+function moveSelected(target){const list=S.items.filter(i=>SEL.has(i.id));const n=moveItemsTo(list,target);
+ SEL.clear();G.sel=0;selPaint();toast(n?`Moved ${n} to @${target}`:'Nothing moved')}
+let LASTDEL=[],delT=0;
+function afterDelete(){save();setDirty(true);chips();V=vis();if(S.mode==='main'&&S.idx>=V.length)S.idx=Math.max(0,V.length-1);const feedShown=S.mode==='main'&&!G.open&&!modal.classList.contains('open')&&$('#dwrap').hidden;if(feedShown){FEEDDIRTY=0;render()}else FEEDDIRTY=1;if(G.open)renderGrid(1);
+ if(!$('#tp-act').hidden)renderAct();if(!$('#tp-r2').hidden)renderR2();if(!$('#tp-unl').hidden)renderUnl();const tp=$('#tp-dup');if(tp&&!tp.hidden)renderDup()}
+function deleteItems(list){if(!list.length)return;const ids=new Set(list.map(i=>i.id));
+ LASTDEL.push(list.map(it=>({it,idx:S.items.indexOf(it)})).sort((a,b)=>a.idx-b.idx));
+ S.items=S.items.filter(i=>!ids.has(i.id));list.forEach(i=>SEL.delete(i.id));
+ afterDelete();
+ const up=$('#upill');up.hidden=false;clearTimeout(delT);delT=setTimeout(()=>{up.hidden=true;LASTDEL=[]},9000);
+ toast(`Deleted ${ids.size} item${ids.size===1?'':'s'}`)}
+$('#upill').onclick=()=>{const batch=LASTDEL.pop();if(!batch)return;for(const e of batch)S.items.splice(Math.min(e.idx,S.items.length),0,e.it);
+ if(!LASTDEL.length)$('#upill').hidden=true;else{clearTimeout(delT);delT=setTimeout(()=>{$('#upill').hidden=true;LASTDEL=[]},9000)}afterDelete();toast('Restored')};
+/* ask() + pasteInto: Claude's originals, ported back verbatim from
+   index-2.html after the Nov 11 span-cut loss. */
 function ask(o){const m=$('#mm');m.innerHTML=`<div class="mm"><h3>${esc(o.title)}</h3>${o.desc?`<p>${esc(o.desc)}</p>`:''}${o.multi?`<textarea id="mmi" placeholder="${esc(o.ph||'')}"></textarea>`:`<input id="mmi" placeholder="${esc(o.ph||'')}" autocomplete="off" autocapitalize="off">`}<div class="row" style="margin:0">${(o.extra||[]).map((x,i)=>`<button class="pill" data-x="${i}">${esc(x[0])}</button>`).join('')}<span class="sp"></span><button class="pill" data-c="0">Cancel</button><button class="pill on" data-c="1">${esc(o.ok||'Save')}</button></div></div>`;
  const inp=$('#mmi');inp.value=o.val||'';m.classList.add('open');setTimeout(()=>inp.focus(),60);
  m.onclick=e=>{const b=e.target.closest('button');if(e.target===m||(b&&b.dataset.c==='0')){m.classList.remove('open');return}if(!b)return;if(b.dataset.x!==undefined){o.extra[+b.dataset.x][1](inp);return}if(b.dataset.c==='1'&&o.onOk(inp.value)!==false)m.classList.remove('open')}}
@@ -811,18 +893,11 @@ const pasteInto=async i=>{try{const t=await navigator.clipboard.readText();i.val
 function attach(list,hd){const have=new Set(S.items.map(i=>normKey(i.url)));let at=S.items.length;S.items.forEach((x,k)=>{if(x.handle===hd)at=k+1});const sess=(S.items.find(x=>x.handle===hd)||{}).sess||Date.now(),add=[];let seq=nextSeq();
  for(const raw of list){const it=mk(dash(raw),hd,sess,seq);if(bad(it.url))continue;const k=normKey(it.url);if(have.has(k))continue;have.add(k);it.handle=alias(hd);it.seq=seq++;it.id='i'+it.seq;add.push(it)}
  if(add.length){S.items.splice(at,0,...add);save();setDirty(true)}return add.length}
-/* R2 fast lane: bare filenames get the bucket prefix, the built links are
-   shown back for confirmation, and confirmed links file under @r2 as
-   direct feed videos — never webpage cards, whatever the Mode option says. */
-/* R2 link hygiene. r2Slash repairs a missing slash after the bucket host
-   (…r2.devclip.mp4 — a paste Kendall flagged as breaking the chain).
-   r2clean additionally drops every path segment between the host and the
-   filename: some tools insert a junk numeric segment there, and the file
-   lives at the bucket root, so host + filename is the real link. */
+/* R2 link hygiene: r2Slash repairs a missing slash after the bucket host
+   (…r2.devclip.mp4 — a paste Kendall flagged as breaking the chain). Links
+   themselves are entered correctly by hand; the old bulk "Clean up links"
+   button was removed Nov 11 at Kendall's word. */
 const r2Slash=u=>String(u||'').replace(/^(https?:\/\/[^\s/]*?\.r2\.dev)(?=[A-Za-z0-9])/i,'$1/');
-function r2clean(u){const s=r2Slash(strip(u||''));if(!/r2\.dev/i.test(s))return u;
- try{const x=new URL(s);if(!/\.r2\.dev$/i.test(x.hostname))return s;const seg=x.pathname.split('/').filter(Boolean);
-  if(seg.length>1){x.pathname='/'+seg[seg.length-1];return x.toString()}return s}catch(e){return s}}
 const isR2Item=i=>i.handle==='r2'||/r2\.dev/i.test(i.url||'');
 function r2Confirm(names){
  const urls=names.map(n=>r2Slash((/^https?:\/\//i.test(n)?dash(n):r2(n.replace(/^\/+/,''))).replace(/ /g,'%20')));
@@ -914,7 +989,7 @@ function saveCap(u,t,pg){const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const 
 addEventListener('message',e=>{const d=e.data;if(!d||d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA')return;const f=feed.querySelector(`.card[data-i="${S.idx}"] iframe`);if(!f||e.source!==f.contentWindow)return;const u=String(d.mediaUrl||'');if(d.mediaType==='video')saveMedia(u);else saveCap(u,'image',String(d.pageUrl||''))});
 function pageUI(it){const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
  $('#bmd').hidden=!vid;$('#bmd').innerHTML=pg?svg('play')+'Video':svg('link')+'Page';$('#blk').hidden=!pg;$('#blk').innerHTML=svg(S.lock?'lock':'unlock')+(S.lock?'Locked':'Lock');$('#blk').classList.toggle('on',S.lock);
- $('#pr').hidden=!pg;$('#pm').hidden=S.mode!=='disc';$('#pmx').hidden=S.mode!=='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
+ $('#pr').hidden=!pg;$('#pm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
  document.body.classList.toggle('lockon',!!(S.lock&&pg));if(!Z.on&&!document.body.classList.contains('hzon'))feed.style.overflowY=(S.lock&&pg)?'hidden':'scroll'}
 $('#bmd').onclick=()=>{const it=V[S.idx];if(!it)return;PM.set(it.id,isPageCard(it)?'video':'page');const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()};
 $('#blk').onclick=()=>{S.lock=!S.lock;hud();toast(S.lock?'Page locked: swiping is off until unlocked':'Page unlocked')};
@@ -924,49 +999,110 @@ $('#pdz').onclick=async()=>{let t='';try{t=(await navigator.clipboard.readText()
  if(/^https?:\/\//i.test(t)){saveMedia(t);return}
  ask({title:'Save media link',desc:'Paste an image or video link. A video links to this page and plays in the feed; an image is saved to the profile.',ph:'https://…',ok:'Save',extra:[['Paste',pasteInto]],onOk:v=>{v=v.trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}saveMedia(v)}})};
 $('#pdz').ondragover=e=>e.preventDefault();$('#pdz').ondrop=e=>{e.preventDefault();const t=(e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'').trim().split(/\s+/)[0];if(/^https?:\/\//i.test(t))saveMedia(t)};
-const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;$('#pmx').hidden=true;render();toast('Back to main feed')};$('#pm').onclick=exitDisc;$('#pmx').onclick=exitDisc;
+/* Discovery (Kendall, Nov 11): a LIST, not a feed and never a grid. The
+   list is the discovery home; opening an item visits that page, and the
+   page viewer's arrows just move between list items. Its job is visiting
+   pages and capturing media — no autoplay feed behavior of its own. */
+function renderDiscHome(){$('#dwlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet — add them in the batch menu\u2019s Discovery tab.</p>'}
+const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
+/* The list view is discovery's own screen (like the grid is a screen):
+   backing out of a page lands on the list, and only the list's own back
+   leaves discovery for the batch menu. */
+const discList=()=>{renderDiscHome();$('#dwrap').hidden=false};
+$('#pm').onclick=discList;
+$('#pdl').onclick=discList;
+$('#dw-exit').onclick=exitDisc;
+$('#dwlist').onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const k=+b.dataset.k;
+ if(b.dataset.w==='open'){S.idx=k;$('#dwrap').hidden=true;render()}
+ else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));if(S.idx>=S.discItems.length)S.idx=0;save();setDirty(true);chips();renderDiscHome();FEEDDIRTY=1}};
 /* ---------- batch tabs: discovery, unlinked, active feed ---------- */
-function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));S.idx=k||0;$('#pmx').hidden=false;closeModal();render()}
+function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;
+ if(k==null){S.idx=0;render();renderDiscHome();$('#dwrap').hidden=false}else{S.idx=k;$('#dwrap').hidden=true;render()}}
 const unlinked=()=>S.items.filter(i=>i.type==='webpage'||(i.type==='video'&&!isDirect(i.url)&&!TAUGHT[strip(i.url)]));
-function chips(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=S.items.filter(isR2Item).length}
+let chipsT=0;function chips(){if(chipsT)return;chipsT=requestAnimationFrame(()=>{chipsT=0;chipsNow()})}
+function chipsNow(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=S.items.filter(isR2Item).length;const cd=$('#chdup');if(cd)cd.textContent=dupGroups().reduce((n,g)=>n+g.list.length,0);profSuggest()}
 const short=u=>{try{const x=new URL(strip(u));return x.hostname.replace(/^www\./,'')+x.pathname.replace(/\/$/,'')}catch(e){return u}};
 function renderDisc(){$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';chips()}
-function renderUnl(){const L=unlinked().slice(0,150);$('#ulist').innerHTML=L.map(it=>`<div class="li"><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-u="go" data-id="${it.id}">Go</button><button data-u="link" data-id="${it.id}">Link</button></div>`).join('')||'<p class="lab">Everything is linked.</p>';chips()}
+function renderUnl(){const L=unlinked().slice(0,150);$('#ulist').innerHTML=L.map(it=>`<div class="li"><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-u="go" data-id="${it.id}">Go</button><button data-u="open" data-id="${it.id}">Open</button><button data-u="link" data-id="${it.id}">Link</button><button class="danger" data-u="del" data-id="${it.id}">Delete</button></div>`).join('')||'<p class="lab">Everything is linked.</p>';chips()}
 const ACTN=150;let delArm=null;
 function renderAct(){const q=$('#asq').value.trim().toLowerCase();let L=S.items;if(q)L=L.filter(i=>(i.handle+' '+i.url+' '+(i.source||'')).toLowerCase().includes(q));
- $('#alist').innerHTML=L.slice(0,ACTN).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-a="go" data-id="${it.id}">Go</button><button data-a="edit" data-id="${it.id}">Edit</button><button class="danger" data-a="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>ACTN?`<p class="lab">Showing ${ACTN} of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No matches.</p>';chips()}
+ $('#alist').innerHTML=L.slice(0,ACTN).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-a="go" data-id="${it.id}">Go</button>${it.source?`<button data-a="open" data-id="${it.id}">Open page</button>`:''}<button data-a="edit" data-id="${it.id}">Edit</button><button class="danger" data-a="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>ACTN?`<p class="lab">Showing ${ACTN} of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No matches.</p>';chips()}
 function editLink(it){ask({title:'Edit link',desc:'@'+it.handle+' — fix this item\u2019s URL.',val:it.url,ok:'Save link',extra:[['Paste',pasteInto]],onOk:v=>{const nu=r2Slash((v||'').trim().replace(/ /g,'%20'));if(bad(nu)){toast('That is not a usable link');return false}
  if(S.items.some(x=>x!==it&&normKey(x.url)===normKey(nu))){toast('Another item already uses that link');return false}
  it.url=nu;it.source='';save();setDirty(true);chips();if(S.mode==='main'){V=vis();render()}if(!$('#tp-act').hidden)renderAct();if(!$('#tp-r2').hidden)renderR2();toast('Link updated')}})}
 function renderR2(){const L=S.items.filter(isR2Item).slice(0,150);
- $('#rlist').innerHTML=L.map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">${esc(it.name||('@'+it.handle))}<small>${esc(short(it.url))}</small></div><button data-r="go" data-id="${it.id}">Go</button><button data-r="edit" data-id="${it.id}">Edit link</button></div>`).join('')||'<p class="lab">Nothing filed under @r2 yet.</p>';chips()}
+ $('#rlist').innerHTML=L.map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-r="go" data-id="${it.id}">Go</button>${it.source?`<button data-r="open" data-id="${it.id}">Open page</button>`:''}<button data-r="edit" data-id="${it.id}">Edit link</button></div>`).join('')||'<p class="lab">Nothing filed under @r2 yet.</p>';chips()}
+/* Duplicates: same filename under different links, or several items linked
+   from the same source page. Exact-URL duplicates can't exist (ingest
+   dedupes), so these groups are the duplicates that actually happen. */
+function dupGroups(){const byName=new Map(),bySrc=new Map();
+ const push=(m,k,it)=>{if(!k)return;if(!m.has(k))m.set(k,[]);m.get(k).push(it)};
+ for(const it of S.items){let fn='';try{const p=new URL(strip(it.url)).pathname.split('/').filter(Boolean);fn=(p[p.length-1]||'').toLowerCase()}catch(e){}
+  if(/\.(mp4|webm|m4v|mov|m3u8|jpe?g|png|webp|gif)$/i.test(fn))push(byName,fn,it);
+  if(it.source)push(bySrc,'linked from '+strip(it.source),it)}
+ const groups=[];const seen=new Set();
+ for(const m of [byName,bySrc])for(const [k,list] of m){const uniq=[...new Map(list.map(i=>[i.id,i])).values()];
+  if(uniq.length>1&&!seen.has(k)){seen.add(k);groups.push({k,list:uniq})}}
+ return groups}
+function renderDup(){const G=dupGroups();
+ $('#duplist').innerHTML=G.map(g=>`<p class="lab" style="margin:10px 0 4px">${esc(g.k)} — ${g.list.length} items</p>`+g.list.map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-dup="go" data-id="${it.id}">Go</button><button class="danger" data-dup="del" data-id="${it.id}">Delete</button></div>`).join('')).join('')||'<p class="lab">No duplicates found.</p>';chips()}
+$('#duplist').onclick=e=>{const b=e.target.closest('[data-dup]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.dup==='go')goItem(it.id);else deleteItems([it])};
+/* Profiles tab (batch menu): the management view — profiles A–Z, a dropdown,
+   autosuggest search fed by existing profile names (the same suggestion list
+   feeds the Active search), and a per-creator link list with a back button. */
+let PROFVIEW=null,profArm=null;
+const profNames=()=>[...new Set(S.items.map(i=>i.handle))].sort((a,b)=>a.localeCompare(b));
+let profSig='';function profSuggest(){const d=$('#proflist');if(!d)return;const ns=profNames(),sig=ns.join('\u0001');if(sig===profSig)return;profSig=sig;d.innerHTML=ns.map(h=>`<option value="${esc(h)}">`).join('')}
+function renderProf(){profSuggest();
+ const sel=$('#psel');sel.innerHTML='<option value="">Jump to a profile (A–Z)…</option>'+profNames().map(h=>`<option value="${esc(h)}">@${esc(h)} · ${S.items.filter(i=>i.handle===h).length}</option>`).join('');
+ if(PROFVIEW){$('#prof-list').hidden=true;$('#prof-detail').hidden=false;$('#pdname').textContent='@'+PROFVIEW;
+  const L=S.items.filter(i=>i.handle===PROFVIEW);
+  $('#pdlist').innerHTML=L.map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">${esc(short(it.url))}<small>${it.type}${it.source?' · linked':''}</small></div><button data-p="go" data-id="${it.id}">Go</button>${it.source?`<button data-p="open" data-id="${it.id}">Open page</button>`:''}<button class="danger" data-p="del" data-id="${it.id}">Delete</button></div>`).join('')||'<p class="lab">No links under this profile.</p>';return}
+ $('#prof-list').hidden=false;$('#prof-detail').hidden=true;
+ const q=($('#psearch').value||'').trim().toLowerCase();
+ const L=profNames().filter(h=>!q||h.toLowerCase().includes(q));
+ $('#profrows').innerHTML=L.map(h=>{const n=S.items.filter(i=>i.handle===h).length;return`<div class="li"><div class="t">@${esc(h)}<small>${n} item${n===1?'':'s'}</small></div><button data-p="view" data-h="${esc(h)}">Open</button></div>`}).join('')||'<p class="lab">No profiles match.</p>'}
+$('#psel').onchange=e=>{if(e.target.value){PROFVIEW=e.target.value;renderProf()}};
+let psT=0;$('#psearch').addEventListener('input',e=>{clearTimeout(psT);psT=setTimeout(()=>{const v=e.target.value.trim();if(profNames().includes(v))PROFVIEW=v;renderProf()},120)});
+$('#pdbk').onclick=()=>{PROFVIEW=null;$('#psearch').value='';$('#psel').value='';renderProf()};
+$('#tp-prof').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
+ if(b.dataset.p==='view'){PROFVIEW=b.dataset.h;renderProf();return}
+ const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;
+ if(b.dataset.p==='go')return goItem(it.id);
+ if(b.dataset.p==='open')return window.open(it.source,'_blank','noopener');
+ if(profArm!==it.id){profArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(profArm===it.id){profArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
+ profArm=null;deleteItems([it]);renderProf()};
 function goItem(id){let i=V.findIndex(x=>x.id===id);if(i<0&&S.mode==='main'){S.filter='all';S.sort='default';S.prof=null;V=vis();i=V.findIndex(x=>x.id===id);render()}if(i<0)return toast('Not in the current feed');closeModal();S.idx=i;jump(i,false);sync()}
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['paste','disc','unl','act','r2'].forEach(k=>$('#tp-'+k).hidden=k!==t);if(t==='disc')renderDisc();if(t==='unl')renderUnl();if(t==='act')renderAct();if(t==='r2')renderR2()});
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['paste','disc','unl','act','r2','dup','prof'].forEach(k=>$('#tp-'+k).hidden=k!==t);if(t==='disc')renderDisc();if(t==='unl')renderUnl();if(t==='act')renderAct();if(t==='r2')renderR2();if(t==='dup')renderDup();if(t==='prof'){PROFVIEW=null;renderProf()}});
 $('#asq').addEventListener('input',renderAct);
 $('#dpc').onclick=()=>pasteInto($('#dta'));
-$('#dsv').onclick=()=>{const u=dt($('#dta').value).split(/\s+/).map(strip).filter(t=>/^https?:\/\//i.test(t));if(!u.length)return toast('No page links found');const n0=S.disc.length;S.disc=[...new Set(S.disc.concat(u))];$('#dta').value='';save();setDirty(true);renderDisc();toast(`Saved ${S.disc.length-n0} profile${S.disc.length-n0===1?'':'s'}`)};
-$('#dgo').onclick=()=>launchDisc(0);
-$('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);save();setDirty(true);renderDisc()}};
-$('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.u==='go')goItem(it.id);else teach(it)};
+function addDisc(t){const u=dt(t||'').split(/\s+/).map(strip).filter(x=>/^https?:\/\//i.test(x));if(!u.length)return 0;const n0=S.disc.length;S.disc=[...new Set(S.disc.concat(u))];save();setDirty(true);chips();return S.disc.length-n0}
+$('#dsv').onclick=()=>{const n=addDisc($('#dta').value);if(!n)return toast('No page links found');$('#dta').value='';renderDisc();toast(`Saved ${n} profile${n===1?'':'s'}`)};
+$('#dwadd').onclick=()=>{const n=addDisc($('#dwa').value);if(!n)return toast('No page links found');$('#dwa').value='';renderDiscHome();renderDisc();toast(`Saved ${n} profile${n===1?'':'s'}`)};
+$('#dgo').onclick=()=>launchDisc();
+$('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));save();setDirty(true);renderDisc()}};
+let unlArm=null;
+$('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;const u=b.dataset.u;
+ if(u==='go')return goItem(it.id);if(u==='open')return window.open(it.url,'_blank','noopener');if(u==='link')return teach(it);
+ if(unlArm!==it.id){unlArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(unlArm===it.id){unlArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
+ unlArm=null;deleteItems([it])};
 $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id;if(b.dataset.a==='go')return goItem(id);
  if(b.dataset.a==='edit'){const it=S.items.find(x=>x.id===id);if(it)editLink(it);return}
+ if(b.dataset.a==='open'){const it=S.items.find(x=>x.id===id);if(it&&it.source)window.open(it.source,'_blank','noopener');return}
  if(delArm!==id){delArm=id;b.textContent='Confirm?';setTimeout(()=>{if(delArm===id){delArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
- delArm=null;S.items=S.items.filter(x=>x.id!==id);save();setDirty(true);if(S.mode==='main'){V=vis();if(S.idx>=V.length)S.idx=0;render()}renderAct();toast('Deleted')};
+ delArm=null;const dit=S.items.find(x=>x.id===id);if(dit)deleteItems([dit])};
 /* ---------- R2 tab: file, clean up, open folder ---------- */
 $('#rpc').onclick=()=>pasteInto($('#rta'));
 $('#rfl').onclick=()=>{const names=$('#rta').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length)return toast('Paste filenames or links first');r2Confirm(names)};
-$('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');closeModal();G.prof='r2';G.tab='items';openGrid()};
-$('#rcl').onclick=()=>{const seen=new Map();S.items.forEach(i=>{const k=normKey(i.url);if(!seen.has(k))seen.set(k,i)});let n=0,skip=0;
- for(const it of S.items){if(!/r2\.dev/i.test(it.url||''))continue;const c=r2clean(it.url);if(c===it.url)continue;const ex=seen.get(normKey(c));if(ex&&ex!==it){skip++;continue}
-  seen.delete(normKey(it.url));it.url=c;it.source='';seen.set(normKey(c),it);n++}
- if(n){save();setDirty(true);if(S.mode==='main'){V=vis();render()}}
- renderR2();toast(n?`Cleaned ${n} R2 link${n===1?'':'s'}${skip?` — ${skip} skipped (would duplicate another item)`:''}`:'R2 links are already clean')};
-$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else editLink(it)};
+$('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');closeModal();G.fromHome=1;G.prof='r2';G.tab='items';openGrid()};
+$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else if(b.dataset.r==='open'){if(it.source)window.open(it.source,'_blank','noopener')}else editLink(it)};
 /* ---------- options ---------- */
-function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||''}
+function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||'';const pb=$('#s-pon');pb.textContent=S.set.proxyOn===false?'Off':'On';pb.classList.toggle('on',S.set.proxyOn!==false)}
 $('#s-off').onchange=e=>{S.set.off=+e.target.value;save()};$('#s-mode').onchange=e=>{S.set.mode=e.target.value;save()};
 $('#s-ad').onchange=e=>{S.set.ad=e.target.checked;save()};$('#s-shuf').onchange=e=>{S.set.shuf=e.target.checked;save()};$('#s-sniff').onchange=e=>{S.set.sniff=e.target.checked;save()};
 $('#s-proxy').onchange=e=>{S.set.proxy=e.target.value.trim();save();toast(S.set.proxy?'Your proxy runs first for page fetches':'Proxy cleared — public proxies only')};
+$('#s-pon').onclick=()=>{S.set.proxyOn=S.set.proxyOn===false?true:false;save();optUI();toast(S.set.proxyOn?'Proxy on — your proxy runs first for page fetches':'Proxy off — public proxies only; your address stays saved')};
+$('#thumbs').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;applyTheme(b.dataset.th);save();toast('Theme: '+b.textContent.trim())};
 $('#s-mute').onchange=e=>{S.muted=e.target.checked;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud();save()};
 function post(p){if(S.set.mode!=='auto')p.items.forEach(i=>i.type=S.set.mode);if(S.set.shuf)for(let k=p.items.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[p.items[k],p.items[j]]=[p.items[j],p.items[k]]}return p}
 /* ---------- House B: Finds (lightweight companion: no timers, no observers, no animation) ---------- */
@@ -1071,7 +1207,11 @@ $('#gate').addEventListener('keydown',e=>{if(e.key==='Enter')gateTry();else if(e
 let lastAct=Date.now(),actT=0;const ACTEV=['pointerdown','pointermove','touchstart','touchmove','wheel','keydown','click','scroll'],bump=()=>{lastAct=Date.now()},chk=()=>{if(!inB&&Date.now()-lastAct>600000)enterB()};
 function startAct(){lastAct=Date.now();ACTEV.forEach(ev=>addEventListener(ev,bump,{passive:true,capture:true}));actT=setInterval(chk,30000);document.addEventListener('visibilitychange',chk)}
 function stopAct(){ACTEV.forEach(ev=>removeEventListener(ev,bump,{capture:true}));clearInterval(actT);document.removeEventListener('visibilitychange',chk)}
-function enterA(){if(!inB)return;inB=false;hbPanel('');$('#hbm').textContent='';document.body.classList.remove('hb');render();startAct()}
+function enterA(){if(!inB)return;inB=false;hbPanel('');$('#hbm').textContent='';document.body.classList.remove('hb');render();startAct();
+ /* House A always starts on the batch menu (Kendall, Nov 11): it's the main
+    menu — you don't load straight into the game, and any break leads back
+    to it. Start Feed is the "start game" action. */
+ openModal()}
 function enterB(){if(inB)return;stopAct();closeModal();$('#mm').classList.remove('open');closePop();if(G.open)closeGrid();const ss=$('#ss');ss._stop&&ss._stop();
  document.body.classList.remove('hzon','zoomed','cl');zout();clearTimeout(AT);cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);
  for(const s of [...HYD])dehyd(s);feed.querySelectorAll('video,iframe').forEach(v=>{try{v.pause&&v.pause();v.removeAttribute('src');v.load&&v.load()}catch(e){}});feed.textContent='';HYD.clear();V=[];
@@ -1090,5 +1230,5 @@ $('#bka').onclick=()=>{const u=bankUrls();if(!u.length)return toast('Nothing to 
 $('#bko').onclick=()=>{const u=bankUrls();if(!u.length)return toast('Nothing to save yet');S.banks[BT]=u;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Saved ${u.length} links to Bank ${BT}`)};
 $('#bkc').onclick=()=>{if(!S.banks[BT].length)return toast(`Bank ${BT} is already empty`);if(!BD){BD=1;$('#bkc').textContent=`Confirm delete bank ${BT}?`;return}S.banks[BT]=[];BD=0;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Deleted Bank ${BT}`)};
 /* ---------- boot ---------- */
-bnk();chips();optUI();hbLoad();hbRender();
+bnk();chips();optUI();applyTheme(THEME);hbLoad();hbRender();
 </script></body></html>
