@@ -1287,7 +1287,13 @@ const dumpHost=u=>{try{return new URL(u).hostname}catch(e){return u}};
 const dumpPath=u=>{try{const x=new URL(u);return (x.pathname+x.search).slice(0,90)}catch(e){return ''}};
 function dumpRestoreTaught(){if(!DUMP.snap)return;for(const k of Object.keys(TAUGHT))delete TAUGHT[k];Object.assign(TAUGHT,DUMP.snap);DUMP.snap=null}
 function dumpFillProf(){const cur=$('#dp-prof').value;const hs=[...new Set(S.items.map(i=>i.handle).filter(Boolean))];$('#dp-prof').innerHTML=hs.map(h=>`<option value="${esc(h)}" ${h===cur?'selected':''}>@${esc(alias(h))}</option>`).join('')}
-function stageDump(){const raw=$('#dpta').value;dumpRestoreTaught();DUMP.snap={...TAUGHT};
+function stageDump(){let raw=$('#dpta').value;
+ /* Encoding repair: a paste that arrives percent-encoded (the '#profile='
+    tag as %23profile=, line breaks as %0A) carries no real tags and defeats
+    classification. That fingerprint never occurs in a working URL, so when
+    it is present the whole paste is decoded once, up front. */
+ if(/%23profile=/i.test(raw)){try{raw=decodeURIComponent(raw)}catch(e){}}
+ dumpRestoreTaught();DUMP.snap={...TAUGHT};
  const have=new Set(S.items.map(i=>normKey(i.url))),tags={},pages={},clean=u=>u.replace(/[#&]profile=[^&#\s]*/gi,'');
  for(const l0 of raw.split(/\r?\n/)){const l=l0.trim();if(!l)continue;const tm=l.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);
   if(l.includes('|')){const parts=l.split('|').map(x=>x.trim()),vm=(parts[1]||'').match(/https?:\/\/[^\s]+/i);if(vm){const k=normKey(clean(vm[0]));pages[k]=parts[0];if(tm)tags[k]=tm[1]}}
