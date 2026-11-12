@@ -19,20 +19,21 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;paddin
 .row::-webkit-scrollbar{display:none}
 .sp{flex:1}
 #rail{position:fixed;z-index:20;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 5px;border-radius:999px;background:var(--dock);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 12px 30px rgba(0,0,0,.4);transition:opacity .25s}
-#rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+#rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;height:44px;min-width:44px}
 #rail .pill:active{background:rgba(255,255,255,.1)}
 .rail-sep{width:18px;height:1px;background:var(--line);margin:3px auto}
 button,.pill{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#fh{position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:26;display:none}
+#fh{position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:26;display:none;height:44px;min-width:44px}
 body.fs #fh{display:flex}
 body.cl #fh{opacity:.92}
 /* Themes: variable swaps only — Default is the :root palette above.
    House B keeps its own hardcoded palette, so its text vars stay default. */
-body[data-theme="day"]{--bg:#f2f1ec;--ink:#191a1e;--dim:#63656e;--acc:#2563eb;--hot:#d97706;--glass:rgba(255,255,255,.78);--line:rgba(20,22,30,.14);--field:#ffffff;--panel:#ffffff;--dock:rgba(255,255,255,.6)}
-body[data-theme="pitch"]{--bg:#000;--ink:#ededed;--dim:#8f8f8f;--acc:#ffb224;--hot:#ff7847;--glass:rgba(0,0,0,.66);--line:rgba(255,255,255,.13);--field:#0a0a0a;--panel:#0a0a0a;--dock:rgba(0,0,0,.55)}
-body[data-theme="slate"]{--bg:#d9dade;--ink:#1d1e22;--dim:#5f6066;--acc:#0f766e;--hot:#b45309;--glass:rgba(238,238,240,.8);--line:rgba(0,0,0,.15);--field:#f4f4f5;--panel:#ececed;--dock:rgba(240,240,242,.6)}
-body[data-theme="matcha"]{--bg:#0b100d;--ink:#e8f0e6;--dim:#93a48f;--acc:#b7c46a;--hot:#e0a458;--glass:rgba(12,18,13,.74);--line:rgba(200,255,205,.11);--field:#10160f;--panel:#121a13;--dock:rgba(8,14,9,.55)}
-body[data-theme="ember"]{--bg:#120e0b;--ink:#f3eae0;--dim:#a89a8c;--acc:#ff7847;--hot:#ffc46b;--glass:rgba(22,16,12,.74);--line:rgba(255,205,160,.12);--field:#171008;--panel:#1a130d;--dock:rgba(16,11,8,.55)}
+body[data-theme="day"]{--bg:#efece4;--ink:#1c1d21;--dim:#6a6c74;--acc:#2563eb;--hot:#c26a10;--glass:rgba(250,248,242,.82);--line:rgba(24,26,34,.14);--field:#e3ded2;--panel:#e9e5da;--dock:rgba(243,240,233,.72)}
+body[data-theme="pitch"]{--bg:#000;--ink:#ececec;--dim:#8a8a8a;--acc:#ffb224;--hot:#ff7847;--glass:rgba(0,0,0,.72);--line:rgba(255,255,255,.14);--field:#000;--panel:#000;--dock:rgba(0,0,0,.6)}
+body[data-theme="slate"]{--bg:#c9ccd1;--ink:#1e2023;--dim:#5c6067;--acc:#0f766e;--hot:#b45309;--glass:rgba(233,235,238,.85);--line:rgba(15,18,24,.16);--field:#dde0e4;--panel:#d4d8dd;--dock:rgba(226,229,233,.7)}
+body[data-theme="matcha"]{--bg:#0b100d;--ink:#eceee9;--dim:#9a9d97;--acc:#b7c46a;--hot:#e0a458;--glass:rgba(12,18,13,.74);--line:rgba(205,225,200,.12);--field:#10160f;--panel:#131b14;--dock:rgba(8,14,9,.55)}
+body[data-theme="ember"]{--bg:#120e0b;--ink:#efece8;--dim:#a39a90;--acc:#ff7847;--hot:#ffc46b;--glass:rgba(22,16,12,.74);--line:rgba(255,205,160,.12);--field:#171008;--panel:#1a130d;--dock:rgba(16,11,8,.55)}
+body.disc #bgd,body.disc #bh,body.disc #bf,body.disc #bbag,body.disc #bmf{display:none!important}
 body.hb{--ink:#eceae4;--dim:#9a9aa6}
 .tdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
 #bgd svg{transform:scale(.85)}
@@ -41,7 +42,7 @@ body.hb{--ink:#eceae4;--dim:#9a9aa6}
 .plrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 12px;border:1px solid var(--line);border-radius:14px;margin:0 0 8px;background:var(--panel);cursor:pointer}
 .plrow b{color:var(--dim)}
 body.cl #top,body.cl #rail,body.cl .vb,body.cl .sw,body.zoomed #top,body.zoomed #rail,body.zoomed .vb,body.zoomed .sw{opacity:0;pointer-events:none}
-#rs{position:fixed;z-index:30;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);opacity:.55}
+#rs{position:fixed;z-index:30;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);opacity:.55;height:44px;padding:0 16px}
 #feed{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
 #feed::-webkit-scrollbar{display:none}
 .card{height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;touch-action:pan-y;background:#000}
@@ -231,13 +232,13 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
 </style></head><body class="hb">
 <header id="top">
  <div class="row">
-  <button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
+  <button class="pill ic" id="bmf" title="Batch menu"><i data-i="layout"></i></button><button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
   <button class="pill ic" id="bz" title="Feed zoom"><i data-i="zoom"></i><em id="zl"></em><s>▾</s></button>
   <button class="pill ic" id="ba" title="Auto-scroll"><i data-i="clock"></i><em id="au"></em><s>▾</s></button>
   <button class="pill ic" id="bgd" title="Grid & collage"><i data-i="grid"></i></button>
   <button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button>
   <button class="pill ic" id="bx" hidden title="Clear filters">✕</button>
-  <button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button>
+  <button class="pill" id="pbm" hidden title="Batch menu"><i data-i="layout"></i>Menu</button>
   <span class="sp"></span>
   <button class="pill" id="bp" title="Batch URLs & banks"><i data-i="plus"></i><span id="cnt">0</span></button>
   <button class="pill ic" id="bol" title="Open link — go off-platform"><i data-i="link"></i></button>
@@ -247,7 +248,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <span class="sp"></span>
   <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
- <div class="row r2" id="pr" hidden><button class="pill" id="pb"><i data-i="back"></i>Back</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psh">Shielded view</button><button class="pill" id="pm" hidden>‹ Back</button></div>
+ <div class="row r2" id="pr" hidden><button class="pill ic" id="pb" title="Back"><i data-i="back"></i></button><button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="psh">Shielded view</button></div>
  <div class="row" id="dr" hidden>
   <button class="pill" data-l="1">1</button><button class="pill" data-l="2">2</button><button class="pill" data-l="3">3</button>
   <span class="lab">Bright</span><button class="pill" id="ed">−</button><span class="lab" id="el">100%</span><button class="pill" id="eu">+</button>
@@ -331,17 +332,18 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
-  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="mdc">Decrypt</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><button class="pill on" id="mk"><i data-i="lock"></i>App-Only</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
+  <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="mdc">Decrypt</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
   <textarea id="ta" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste image, video or page links, or bare R2 filenames. One per line."></textarea>
   <div class="row" style="justify-content:space-between"><span id="dc" style="color:var(--dim)">0 URLs</span><button class="pill" id="mx">Clear</button></div>
   <details class="opt"><summary>Options</summary>
    <div class="row"><span class="lab">Page offset</span><select id="s-off"><option value="0">Top</option><option value="10">10%</option><option value="25">25%</option><option value="40">40%</option><option value="50">50%</option><option value="75">75%</option></select><span class="lab">Mode</span><select id="s-mode"><option value="auto">Auto-detect</option><option value="video">Force video</option><option value="image">Force image</option><option value="webpage">Force webpage</option></select></div>
    <div class="row"><label class="tg"><input type="checkbox" id="s-ad"> Ad &amp; popup shield</label><label class="tg"><input type="checkbox" id="s-mute"> Auto-mute</label><label class="tg"><input type="checkbox" id="s-shuf"> Shuffle on load</label><label class="tg"><input type="checkbox" id="s-sniff"> Auto-sniff stream</label></div>
    <div class="row"><span class="lab">My proxy</span><input id="s-proxy" type="text" placeholder="https://…workers.dev/?url=" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:11px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text"><button class="pill on" id="s-pon" style="flex:none" title="Turn your proxy on or off (the address stays saved)">On</button></div>
+   <div class="row"><span class="lab">R2 base</span><input id="s-r2b" type="text" placeholder="https://pub-….r2.dev" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:11px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text"><button class="pill" id="s-r2s" style="flex:none" title="Save the R2 bucket address — it only changes when you tap Save">Save</button></div>
    <div class="row" id="thumbs" style="flex-wrap:wrap;gap:6px"><span class="lab">Theme</span><button class="pill" data-th="default"><span class="tdot" style="background:#8fd0ff"></span>Default</button><button class="pill" data-th="day"><span class="tdot" style="background:#2563eb"></span>Daylight</button><button class="pill" data-th="pitch"><span class="tdot" style="background:#ffb224"></span>Pitch</button><button class="pill" data-th="slate"><span class="tdot" style="background:#0f766e"></span>Slate</button><button class="pill" data-th="matcha"><span class="tdot" style="background:#b7c46a"></span>Matcha</button><button class="pill" data-th="ember"><span class="tdot" style="background:#ff7847"></span>Ember</button></div>
   </details>
  </div>
@@ -352,7 +354,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <div class="list" id="dlist"></div>
  </div>
  <div id="tp-unl" hidden><p class="lab" style="margin:8px 0">Pages and video posts with no direct video linked yet. Tap Link to attach a video file.</p><div class="list" id="ulist"></div></div>
- <div id="tp-act" hidden><input id="asq" list="proflist" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="list" id="alist"></div></div>
+ <div id="tp-act" hidden><input id="asq" list="proflist" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="row" style="margin:8px 0 2px"><button class="pill" id="atr">Recently deleted <em id="atn">0</em></button><span class="sp"></span><button class="pill danger" id="aem" hidden>Empty trash</button></div><div class="list" id="alist"></div></div>
  <div id="tp-r2" hidden>
   <p class="lab" style="margin:8px 0">Your personal R2 storage. Filed items live under @r2 as direct feed videos — and in the main feed too.</p>
   <textarea id="rta" rows="3" style="width:100%" placeholder="One filename or link per line…"></textarea>
@@ -369,7 +371,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
    <div class="list" id="profrows"></div>
   </div>
   <div id="prof-detail" hidden>
-   <div class="row" style="margin:8px 0;gap:8px"><button class="pill" id="pdbk">‹ Back</button><span class="lab" id="pdname" style="font-size:14px;color:var(--ink)"></span></div>
+   <div class="row" style="margin:8px 0;gap:8px"><button class="pill" id="pdbk">‹ Back</button><span class="lab" id="pdname" style="font-size:14px;color:var(--ink)"></span><span class="sp"></span><button class="pill" id="pdgrid">Grid</button></div>
    <div class="list" id="pdlist"></div>
   </div>
   <datalist id="proflist"></datalist>
@@ -405,12 +407,11 @@ function decTok(tok){const p=tok.slice(4),v=[];for(const ch of p){const k=DEC[ch
  return new TextDecoder().decode(o)}
 const dt=raw=>(!raw||(!raw.includes('rf1$')&&!raw.includes('~RF1~')))?(raw||''):raw.replace(/^\s*~RF1~\s*$/gm,'').replace(/rf1\$[A-Za-z0-9_-]+/g,decTok);
 /* ---------- state ---------- */
-const S={disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
+const S={trash:[],disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
 const RATES=[1,1.25,1.5,2,.5,.75],AUTO=[0,3,5,8,15,30,1.5,1],FILT=['all','image','video','webpage'],FL={all:'All',image:'Img',video:'Vid',webpage:'Link'},SORT=['default','new','az'],SL={default:'Default',new:'New',az:'A–Z'};
 let V=[],AT=0,Z={on:0,s:1,x:0,y:0},inB=true;const HYD=new Set();
 const ICONS={bag:'M6 8h12l1 12H5zM9 8V6a3 3 0 016 0v2',lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z',unlock:'M7 11V8a5 5 0 019.5-2M5 11h14v9H5z',save:'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',drop:'M12 4v10m0 0l-4-4m4 4l4-4M5 19h14',link:'M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1',expand:'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',shrink:'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5',back8:'M12 5a7 7 0 11-6.5 4.4M5 4v5h5',fwd8:'M12 5a7 7 0 106.5 4.4M19 4v5h-5',up2:'M12 19V5m0 0l-5 5m5-5l5 5',down2:'M12 5v14m0 0l-5-5m5 5l5-5',image:'M4 5h16v14H4zM8 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 17l5-5 4 4 3-3 4 4',minus:'M5 12h14',back:'M19 12H5m0 0l6-6m-6 6l6 6',close:'M6 6l12 12M18 6L6 18',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',list:'M9 6h12M9 12h12M9 18h12M4 6h.5M4 12h.5M4 18h.5',layout:'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',crawl:'M6 5l6 6 6-6M6 12l6 6 6-6',pan:'M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3M8 11h6M11 8v6',scissors:'M6 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12',filter:'M4 6h16M7 12h10M10 18h4',sort:'M7 4v16m0 0l-3-3m3 3l3-3M17 20V4m0 0l-3 3m3-3l3 3',clock:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM12 7.5v4.8l3.2 2',shuffle:'M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5',plus:'M12 5v14M5 12h14',up:'M6 15l6-6 6 6',down:'M6 9l6 6 6-6',unmuted:'M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 010 6M19 6a8 8 0 010 12',muted:'M4 9v6h4l5 4V5L8 9H4zM17 9l4 6m0-6l-4 6',play:'M8 5v14l11-7z',pause:'M8 5v14M16 5v14',hide:'M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a13 13 0 01-2.6 3.7M6.1 6.1A13 13 0 002.5 12c1 2.5 4.5 7 9.5 7 1.5 0 2.9-.4 4.1-1'};
 const svg=n=>`<svg viewBox="0 0 24 24"><path d="${ICONS[n]}"/></svg>`;
-function mkUI(){$('#mk').innerHTML=svg(S.mask?'lock':'unlock')+(S.mask?'App-Only':'Plain https');$('#mk').classList.toggle('on',S.mask)}
 const shuf=a=>{for(let k=a.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[a[k],a[j]]=[a[j],a[k]]}return a};
 const setIc=(el,n)=>{el.innerHTML=svg(n)};
 document.querySelectorAll('i[data-i]').forEach(i=>i.outerHTML=svg(i.dataset.i));
@@ -435,7 +436,7 @@ function profOf(u){if(!u||u.startsWith('data:'))return'local_media';
   if(!ch)ch=host.split('.')[0]||'web';return alias(ch.replace(/[^a-zA-Z0-9_.-]/g,'_').slice(0,28).toLowerCase())}catch(e){return'media_origin'}}
 function resKnown(u){const c=strip(u),k=c.replace(/\/+$/,''),t=TAUGHT[c]||TAUGHT[k];if(t&&isDirect(t))return t;if(isDirect(c))return c;
  try{const x=new URL(c);if(x.hostname.includes('imgur.com')){if(x.pathname.endsWith('.gifv'))return'https://i.imgur.com'+x.pathname.replace(/\.gifv$/i,'.mp4');const q=x.pathname.split('/').filter(Boolean);if(q.length===1&&/^[a-zA-Z0-9]{5,10}$/.test(q[0]))return'https://i.imgur.com/'+q[0]+'.mp4'}}catch(e){}return null}
-const R2='https://pub-2c94d1aa1f3944f8a0d85d6ae75c3c56.r2.dev',r2=n=>R2+'/'+n.replace(/^\/+/,''),MEDIA=/\.(?:mp4|webm|mov|m4v|m3u8|jpe?g|png|gif|webp|avif)(?:\?|#|$)/i;
+let R2='https://pub-2c94d1aa1f3944f8a0d85d6ae75c3c56.r2.dev',r2=n=>R2+'/'+n.replace(/^\/+/,''),MEDIA=/\.(?:mp4|webm|mov|m4v|m3u8|jpe?g|png|gif|webp|avif)(?:\?|#|$)/i;
 const VPS=[];/* optional allowlist of post-page hosts that carry videos, e.g. ['sitea.com']; empty = any host */
 const NOVP=/(^|\.)(ebay|depop|poshmark|mercari|grailed|wikipedia|wikimedia|github|google|youtube|youtu|vimeo|dailymotion|streamable|tiktok|redgifs|twitch)\./i;
 function isVideoPostPage(u){let x;try{x=new URL(strip(u))}catch(e){return false}
@@ -481,9 +482,9 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   }catch(err){console.warn('skipped bad line',err)}}
  items.forEach(i=>i.handle=i.ch?alias(i.ch):profOf(i.source||i.url));
  return{items,extra,banks,trims,cfg,disc,hbc,hbd,hbp}}
-function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.cfg){cfgSet(p.cfg);mkUI()}}
+function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.cfg){cfgSet(p.cfg)}}
 const lineOf=it=>it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'')+(it.name?'#name='+encodeURIComponent(it.name).replace(/%20/g,'%2520'):'');
-function boxText(){const o=[];let p=null;for(const it of S.items){if(p!==null&&it.sess!==p)o.push('','');p=it.sess;const l=lineOf(it);o.push(S.mask?enc(l):l)}return o.join('\n')}
+function boxText(){const o=[];let p=null;for(const it of S.items){if(p!==null&&it.sess!==p)o.push('','');p=it.sess;const l=lineOf(it);o.push(l)}return o.join('\n')}
 function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'];let p=null;
  for(const it of S.items){if(p!==null&&it.sess!==p)L.push('','');p=it.sess;L.push(lineOf(it))}
  const al=Object.entries(ALIAS);if(al.length)L.push('','# [PROFILE_ALIASES]',...al.map(([k,v])=>k+'='+v));
@@ -492,16 +493,19 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  const tr=Object.entries(TRIMS);if(tr.length)L.push('','# [VIDEO_THUMB_TRIMS]',...tr.map(([u,t])=>u+' | '+t.startSec+','+t.loopSec));
  for(let n=1;n<=5;n++)if(S.banks[n].length)L.push('',`# [BANK_${n}]`,...S.banks[n]);
  if(HB.cards.length)L.push('','# [HOUSE_B_CARDS]',...HB.cards.map(c=>JSON.stringify(c)));if(HB.dels.length)L.push('','# [HOUSE_B_DELETIONS]',...HB.dels.map(d=>JSON.stringify(d)));if(HB.prefs)L.push('','# [HOUSE_B_PREFS]',JSON.stringify(HB.prefs));
- /* The export carries the library, not the view: APP_SETTINGS holds only the
-    proxy (infrastructure Kendall wants traveling with the file). View and
-    playback preferences stay on the device — Nov 11, Kendall's call. */
- L.push('','# [APP_SETTINGS]',JSON.stringify({proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME}));
+ /* APP_SETTINGS carries the proxy, the theme, and the R2 base — the
+    export holds the library, not the view (Kendall, Nov 11: toolbar/view
+    settings stay out; theme travels by his explicit "we CAN save" call;
+    the R2 base rides along as a backup so a restore keeps the bucket).
+    cfgSet stays presence-based, so fuller blobs still apply what they
+    carry; the on-device save keeps the full cfg separately. */
+ L.push('','# [APP_SETTINGS]',JSON.stringify({proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME,r2base:R2}));
  return['~RF1~',...L.map(l=>l.trim()?enc(l):'')].join('\n')}
 const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]++);const bk=Object.values(p.banks||{}).filter(a=>a.length).length;return`${p.items.length} items: ${c.video} video, ${c.image} image, ${c.webpage} page`+(bk?` · ${bk} bank${bk>1?'s':''} loaded`:'')};
 /* ---------- persistence ---------- */
-let svT=0;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify({items:S.items,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,cfg:cfgGet()}));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
+let svT=0;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify({items:S.items,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,cfg:cfgGet()}));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
 const save=()=>{clearTimeout(svT);svT=setTimeout(saveNow,350)};addEventListener('pagehide',saveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(svT);saveNow()}});
-let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d&&Array.isArray(d.items)){S.items=d.items;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;S.disc=d.disc||[];{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
+let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d&&Array.isArray(d.items)){S.items=d.items;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;S.disc=d.disc||[];S.trash=d.trash||[];{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
 function setDirty(v){S.dirty=v;$('#bp').classList.toggle('glow',v);$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
 /* ---------- link-origin videos: fetch page via proxy race, extract stream, teach binding ---------- */
 const EX=new Map(),NOEX=/youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|twitch\.tv|dailymotion\.com|streamable\.com|redgifs\.com/i;
@@ -620,7 +624,7 @@ $('#px').onclick=()=>{S.prof=null;S.idx=0;render()};
 $('#bgd').onclick=()=>{FROM='';G.fromHome=0;G.prof=null;G.tab='items';openGrid()};
 $('#bkg').onclick=()=>{const w=FROM;FROM='';G.fromHome=0;G.col=w==='collage';openGrid()};
 $('#rp').onclick=()=>go(-1);$('#rn').onclick=()=>go(1);
-$('#rfs').onclick=()=>{const v=feed.querySelector('section.card video');try{if(document.fullscreenElement)document.exitFullscreen();else if(feed.requestFullscreen){const p=feed.requestFullscreen();if(p&&p.catch)p.catch(()=>{});if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{})}else if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}catch(e){if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}}};
+$('#rfs').onclick=()=>{const v=feed.querySelector('section.card video');try{if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen){const p=document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}});if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{})}else if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}catch(e){if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}}};
 document.addEventListener('fullscreenchange',()=>document.body.classList.toggle('fs',!!document.fullscreenElement));
 $('#fh').onclick=()=>{const cl=document.body.classList.toggle('cl');$('#rs').hidden=!cl};
 $('#rm').onclick=()=>{S.muted=!S.muted;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud()};
@@ -664,7 +668,7 @@ const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='mai
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
 ta.addEventListener('input',count);
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
-$('#bp').onclick=openModal;$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
+$('#bp').onclick=openModal;$('#bmf').onclick=openModal;$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
 $('#mr2').onclick=()=>{closeModal();r2Flow()};
 $('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already plain text');
@@ -672,11 +676,10 @@ $('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already p
 $('#ma').onclick=()=>{const p=post(parse(ta.value)),have=new Set(S.items.map(i=>i.url));const add=p.items.filter(i=>!have.has(i.url));
  if(!add.length){toast('Nothing new to add');return}S.items=S.items.concat(add);if(!S.extra.length)S.extra=p.extra;commit();ta.value=boxText();count();toast(`Added ${add.length}`)};
 $('#mp').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim())return toast('Clipboard is empty');
- const add=S.mask?t.split(/\r?\n/).map(l=>l.trim()?enc(dt(l)):l).join('\n'):dt(t);ta.value=(ta.value.trim()?ta.value.replace(/\s*$/,'\n'):'')+add;count();toast('Pasted')}catch(e){toast('Clipboard blocked: long-press the box and paste')}};
+ const add=dt(t);ta.value=(ta.value.trim()?ta.value.replace(/\s*$/,'\n'):'')+add;count();toast('Pasted')}catch(e){toast('Clipboard blocked: long-press the box and paste')}};
 $('#my').onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);toast('Copied')}catch(e){ta.select();document.execCommand('copy');toast('Copied')}};
 $('#mx').onclick=()=>{ta.value='';count()};
 $('#mt').onclick=()=>ta.scrollTo({top:0,behavior:'smooth'});$('#mb').onclick=()=>ta.scrollTo({top:ta.scrollHeight,behavior:'smooth'});
-$('#mk').onclick=()=>{S.mask=!S.mask;ta.value=S.mask?ta.value.split('\n').map(l=>l.trim()?enc(dt(l)):l).join('\n'):dt(ta.value);mkUI();count()};
 $('#me').onclick=()=>{if(!S.items.length&&!S.extra.length&&!HB.cards.length&&!HB.dels.length)return toast('Nothing to export');const b=new Blob([exportText()],{type:'text/plain'}),a=document.createElement('a');
  a.href=URL.createObjectURL(b);a.download='transcript.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);setDirty(false);toast('Exported transcript.txt')};
 $('#mi').onclick=()=>$('#fi').click();
@@ -688,15 +691,15 @@ let FROM='',GL=[],io=null,crawlRaf=0,panRaf=0,ssT=0,cl=0,ca=0,pl=0,px=0,py=0,pdx
 const gr=$('#grid'),gs=$('#gs'),gt=$('#gt'),gbar=$('#gbar');
 const THEMES=['default','day','pitch','slate','matcha','ember'];let THEME='default';
 function applyTheme(t){THEME=THEMES.includes(t)?t:'default';document.body.dataset.theme=THEME;document.querySelectorAll('#thumbs [data-th]').forEach(b=>b.classList.toggle('on',b.dataset.th===THEME))}
-const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME});
+const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,r2base:R2,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,theme:THEME});
 function cfgSet(c){if(!c||typeof c!=='object')return;const n=(v,a,b,d)=>typeof v==='number'&&v>=a&&v<=b?v:d,h=k=>c[k]!==undefined;
  /* Presence-based: a settings blob only changes the keys it carries, so a
     slim export (proxy only) never resets the view prefs already on a device,
     while full blobs from older exports still apply everything. */
  if(h('zoom'))S.zoom=String(c.zoom);if(h('auto'))S.auto=n(c.auto,0,60,S.auto);if(h('loop'))S.loop=c.loop!==false;if(h('rate'))S.rate=RATES.includes(c.rate)?c.rate:1;if(h('muted'))S.muted=c.muted!==false;if(h('mask'))S.mask=c.mask!==false;if(h('enh'))S.enh=n(c.enh,0,3,0);if(h('exp'))S.exp=n(c.exp,50,200,100);if(h('sharp'))S.sharp=n(c.sharp,-3,6,0);
  if(h('gsize'))G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';if(h('gzoom'))G.zoom=String(c.gzoom);if(h('gebb'))G.ebb=c.gebb?1:0;if(h('gcs'))G.cs=n(c.gcs,1,3,2);if(h('gcz'))G.cz=n(c.gcz,60,220,100);
- if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('theme'))applyTheme(c.theme)}
-if(CFG0){cfgSet(CFG0);mkUI()}
+ if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('theme'))applyTheme(c.theme);if(h('r2base')&&typeof c.r2base==='string'&&/^https?:\/\/\S{4,300}$/i.test(c.r2base))R2=c.r2base.replace(/\/+$/,'')}
+if(CFG0){cfgSet(CFG0)}
 const host=it=>{try{return new URL(strip(it.source||it.url)).hostname.replace(/^www\./,'')}catch(e){return''}};
 const hashr=n=>{n=Math.imul(n^61,0x9e3779b1);n^=n>>>16;n=Math.imul(n,0x85ebca6b);n^=n>>>13;return(n>>>0)/4294967296};
 function thumb(it){const d=it.type==='video'&&(it.stream||isDirect(it.url));
@@ -917,13 +920,17 @@ let LASTDEL=[],delT=0;
 function afterDelete(){save();setDirty(true);chips();V=vis();if(S.mode==='main'&&S.idx>=V.length)S.idx=Math.max(0,V.length-1);const feedShown=S.mode==='main'&&!G.open&&!modal.classList.contains('open')&&$('#dwrap').hidden;if(feedShown){FEEDDIRTY=0;render()}else FEEDDIRTY=1;if(G.open)renderGrid(1);
  if(!$('#tp-act').hidden)renderAct();if(!$('#tp-r2').hidden)renderR2();if(!$('#tp-unl').hidden)renderUnl();const tp=$('#tp-dup');if(tp&&!tp.hidden)renderDup()}
 function deleteItems(list){if(!list.length)return;const ids=new Set(list.map(i=>i.id));
+ S.trash=list.map(it=>({item:it,at:Date.now(),idx:S.items.indexOf(it)})).concat(S.trash).slice(0,300);
  LASTDEL.push(list.map(it=>({it,idx:S.items.indexOf(it)})).sort((a,b)=>a.idx-b.idx));
  S.items=S.items.filter(i=>!ids.has(i.id));list.forEach(i=>SEL.delete(i.id));
  afterDelete();
  const up=$('#upill');up.hidden=false;clearTimeout(delT);delT=setTimeout(()=>{up.hidden=true;LASTDEL=[]},9000);
  toast(`Deleted ${ids.size} item${ids.size===1?'':'s'}`)}
 $('#upill').onclick=()=>{const batch=LASTDEL.pop();if(!batch)return;for(const e of batch)S.items.splice(Math.min(e.idx,S.items.length),0,e.it);
+ const uids=new Set(batch.map(e=>e.it.id));S.trash=S.trash.filter(t=>!uids.has(t.item.id));
  if(!LASTDEL.length)$('#upill').hidden=true;else{clearTimeout(delT);delT=setTimeout(()=>{$('#upill').hidden=true;LASTDEL=[]},9000)}afterDelete();toast('Restored')};
+let ACTV='all';
+function restoreItems(ids){const set=new Set(ids),back=S.trash.filter(t=>set.has(t.item.id)).sort((a,b)=>(a.idx||0)-(b.idx||0));if(!back.length)return;S.trash=S.trash.filter(t=>!set.has(t.item.id));back.forEach(t=>S.items.splice(Math.min(t.idx==null?S.items.length:t.idx,S.items.length),0,t.item));LASTDEL=LASTDEL.filter(b=>!b.some(e=>set.has(e.it.id)));if(!LASTDEL.length)$('#upill').hidden=true;afterDelete();toast(`Restored ${back.length}`)}
 /* ask() + pasteInto: Claude's originals, ported back verbatim from
    index-2.html after the Nov 11 span-cut loss. */
 function ask(o){const m=$('#mm');m.innerHTML=`<div class="mm"><h3>${esc(o.title)}</h3>${o.desc?`<p>${esc(o.desc)}</p>`:''}${o.multi?`<textarea id="mmi" placeholder="${esc(o.ph||'')}"></textarea>`:`<input id="mmi" placeholder="${esc(o.ph||'')}" autocomplete="off" autocapitalize="off">`}<div class="row" style="margin:0">${(o.extra||[]).map((x,i)=>`<button class="pill" data-x="${i}">${esc(x[0])}</button>`).join('')}<span class="sp"></span><button class="pill" data-c="0">Cancel</button><button class="pill on" data-c="1">${esc(o.ok||'Save')}</button></div></div>`;
@@ -1035,9 +1042,9 @@ $('#pb').onclick=()=>{const it=V[S.idx];if(!it)return;const g=PGO.get(it.id),s=f
  if(g&&g.stack.length>1){g.stack.pop();dehyd(s);hyd(s,S.idx);sync();return}
  if(f&&!f.hasAttribute('sandbox')&&(NAVC.get(it.id)||0)>1){NAVC.set(it.id,NAVC.get(it.id)-2);try{f.contentWindow.history.back()}catch(x){history.back()}return}
  toast('This is the first page')};
-function pageUI(it){const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
+function pageUI(it){document.body.classList.toggle('disc',S.mode==='disc');const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
  $('#bmd').hidden=!vid;$('#bmd').innerHTML=pg?svg('play')+'Video':svg('link')+'Page';$('#blk').hidden=!pg;$('#blk').innerHTML=svg(S.lock?'lock':'unlock')+(S.lock?'Locked':'Lock');$('#blk').classList.toggle('on',S.lock);
- $('#pr').hidden=!pg;$('#pcur').textContent=(pg&&it)?short(curPage(it)):'';$('#pm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
+ $('#pr').hidden=!pg;$('#pcur').textContent=(pg&&it)?short(curPage(it)):'';$('#pbm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
  document.body.classList.toggle('lockon',!!(S.lock&&pg));if(!Z.on&&!document.body.classList.contains('hzon'))feed.style.overflowY=(S.lock&&pg)?'hidden':'scroll'}
 $('#bmd').onclick=()=>{const it=V[S.idx];if(!it)return;PM.set(it.id,isPageCard(it)?'video':'page');const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()};
 $('#blk').onclick=()=>{S.lock=!S.lock;hud();toast(S.lock?'Page locked: swiping is off until unlocked':'Page unlocked')};
@@ -1052,19 +1059,19 @@ $('#pdz').ondragover=e=>e.preventDefault();$('#pdz').ondrop=e=>{e.preventDefault
    page viewer's arrows just move between list items. Its job is visiting
    pages and capturing media — no autoplay feed behavior of its own. */
 function renderDiscHome(){$('#dwlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet — add them in the batch menu\u2019s Discovery tab.</p>'}
-const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
+const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;$('#pbm').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
 /* The list view is discovery's own screen (like the grid is a screen):
    backing out of a page lands on the list, and only the list's own back
    leaves discovery for the batch menu. */
 const discList=()=>{renderDiscHome();$('#dwrap').hidden=false};
-$('#pm').onclick=discList;
+$('#pbm').onclick=exitDisc;
 $('#pdl').onclick=discList;
 $('#dw-exit').onclick=exitDisc;
 $('#dwlist').onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const k=+b.dataset.k;
  if(b.dataset.w==='open'){S.idx=k;$('#dwrap').hidden=true;render()}
  else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));if(S.idx>=S.discItems.length)S.idx=0;save();setDirty(true);chips();renderDiscHome();FEEDDIRTY=1}};
 /* ---------- batch tabs: discovery, unlinked, active feed ---------- */
-function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;
+function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;$('#pbm').hidden=false;
  if(k==null){S.idx=0;render();renderDiscHome();$('#dwrap').hidden=false}else{S.idx=k;$('#dwrap').hidden=true;render()}}
 const unlinked=()=>S.items.filter(i=>i.type==='webpage'||(i.type==='video'&&!isDirect(i.url)&&!TAUGHT[strip(i.url)]));
 let chipsT=0;function chips(){if(chipsT)return;chipsT=requestAnimationFrame(()=>{chipsT=0;chipsNow()})}
@@ -1073,7 +1080,10 @@ const short=u=>{try{const x=new URL(strip(u));return x.hostname.replace(/^www\./
 function renderDisc(){$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';chips()}
 function renderUnl(){const L=unlinked().slice(0,150);$('#ulist').innerHTML=L.map(it=>`<div class="li"><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-u="go" data-id="${it.id}">Go</button><button data-u="open" data-id="${it.id}">Open</button><button data-u="link" data-id="${it.id}">Link</button><button class="danger" data-u="del" data-id="${it.id}">Delete</button></div>`).join('')||'<p class="lab">Everything is linked.</p>';chips()}
 const ACTN=150;let delArm=null;
-function renderAct(){const q=$('#asq').value.trim().toLowerCase();let L=S.items;if(q)L=L.filter(i=>(i.handle+' '+i.url+' '+(i.source||'')).toLowerCase().includes(q));
+function renderAct(){$('#atn').textContent=S.trash.length;$('#aem').hidden=ACTV!=='trash';$('#atr').classList.toggle('on',ACTV==='trash');$('#atr').firstChild.nodeValue=ACTV==='trash'?'Back to all ':'Recently deleted ';
+ const q=$('#asq').value.trim().toLowerCase();
+ if(ACTV==='trash'){const T=S.trash.filter(t=>!q||(t.item.handle+' '+t.item.url).toLowerCase().includes(q));$('#alist').innerHTML=T.slice(0,ACTN).map(t=>`<div class="li"><span class="ico">${svg(t.item.type==='video'?'play':t.item.type==='image'?'image':'link')}</span><div class="t">@${esc(t.item.handle)}<small>${esc(short(t.item.url))}</small></div><button data-a="rest" data-id="${t.item.id}">Restore</button><button class="danger" data-a="forever" data-id="${t.item.id}">Delete</button></div>`).join('')||'<p class="lab">Nothing deleted recently.</p>';chips();return}
+ let L=S.items;if(q)L=L.filter(i=>(i.handle+' '+i.url+' '+(i.source||'')).toLowerCase().includes(q));
  $('#alist').innerHTML=L.slice(0,ACTN).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-a="go" data-id="${it.id}">Go</button>${it.source?`<button data-a="open" data-id="${it.id}">Open page</button>`:''}<button data-a="edit" data-id="${it.id}">Edit</button><button class="danger" data-a="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>ACTN?`<p class="lab">Showing ${ACTN} of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No matches.</p>';chips()}
 function editLink(it){ask({title:'Edit link',desc:'@'+it.handle+' — fix this item\u2019s URL.',val:it.url,ok:'Save link',extra:[['Paste',pasteInto]],onOk:v=>{const nu=r2Slash((v||'').trim().replace(/ /g,'%20'));if(bad(nu)){toast('That is not a usable link');return false}
  if(S.items.some(x=>x!==it&&normKey(x.url)===normKey(nu))){toast('Another item already uses that link');return false}
@@ -1109,13 +1119,16 @@ function renderProf(){profSuggest();
  $('#prof-list').hidden=false;$('#prof-detail').hidden=true;
  const q=($('#psearch').value||'').trim().toLowerCase();
  const L=profNames().filter(h=>!q||h.toLowerCase().includes(q));
- $('#profrows').innerHTML=L.map(h=>{const n=S.items.filter(i=>i.handle===h).length;return`<div class="li"><div class="t">@${esc(h)}<small>${n} item${n===1?'':'s'}</small></div><button data-p="view" data-h="${esc(h)}">Open</button></div>`}).join('')||'<p class="lab">No profiles match.</p>'}
+ $('#profrows').innerHTML=L.map(h=>{const n=S.items.filter(i=>i.handle===h).length;return`<div class="li"><div class="t">@${esc(h)}<small>${n} item${n===1?'':'s'}</small></div><button data-p="grid" data-h="${esc(h)}">Grid</button><button data-p="view" data-h="${esc(h)}">Open</button></div>`}).join('')||'<p class="lab">No profiles match.</p>'}
 $('#psel').onchange=e=>{if(e.target.value){PROFVIEW=e.target.value;renderProf()}};
-let psT=0;$('#psearch').addEventListener('input',e=>{clearTimeout(psT);psT=setTimeout(()=>{const v=e.target.value.trim();if(profNames().includes(v))PROFVIEW=v;renderProf()},120)});
+let psT=0;$('#psearch').addEventListener('input',()=>{clearTimeout(psT);psT=setTimeout(renderProf,60)});
 $('#pdbk').onclick=()=>{PROFVIEW=null;$('#psearch').value='';$('#psel').value='';renderProf()};
 $('#pgrid').onclick=()=>{closeModal();G.prof=null;G.tab='profiles';openGrid()};
+function profToGrid(h){if(!h)return;closeModal();G.prof=h;G.tab='items';G.col=0;G.sy=0;openGrid()}
+$('#pdgrid').onclick=()=>profToGrid(PROFVIEW);
 $('#tp-prof').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
  if(b.dataset.p==='view'){PROFVIEW=b.dataset.h;renderProf();return}
+ if(b.dataset.p==='grid'){profToGrid(b.dataset.h);return}
  const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;
  if(b.dataset.p==='go')return goItem(it.id);
  if(b.dataset.p==='open')return window.open(it.source,'_blank','noopener');
@@ -1135,9 +1148,13 @@ $('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;const 
  if(u==='go')return goItem(it.id);if(u==='open')return window.open(it.url,'_blank','noopener');if(u==='link')return teach(it);
  if(unlArm!==it.id){unlArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(unlArm===it.id){unlArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  unlArm=null;deleteItems([it])};
+$('#atr').onclick=()=>{ACTV=ACTV==='trash'?'all':'trash';renderAct()};
+$('#aem').onclick=()=>ask({title:`Delete ${S.trash.length} items forever?`,desc:'This cannot be undone.',ok:'Empty',onOk:()=>{S.trash=[];save();renderAct()}});
 $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id;if(b.dataset.a==='go')return goItem(id);
  if(b.dataset.a==='edit'){const it=S.items.find(x=>x.id===id);if(it)editLink(it);return}
  if(b.dataset.a==='open'){const it=S.items.find(x=>x.id===id);if(it&&it.source)window.open(it.source,'_blank','noopener');return}
+ if(b.dataset.a==='rest'){restoreItems([id]);return}
+ if(b.dataset.a==='forever'){S.trash=S.trash.filter(t=>t.item.id!==id);save();renderAct();return}
  if(delArm!==id){delArm=id;b.textContent='Confirm?';setTimeout(()=>{if(delArm===id){delArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  delArm=null;const dit=S.items.find(x=>x.id===id);if(dit)deleteItems([dit])};
 /* ---------- R2 tab: file, clean up, open folder ---------- */
@@ -1146,11 +1163,12 @@ $('#rfl').onclick=()=>{const names=$('#rta').value.split(/\r?\n/).map(s=>s.trim(
 $('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');closeModal();G.fromHome=1;G.prof='r2';G.tab='items';openGrid()};
 $('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else if(b.dataset.r==='open'){if(it.source)window.open(it.source,'_blank','noopener')}else editLink(it)};
 /* ---------- options ---------- */
-function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||'';const pb=$('#s-pon');pb.textContent=S.set.proxyOn===false?'Off':'On';pb.classList.toggle('on',S.set.proxyOn!==false)}
+function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||'';$('#s-r2b').value=R2;const pb=$('#s-pon');pb.textContent=S.set.proxyOn===false?'Off':'On';pb.classList.toggle('on',S.set.proxyOn!==false)}
 $('#s-off').onchange=e=>{S.set.off=+e.target.value;save()};$('#s-mode').onchange=e=>{S.set.mode=e.target.value;save()};
 $('#s-ad').onchange=e=>{S.set.ad=e.target.checked;save()};$('#s-shuf').onchange=e=>{S.set.shuf=e.target.checked;save()};$('#s-sniff').onchange=e=>{S.set.sniff=e.target.checked;save()};
-$('#s-proxy').onchange=e=>{S.set.proxy=e.target.value.trim();save();toast(S.set.proxy?'Your proxy runs first for page fetches':'Proxy cleared — public proxies only')};
-$('#s-pon').onclick=()=>{S.set.proxyOn=S.set.proxyOn===false?true:false;save();optUI();toast(S.set.proxyOn?'Proxy on — your proxy runs first for page fetches':'Proxy off — public proxies only; your address stays saved')};
+$('#s-proxy').onchange=e=>{S.set.proxy=e.target.value.trim();save();toast(S.set.proxy?'Proxy saved — it answers only if the public proxies fail':'Proxy cleared — public proxies only')};
+$('#s-pon').onclick=()=>{S.set.proxyOn=S.set.proxyOn===false?true:false;save();optUI();toast(S.set.proxyOn?'Proxy on — fallback if the public proxies fail':'Proxy off — public proxies only; your address stays saved')};
+$('#s-r2s').onclick=()=>{const v=$('#s-r2b').value.trim().replace(/\/+$/,'');if(!/^https?:\/\/\S{4,300}$/i.test(v)){toast('That does not look like a bucket address');$('#s-r2b').value=R2;return}R2=v;save();toast('R2 base saved')};
 $('#thumbs').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;applyTheme(b.dataset.th);save();toast('Theme: '+b.textContent.trim())};
 $('#s-mute').onchange=e=>{S.muted=e.target.checked;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud();save()};
 function post(p){if(S.set.mode!=='auto')p.items.forEach(i=>i.type=S.set.mode);if(S.set.shuf)for(let k=p.items.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[p.items[k],p.items[j]]=[p.items[j],p.items[k]]}return p}
