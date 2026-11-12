@@ -260,7 +260,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <span class="sp"></span>
   <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
- <div class="row r2" id="pr" hidden><button class="pill ic" id="pb" title="Back"><i data-i="back"></i></button><button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="psh">Shielded view</button></div>
+ <div class="row r2" id="pr" hidden><button class="pill ic" id="pb" title="Back"><i data-i="back"></i></button><button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psc" title="Gather this page's posts and pick media to save">Scrape</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="psh">Shielded view</button></div>
  <div class="row" id="dr" hidden>
   <button class="pill" data-l="1">1</button><button class="pill" data-l="2">2</button><button class="pill" data-l="3">3</button>
   <span class="lab">Bright</span><button class="pill" id="ed">−</button><span class="lab" id="el">100%</span><button class="pill" id="eu">+</button>
@@ -407,6 +407,12 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="gap:8px;margin:0 0 12px"><input id="dwa" placeholder="Add a profile page link…" style="flex:1"><button class="pill on" id="dwadd">Add</button></div>
  <div class="list" id="dwlist"></div>
 </div>
+<div id="swrap" hidden style="position:fixed;inset:0;background:var(--bg);z-index:46;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 14px 24px">
+ <div style="display:flex;gap:8px;align-items:center;margin:4px 0 12px"><span class="lab" id="sw-title" style="font-size:14px;color:var(--ink)">Scrape</span><span style="flex:1"></span><button class="pill" id="sw-teach">Teach</button><button class="pill" id="sw-all">All</button><button class="pill" id="sw-exit">Close</button></div>
+ <p class="lab" id="sw-stat" style="margin:0 0 10px"></p>
+ <div id="swgrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
+ <div style="position:sticky;bottom:0;padding:10px 0 calc(8px + env(safe-area-inset-bottom));background:var(--bg);display:flex;gap:8px;align-items:center"><span class="lab">Save to</span><select id="sw-prof" style="flex:0 1 auto;max-width:45vw"></select><span style="flex:1"></span><button class="pill on" id="sw-add">Add selected</button></div>
+</div>
 <script>
 'use strict';
 const $=s=>document.querySelector(s),feed=$('#feed'),ta=$('#ta'),fhEl=$('#fh');
@@ -441,7 +447,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const fmt=s=>{if(!isFinite(s)||s<0)s=0;return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
 /* ---------- url handling: direct-video resolution, pair lines, profiles (spec 3.4) ---------- */
 const IGN=new Set(['content','media','images','image','img','videos','video','vid','watch','v','e','embed','p','reel','reels','shorts','posts','post','status','photos','photo','uploads','upload','assets','static','files','file','thumb','thumbs','gallery','albums','album','u','user','users','profile','profiles','channel','c','sample','gtv-videos-bucket','commons','wikipedia','en','wiki']);
-let ALIAS={},TAUGHT={},TRIMS={};let PFP={};let CFGX={};const FAVP=new Set();const tk=u=>strip(u).replace(/\/+$/,'');try{TAUGHT=JSON.parse(localStorage.getItem('reelflow_taught')||'{}')||{}}catch(e){}
+let ALIAS={},TAUGHT={},TRIMS={},STEACH={};let PFP={};let CFGX={};const FAVP=new Set();const tk=u=>strip(u).replace(/\/+$/,'');try{TAUGHT=JSON.parse(localStorage.getItem('reelflow_taught')||'{}')||{}}catch(e){}
 const strip=u=>(u||'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]source=[^&#]*/gi,'').replace(/#$/,'').trim();
 const isDirect=u=>{if(!u)return false;const c=strip(u),p=c.split('?')[0].toLowerCase();return /\.(mp4|webm|ogg|mov|m4v|m3u8)$/.test(p)||/v\.redd\.it|googlevideo\.com\/videoplayback|mime=video|manifest\.m3u8|master\.m3u8|playlist\.m3u8/i.test(c)};
 const normKey=u=>strip(u).replace(/\/+$/,'').toLowerCase();
@@ -479,7 +485,7 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   if(!l){if(sec==='feed'&&first)blank++;else if(sec==='x'&&sub==='o')extra.push('');continue}
   if(/^#\s*\[?ACTIVE FEED/i.test(l)){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='feed';continue}
   {const hm=l.match(/^#\s*\[([^\]]+)\]/)||l.match(/^#\s*(BANK[ _-]?[1-5]|PROFILE_ALIASES|PROFILE_DISCOVERY(?:_LINKS)?|VIDEO_THUMB_TRIMS|PROFILE_AVATARS|PROFILE_PICS|PROFILE_FAVORITES|ITEM_NAMES|APP_SETTINGS|HOUSE_B_CARDS|HOUSE_B_DELETIONS|HOUSE_B_PREFS)\b/i);
-  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='TAUGHT_VIDEOS'?'tv':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
+  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='TAUGHT_VIDEOS'?'tv':nm==='SCRAPE_TEACH'?'st':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
   if(sec==='x'){
    if(sub[0]==='b'){if(/^https?:\/\//i.test(l))banks[sub[1]].push(l)}
    else if(sub==='al'){if(l.includes('=')&&!l.startsWith('#')){const[a,b]=l.split('=');if(a&&b)ALIAS[a.trim().toLowerCase().replace(/^@/,'')]=b.trim().toLowerCase().replace(/^@/,'')}}
@@ -491,6 +497,7 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
    else if(sub==='nms'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=l.slice(0,x).trim(),b=l.slice(x+1).trim();if(a&&b)names[tk(a)]=b}}
    else if(sub==='fv'){if(l&&!l.startsWith('#'))favs.push(l.trim())}
    else if(sub==='tv'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=strip(l.slice(0,x)),b=strip(l.slice(x+1));if(a&&b&&isDirect(b)){TAUGHT[a]=TAUGHT[a.replace(/\/+$/,'')]=b}}}
+   else if(sub==='st'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=l.slice(0,x).trim().toLowerCase(),b=l.slice(x+1).trim();try{const r=JSON.parse(b);if(a&&r&&r.h)STEACH[a]=r}catch(e){}}}
    else if(sub==='cf'){try{cfg=JSON.parse(l)}catch(e){}}
    else extra.push(l);
    continue}
@@ -522,6 +529,7 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  const nml=S.items.filter(i=>i.name);if(nml.length)L.push('','# [ITEM_NAMES]',...nml.map(i=>i.url+' | '+i.name));
  if(FAVP.size){const fv=[...FAVP].filter(h=>S.items.some(i=>i.handle===h));if(fv.length)L.push('','# [PROFILE_FAVORITES]',...fv)}
  {const covered=new Set();for(const i of S.items){const pg=i.type==='video'?pageOf(i):'';if(pg)covered.add(tk(pg))}const orph={};for(const[k,v]of Object.entries(TAUGHT)){if(v&&isDirect(v)&&!covered.has(tk(k)))orph[tk(k)]=v}const oe=Object.entries(orph);if(oe.length)L.push('','# [TAUGHT_VIDEOS]',...oe.map(([k,v])=>k+' | '+v))}
+ {const st=Object.entries(STEACH);if(st.length)L.push('','# [SCRAPE_TEACH]',...st.map(([h,r])=>h+' | '+JSON.stringify(r)))}
  if(S.extra.length)L.push('',...S.extra);
  const tr=Object.entries(TRIMS);if(tr.length)L.push('','# [VIDEO_THUMB_TRIMS]',...tr.map(([u,t])=>u+' | '+t.startSec+','+t.loopSec));
  for(let n=1;n<=5;n++)if(S.banks[n].length)L.push('',`# [BANK_${n}]`,...S.banks[n]);
@@ -537,9 +545,9 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  return['~RF1~',...L.map(l=>l.trim()?enc(l):'')].join('\n')}
 const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]++);const bk=Object.values(p.banks||{}).filter(a=>a.length).length;return`${p.items.length} items: ${c.video} video, ${c.image} image, ${c.webpage} page`+(bk?` · ${bk} bank${bk>1?'s':''} loaded`:'')};
 /* ---------- persistence ---------- */
-let svT=0,SAVERAW=null;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify(Object.assign({},SAVERAW||{},{items:S.items,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,pfp:PFP,favp:[...FAVP],cfg:cfgGet(),cfgx:CFGX})));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
+let svT=0,SAVERAW=null;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify(Object.assign({},SAVERAW||{},{items:S.items,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,pfp:PFP,favp:[...FAVP],cfg:cfgGet(),cfgx:CFGX,steach:STEACH})));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
 const save=()=>{clearTimeout(svT);svT=setTimeout(saveNow,350)};addEventListener('pagehide',saveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(svT);saveNow()}});
-let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
+let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};if(d.steach)STEACH=d.steach;S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
 function setDirty(v){S.dirty=v;$('#bp').classList.toggle('glow',v);$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
 /* ---------- link-origin videos: fetch page via proxy race, extract stream, teach binding ---------- */
 const EX=new Map(),NOEX=/youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|twitch\.tv|dailymotion\.com|streamable\.com|redgifs\.com/i;
@@ -584,7 +592,7 @@ function hyd(s,i){const it=V[i];if(!it)return;s.dataset.h=1;HYD.add(s);if(isPage
   wireVid(s)}
  else{s.innerHTML=`<div class="wp"><h2 style="margin:0">Webpage</h2><b>${esc(it.url.split('#')[0])}</b><div><a class="pill on" href="${u}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--acc)">Open</a></div></div>`}}
 function dehyd(s){HYD.delete(s);if(Z.sec===s)zout();if(s._hls){try{s._hls.destroy()}catch(e){}s._hls=null}
- s.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});s.textContent='';delete s.dataset.h}
+ s.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});const _it=V[+s.dataset.i];if(_it){const _g=PGO.get(_it.id);if(_g&&_g.frames)_g.frames=_g.frames.map(()=>null)}s.textContent='';delete s.dataset.h}
 let hlsP;const loadHls=()=>hlsP||(hlsP=new Promise(r=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js';sc.onload=()=>r(window.Hls);sc.onerror=()=>r(null);document.head.appendChild(sc)}));
 function sync(){if(inB)return;for(const s of [...HYD]){const i=+s.dataset.i;if(Math.abs(i-S.idx)>1)dehyd(s)}
  for(let i=Math.max(0,S.idx-1);i<=S.idx+1&&i<V.length;i++){const s=feed.querySelector('section.card[data-i="'+i+'"]');if(!s)continue;const d=Math.abs(i-S.idx);
@@ -1077,18 +1085,23 @@ const best=t=>{if(!t)return{u:'',i:null};let i=t.closest?t.closest('img'):null;c
  if(!u){let e=t;for(let d=0;d<4&&e&&e!==document.body;d++,e=e.parentElement){const bg=getComputedStyle(e).backgroundImage;if(bg&&bg!=='none'){const m=bg.match(/url\(["']?([^"')]+)["']?\)/i);if(m&&!m[1].startsWith('data:image/svg')){try{u=new URL(m[1],U).href}catch(x){}break}}}}
  return{u,i}};
 const flash=(u,i)=>{const b=document.createElement('div');b.textContent='✓ Saved to profile';b.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:2147483647;background:rgba(16,185,129,.96);color:#000;font:700 13px sans-serif;padding:8px 16px;border-radius:20px;transition:opacity .3s';document.body.appendChild(b);if(i){i.style.outline='3px solid #10b981';i.style.outlineOffset='-3px'}setTimeout(()=>{b.style.opacity='0';setTimeout(()=>b.remove(),300)},1400);post(u,'image')};
-document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}else{const a2=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(a2){const hr=a2.getAttribute('href')||'';if(hr&&hr.charAt(0)!=='#'&&!/^(?:javascript|mailto|tel):/i.test(hr)){const u=new URL(hr,U).href;ev.preventDefault();ev.stopPropagation();parent.postMessage({type:'RF_NAV',url:u},'*')}}}}catch(e){}},true);
+document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}else{const a2=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(a2){const hr=a2.getAttribute('href')||'';if(hr&&hr.charAt(0)!=='#'&&!/^(?:javascript|mailto|tel):/i.test(hr)){const u=new URL(hr,U).href;ev.preventDefault();ev.stopPropagation();const de=document.documentElement,mx=Math.max(1,de.scrollHeight-innerHeight);parent.postMessage({type:'RF_NAV',url:u,fr:Math.min(1,Math.max(0,(window.scrollY||de.scrollTop||0)/mx))},'*')}}}}catch(e){}},true);
 const dock=()=>{if(!document.body||document.getElementById('rf-dock'))return;const d=document.createElement('div');d.id='rf-dock';d.textContent='Drop an image or link here to save';d.style.cssText='position:fixed;bottom:14px;left:14px;z-index:2147483646;background:rgba(24,24,34,.88);border:1.5px dashed rgba(143,208,255,.7);color:#dbeafe;font:700 12px sans-serif;padding:9px 14px;border-radius:18px;transition:.15s';
  d.addEventListener('dragover',e=>{e.preventDefault();d.style.transform='scale(1.12)';d.style.background='rgba(16,185,129,.92)';d.style.color='#000'});d.addEventListener('dragleave',()=>{d.style.transform='';d.style.background='rgba(24,24,34,.88)';d.style.color='#dbeafe'});
  d.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();d.style.transform='';const dt=e.dataTransfer;let u=(dt.getData('text/uri-list')||dt.getData('text/plain')||'').split(/\s+/)[0];if(!u){const h=dt.getData('text/html')||'',m=h.match(/src=["']([^"']+)["']/i);if(m)u=m[1]}try{u=new URL(u,U).href}catch(x){}post(u,/\.(?:mp4|webm|m4v|mov|m3u8)(?:\?|#|$)/i.test(u)?'video':'image')});document.body.appendChild(d)};
 document.addEventListener('DOMContentLoaded',dock);setTimeout(dock,400);
-addEventListener('message',e=>{const d=e.data;if(d&&d.type==='RF_SCROLL'){const m=document.documentElement.scrollHeight-innerHeight;scrollTo(0,Math.max(0,m)*d.pct/100)}})})();`;
+addEventListener('message',e=>{const d=e.data;if(d&&d.type==='RF_SCRAPE'){try{const out=[],seen=new Set(),badR=/logo|avatar|icon|sprite|blank|spacer|pixel|favicon|badge|emoji/i;
+const push=(u,kind,poster,post)=>{if(!u||!/^https?:\/\//i.test(u)||badR.test(u)||seen.has(u))return;seen.add(u);out.push({url:u,kind:kind,poster:poster||'',post:post||''})};
+document.querySelectorAll('img').forEach(im=>{const r=best(im);if(!r.u)return;if(im.naturalWidth&&im.naturalWidth<180)return;const a=im.closest&&im.closest('a[href]');let post='';if(a){try{post=new URL(a.getAttribute('href'),U).href}catch(e){}}push(r.u,'image','',post)});
+document.querySelectorAll('video').forEach(v=>{const src=v.currentSrc||v.src||'';if(!src)return;const a=v.closest&&v.closest('a[href]');let post=U;if(a){try{post=new URL(a.getAttribute('href'),U).href}catch(e){}}push(src,'video',v.poster||'',post)});
+parent.postMessage({type:'RF_SCRAPE_RESULT',items:out.slice(0,200)},'*')}catch(e){parent.postMessage({type:'RF_SCRAPE_RESULT',items:[]},'*')}}else if(d&&d.type==='RF_SCROLL'){const m=document.documentElement.scrollHeight-innerHeight;scrollTo(0,Math.max(0,m)*(d.fr!=null?d.fr:d.pct/100))}})})();`;
 function buildSrcdoc(raw,url){let c=raw.replace(/<meta[^>]+http-equiv=["']?(?:Content-Security-Policy|X-Frame-Options)["']?[^>]*>/gi,'').replace(/\btarget=["']?_blank["']?/gi,'data-rf-target="self"').replace(/\s+(?:integrity|crossorigin)=["'][^"']*["']/gi,'').replace(/type=["'][0-9a-fA-F]{16,}-text\/javascript["']/gi,'type="text/javascript"')
  .replace(/window\.top\s*!==?\s*window\.self/g,'false').replace(/window\.self\s*!==?\s*window\.top/g,'false').replace(/\btop\s*!==?\s*self\b/g,'false').replace(/\bself\s*!==?\s*top\b/g,'false').replace(/window\.top\s*===?\s*window\.self/g,'true').replace(/\btop\s*===?\s*self\b/g,'true').replace(/top\.location\.replace\s*\(/g,'void(').replace(/top\.location\.href\s*=/g,'window.__rf_noop =')
  .replace(/<(img|video|source|iframe)([^>]*?)\sdata-(?:src|original|lazy-src|lazysrc)=["'](https?:\/\/[^"']+|\/[^"']+)["']([^>]*)>/gi,(f,t,b,l,a)=>/\ssrc=["']https?:\/\//i.test(b+a)?f:`<${t}${b} src="${l}"${a}>`);
  if(S.set.ad)c=c.replace(/<script[^>]+(?:exoclick|juicyads|trafficjunky|popunder|doubleclick|googlesyndication|adsystem|adserver|popads|popcash|clickadu|hilltopads|magsrv|realsrv|tsyndicate|acscdn)[^>]*>[\s\S]*?<\/script>/gi,'');
  const inj=`<base href="${esc(url)}"><style>${GATE_CSS}</style><script>${INJ.replace('__URL__',JSON.stringify(url))}<\/script>`;return /<head[^>]*>/i.test(c)?c.replace(/<head[^>]*>/i,m=>m+inj):inj+c}
 function scrollFrame(f){const pct=S.set.off;if(!pct)return;[300,900,1800].forEach(t=>setTimeout(()=>{try{f.contentWindow.postMessage({type:'RF_SCROLL',pct},'*')}catch(e){}},t))}
+function restoreScroll(f,fr){[120,450,1100,2000].forEach(t=>setTimeout(()=>{try{f.contentWindow.postMessage({type:'RF_SCROLL',fr},'*')}catch(e){}},t))}
 const PSH=new Map();
 function embedUrl(u){try{const x=new URL(u),h=x.hostname.replace(/^www\./,'');let m;
  if(/(^|\.)youtube\.com$/.test(h)){const id=x.searchParams.get('v')||((m=x.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{6,})/))&&m[1]);if(id)return`https://www.youtube.com/embed/${id}?autoplay=1&mute=${S.muted?1:0}&playsinline=1&rel=0`}
@@ -1097,21 +1110,44 @@ function embedUrl(u){try{const x=new URL(u),h=x.hostname.replace(/^www\./,'');le
  if(h==='streamable.com'&&(m=x.pathname.match(/^\/(?:e\/)?(\w+)/)))return`https://streamable.com/e/${m[1]}?autoplay=1&muted=1`;
  if(/redgifs\.com$/.test(h)&&(m=x.pathname.match(/\/watch\/(\w+)/)))return`https://www.redgifs.com/ifr/${m[1]}`}catch(e){}return u}
 const PGO=new Map(),NAVC=new Map();const curPage=it=>{const g=PGO.get(it.id);return g?g.stack[g.stack.length-1]:pageUrl(it)};
+const PGPos=new Map();const posSet=(it,url,fr)=>{let m=PGPos.get(it.id);if(!m){m=new Map();PGPos.set(it.id,m)}m.set(strip(url),fr)};const posGet=(it,url)=>{const m=PGPos.get(it.id);return m?m.get(strip(url)):undefined};
+function buildFrame(s,it,pg){const emb=embedUrl(pg),isEmb=emb!==pg,mode=PSH.get(it.id)||(S.set.ad?'shield':'live'),pre=(isEmb||mode==='shield')?0:S.set.off;
+ const f=document.createElement('iframe');f.className='wf';f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen; storage-access');f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+ if(pre)f.style.cssText=`top:-${pre}vh;height:calc(100% + ${pre}vh);min-height:calc(100dvh + ${pre}vh)`;
+ s.appendChild(f);f.src=emb;NAVC.set(it.id,0);f.addEventListener('load',()=>NAVC.set(it.id,(NAVC.get(it.id)||0)+1));
+ if(mode==='shield'&&!isEmb)pageHtml(pg).then(html=>{if(!html||!s.dataset.h||V[+s.dataset.i]!==it||!s.contains(f)||(PSH.get(it.id)||'shield')!=='shield')return;
+  const g2=document.createElement('iframe');g2.className='wf';g2.setAttribute('sandbox','allow-scripts allow-forms allow-popups');g2.setAttribute('allow','autoplay; fullscreen');g2.referrerPolicy='no-referrer';g2.srcdoc=buildSrcdoc(html,pg);g2.addEventListener('load',()=>{const rf=posGet(it,pg);if(rf!=null)restoreScroll(g2,rf);else scrollFrame(g2)},{once:true});s.replaceChild(g2,f);
+  const g=PGO.get(it.id);if(g&&g.frames&&g.frames[g.stack.length-1]===f)g.frames[g.stack.length-1]=g2});
+ if(S.set.sniff&&!SNIFF[pg])extract({source:pg,url:pg}).then(st=>{if(st){SNIFF[pg]=st;toast('Video found: tap Paste & Link, then Sniffed')}});
+ return f}
 function hydPage(s,it,i){const pg=curPage(it),e=esc(pg);
  if(i!==S.idx){s.dataset.pend=1;s.innerHTML=`<div class="wp"><h2 style="margin:0">Webpage</h2><b>${e}</b></div>`;return}
- delete s.dataset.pend;const emb=embedUrl(pg),isEmb=emb!==pg,mode=PSH.get(it.id)||(S.set.ad?'shield':'live'),pre=(isEmb||mode==='shield')?0:S.set.off;
- s.innerHTML=`<iframe class="wf" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; storage-access" referrerpolicy="strict-origin-when-cross-origin" style="${pre?`top:-${pre}vh;height:calc(100% + ${pre}vh);min-height:calc(100dvh + ${pre}vh)`:''}"></iframe><div class="edge"></div>`;
- const f=s.querySelector('iframe');f.src=emb;NAVC.set(it.id,0);f.addEventListener('load',()=>NAVC.set(it.id,(NAVC.get(it.id)||0)+1));
- if(mode==='shield'&&!isEmb)pageHtml(pg).then(html=>{if(!html||!s.dataset.h||V[+s.dataset.i]!==it||!s.contains(f)||(PSH.get(it.id)||'shield')!=='shield')return;
-  const g=document.createElement('iframe');g.className='wf';g.setAttribute('sandbox','allow-scripts allow-forms allow-popups');g.setAttribute('allow','autoplay; fullscreen');g.referrerPolicy='no-referrer';g.srcdoc=buildSrcdoc(html,pg);g.addEventListener('load',()=>scrollFrame(g),{once:true});s.replaceChild(g,f)});
- if(S.set.sniff&&!SNIFF[pg])extract({source:pg,url:pg}).then(st=>{if(st){SNIFF[pg]=st;toast('Video found: tap Paste & Link, then Sniffed')}})}
-function saveCap(u,t,pg){const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const n=attach([u],hd);toast(n?`Saved ${t} to @${alias(hd)}`:'Already saved');chips()}
-addEventListener('message',e=>{const d=e.data;if(!d||(d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA'&&d.type!=='RF_NAV'))return;const f=feed.querySelector(`.card[data-i="${S.idx}"] iframe`);if(!f||e.source!==f.contentWindow)return;
- if(d.type==='RF_NAV'){const u=String(d.url||'');if(/^https?:\/\//i.test(u))pageNav(u);return}
+ delete s.dataset.pend;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)],frames:[]};PGO.set(it.id,g)}
+ const f=buildFrame(s,it,pg);const edge=document.createElement('div');edge.className='edge';s.appendChild(edge);
+ g.frames=g.frames||[];g.frames[g.stack.length-1]=f}
+function saveCap(u,t,pg){if(STARM&&t==='image'){STARM=false;learnScrape(pg,u);return}const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const n=attach([u],hd);toast(n?`Saved ${t} to @${alias(hd)}`:'Already saved');chips()}
+addEventListener('message',e=>{const d=e.data;if(!d||(d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA'&&d.type!=='RF_NAV'&&d.type!=='RF_SCRAPE_RESULT'))return;const cs=feed.querySelector(`.card[data-i="${S.idx}"]`),f=cs?[...cs.querySelectorAll('iframe')].find(x=>x.contentWindow===e.source):null;if(!f)return;
+ if(d.type==='RF_SCRAPE_RESULT'){if(SCRAPE_RES)SCRAPE_RES(Array.isArray(d.items)?d.items:null);return}
+ if(d.type==='RF_NAV'){const u=String(d.url||'');if(/^https?:\/\//i.test(u))pageNav(u,d.fr);return}
  const u=String(d.mediaUrl||'');if(d.mediaType==='video')saveMedia(u);else saveCap(u,'image',String(d.pageUrl||''))});
-function pageNav(url){const it=V[S.idx];if(!it)return;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)]};PGO.set(it.id,g)}if(g.stack[g.stack.length-1]===url)return;g.stack.push(url);if(g.stack.length>30)g.stack.shift();const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()}
+function pageNav(url,fr){const it=V[S.idx];if(!it)return;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)],frames:[]};PGO.set(it.id,g)}
+ if(g.stack[g.stack.length-1]===url)return;if(fr!=null&&isFinite(fr))posSet(it,g.stack[g.stack.length-1],fr);
+ const s=feed.querySelector(`.card[data-i="${S.idx}"]`);g.frames=g.frames||[];const topF=g.frames[g.stack.length-1];
+ g.stack.push(url);if(g.stack.length>30){g.stack.shift();g.frames.shift()}
+ /* Keep the outgoing page ALIVE, hidden under the new one — a browser tab
+    keeps your place in an infinite-scroll list because Back returns to
+    the same live document. Rebuilding from fetched HTML loses both the
+    scroll depth and every page the list had loaded. Rebuild only when
+    there is no live frame to preserve. (Kendall, Nov 12) */
+ if(topF&&s&&s.dataset.h&&s.contains(topF)){topF.style.display='none';const nf=buildFrame(s,it,url);g.frames[g.stack.length-1]=nf;
+  let live=g.frames.filter(Boolean),guard=0;
+  while(live.length>4&&guard++<12){let k=g.frames.findIndex((f2,ix)=>f2&&ix>0&&ix<g.stack.length-1);if(k<0)k=g.frames.findIndex((f2,ix)=>f2&&ix<g.stack.length-1);if(k<0)break;try{g.frames[k].remove()}catch(e){}g.frames[k]=null;live=g.frames.filter(Boolean)}
+  sync();return}
+ dehyd(s);hyd(s,S.idx);sync()}
 $('#pb').onclick=()=>{const it=V[S.idx];if(!it)return;const g=PGO.get(it.id),s=feed.querySelector(`.card[data-i="${S.idx}"]`),f=s&&s.querySelector('iframe');
- if(g&&g.stack.length>1){g.stack.pop();dehyd(s);hyd(s,S.idx);sync();return}
+ if(g&&g.stack.length>1){g.stack.pop();g.frames=g.frames||[];const old=g.frames[g.stack.length];if(old){try{old.remove()}catch(e){}g.frames[g.stack.length]=null}
+  const nf=g.frames[g.stack.length-1];if(nf&&s&&s.contains(nf)){nf.style.display='';sync();return}
+  dehyd(s);hyd(s,S.idx);sync();return}
  if(f&&!f.hasAttribute('sandbox')&&(NAVC.get(it.id)||0)>1){NAVC.set(it.id,NAVC.get(it.id)-2);try{f.contentWindow.history.back()}catch(x){history.back()}return}
  toast('This is the first page')};
 function pageUI(it){document.body.classList.toggle('disc',S.mode==='disc');const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
@@ -1126,6 +1162,97 @@ $('#pdz').onclick=async()=>{let t='';try{t=(await navigator.clipboard.readText()
  if(/^https?:\/\//i.test(t)){saveMedia(t);return}
  ask({title:'Save media link',desc:'Paste an image or video link. A video links to this page and plays in the feed; an image is saved to the profile.',ph:'https://…',ok:'Save',extra:[['Paste',pasteInto]],onOk:v=>{v=v.trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}saveMedia(v)}})};
 $('#pdz').ondragover=e=>e.preventDefault();$('#pdz').ondrop=e=>{e.preventDefault();const t=(e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'').trim().split(/\s+/)[0];if(/^https?:\/\//i.test(t))saveMedia(t)};
+/* ---------- scrape: gather a page's posts, pick media in bulk ----------
+   Kendall, Nov 12: tapping through a creator's grid one post at a time is
+   slow, and the grid's thumbnails are not the saveable media — the
+   full-size image (or the video) lives on each post page. Scrape follows
+   the post links itself through the same fetch the webpage engine uses,
+   pulls each post's target media, and shows a native picker: everything
+   starts selected, tap to drop what you don't want, Add files the rest
+   under a profile. Videos arrive taught to their post page, exactly like
+   a Paste & Link save. */
+/* Teach scrape (Kendall, Nov 12): the generic rules once handed him a
+   completely random image, so a site can be taught. He shows it ONE
+   correct full-size image — by tapping it in the page, or by pasting
+   its link — and the learner keeps the shape of that URL (its host,
+   first path segment, extension) as the site's rule. extractImg checks
+   the rule before every generic heuristic. Rules persist on-device and
+   ride the export as SCRAPE_TEACH. */
+let STARM=false;
+function learnScrape(pg,img){try{const ph=new URL(pg).hostname.replace(/^www\./,'');const u=new URL(img);const seg=u.pathname.split('/').filter(Boolean);const ext=(u.pathname.match(/\.(jpe?g|png|webp|gif|avif)$/i)||[])[1]||'';
+ STEACH[ph]={h:u.hostname.replace(/^www\./,''),s:seg.length>1?seg[0]:'',e:ext.toLowerCase()};save();setDirty(true);
+ toast('Learned for '+ph+': look for '+u.hostname+(seg.length>1?'/'+seg[0]+'/…':''));return true}catch(e){toast('Could not learn from that link');return false}}
+function extractImg(html,page){try{const doc=new DOMParser().parseFromString(html,'text/html');
+ const fix=c=>{if(!c)return null;c=String(c).replace(/\\u002F/g,'/').replace(/\\\//g,'/').replace(/&amp;/g,'&').trim();if(c.startsWith('//'))return 'https:'+c;try{return new URL(c,page).href}catch(e){return null}};
+ const bad=u=>!u||u.startsWith('data:')||/logo|avatar|icon|sprite|blank|spacer|pixel|favicon|badge|emoji|gravatar/i.test(u);
+ const imgExt=u=>/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(u||'');
+ const rule=(()=>{try{return STEACH[new URL(page).hostname.replace(/^www\./,'')]}catch(e){return null}})();
+ if(rule){const cand=[];
+  for(const a of doc.querySelectorAll('a[href]'))if(a.querySelector('img'))cand.push(fix(a.getAttribute('href')));
+  for(const im of doc.querySelectorAll('img')){cand.push(fix(im.getAttribute('data-full')||im.getAttribute('data-highres')||im.getAttribute('data-original')||im.getAttribute('data-large')));cand.push(fix(im.getAttribute('data-src')||im.getAttribute('src')))}
+  const og0=doc.querySelector('meta[property="og:image"]');if(og0)cand.push(fix(og0.getAttribute('content')));
+  const hit=cand.find(u=>{if(!u||bad(u)||!imgExt(u))return false;try{const x=new URL(u),sg=x.pathname.split('/').filter(Boolean);return x.hostname.replace(/^www\./,'')===rule.h&&(!rule.s||sg[0]===rule.s)&&(!rule.e||x.pathname.toLowerCase().endsWith('.'+rule.e))}catch(e){return false}});
+  if(hit)return hit}
+ for(const a of doc.querySelectorAll('a[href]')){const u=fix(a.getAttribute('href'));if(u&&imgExt(u)&&!bad(u)&&a.querySelector('img'))return u}
+ for(const im of doc.querySelectorAll('img')){const u=fix(im.getAttribute('data-full')||im.getAttribute('data-highres')||im.getAttribute('data-original')||im.getAttribute('data-large'));if(u&&!bad(u))return u}
+ const og=doc.querySelector('meta[property="og:image"],meta[name="twitter:image"]');if(og){const u=fix(og.getAttribute('content'));if(u&&!bad(u))return u}
+ let best=null,bs=0;for(const im of doc.querySelectorAll('img')){let u=fix(im.getAttribute('data-src')||im.getAttribute('src'));let sc=(+im.getAttribute('width')||0)*(+im.getAttribute('height')||0);
+  const ss=im.getAttribute('srcset');if(ss){const parts=ss.split(',').map(x=>x.trim().split(/\s+/)).filter(x=>x[0]);const last=parts[parts.length-1];if(last){const lu=fix(last[0]),lw=parseInt(last[1])||0;if(lu&&lw*lw>=sc){u=lu;sc=lw*lw}}}
+  if(u&&!bad(u)&&sc>bs){bs=sc;best=u}}
+ return best}catch(e){return null}}
+function postLinks(html,page){try{const doc=new DOMParser().parseFromString(html,'text/html');const b=new URL(page);const out=[],seen=new Set();
+ for(const a of doc.querySelectorAll('a[href]')){const im=a.querySelector('img');if(!im)continue;let u;try{u=new URL(a.getAttribute('href'),page).href}catch(e){continue}
+  if(!/^https?:/.test(u))continue;let x;try{x=new URL(u)}catch(e){continue}if(strip(u)===strip(page))continue;
+  const direct=/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(u);if(!direct&&x.hostname!==b.hostname)continue;
+  const post=isVideoPostPage(u)||/\/(?:p|post|posts|video|videos|v|watch|photo|photos|album)\//i.test(x.pathname)||/\/\d{5,}(\/|$)/.test(x.pathname);
+  if(!direct&&!post)continue;const k=normKey(u);if(seen.has(k))continue;seen.add(k);
+  let thumb='';try{thumb=new URL(im.getAttribute('data-src')||im.getAttribute('src')||'',page).href}catch(e){}
+  out.push({post:direct?'':u,direct:direct?u:'',thumb});if(out.length>=48)break}
+ return out}catch(e){return[]}}
+const SW={list:[],sel:new Set(),run:0,hd:''};
+let SCRAPE_RES=null;
+function scrapeScreen(){return new Promise(res=>{const s=feed.querySelector(`.card[data-i="${S.idx}"]`);if(!s)return res(null);
+ const fs=[...s.querySelectorAll('iframe')].filter(f2=>f2.hasAttribute('sandbox'));const f=fs[fs.length-1];if(!f||!f.contentWindow)return res(null);
+ let done=false;const fin=v=>{if(done)return;done=true;if(SCRAPE_RES===fin)SCRAPE_RES=null;res(v)};
+ SCRAPE_RES=fin;setTimeout(()=>fin(null),1800);
+ try{f.contentWindow.postMessage({type:'RF_SCRAPE'},'*')}catch(e){fin(null)}})}
+const swStat=t=>{$('#sw-stat').textContent=t};
+function swRender(){$('#swgrid').innerHTML=SW.list.map((c,k)=>`<div data-k="${k}" style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:var(--field);cursor:pointer;${SW.sel.has(k)?'outline:3px solid #10b981;outline-offset:-3px':''}"><img src="${esc(c.poster||c.url)}" data-s="${esc(c.poster||c.url)}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">${c.kind==='video'?'<span style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">VIDEO</span>':''}${SW.sel.has(k)?'<span style="position:absolute;top:6px;right:6px;background:#10b981;color:#000;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px">✓</span>':''}</div>`).join('');
+ wireImgs($('#swgrid'));$('#sw-add').textContent='Add selected ('+SW.sel.size+')'}
+function swAddCand(c){if(SW.list.some(x=>normKey(x.url)===normKey(c.url)))return;SW.list.push(c)}
+function swFillProf(){const hs=[...new Set([SW.hd,...S.items.map(i=>i.handle)].filter(Boolean))];$('#sw-prof').innerHTML=hs.map(h=>`<option value="${esc(h)}" ${h===SW.hd?'selected':''}>@${esc(alias(h))}</option>`).join('')}
+async function scrapePage(){const it=V[S.idx];if(!it)return;const pg=curPage(it),run=++SW.run;SW.list=[];SW.sel=new Set();SW.hd=it.handle||profOf(pg);
+ $('#swrap').hidden=false;$('#sw-title').textContent='Scrape — @'+alias(SW.hd);swFillProf();swStat('Reading the page on screen…');swRender();
+ /* First source: the live page itself (Kendall, Nov 12) — whatever media
+    is currently loaded on screen, including everything infinite scroll
+    has pulled in. The page's own script enumerates its images at the
+    best resolution it has for them and its videos. No 24-post cap: the
+    screen is the set. Only Shielded pages can be read this way. */
+ const live=await scrapeScreen();if(run!==SW.run)return;
+ if(live){for(const c of live)swAddCand({kind:c.kind==='video'?'video':'image',url:c.url,poster:c.poster||c.url,post:c.post||pg});
+  swStat(live.length?('On-screen media — '+SW.list.length+' found. Scroll the page to load more, then Scrape again to gather those too.'):'Nothing usable on screen yet — scroll the page so its media loads, then Scrape again.');swRender();return}
+ const html=await pageHtml(pg);if(run!==SW.run)return;if(!html){swStat('Could not fetch that page — the proxies did not return it.');return}
+ const links=postLinks(html,pg),direct=links.filter(l=>l.direct),posts=links.filter(l=>!l.direct).slice(0,24);
+ for(const d of direct)swAddCand({kind:'image',url:d.direct,poster:d.direct,post:pg});
+ if(!posts.length){if(!direct.length){const im=extractImg(html,pg);if(im)swAddCand({kind:'image',url:im,poster:im,post:pg});swStat(im?'Not a grid page — here is its main image.':'No posts or images found on that page.')}else swStat('Found '+SW.list.length+' — tap the ones you want, then Add.');swRender();return}
+ let done=0;const total=posts.length;swStat('Checking posts… 0/'+total);swRender();
+ const queue=[...posts];const worker=async()=>{while(queue.length&&run===SW.run){const p=queue.shift();const h=await pageHtml(p.post);done++;if(run!==SW.run)return;
+  if(h){const vid=findStream(h,p.post),im2=extractImg(h,p.post);if(vid)swAddCand({kind:'video',url:vid,poster:im2||p.thumb,post:p.post});else if(im2)swAddCand({kind:'image',url:im2,poster:im2,post:p.post})}
+  swStat('Checking posts… '+done+'/'+total+' — '+SW.list.length+' found');swRender()}};
+ await Promise.all([worker(),worker(),worker()]);if(run!==SW.run)return;
+ swStat(SW.list.length?'Found '+SW.list.length+' — tap the ones you want, then Add.':'No full-size media found in those posts.');swRender()}
+$('#psc').onclick=()=>{const it=V[S.idx];if(it&&isPageCard(it))scrapePage();else toast('Open a webpage first')};
+$('#sw-exit').onclick=()=>{SW.run++;$('#swrap').hidden=true};
+$('#sw-all').onclick=()=>{if(SW.sel.size===SW.list.length)SW.sel.clear();else SW.list.forEach((c,k)=>SW.sel.add(k));swRender()};
+$('#sw-teach').onclick=()=>{const it=V[S.idx];const pg=it?curPage(it):'';let host='';try{host=new URL(pg).hostname}catch(e){}
+ ask({title:'Teach scrape'+(host?' — '+host:''),desc:'If scrape picks the wrong image on this site, show it the right one once. Paste one correct full-size image link here — or tap Teach by tap, open any post on the site, and tap the correct full-size image in the page.',ph:'https://… one correct full-size image link',ok:'Teach from link',extra:[['Teach by tap',()=>{STARM=true;closeModal();$('#swrap').hidden=true;toast('Now open a post and tap the correct full-size image')}]],
+ onOk:v=>{v=(v||'').trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}if(learnScrape(pg,v))$('#swrap').hidden=true}})};
+$('#swgrid').addEventListener('click',e=>{const t=e.target.closest('[data-k]');if(!t)return;const k=+t.dataset.k;if(SW.sel.has(k))SW.sel.delete(k);else SW.sel.add(k);swRender()});
+$('#sw-add').onclick=()=>{const chosen=[...SW.sel].map(k=>SW.list[k]).filter(Boolean);if(!chosen.length){toast('Nothing selected');return}
+ const hd=$('#sw-prof').value||SW.hd;let n=0;const imgs=chosen.filter(c=>c.kind==='image').map(c=>c.url);if(imgs.length)n+=attach(imgs,hd);
+ for(const c of chosen.filter(x=>x.kind==='video')){n+=attach([c.url],hd);const x=S.items.find(i=>normKey(i.url)===normKey(c.url));if(x&&c.post){x.source=c.post;TAUGHT[c.post]=TAUGHT[c.post.replace(/\/+$/,'')]=c.url}}
+ save();setDirty(true);SW.run++;$('#swrap').hidden=true;chips();if(S.mode==='main'){V=vis();render();sync()}
+ toast(n?('Added '+n+' to @'+alias(hd)):'Already in your library')};
 /* Discovery (Kendall, Nov 11): a LIST, not a feed and never a grid. The
    list is the discovery home; opening an item visits that page, and the
    page viewer's arrows just move between list items. Its job is visiting
