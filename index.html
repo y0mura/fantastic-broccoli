@@ -479,7 +479,7 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   if(!l){if(sec==='feed'&&first)blank++;else if(sec==='x'&&sub==='o')extra.push('');continue}
   if(/^#\s*\[?ACTIVE FEED/i.test(l)){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='feed';continue}
   {const hm=l.match(/^#\s*\[([^\]]+)\]/)||l.match(/^#\s*(BANK[ _-]?[1-5]|PROFILE_ALIASES|PROFILE_DISCOVERY(?:_LINKS)?|VIDEO_THUMB_TRIMS|PROFILE_AVATARS|PROFILE_PICS|PROFILE_FAVORITES|ITEM_NAMES|APP_SETTINGS|HOUSE_B_CARDS|HOUSE_B_DELETIONS|HOUSE_B_PREFS)\b/i);
-  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
+  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='TAUGHT_VIDEOS'?'tv':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
   if(sec==='x'){
    if(sub[0]==='b'){if(/^https?:\/\//i.test(l))banks[sub[1]].push(l)}
    else if(sub==='al'){if(l.includes('=')&&!l.startsWith('#')){const[a,b]=l.split('=');if(a&&b)ALIAS[a.trim().toLowerCase().replace(/^@/,'')]=b.trim().toLowerCase().replace(/^@/,'')}}
@@ -490,6 +490,7 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
    else if(sub==='pp'){if(l.includes('=')&&!l.startsWith('#')){const[a,b]=l.split('=');if(a&&b)picsL[a.trim()]=b.trim()}}
    else if(sub==='nms'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=l.slice(0,x).trim(),b=l.slice(x+1).trim();if(a&&b)names[tk(a)]=b}}
    else if(sub==='fv'){if(l&&!l.startsWith('#'))favs.push(l.trim())}
+   else if(sub==='tv'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=strip(l.slice(0,x)),b=strip(l.slice(x+1));if(a&&b&&isDirect(b)){TAUGHT[a]=TAUGHT[a.replace(/\/+$/,'')]=b}}}
    else if(sub==='cf'){try{cfg=JSON.parse(l)}catch(e){}}
    else extra.push(l);
    continue}
@@ -497,8 +498,8 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   if(first&&blank>=1)sess++;blank=0;first=true;
   try{
   if(l.includes('|')){const p=l.split('|').map(s=>s.trim()).filter(Boolean);
-   if(p.length>=2){const v=/^(https?:|data:)/i.test(p[1])?dash(p[1]):(MEDIA.test(p[1])&&!/\s/.test(p[1])?r2(p[1]):'');
-    if(v&&isDirect(v)){const pg=strip(p[0]);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=strip(v);add(v,profOf(pg));continue}}}
+   if(p.length>=2){const pm=p[1].match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);const v=/^(https?:|data:)/i.test(p[1])?dash(p[1].replace(/[#&]profile=[^&#]*/gi,'')):(MEDIA.test(p[1])&&!/\s/.test(p[1])?r2(p[1]):'');
+    if(v&&isDirect(v)){const pg=strip(p[0]);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=strip(v);add(v,pm?pm[1]:profOf(pg));continue}}}
   for(const t of l.replace(/%(?=https?:\/\/)/gi,'\n').replace(/(?<!source=)(https?:\/\/)/gi,'\n$1').split(/[\s,;|]+|(?:%20)+|%(?![0-9a-fA-F]{2})/g)){
    const hm=t.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i),nm=t.match(/[#&]name=([^&#]+)/i);let c=t.trim().replace(/^%+/,'').replace(/%+$/,'').replace(/[);,>\]"']+$/,'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]name=[^&#]*/gi,'');
    let cand='';if(/^(https?:\/\/|data:image\/)/i.test(c))cand=c;
@@ -509,7 +510,9 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
  items.forEach(i=>i.handle=i.ch?alias(i.ch):profOf(i.source||i.url));
  return{items,extra,banks,trims,cfg,disc,hbc,hbd,hbp,pics,picsL,names,favs}}
 function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.names)for(const it of p.items){const nm2=p.names[tk(it.url)];if(nm2)it.name=nm2}if(p.pics)for(const[h,u]of Object.entries(p.pics))PFP[alias(h)]=u;if(p.picsL)for(const[h,id]of Object.entries(p.picsL)){const m=/^i(\d+)$/.exec(id),it=m?p.items[+m[1]-1]:null;if(it&&it.handle===alias(h))PFP[alias(h)]=it.url}if(p.favs)p.favs.forEach(h=>FAVP.add(alias(h)));if(p.cfg){cfgSet(p.cfg)}}
-const lineOf=it=>it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'')+(it.name?'#name='+encodeURIComponent(it.name).replace(/%20/g,'%2520'):'');
+const pageOf=it=>{const s=it.source&&strip(it.source);if(s&&s!==strip(it.url))return s;const t=Object.keys(TAUGHT).find(k=>strip(TAUGHT[k])===strip(it.url));return t&&strip(t)!==strip(it.url)?strip(t):''};
+const lineOf=it=>{const pg=it.type==='video'?pageOf(it):'';if(pg){const base=pg+' | '+it.url;return it.ch&&it.handle&&it.handle!==profOf(pg)?base+'#profile='+it.handle:base}
+ return it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'')+(it.name?'#name='+encodeURIComponent(it.name).replace(/%20/g,'%2520'):'')};
 function boxText(){const o=[];let p=null;for(const it of S.items){if(p!==null&&it.sess!==p)o.push('','');p=it.sess;const l=lineOf(it);o.push(l)}return o.join('\n')}
 function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'];let p=null;
  for(const it of S.items){if(p!==null&&it.sess!==p)L.push('','');p=it.sess;L.push(lineOf(it))}
@@ -518,6 +521,7 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  const pc=Object.entries(PFP).filter(([h,u])=>S.items.some(i=>i.handle===h&&tk(i.url)===tk(u)));if(pc.length)L.push('','# [PROFILE_AVATARS]',...pc.map(([h,u])=>h+' | '+u));
  const nml=S.items.filter(i=>i.name);if(nml.length)L.push('','# [ITEM_NAMES]',...nml.map(i=>i.url+' | '+i.name));
  if(FAVP.size){const fv=[...FAVP].filter(h=>S.items.some(i=>i.handle===h));if(fv.length)L.push('','# [PROFILE_FAVORITES]',...fv)}
+ {const covered=new Set();for(const i of S.items){const pg=i.type==='video'?pageOf(i):'';if(pg)covered.add(tk(pg))}const orph={};for(const[k,v]of Object.entries(TAUGHT)){if(v&&isDirect(v)&&!covered.has(tk(k)))orph[tk(k)]=v}const oe=Object.entries(orph);if(oe.length)L.push('','# [TAUGHT_VIDEOS]',...oe.map(([k,v])=>k+' | '+v))}
  if(S.extra.length)L.push('',...S.extra);
  const tr=Object.entries(TRIMS);if(tr.length)L.push('','# [VIDEO_THUMB_TRIMS]',...tr.map(([u,t])=>u+' | '+t.startSec+','+t.loopSec));
  for(let n=1;n<=5;n++)if(S.banks[n].length)L.push('',`# [BANK_${n}]`,...S.banks[n]);
