@@ -18,8 +18,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;paddin
 .row{display:flex;gap:7px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .row::-webkit-scrollbar{display:none}
 .sp{flex:1}
-#rail{position:fixed;z-index:20;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 5px;border-radius:999px;background:var(--dock);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 12px 30px rgba(0,0,0,.4);transition:opacity .25s}
-#rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;height:44px;min-width:44px}
+#rail{position:fixed;z-index:20;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 3px;border-radius:999px;background:color-mix(in srgb,var(--dock) 52%,transparent);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 12px 30px rgba(0,0,0,.4);transition:opacity .25s}
+#rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;height:44px;min-width:40px}
+#pr .pill{color:var(--ink);font-weight:600;text-shadow:0 1px 3px color-mix(in srgb,var(--bg) 72%,transparent)}
+#pr .lab{color:var(--ink);font-weight:600;text-shadow:0 1px 3px color-mix(in srgb,var(--bg) 72%,transparent)}
 #rail .pill:active{background:rgba(255,255,255,.1)}
 .rail-sep{width:18px;height:1px;background:var(--line);margin:3px auto}
 button,.pill{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -33,7 +35,7 @@ body[data-theme="pitch"]{--bg:#000;--ink:#ececec;--dim:#8a8a8a;--acc:#ffb224;--h
 body[data-theme="slate"]{--bg:#c9ccd1;--ink:#1e2023;--dim:#5c6067;--acc:#0f766e;--hot:#b45309;--glass:rgba(233,235,238,.85);--line:rgba(15,18,24,.16);--field:#dde0e4;--panel:#d4d8dd;--dock:rgba(226,229,233,.7)}
 body[data-theme="matcha"]{--bg:#0b100d;--ink:#eceee9;--dim:#9a9d97;--acc:#b7c46a;--hot:#e0a458;--glass:rgba(12,18,13,.74);--line:rgba(205,225,200,.12);--field:#10160f;--panel:#131b14;--dock:rgba(8,14,9,.55)}
 body[data-theme="ember"]{--bg:#120e0b;--ink:#efece8;--dim:#a39a90;--acc:#ff7847;--hot:#ffc46b;--glass:rgba(22,16,12,.74);--line:rgba(255,205,160,.12);--field:#171008;--panel:#1a130d;--dock:rgba(16,11,8,.55)}
-body.disc #bgd,body.disc #bh,body.disc #bf,body.disc #bbag,body.disc #bmf{display:none!important}
+body.disc #bgd,body.disc #bh,body.disc #bf,body.disc #bbag{display:none!important}
 body.hb{--ink:#eceae4;--dim:#9a9aa6}
 .tdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
 #bgd svg{transform:scale(.85)}
@@ -244,19 +246,17 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
 </style></head><body class="hb">
 <header id="top">
  <div class="row">
-  <button class="pill ic" id="bmf" title="Batch menu"><i data-i="layout"></i></button><button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
+  <button class="pill ic" id="bmf" title="Home — batch menu"><i data-i="home"></i></button><button class="pill ic" id="bbk" hidden title="Back to grid"><i data-i="back"></i></button><button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button><button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
   <button class="pill ic" id="bz" title="Feed zoom"><i data-i="zoom"></i><em id="zl"></em><s>▾</s></button>
   <button class="pill ic" id="ba" title="Auto-scroll"><i data-i="clock"></i><em id="au"></em><s>▾</s></button>
   <button class="pill ic" id="bgd" title="Grid & collage"><i data-i="grid"></i></button>
-  <button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button>
   <button class="pill ic" id="bx" hidden title="Clear filters">✕</button>
-  <button class="pill" id="pbm" hidden title="Batch menu"><i data-i="layout"></i>Menu</button>
   <span class="sp"></span>
-  <button class="pill" id="bp" title="Batch URLs & banks"><i data-i="plus"></i><span id="cnt">0</span></button>
   <button class="pill ic" id="bol" title="Open link — go off-platform"><i data-i="link"></i></button>
+  <button class="pill ic" id="bmore" title="More"><i data-i="dots"></i></button>
  </div>
  <div class="row r2">
-  <button class="pill on" id="bkg" hidden></button><button class="pill" id="px" hidden>‹ Back</button><button class="pill" id="pc" hidden></button><button class="pill" id="bmd" hidden></button><button class="pill" id="blk" hidden></button><button class="pill" id="be" hidden>Enhance</button><button class="pill" id="bv" hidden>▾</button>
+  <button class="pill" id="px" hidden>‹ Back</button><button class="pill" id="pc" hidden></button><button class="pill" id="bmd" hidden></button><button class="pill" id="blk" hidden></button><button class="pill" id="be" hidden>Enhance</button><button class="pill" id="bv" hidden>▾</button>
   <span class="sp"></span>
   <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
@@ -437,7 +437,7 @@ const dt=raw=>(!raw||(!raw.includes('rf1$')&&!raw.includes('~RF1~')))?(raw||''):
 const S={trash:[],disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
 const RATES=[1,1.25,1.5,2,.5,.75],AUTO=[0,3,5,8,15,30,1.5,1],FILT=['all','image','video','webpage'],FL={all:'All',image:'Img',video:'Vid',webpage:'Link'},SORT=['default','new','old','fav','az'],SL={default:'Default',new:'New',old:'Old',fav:'Favorites',az:'A–Z'};
 let V=[],AT=0,Z={on:0,s:1,x:0,y:0},inB=true;const HYD=new Set();
-const ICONS={bag:'M6 8h12l1 12H5zM9 8V6a3 3 0 016 0v2',lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z',unlock:'M7 11V8a5 5 0 019.5-2M5 11h14v9H5z',save:'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',drop:'M12 4v10m0 0l-4-4m4 4l4-4M5 19h14',link:'M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1',expand:'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',shrink:'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5',back8:'M12 5a7 7 0 11-6.5 4.4M5 4v5h5',fwd8:'M12 5a7 7 0 106.5 4.4M19 4v5h-5',up2:'M12 19V5m0 0l-5 5m5-5l5 5',down2:'M12 5v14m0 0l-5-5m5 5l5-5',image:'M4 5h16v14H4zM8 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 17l5-5 4 4 3-3 4 4',minus:'M5 12h14',back:'M19 12H5m0 0l6-6m-6 6l6 6',close:'M6 6l12 12M18 6L6 18',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',list:'M9 6h12M9 12h12M9 18h12M4 6h.5M4 12h.5M4 18h.5',layout:'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',crawl:'M6 5l6 6 6-6M6 12l6 6 6-6',pan:'M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3M8 11h6M11 8v6',scissors:'M6 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12',filter:'M4 6h16M7 12h10M10 18h4',sort:'M7 4v16m0 0l-3-3m3 3l3-3M17 20V4m0 0l-3 3m3-3l3 3',clock:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM12 7.5v4.8l3.2 2',shuffle:'M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5',plus:'M12 5v14M5 12h14',up:'M6 15l6-6 6 6',down:'M6 9l6 6 6-6',unmuted:'M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 010 6M19 6a8 8 0 010 12',muted:'M4 9v6h4l5 4V5L8 9H4zM17 9l4 6m0-6l-4 6',play:'M8 5v14l11-7z',pause:'M8 5v14M16 5v14',dots:'M12 5h.01M12 12h.01M12 19h.01',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z',hide:'M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a13 13 0 01-2.6 3.7M6.1 6.1A13 13 0 002.5 12c1 2.5 4.5 7 9.5 7 1.5 0 2.9-.4 4.1-1'};
+const ICONS={bag:'M6 8h12l1 12H5zM9 8V6a3 3 0 016 0v2',lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z',unlock:'M7 11V8a5 5 0 019.5-2M5 11h14v9H5z',save:'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',drop:'M12 4v10m0 0l-4-4m4 4l4-4M5 19h14',link:'M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1',expand:'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',shrink:'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5',back8:'M12 5a7 7 0 11-6.5 4.4M5 4v5h5',fwd8:'M12 5a7 7 0 106.5 4.4M19 4v5h-5',up2:'M12 19V5m0 0l-5 5m5-5l5 5',down2:'M12 5v14m0 0l-5-5m5 5l5-5',image:'M4 5h16v14H4zM8 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 17l5-5 4 4 3-3 4 4',minus:'M5 12h14',back:'M19 12H5m0 0l6-6m-6 6l6 6',close:'M6 6l12 12M18 6L6 18',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',list:'M9 6h12M9 12h12M9 18h12M4 6h.5M4 12h.5M4 18h.5',layout:'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',home:'M4 11l8-7 8 7M6 9.3V20h12V9.3M10 20v-5h4v5',crawl:'M6 5l6 6 6-6M6 12l6 6 6-6',pan:'M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3M8 11h6M11 8v6',scissors:'M6 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12',filter:'M4 6h16M7 12h10M10 18h4',sort:'M7 4v16m0 0l-3-3m3 3l3-3M17 20V4m0 0l-3 3m3-3l3 3',clock:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM12 7.5v4.8l3.2 2',shuffle:'M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5',plus:'M12 5v14M5 12h14',up:'M6 15l6-6 6 6',down:'M6 9l6 6 6-6',unmuted:'M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 010 6M19 6a8 8 0 010 12',muted:'M4 9v6h4l5 4V5L8 9H4zM17 9l4 6m0-6l-4 6',play:'M8 5v14l11-7z',pause:'M8 5v14M16 5v14',dots:'M12 5h.01M12 12h.01M12 19h.01',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z',hide:'M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a13 13 0 01-2.6 3.7M6.1 6.1A13 13 0 002.5 12c1 2.5 4.5 7 9.5 7 1.5 0 2.9-.4 4.1-1'};
 const svg=n=>`<svg viewBox="0 0 24 24"><path d="${ICONS[n]}"/></svg>`;
 const shuf=a=>{for(let k=a.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[a[k],a[j]]=[a[j],a[k]]}return a};
 const setIc=(el,n)=>{el.innerHTML=svg(n)};
@@ -548,7 +548,7 @@ const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]
 let svT=0,SAVERAW=null;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify(Object.assign({},SAVERAW||{},{items:S.items,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,pfp:PFP,favp:[...FAVP],cfg:cfgGet(),cfgx:CFGX,steach:STEACH})));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
 const save=()=>{clearTimeout(svT);svT=setTimeout(saveNow,350)};addEventListener('pagehide',saveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(svT);saveNow()}});
 let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};if(d.steach)STEACH=d.steach;S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
-function setDirty(v){S.dirty=v;$('#bp').classList.toggle('glow',v);$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
+function setDirty(v){S.dirty=v;$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
 /* ---------- link-origin videos: fetch page via proxy race, extract stream, teach binding ---------- */
 const EX=new Map(),NOEX=/youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|twitch\.tv|dailymotion\.com|streamable\.com|redgifs\.com/i;
 async function fetchHtml(url){const one=async(u,wrap)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),4500);
@@ -652,20 +652,20 @@ function wireVid(sec){const v=sec.querySelector('video'),sc=sec.querySelector('.
   else if(c==='sp')menu(b,[{t:'Speed',o:[...RATES].sort((x,y)=>x-y).map(r=>[r,r+'×']),cur:()=>S.rate,set:x=>{S.rate=+x;feed.querySelectorAll('video').forEach(m=>m.playbackRate=S.rate);b.textContent=S.rate+'×'}}],true)})}
 /* ---------- HUD ---------- */
 function hud(){const it=V[S.idx],act=S.filter!=='all'||S.sort!=='default'||S.prof;
- $('#cnt').textContent=V.length?`${S.idx+1}/${V.length}`:'0';
  $('#bf').classList.toggle('on',S.filter!=='all'||S.sort!=='default');$('#bx').hidden=!act;
  $('#au').textContent=S.auto?S.auto+'s':'';$('#ba').classList.toggle('on',!!S.auto);
  const h=S.prof||(it&&it.handle);$('#pc').hidden=!h;$('#pc').textContent=h?'@'+h:'';$('#pc').classList.toggle('on',!!S.prof);$('#px').hidden=!S.prof;
  const lk=$('#lk');lk.hidden=!it;if(it)lk.href=(it.source||it.url).split('#')[0];
  setIc($('#rm').firstElementChild.parentNode,S.muted?'muted':'unmuted');
- const isV=it&&it.type==='video',v=isV?feed.querySelector(`.card[data-i="${S.idx}"] video`):null;$('#rk').hidden=!isV;$('#rt').hidden=!isV;if(v)setIc($('#rk'),v.paused?'play':'pause');applyEnh();applyZoom();pageUI(it);$('#bkg').hidden=!FROM;$('#bkg').textContent='← '+(FROM==='collage'?'Collage':'Grid')}
+ const isV=it&&it.type==='video',v=isV?feed.querySelector(`.card[data-i="${S.idx}"] video`):null;$('#rk').hidden=!isV;$('#rt').hidden=!isV;if(v)setIc($('#rk'),v.paused?'play':'pause');applyEnh();applyZoom();pageUI(it);const bkEl=$('#bbk');if(bkEl){const discPage=S.mode==='disc'&&$('#dwrap').hidden;bkEl.hidden=!(discPage||(FROM&&!G.open&&S.mode==='main'));bkEl.title=discPage?'Back to list':(FROM==='collage'?'Back to collage':'Back to grid')}}
 function clearFilters(){S.filter='all';S.sort='default';S.prof=null;S.idx=0;render()}
 $('#bx').onclick=clearFilters;
 $('#bh').onclick=()=>{if(S.items.length<2)return;const a=[...S.items];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}S.items=a;S.idx=0;save();setDirty(true);render();toast('Shuffled')};
 $('#pc').onclick=()=>{const it=V[S.idx];if(!it||!it.handle)return;G.prof=it.handle;G.tab='items';FROM='';openGrid()};
 $('#px').onclick=()=>{S.prof=null;S.idx=0;render()};
 $('#bgd').onclick=()=>{FROM='';G.fromHome=0;G.prof=null;G.tab='items';openGrid()};
-$('#bkg').onclick=()=>{const w=FROM;FROM='';G.fromHome=0;G.col=w==='collage';openGrid()};
+$('#bbk').onclick=()=>{if(S.mode==='disc')return discList();const w=FROM;FROM='';G.fromHome=0;G.col=w==='collage';openGrid()};
+$('#bmore').onclick=e=>{const it=V[S.idx];if(it)itemMenu(e.currentTarget,it);else toast('Nothing here yet')};
 $('#rp').onclick=()=>go(-1);$('#rn').onclick=()=>go(1);
 $('#rfs').onclick=()=>{const v=feed.querySelector('.card[data-i="'+S.idx+'"] video');try{if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen){const p=document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}});if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{})}else if(v&&v.webkitEnterFullscreen)v.webkitEnterFullscreen()}catch(e){if(v&&v.webkitEnterFullscreen)try{v.webkitEnterFullscreen()}catch(x){}}};
 document.addEventListener('fullscreenchange',()=>document.body.classList.toggle('fs',!!document.fullscreenElement));
@@ -711,7 +711,7 @@ const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='mai
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
 ta.addEventListener('input',count);
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
-$('#bp').onclick=openModal;$('#bmf').onclick=openModal;$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
+$('#bmf').onclick=()=>{if(S.mode==='disc')exitDisc();else openModal()};$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
 $('#mr2').onclick=()=>{closeModal();r2Flow()};
 $('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already plain text');
@@ -1055,7 +1055,9 @@ function applyVideo(it,full){const pg=pageUrl(it),hd=it.handle;full=strip(dash(f
  bindVideo(pg,full);PM.delete(it.id);V=vis();render();toast('Video linked');if(modal.classList.contains('open')&&!$('#tp-unl').hidden)renderUnl()}
 function teach(it){const pg=pageUrl(it);ask({title:'Link video',desc:pg,ph:'clip.mp4 or full URL (bare names use your R2 prefix)',ok:'Save link',extra:[['Paste',pasteInto],['Sniffed',i=>{if(SNIFF[pg])i.value=SNIFF[pg];else toast('Nothing sniffed for this page yet')}]],
  onOk:v=>{v=v.trim();if(!v){toast('Enter a filename or URL');return false}applyVideo(it,/^https?:\/\//i.test(v)?v:r2(v))}})}
-function saveMedia(u){const it=V[S.idx];if(!it)return;u=dash(u);if(isVidUrl(u)){applyVideo(it,u);return}
+function saveMedia(u){const it=V[S.idx];if(!it)return;u=dash(u);
+ if(STARM){if(isVidUrl(u)){toast('Teach needs an image link — still armed')}else{STARM=false;learnScrape(curPage(it),u);toast('Taught — saving it too')}}
+ if(isVidUrl(u)){applyVideo(it,u);return}
  const hd=it.handle,n=attach([u],hd);chips();if(!n){toast('Already saved');return}
  if(S.mode==='main'){V=vis();const k=V.findIndex(x=>normKey(x.url)===normKey(u));render();if(k>=0){S.idx=k;jump(k,false);sync()}toast('Saved to @'+alias(hd))}else toast('Saved to @'+alias(hd)+' in your main feed')}
 /* ---------- webpage viewer: proxy race, age-gate and ad shield, click-to-save ---------- */
@@ -1085,7 +1087,13 @@ const best=t=>{if(!t)return{u:'',i:null};let i=t.closest?t.closest('img'):null;c
  if(!u){let e=t;for(let d=0;d<4&&e&&e!==document.body;d++,e=e.parentElement){const bg=getComputedStyle(e).backgroundImage;if(bg&&bg!=='none'){const m=bg.match(/url\(["']?([^"')]+)["']?\)/i);if(m&&!m[1].startsWith('data:image/svg')){try{u=new URL(m[1],U).href}catch(x){}break}}}}
  return{u,i}};
 const flash=(u,i)=>{const b=document.createElement('div');b.textContent='✓ Saved to profile';b.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:2147483647;background:rgba(16,185,129,.96);color:#000;font:700 13px sans-serif;padding:8px 16px;border-radius:20px;transition:opacity .3s';document.body.appendChild(b);if(i){i.style.outline='3px solid #10b981';i.style.outlineOffset='-3px'}setTimeout(()=>{b.style.opacity='0';setTimeout(()=>b.remove(),300)},1400);post(u,'image')};
-document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}else{const a2=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(a2){const hr=a2.getAttribute('href')||'';if(hr&&hr.charAt(0)!=='#'&&!/^(?:javascript|mailto|tel):/i.test(hr)){const u=new URL(hr,U).href;ev.preventDefault();ev.stopPropagation();const de=document.documentElement,mx=Math.max(1,de.scrollHeight-innerHeight);parent.postMessage({type:'RF_NAV',url:u,fr:Math.min(1,Math.max(0,(window.scrollY||de.scrollTop||0)/mx))},'*')}}}}catch(e){}},true);
+document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const a2=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;let nav='';if(a2){const hr=a2.getAttribute('href')||'';if(hr&&hr.charAt(0)!=='#'&&!/^(?:javascript|mailto|tel):/i.test(hr)){try{nav=new URL(hr,U).href}catch(e){}}}
+ /* A tap on a thumbnail that links to a POST is navigation, not a save:
+    browsers follow the link, and grid thumbnails must never be filed.
+    Save-on-tap remains for an image that links to a full-size file, or
+    an image with no page link at all. (Kendall, Nov 12) */
+ if(nav&&!/\.(?:jpe?g|png|webp|gif|avif)(?:\?|#|$)/i.test(nav)){ev.preventDefault();ev.stopPropagation();const de=document.documentElement,mx=Math.max(1,de.scrollHeight-innerHeight);parent.postMessage({type:'RF_NAV',url:nav,fr:Math.min(1,Math.max(0,(window.scrollY||de.scrollTop||0)/mx))},'*');return}
+ const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}}catch(e){}},true);
 const dock=()=>{if(!document.body||document.getElementById('rf-dock'))return;const d=document.createElement('div');d.id='rf-dock';d.textContent='Drop an image or link here to save';d.style.cssText='position:fixed;bottom:14px;left:14px;z-index:2147483646;background:rgba(24,24,34,.88);border:1.5px dashed rgba(143,208,255,.7);color:#dbeafe;font:700 12px sans-serif;padding:9px 14px;border-radius:18px;transition:.15s';
  d.addEventListener('dragover',e=>{e.preventDefault();d.style.transform='scale(1.12)';d.style.background='rgba(16,185,129,.92)';d.style.color='#000'});d.addEventListener('dragleave',()=>{d.style.transform='';d.style.background='rgba(24,24,34,.88)';d.style.color='#dbeafe'});
  d.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();d.style.transform='';const dt=e.dataTransfer;let u=(dt.getData('text/uri-list')||dt.getData('text/plain')||'').split(/\s+/)[0];if(!u){const h=dt.getData('text/html')||'',m=h.match(/src=["']([^"']+)["']/i);if(m)u=m[1]}try{u=new URL(u,U).href}catch(x){}post(u,/\.(?:mp4|webm|m4v|mov|m3u8)(?:\?|#|$)/i.test(u)?'video':'image')});document.body.appendChild(d)};
@@ -1116,8 +1124,8 @@ function buildFrame(s,it,pg){const emb=embedUrl(pg),isEmb=emb!==pg,mode=PSH.get(
  if(pre)f.style.cssText=`top:-${pre}vh;height:calc(100% + ${pre}vh);min-height:calc(100dvh + ${pre}vh)`;
  s.appendChild(f);f.src=emb;NAVC.set(it.id,0);f.addEventListener('load',()=>NAVC.set(it.id,(NAVC.get(it.id)||0)+1));
  if(mode==='shield'&&!isEmb)pageHtml(pg).then(html=>{if(!html||!s.dataset.h||V[+s.dataset.i]!==it||!s.contains(f)||(PSH.get(it.id)||'shield')!=='shield')return;
-  const g2=document.createElement('iframe');g2.className='wf';g2.setAttribute('sandbox','allow-scripts allow-forms allow-popups');g2.setAttribute('allow','autoplay; fullscreen');g2.referrerPolicy='no-referrer';g2.srcdoc=buildSrcdoc(html,pg);g2.addEventListener('load',()=>{const rf=posGet(it,pg);if(rf!=null)restoreScroll(g2,rf);else scrollFrame(g2)},{once:true});s.replaceChild(g2,f);
-  const g=PGO.get(it.id);if(g&&g.frames&&g.frames[g.stack.length-1]===f)g.frames[g.stack.length-1]=g2});
+  const g2=document.createElement('iframe');g2.className='wf';g2.setAttribute('sandbox','allow-scripts allow-forms allow-popups');g2.setAttribute('allow','autoplay; fullscreen');g2.referrerPolicy='no-referrer';g2.srcdoc=buildSrcdoc(html,pg);g2.addEventListener('load',()=>NAVC.set(it.id,(NAVC.get(it.id)||0)+1));g2.addEventListener('load',()=>{const rf=posGet(it,pg);if(rf!=null)restoreScroll(g2,rf);else scrollFrame(g2)},{once:true});s.replaceChild(g2,f);
+  const g=PGO.get(it.id);if(g&&g.frames){const ix=g.frames.indexOf(f);if(ix>=0)g.frames[ix]=g2}});
  if(S.set.sniff&&!SNIFF[pg])extract({source:pg,url:pg}).then(st=>{if(st){SNIFF[pg]=st;toast('Video found: tap Paste & Link, then Sniffed')}});
  return f}
 function hydPage(s,it,i){const pg=curPage(it),e=esc(pg);
@@ -1144,15 +1152,21 @@ function pageNav(url,fr){const it=V[S.idx];if(!it)return;let g=PGO.get(it.id);if
   while(live.length>4&&guard++<12){let k=g.frames.findIndex((f2,ix)=>f2&&ix>0&&ix<g.stack.length-1);if(k<0)k=g.frames.findIndex((f2,ix)=>f2&&ix<g.stack.length-1);if(k<0)break;try{g.frames[k].remove()}catch(e){}g.frames[k]=null;live=g.frames.filter(Boolean)}
   sync();return}
  dehyd(s);hyd(s,S.idx);sync()}
-$('#pb').onclick=()=>{const it=V[S.idx];if(!it)return;const g=PGO.get(it.id),s=feed.querySelector(`.card[data-i="${S.idx}"]`),f=s&&s.querySelector('iframe');
+$('#pb').onclick=()=>{const it=V[S.idx];if(!it)return;const g=PGO.get(it.id),s=feed.querySelector(`.card[data-i="${S.idx}"]`);
  if(g&&g.stack.length>1){g.stack.pop();g.frames=g.frames||[];const old=g.frames[g.stack.length];if(old){try{old.remove()}catch(e){}g.frames[g.stack.length]=null}
   const nf=g.frames[g.stack.length-1];if(nf&&s&&s.contains(nf)){nf.style.display='';sync();return}
   dehyd(s);hyd(s,S.idx);sync();return}
- if(f&&!f.hasAttribute('sandbox')&&(NAVC.get(it.id)||0)>1){NAVC.set(it.id,NAVC.get(it.id)-2);try{f.contentWindow.history.back()}catch(x){history.back()}return}
+ /* No parent-side stack: the visible frame may have navigated itself
+    (the page's own scripts, or a tap the interceptor let through). Its
+    own history is the next-best back — for a Live frame that is the
+    site's real history; for a Shielded frame it steps back through
+    the frame's own entries. The toast is the last resort. */
+ const tf=s?[...s.querySelectorAll('iframe')].pop():null;
+ if(tf&&(NAVC.get(it.id)||0)>1){NAVC.set(it.id,NAVC.get(it.id)-2);try{tf.contentWindow.history.back();return}catch(x){}}
  toast('This is the first page')};
 function pageUI(it){document.body.classList.toggle('disc',S.mode==='disc');const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
  $('#bmd').hidden=!vid;$('#bmd').innerHTML=pg?svg('play')+'Video':svg('link')+'Page';$('#blk').hidden=!pg;$('#blk').innerHTML=svg(S.lock?'lock':'unlock')+(S.lock?'Locked':'Lock');$('#blk').classList.toggle('on',S.lock);
- $('#pr').hidden=!pg;$('#pcur').textContent=(pg&&it)?short(curPage(it)):'';$('#pbm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
+ $('#pr').hidden=!pg;$('#pcur').textContent=(pg&&it)?short(curPage(it)):'';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
  document.body.classList.toggle('lockon',!!(S.lock&&pg));if(!Z.on&&!document.body.classList.contains('hzon'))feed.style.overflowY=(S.lock&&pg)?'hidden':'scroll'}
 $('#bmd').onclick=()=>{const it=V[S.idx];if(!it)return;PM.set(it.id,isPageCard(it)?'video':'page');const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()};
 $('#blk').onclick=()=>{S.lock=!S.lock;hud();toast(S.lock?'Page locked: swiping is off until unlocked':'Page unlocked')};
@@ -1231,7 +1245,8 @@ async function scrapePage(){const it=V[S.idx];if(!it)return;const pg=curPage(it)
  const live=await scrapeScreen();if(run!==SW.run)return;
  if(live){for(const c of live)swAddCand({kind:c.kind==='video'?'video':'image',url:c.url,poster:c.poster||c.url,post:c.post||pg});
   swStat(live.length?('On-screen media — '+SW.list.length+' found. Scroll the page to load more, then Scrape again to gather those too.'):'Nothing usable on screen yet — scroll the page so its media loads, then Scrape again.');swRender();return}
- const html=await pageHtml(pg);if(run!==SW.run)return;if(!html){swStat('Could not fetch that page — the proxies did not return it.');return}
+ const html=await pageHtml(pg);if(run!==SW.run)return;if(!html){const mode=PSH.get(it.id)||(S.set.ad?'shield':'live');
+  swStat(mode==='live'?'This page is in Live view, which cannot be read. Switch it to Shielded view with the button below, let it load, then Scrape again.':'This page is showing Live because its Shielded copy could not be fetched — the proxies returned nothing, and a Live page cannot be read. When the fetch works, Scrape reads the screen directly.');swRender();return}
  const links=postLinks(html,pg),direct=links.filter(l=>l.direct),posts=links.filter(l=>!l.direct).slice(0,24);
  for(const d of direct)swAddCand({kind:'image',url:d.direct,poster:d.direct,post:pg});
  if(!posts.length){if(!direct.length){const im=extractImg(html,pg);if(im)swAddCand({kind:'image',url:im,poster:im,post:pg});swStat(im?'Not a grid page — here is its main image.':'No posts or images found on that page.')}else swStat('Found '+SW.list.length+' — tap the ones you want, then Add.');swRender();return}
@@ -1245,7 +1260,7 @@ $('#psc').onclick=()=>{const it=V[S.idx];if(it&&isPageCard(it))scrapePage();else
 $('#sw-exit').onclick=()=>{SW.run++;$('#swrap').hidden=true};
 $('#sw-all').onclick=()=>{if(SW.sel.size===SW.list.length)SW.sel.clear();else SW.list.forEach((c,k)=>SW.sel.add(k));swRender()};
 $('#sw-teach').onclick=()=>{const it=V[S.idx];const pg=it?curPage(it):'';let host='';try{host=new URL(pg).hostname}catch(e){}
- ask({title:'Teach scrape'+(host?' — '+host:''),desc:'If scrape picks the wrong image on this site, show it the right one once. Paste one correct full-size image link here — or tap Teach by tap, open any post on the site, and tap the correct full-size image in the page.',ph:'https://… one correct full-size image link',ok:'Teach from link',extra:[['Teach by tap',()=>{STARM=true;closeModal();$('#swrap').hidden=true;toast('Now open a post and tap the correct full-size image')}]],
+ ask({title:'Teach scrape'+(host?' — '+host:''),desc:'If scrape picks the wrong image on this site, show it the right one once. Paste one correct full-size image link here — or tap Teach by tap, then either tap the correct image in a post, or copy its link and paste it into Drop / Save: that teaches the site and saves the image.',ph:'https://… one correct full-size image link',ok:'Teach from link',extra:[['Teach by tap',()=>{STARM=true;closeModal();$('#swrap').hidden=true;toast('Now tap the correct image in a post — or paste its link into Drop / Save')}]],
  onOk:v=>{v=(v||'').trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}if(learnScrape(pg,v))$('#swrap').hidden=true}})};
 $('#swgrid').addEventListener('click',e=>{const t=e.target.closest('[data-k]');if(!t)return;const k=+t.dataset.k;if(SW.sel.has(k))SW.sel.delete(k);else SW.sel.add(k);swRender()});
 $('#sw-add').onclick=()=>{const chosen=[...SW.sel].map(k=>SW.list[k]).filter(Boolean);if(!chosen.length){toast('Nothing selected');return}
@@ -1258,20 +1273,20 @@ $('#sw-add').onclick=()=>{const chosen=[...SW.sel].map(k=>SW.list[k]).filter(Boo
    page viewer's arrows just move between list items. Its job is visiting
    pages and capturing media — no autoplay feed behavior of its own. */
 function renderDiscHome(){$('#dwlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet — add them in the batch menu\u2019s Discovery tab.</p>'}
-const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;$('#pbm').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
-const leaveDisc=()=>{if(S.mode!=='disc')return;S.mode='main';S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;$('#pbm').hidden=true;document.body.classList.remove('disc')};
+const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
+const leaveDisc=()=>{if(S.mode!=='disc')return;S.mode='main';S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;document.body.classList.remove('disc')};
 /* The list view is discovery's own screen (like the grid is a screen):
    backing out of a page lands on the list, and only the list's own back
    leaves discovery for the batch menu. */
 const discList=()=>{renderDiscHome();$('#dwrap').hidden=false};
-$('#pbm').onclick=exitDisc;
+
 $('#pdl').onclick=discList;
 $('#dw-exit').onclick=exitDisc;
 $('#dwlist').onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const k=+b.dataset.k;
  if(b.dataset.w==='open'){S.idx=k;$('#dwrap').hidden=true;render()}
  else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));if(S.idx>=S.discItems.length)S.idx=0;save();setDirty(true);chips();renderDiscHome();FEEDDIRTY=1}};
 /* ---------- batch tabs: discovery, unlinked, active feed ---------- */
-function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;$('#pbm').hidden=false;
+function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;
  if(k==null){S.idx=0;render();renderDiscHome();$('#dwrap').hidden=false}else{S.idx=k;$('#dwrap').hidden=true;render()}}
 const unlinked=()=>S.items.filter(i=>i.type==='webpage'||(i.type==='video'&&!isDirect(i.url)&&!TAUGHT[strip(i.url)]));
 let chipsT=0;function chips(){if(chipsT)return;chipsT=requestAnimationFrame(()=>{chipsT=0;chipsNow()})}
