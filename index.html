@@ -1335,11 +1335,22 @@ $('#dpsmart').onclick=()=>{if(!DUMP.list.length){toast('Nothing staged');return}
  dumpRender()};
 $('#dpclear').onclick=()=>{dumpClear([]);$('#dpta').value='';$('#dpstat').textContent=''};
 $('#dpadd').onclick=()=>{const chosen=[...DUMP.sel].map(k=>DUMP.list[k]).filter(e=>e&&!e.dupe);if(!chosen.length){toast('Nothing selected');return}
+ const before=new Set(S.items.map(i=>i.id));
  const total=DUMP.list.length,groups={};for(const e of chosen){const hd=e.tag||(e.page?profOf(e.page):'')||$('#dp-prof').value||'';(groups[hd]=groups[hd]||[]).push(e)}
  let n=0;const keep=[];for(const hd of Object.keys(groups)){n+=attach(groups[hd].map(e=>e.url),hd);
   for(const e of groups[hd])if(e.page){const x=S.items.find(i=>normKey(i.url)===normKey(e.url));if(x){x.source=e.page;keep.push({page:e.page,url:e.url})}}}
- save();setDirty(true);chips();if(S.mode==='main'){V=vis();render();sync()}
- const msg='Staged '+total+' \u00b7 Added '+n+' \u00b7 Discarded '+(total-n);dumpClear(keep);$('#dpstat').textContent=msg;toast(msg)};
+ save();setDirty(true);chips();
+ const added=S.items.filter(i=>!before.has(i.id));
+ const msg='Staged '+total+' \u00b7 Added '+n+' \u00b7 Discarded '+(total-n);dumpClear(keep);$('#dpstat').textContent=msg;toast(msg);
+ /* Filing is not findable on its own in a large library — new items append at
+    the tail of the default order, and a latched profile or type filter hides
+    them entirely. So a Dump add lands the feed on what it just filed: inside
+    the profile's own feed when everything added shares one profile,
+    otherwise on the first added item in the full feed (goItem's reset). */
+ if(added.length){const hs=[...new Set(added.map(i=>i.handle))];
+  if(S.mode==='main'){if(hs.length===1&&hs[0]){S.prof=hs[0];S.filter='all'}V=vis()}
+  goItem(added[0].id)}
+ else if(S.mode==='main'){V=vis();render();sync()}};
 
 /* Discovery (Kendall, Nov 11): a LIST, not a feed and never a grid. The
    list is the discovery home; opening an item visits that page, and the
