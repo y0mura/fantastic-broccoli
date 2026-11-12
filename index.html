@@ -247,7 +247,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   <span class="sp"></span>
   <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
- <div class="row r2" id="pr" hidden><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psh">Shielded view</button><button class="pill" id="pm" hidden>‹ Back</button></div>
+ <div class="row r2" id="pr" hidden><button class="pill" id="pb"><i data-i="back"></i>Back</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psh">Shielded view</button><button class="pill" id="pm" hidden>‹ Back</button></div>
  <div class="row" id="dr" hidden>
   <button class="pill" data-l="1">1</button><button class="pill" data-l="2">2</button><button class="pill" data-l="3">3</button>
   <span class="lab">Bright</span><button class="pill" id="ed">−</button><span class="lab" id="el">100%</span><button class="pill" id="eu">+</button>
@@ -509,8 +509,9 @@ async function fetchHtml(url){const one=async(u,wrap)=>{const c=new AbortControl
   try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;const x=wrap?String((await r.json()).contents||''):await r.text();
    if(x.length<120||(/<title>\s*(?:Just a moment|Attention Required|Access Denied|403 Forbidden)/i.test(x)&&x.length<15000))throw 0;return x}finally{clearTimeout(t)}},e=encodeURIComponent(url),
   tasks=[one('https://corsproxy.io/?'+e),one('https://api.codetabs.com/v1/proxy?quest='+e),one('https://api.allorigins.win/raw?url='+e),one('https://api.allorigins.win/get?url='+e,1)];
- if(S.set.proxy&&S.set.proxyOn!==false){const p=S.set.proxy;tasks.unshift(one(p.includes('{url}')?p.split('{url}').join(e):p+e))}
- if(Promise.any)return Promise.any(tasks);for(const t of tasks){try{return await t}catch(e){}}throw 0}
+ if(Promise.any){try{return await Promise.any(tasks)}catch(e){}}else{for(const t of tasks){try{return await t}catch(e){}}}
+ if(S.set.proxy&&S.set.proxyOn!==false){const p=S.set.proxy;return one(p.includes('{url}')?p.split('{url}').join(e):p+e)}
+ throw 0}
 function findStream(html,page){const b=new URL(page),C=[],fix=c=>{if(!c)return null;c=c.replace(/\\u002F/g,'/').replace(/\\\//g,'/').replace(/&amp;/g,'&').trim();if(c.startsWith('//'))return b.protocol+c;try{return new URL(c,page).href}catch(e){return null}},
  add=(c,s)=>{const r=fix(c);if(!r||/\.(swf|html?|php|jpe?g|png|gif|svg)(\?|$)/i.test(r)||/doubleclick|adserver|preroll|\/vast/i.test(r))return;if(/1080p|720p|hd|high|main|source|master/i.test(r))s+=30;else if(/480p|360p/i.test(r))s+=10;if(r.includes(b.hostname.replace(/^www\./,'')))s+=15;C.push([s,r])};let m;
  const R=[[/<meta[^>]+(?:property|name)=["'](?:og:video:secure_url|og:video:url|og:video|twitter:player:stream)["'][^>]+content=["']([^"']+)["']/gi,90],[/"contentUrl"\s*:\s*"([^"]+\.(?:mp4|webm|m4v|m3u8)[^"]*)"/gi,95],[/<(?:source|video)[^>]+src=["']([^"']+\.(?:mp4|webm|m4v|m3u8)[^"']*)["']/gi,85],[/(?:video_url|video_alt_url|quality_\d+p|"file"|"mp4"|"hls"|"m3u8"|"src")\s*[:=]\s*["'](https?:\\?\/\\?\/[^"'\s<>]+\.(?:mp4|webm|m4v|m3u8)(?:\?[^"'\s<>]*)?)["']/gi,80],[/(https?:\\?\/\\?\/[^"'\s<>]+\.(?:mp4|webm|m4v|m3u8)(?:\?[^"'\s<>]*)?)/gi,45]];
@@ -531,7 +532,7 @@ function render(){zout();V=vis();[...HYD].forEach(s=>{try{dehyd(s)}catch(e){}});
  feed.appendChild(f);jump(S.idx,false);sync()}
 function hyd(s,i){const it=V[i];if(!it)return;s.dataset.h=1;HYD.add(s);if(isPageCard(it)){hydPage(s,it,i);return}const u=esc((it.stream||it.url).split('#')[0]);
  if(it.type==='image'){NEWIMG=1;s.innerHTML=`<div class="hzw"><img class="bg" src="${u}" alt="" referrerpolicy="no-referrer"><div class="stage${S.zoom!=='0'?' z-'+S.zoom:''}"><img class="main" src="${u}" alt="" draggable="false" referrerpolicy="no-referrer"><img class="zo" src="${u}" alt="" aria-hidden="true" referrerpolicy="no-referrer"></div><button class="pill hzb" data-hz="1" aria-label="Horizontal view">${svg('expand')}</button><div class="hzc"><button class="pill" data-hzx="1" aria-label="Close horizontal view">${svg('close')}</button><button class="pill" data-ez="lv">Enhance</button><button class="pill" data-ez="d" aria-label="Darker">${svg('minus')}</button><button class="pill" data-ez="u" aria-label="Brighter">${svg('plus')}</button></div></div>`;
-  s.querySelectorAll('img').forEach(im=>im.addEventListener('error',()=>{if(!im.dataset.r&&/^http/.test(it.url)){im.dataset.r=1;im.src='https://wsrv.nl/?url='+encodeURIComponent(it.url)}},{once:true}));wireImg(s);{const st=s.querySelector('.stage'),mi=s.querySelector('.main'),f=()=>{const a=mi.naturalWidth/mi.naturalHeight,b=innerWidth/innerHeight;st.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2))};mi.complete&&mi.naturalWidth?f():mi.addEventListener('load',f,{once:true})}}
+  s.querySelectorAll('img').forEach(im=>im.addEventListener('error',()=>{if(/^http/.test(it.url))imgFail(im,it.url)}));wireImg(s);{const st=s.querySelector('.stage'),mi=s.querySelector('.main'),f=()=>{const a=mi.naturalWidth/mi.naturalHeight,b=innerWidth/innerHeight;st.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2))};mi.complete&&mi.naturalWidth?f():mi.addEventListener('load',f,{once:true})}}
  else if(it.type==='video'&&!(it.stream||isDirect(it.url))){const pg=esc(strip(it.source||it.url));
   s.innerHTML=`<div class="wp"><h2 style="margin:0">Loading video…</h2><b>${pg}</b><div><a class="pill" href="${pg}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">Open page</a></div></div>`;
   extract(it).then(st=>{if(s.dataset.h&&V[+s.dataset.i]===it){if(st){it.stream=st;delete s.dataset.h;hyd(s,+s.dataset.i);sync()}else{s.querySelector('h2').textContent="Couldn't extract a video";}}})}
@@ -699,7 +700,7 @@ if(CFG0){cfgSet(CFG0);mkUI()}
 const host=it=>{try{return new URL(strip(it.source||it.url)).hostname.replace(/^www\./,'')}catch(e){return''}};
 const hashr=n=>{n=Math.imul(n^61,0x9e3779b1);n^=n>>>16;n=Math.imul(n,0x85ebca6b);n^=n>>>13;return(n>>>0)/4294967296};
 function thumb(it){const d=it.type==='video'&&(it.stream||isDirect(it.url));
- if(it.type==='image'){const o=it.url.split('#')[0];return`<img class="tm" data-s="${esc(o)}" data-o="${esc('https://wsrv.nl/?url='+encodeURIComponent(o)+'&w=640&q=80')}" alt="" decoding="async" referrerpolicy="no-referrer">`}
+ if(it.type==='image'){const o=it.url.split('#')[0];return`<img class="tm" data-s="${esc(o)}" alt="" decoding="async" referrerpolicy="no-referrer">`}
  if(d)return`<video class="tm" data-s="${esc((it.stream||it.url).split('#')[0])}" muted playsinline preload="metadata"></video>`;
  return`<div class="ph"><b>${it.type==='video'?'Video post':'Link'}</b><span>${esc(host(it))}</span></div>`}
 function setZs(m){const p=m.parentElement,w=m.naturalWidth||m.videoWidth,h=m.naturalHeight||m.videoHeight;if(!p||!w||!h)return;const r=p.getBoundingClientRect();if(!r.width)return;const a=w/h,b=r.width/r.height;
@@ -715,7 +716,20 @@ function loadM(m,t){if(m.getAttribute('src')){if(m.tagName==='VIDEO'&&m.paused)m
 function loadLayer(t,k){const fl=t.querySelectorAll('.fl')[k];if(!fl)return;const ni=t._pick&&t._pick[k];if(ni)t._it=ni;fl.querySelectorAll('.tm').forEach(m=>loadM(m,t));if(ni)t._it=t._pick[0]}
 function loadTileMedia(t){if(t.classList.contains('pt')){const ai=[...t.querySelectorAll('.fl')].findIndex(f=>f.classList.contains('a'));if(ai>=0){loadLayer(t,ai);return}}t.querySelectorAll('.tm').forEach(m=>loadM(m,t))}
 function mkIO(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;t._vis=e.isIntersecting;if(e.isIntersecting){loadTileMedia(t);if(t._step){clearTimeout(t._ft);t._step()}}else t.querySelectorAll('.tm').forEach(m=>{if(m.tagName==='VIDEO'&&m.getAttribute('src')){dropM(m);const k=PLAY.indexOf(m);if(k>=0)PLAY.splice(k,1)}})}),{root:gs,rootMargin:'30% 30%'})}
-const wireImgs=t=>t.querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>{if(!im.dataset.r){im.dataset.r=1;im.src=im.dataset.o||im.dataset.s}},{once:true});im.addEventListener('load',()=>setZs(im))});
+/* Image fallback chain, shared by grid tiles, flip layers, and the feed:
+   when the original URL fails, retry it once through Kendall's own proxy
+   (when set and on) at FULL size, then the wsrv thumbnail. The reference's
+   chain ended at the single wsrv hop, which left hosts that block both
+   direct embeds and wsrv's fetcher dead on every surface. */
+const pxImg=(u)=>{const p=S.set.proxy;if(!p||S.set.proxyOn===false)return null;const e=encodeURIComponent(u);return p.includes('{url}')?p.split('{url}').join(e):p+e};
+const imgFailChain=(orig,tm)=>{const c=[];const px=pxImg(orig);if(px)c.push(px);c.push('https://wsrv.nl/?url='+encodeURIComponent(orig)+(tm?'&w=640&q=80':''));return c};
+function imgFail(im,orig){orig=orig||im.dataset.s;if(!orig||!/^https?:/i.test(orig)){im.dataset.r=9;return false}
+ /* the chain is frozen per img on its first failure: a proxy toggle
+    mid-chain can no longer re-index it and strand the wsrv hop */
+ const chain=im._fc||(im._fc=imgFailChain(orig,im.classList.contains('tm'))),step=+im.dataset.r||0;im.dataset.r=step+1;
+ const nx=chain[step]||null;
+ if(nx){im.src=nx;return true}return false}
+const wireImgs=t=>t.querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>imgFail(im));im.addEventListener('load',()=>setZs(im))});
 function mkTile(it,i){const t=document.createElement('div');t.className='tile';t._i=i;t._it=it;t.style.setProperty('--ad',(-(Math.random()*9)).toFixed(2)+'s');
  t.innerHTML=thumb(it)+`<span class="hd">@${esc(it.handle)}</span>`;
  wireImgs(t);io.observe(t);return t}
@@ -750,7 +764,14 @@ function flipLoop(t){const L=[...t.querySelectorAll('.fl')];if(L.length<2)return
   t._ft=setTimeout(()=>{if(t._ftk!==tk2||!t.isConnected)return;if(!t._vis){step();return}const nk=(k+1)%L.length;loadLayer(t,nk);
    const flip=()=>{if(!t.isConnected||!t._vis)return;const nv=L[nk].querySelector('video.tm');if(nv&&!nv.getAttribute('src'))loadLayer(t,nk);L[k].classList.remove('a');k=nk;L[k].classList.add('a');const ni=t._pick[k];if(nv&&nv.getAttribute('src')){try{nv.currentTime=(TRIMS[tk(ni.stream||ni.url)]||{startSec:0}).startSec}catch(e){}}step()};
    const im=L[nk].querySelector('img.tm'),vm=L[nk].querySelector('video.tm');
-   if(im&&!im.complete){let done=0;const go=()=>{if(!done){done=1;if(t._ftk===tk2)flip()}};im.addEventListener('load',go,{once:true});im.addEventListener('error',go,{once:true});t._ft=setTimeout(go,650)}
+   if(im&&(!im.complete||im.dataset.r)){let done=0;const go=()=>{if(!done){done=1;if(t._ftk===tk2)flip()}};
+    /* an errored img reads complete=true in a real browser, so the gate
+       must also engage while a fallback chain is mid-flight (dataset.r
+       set, final hop not yet landed) — capped at 2.6s so a hung proxy
+       can never freeze the tile; the chain keeps loading after rotation */
+    im.addEventListener('load',go,{once:true});im.addEventListener('error',go,{once:true});
+    if(im.dataset.r){const fin=im._fc&&im._fc[im._fc.length-1];if(fin&&im.src===fin)flip();else{let n=0;const poll=()=>{if(done||t._ftk!==tk2)return;const f2=im._fc&&im._fc[im._fc.length-1];if((f2&&im.src===f2)||++n>4){go();return}t._ft=setTimeout(poll,650)};t._ft=setTimeout(poll,650)}}
+    else t._ft=setTimeout(go,650)}
    else if(vm&&vm.getAttribute('src')&&vm.readyState<2){let done=0;const go=()=>{if(!done){done=1;if(t._ftk===tk2)flip()}};vm.addEventListener('loadeddata',go,{once:true});vm.addEventListener('error',go,{once:true});t._ft=setTimeout(go,650)}
    else flip()},wait)};
  t._step=step;t._ft=setTimeout(step,Math.random()*3200)}
@@ -977,7 +998,7 @@ const best=t=>{if(!t)return{u:'',i:null};let i=t.closest?t.closest('img'):null;c
  if(!u){let e=t;for(let d=0;d<4&&e&&e!==document.body;d++,e=e.parentElement){const bg=getComputedStyle(e).backgroundImage;if(bg&&bg!=='none'){const m=bg.match(/url\(["']?([^"')]+)["']?\)/i);if(m&&!m[1].startsWith('data:image/svg')){try{u=new URL(m[1],U).href}catch(x){}break}}}}
  return{u,i}};
 const flash=(u,i)=>{const b=document.createElement('div');b.textContent='✓ Saved to profile';b.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:2147483647;background:rgba(16,185,129,.96);color:#000;font:700 13px sans-serif;padding:8px 16px;border-radius:20px;transition:opacity .3s';document.body.appendChild(b);if(i){i.style.outline='3px solid #10b981';i.style.outlineOffset='-3px'}setTimeout(()=>{b.style.opacity='0';setTimeout(()=>b.remove(),300)},1400);post(u,'image')};
-document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}}catch(e){}},true);
+document.addEventListener('click',ev=>{try{const a=ev.target&&ev.target.closest?ev.target.closest('a'):null;if(a&&a.getAttribute('target')==='_blank')a.removeAttribute('target');const r=best(ev.target);if(r.u&&/^https?:\/\//i.test(r.u)){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();flash(r.u,r.i)}else{const a2=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;if(a2){const hr=a2.getAttribute('href')||'';if(hr&&hr.charAt(0)!=='#'&&!/^(?:javascript|mailto|tel):/i.test(hr)){const u=new URL(hr,U).href;ev.preventDefault();ev.stopPropagation();parent.postMessage({type:'RF_NAV',url:u},'*')}}}}catch(e){}},true);
 const dock=()=>{if(!document.body||document.getElementById('rf-dock'))return;const d=document.createElement('div');d.id='rf-dock';d.textContent='Drop an image or link here to save';d.style.cssText='position:fixed;bottom:14px;left:14px;z-index:2147483646;background:rgba(24,24,34,.88);border:1.5px dashed rgba(143,208,255,.7);color:#dbeafe;font:700 12px sans-serif;padding:9px 14px;border-radius:18px;transition:.15s';
  d.addEventListener('dragover',e=>{e.preventDefault();d.style.transform='scale(1.12)';d.style.background='rgba(16,185,129,.92)';d.style.color='#000'});d.addEventListener('dragleave',()=>{d.style.transform='';d.style.background='rgba(24,24,34,.88)';d.style.color='#dbeafe'});
  d.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();d.style.transform='';const dt=e.dataTransfer;let u=(dt.getData('text/uri-list')||dt.getData('text/plain')||'').split(/\s+/)[0];if(!u){const h=dt.getData('text/html')||'',m=h.match(/src=["']([^"']+)["']/i);if(m)u=m[1]}try{u=new URL(u,U).href}catch(x){}post(u,/\.(?:mp4|webm|m4v|mov|m3u8)(?:\?|#|$)/i.test(u)?'video':'image')});document.body.appendChild(d)};
@@ -996,19 +1017,27 @@ function embedUrl(u){try{const x=new URL(u),h=x.hostname.replace(/^www\./,'');le
  if(/vimeo\.com$/.test(h)&&(m=x.pathname.match(/^\/(\d+)/)))return`https://player.vimeo.com/video/${m[1]}?autoplay=1&muted=1`;
  if(h==='streamable.com'&&(m=x.pathname.match(/^\/(?:e\/)?(\w+)/)))return`https://streamable.com/e/${m[1]}?autoplay=1&muted=1`;
  if(/redgifs\.com$/.test(h)&&(m=x.pathname.match(/\/watch\/(\w+)/)))return`https://www.redgifs.com/ifr/${m[1]}`}catch(e){}return u}
-function hydPage(s,it,i){const pg=pageUrl(it),e=esc(pg);
+const PGO=new Map(),NAVC=new Map();const curPage=it=>{const g=PGO.get(it.id);return g?g.stack[g.stack.length-1]:pageUrl(it)};
+function hydPage(s,it,i){const pg=curPage(it),e=esc(pg);
  if(i!==S.idx){s.dataset.pend=1;s.innerHTML=`<div class="wp"><h2 style="margin:0">Webpage</h2><b>${e}</b></div>`;return}
  delete s.dataset.pend;const emb=embedUrl(pg),isEmb=emb!==pg,mode=PSH.get(it.id)||(S.set.ad?'shield':'live'),pre=(isEmb||mode==='shield')?0:S.set.off;
  s.innerHTML=`<iframe class="wf" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; storage-access" referrerpolicy="strict-origin-when-cross-origin" style="${pre?`top:-${pre}vh;height:calc(100% + ${pre}vh);min-height:calc(100dvh + ${pre}vh)`:''}"></iframe><div class="edge"></div>`;
- const f=s.querySelector('iframe');f.src=emb;
+ const f=s.querySelector('iframe');f.src=emb;NAVC.set(it.id,0);f.addEventListener('load',()=>NAVC.set(it.id,(NAVC.get(it.id)||0)+1));
  if(mode==='shield'&&!isEmb)pageHtml(pg).then(html=>{if(!html||!s.dataset.h||V[+s.dataset.i]!==it||!s.contains(f)||(PSH.get(it.id)||'shield')!=='shield')return;
   const g=document.createElement('iframe');g.className='wf';g.setAttribute('sandbox','allow-scripts allow-forms allow-popups');g.setAttribute('allow','autoplay; fullscreen');g.referrerPolicy='no-referrer';g.srcdoc=buildSrcdoc(html,pg);g.addEventListener('load',()=>scrollFrame(g),{once:true});s.replaceChild(g,f)});
  if(S.set.sniff&&!SNIFF[pg])extract({source:pg,url:pg}).then(st=>{if(st){SNIFF[pg]=st;toast('Video found: tap Paste & Link, then Sniffed')}})}
 function saveCap(u,t,pg){const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const n=attach([u],hd);toast(n?`Saved ${t} to @${alias(hd)}`:'Already saved');chips()}
-addEventListener('message',e=>{const d=e.data;if(!d||d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA')return;const f=feed.querySelector(`.card[data-i="${S.idx}"] iframe`);if(!f||e.source!==f.contentWindow)return;const u=String(d.mediaUrl||'');if(d.mediaType==='video')saveMedia(u);else saveCap(u,'image',String(d.pageUrl||''))});
+addEventListener('message',e=>{const d=e.data;if(!d||(d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA'&&d.type!=='RF_NAV'))return;const f=feed.querySelector(`.card[data-i="${S.idx}"] iframe`);if(!f||e.source!==f.contentWindow)return;
+ if(d.type==='RF_NAV'){const u=String(d.url||'');if(/^https?:\/\//i.test(u))pageNav(u);return}
+ const u=String(d.mediaUrl||'');if(d.mediaType==='video')saveMedia(u);else saveCap(u,'image',String(d.pageUrl||''))});
+function pageNav(url){const it=V[S.idx];if(!it)return;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)]};PGO.set(it.id,g)}if(g.stack[g.stack.length-1]===url)return;g.stack.push(url);if(g.stack.length>30)g.stack.shift();const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()}
+$('#pb').onclick=()=>{const it=V[S.idx];if(!it)return;const g=PGO.get(it.id),s=feed.querySelector(`.card[data-i="${S.idx}"]`),f=s&&s.querySelector('iframe');
+ if(g&&g.stack.length>1){g.stack.pop();dehyd(s);hyd(s,S.idx);sync();return}
+ if(f&&!f.hasAttribute('sandbox')&&(NAVC.get(it.id)||0)>1){NAVC.set(it.id,NAVC.get(it.id)-2);try{f.contentWindow.history.back()}catch(x){history.back()}return}
+ toast('This is the first page')};
 function pageUI(it){const pg=isPageCard(it),vid=it&&it.type==='video'&&(it.source||!isDirect(it.url));
  $('#bmd').hidden=!vid;$('#bmd').innerHTML=pg?svg('play')+'Video':svg('link')+'Page';$('#blk').hidden=!pg;$('#blk').innerHTML=svg(S.lock?'lock':'unlock')+(S.lock?'Locked':'Lock');$('#blk').classList.toggle('on',S.lock);
- $('#pr').hidden=!pg;$('#pm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
+ $('#pr').hidden=!pg;$('#pcur').textContent=(pg&&it)?short(curPage(it)):'';$('#pm').hidden=S.mode!=='disc';$('#pdl').hidden=S.mode!=='disc';$('#bgd').hidden=S.mode==='disc';$('#psh').textContent=(it&&(PSH.get(it.id)||(S.set.ad?'shield':'live'))==='shield')?'Shielded view':'Live view';
  document.body.classList.toggle('lockon',!!(S.lock&&pg));if(!Z.on&&!document.body.classList.contains('hzon'))feed.style.overflowY=(S.lock&&pg)?'hidden':'scroll'}
 $('#bmd').onclick=()=>{const it=V[S.idx];if(!it)return;PM.set(it.id,isPageCard(it)?'video':'page');const s=feed.querySelector(`.card[data-i="${S.idx}"]`);dehyd(s);hyd(s,S.idx);sync()};
 $('#blk').onclick=()=>{S.lock=!S.lock;hud();toast(S.lock?'Page locked: swiping is off until unlocked':'Page unlocked')};
@@ -1023,7 +1052,7 @@ $('#pdz').ondragover=e=>e.preventDefault();$('#pdz').ondrop=e=>{e.preventDefault
    page viewer's arrows just move between list items. Its job is visiting
    pages and capturing media — no autoplay feed behavior of its own. */
 function renderDiscHome(){$('#dwlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet — add them in the batch menu\u2019s Discovery tab.</p>'}
-const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
+const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
 /* The list view is discovery's own screen (like the grid is a screen):
    backing out of a page lands on the list, and only the list's own back
    leaves discovery for the batch menu. */
