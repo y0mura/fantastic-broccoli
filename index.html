@@ -163,7 +163,7 @@ body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 .li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700}.li .t small{display:block;color:var(--dim);font-size:10px;font-weight:500;overflow:hidden;text-overflow:ellipsis}
 .li button{height:30px;padding:0 11px;border-radius:15px;background:color-mix(in srgb,var(--ink) 14%,transparent);font-size:11px;font-weight:700;flex:none}.li button.danger{color:#ff8d8d}
 .opt{margin-top:8px;color:var(--dim)}.opt summary{padding:6px 2px;cursor:pointer}.opt .row{margin:6px 0}
-.opt select,.mm input,.mm textarea,#dta,#asq,#rta,#r2q,#psearch,#dwa{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:9px 10px;font:inherit;user-select:text;-webkit-user-select:text}
+.opt select,.mm input,.mm textarea,#dta,#asq,#rta,#r2q,#psearch,#dwa,#dpta,#dp-prof{background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:9px 10px;font:inherit;user-select:text;-webkit-user-select:text}
 .tg{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:14px;background:var(--glass);border:1px solid var(--line);color:var(--ink)}
 #mm{position:fixed;inset:0;z-index:65;background:rgba(5,6,9,.62);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}#mm.open{display:flex}
 .mm{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px}
@@ -347,7 +347,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span><span class="lab" id="bver" style="margin-left:auto">Build Nov 12 · #6</span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
@@ -364,7 +364,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  </div>
  <div id="tp-dump" hidden>
   <p class="lab" style="margin:8px 0">Paste links here to sift them first. Nothing is filed until you tap Add selected — the rest are discarded.</p>
-  <textarea id="dpta" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" style="width:100%" placeholder="One link per line — direct media, videos, or post pages\u2026"></textarea>
+  <textarea id="dpta" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" style="width:100%" placeholder="One link per line — direct media, videos, or post pages…"></textarea>
   <div class="row"><button class="pill" id="dpaste">Paste</button><button class="pill on" id="dpstage">Stage links</button><button class="pill" id="dpsmart">Smart select</button><span class="sp"></span><button class="pill" id="dpclear">Clear</button></div>
   <p class="lab" id="dpstat" style="margin:8px 0"></p>
   <div id="dpgrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
@@ -1282,40 +1282,70 @@ $('#sw-add').onclick=()=>{const chosen=[...SW.sel].map(k=>SW.list[k]).filter(Boo
    staging list is ephemeral — it lives outside S, is never saved, and never
    reaches an export. Pair-line bindings a staging parse registers in TAUGHT
    are snapshotted and rolled back for anything not actually added. ---------- */
-const DUMP={list:[],sel:new Set(),snap:null};
+const DUMP={list:[],sel:new Set(),snap:null,defHd:'',newHd:'',prevHd:''};
 const dumpHost=u=>{try{return new URL(u).hostname}catch(e){return u}};
 const dumpPath=u=>{try{const x=new URL(u);return (x.pathname+x.search).slice(0,90)}catch(e){return ''}};
 function dumpRestoreTaught(){if(!DUMP.snap)return;for(const k of Object.keys(TAUGHT))delete TAUGHT[k];Object.assign(TAUGHT,DUMP.snap);DUMP.snap=null}
-function dumpFillProf(){const cur=$('#dp-prof').value;const hs=[...new Set(S.items.map(i=>i.handle).filter(Boolean))];$('#dp-prof').innerHTML=hs.map(h=>`<option value="${esc(h)}" ${h===cur?'selected':''}>@${esc(alias(h))}</option>`).join('')}
-function stageDump(){let raw=$('#dpta').value;
- /* Encoding repair: a paste that arrives percent-encoded (the '#profile='
-    tag as %23profile=, line breaks as %0A) carries no real tags and defeats
-    classification. That fingerprint never occurs in a working URL, so when
-    it is present the whole paste is decoded once, up front. */
- if(/%23profile=/i.test(raw)){try{raw=decodeURIComponent(raw)}catch(e){}}
+function dumpFillProf(reset){const cur=reset?'':$('#dp-prof').value,hs=[...new Set(S.items.map(i=>i.handle).filter(Boolean))];
+ if(DUMP.newHd&&hs.includes(DUMP.newHd))DUMP.newHd='';
+ const opts=[];if(DUMP.defHd&&!hs.includes(DUMP.defHd))opts.push(DUMP.defHd);opts.push(...hs);
+ const def=DUMP.defHd||opts[0]||'__new';
+ const sel=opts.includes(cur)?cur:(cur==='__new'&&DUMP.newHd?'__new':(!reset&&DUMP.prevHd&&opts.includes(DUMP.prevHd)?DUMP.prevHd:def));
+ if(sel!=='__new')DUMP.prevHd=sel;
+ $('#dp-prof').innerHTML=opts.map(h=>`<option value="${esc(h)}" ${h===sel?'selected':''}>@${esc(alias(h))}${h===DUMP.defHd&&!hs.includes(h)?' (new)':''}</option>`).join('')
+  +`<option value="__new" ${sel==='__new'?'selected':''}>${DUMP.newHd?('@'+esc(alias(DUMP.newHd))+' (new)'):'+ New profile\u2026'}</option>`;
+ $('#dp-prof').value=sel}
+function dumpAskNew(cb){DUMP.newHd='';
+ ask({title:'New profile',desc:'Items without their own profile tag will file under this new profile.',ph:'profile name',ok:'Use profile',onOk:t=>{
+  const nm=profNorm(t),h=nm?alias(nm):'',hs=[...new Set(S.items.map(i=>i.handle).filter(Boolean))],opts=(DUMP.defHd&&!hs.includes(DUMP.defHd)?[DUMP.defHd]:[]).concat(hs);
+  if(!h){dumpFillProf();return true}
+  if(opts.includes(h)){DUMP.prevHd=h;dumpFillProf();$('#dp-prof').value=h}
+  else{DUMP.newHd=h;$('#dp-prof').value='__new';dumpFillProf()}
+  if(cb)cb();return true}});
+ const m=$('#mm'),prev=m.onclick;m.onclick=e=>{prev(e);if(!m.classList.contains('open')&&!DUMP.newHd)dumpFillProf()}}
+function stageDump(){const raw=$('#dpta').value;
+ /* Encoding repair: per-line and conservative — only lines carrying the
+    %23profile= fingerprint are repaired; lines without it pass through
+    byte-identical, and query strings are never decoded wholesale. */
+ const fixEnc=l=>l.replace(/%26(profile|name)(?:%3D|=)/gi,'&$1=')
+  .replace(/%23(profile|name)(?:%3D|=)([^\s&#]*)/gi,(_,k,v)=>{try{v=decodeURIComponent(v)}catch(e){}return '#'+k+'='+v})
+  .replace(/%20%7C%20/gi,' | ')
+  .replace(/https?%3A%2F%2F[^\s#?]*/gi,m=>{const q=m.search(/%3F/i),b=q<0?m:m.slice(0,q),r=q<0?'':m.slice(q).replace(/^%3F/i,'?');try{return decodeURIComponent(b)+r}catch(e){return b.replace(/%3A/gi,':').replace(/%2F/gi,'/')+r}});
+ const lines=raw.split(/\r?\n/).flatMap(l0=>/%23profile(?:=|%3D)/i.test(l0)?l0.split(/%0d%0a|%0a|%0d/gi).map(fixEnc):[l0]);
  dumpRestoreTaught();DUMP.snap={...TAUGHT};
- const have=new Set(S.items.map(i=>normKey(i.url))),tags={},pages={},clean=u=>u.replace(/[#&]profile=[^&#\s]*/gi,'');
- for(const l0 of raw.split(/\r?\n/)){const l=l0.trim();if(!l)continue;const tm=l.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);
-  if(l.includes('|')){const parts=l.split('|').map(x=>x.trim()),vm=(parts[1]||'').match(/https?:\/\/[^\s]+/i);if(vm){const k=normKey(clean(vm[0]));pages[k]=parts[0];if(tm)tags[k]=tm[1]}}
-  else{const um=l.match(/https?:\/\/[^\s]+/i);if(um&&tm)tags[normKey(clean(um[0]))]=tm[1]}}
+ const have=new Set(S.items.map(i=>normKey(i.url)));
  DUMP.list=[];
- for(const l0 of raw.split(/\r?\n/)){const l=l0.trim();if(!l)continue;let p1;try{p1=parse(l)}catch(e){continue}
-  for(const it of p1.items){const k=normKey(it.url);DUMP.list.push({url:it.url,type:it.type,tag:tags[k]||'',page:pages[k]||'',dupe:have.has(k),rep:false})}}
+ for(const l0 of lines){const l=l0.trim();if(!l)continue;
+  const tm=l.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);
+  let p1;try{p1=parse(l)}catch(e){continue}
+  const isPair=l.includes('|')&&p1.items.length===1&&isDirect(p1.items[0].url)&&/^https?:\/\//i.test(strip(l.split('|')[0]));
+  const pg0=isPair?strip(l.split('|')[0]):'';
+  for(const it of p1.items){const k=normKey(it.url),rawTag=isPair?(tm?tm[1]:''):it.ch,tag=rawTag?alias(rawTag):'',page=pg0||((it.source&&isDirect(it.url))?strip(it.source):''),type=(it.type==='video'&&!isDirect(it.url))?'webpage':it.type;
+   DUMP.list.push({url:it.url,type,tag,page,dupe:have.has(k),rep:false})}
+  dumpRestoreTaught();DUMP.snap={...TAUGHT}}
+ dumpRestoreTaught();
  {const seen=new Set();for(const e of DUMP.list){const k=normKey(e.url);e.rep=seen.has(k);seen.add(k)}}
- DUMP.sel=new Set();dumpRender();
+ {const ts=[...new Set(DUMP.list.map(e=>e.tag).filter(Boolean))];DUMP.defHd=ts.length===1?ts[0]:'';DUMP.newHd='';DUMP.prevHd=''}
+ DUMP.sel=new Set();dumpRender(true);
  $('#dpstat').textContent=DUMP.list.length?('Staged '+DUMP.list.length+' \u2014 tap the ones you want, then Add selected.'):'Nothing stageable in that paste.'}
-function dumpRender(){$('#chdp').textContent=DUMP.list.length;
+const dpStyle=(dupe,sel)=>`position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:var(--field);cursor:pointer;${dupe?'opacity:.5;':''}${sel?'outline:3px solid #10b981;outline-offset:-3px':''}`;
+const dpCheck='<span data-ck="1" style="position:absolute;top:6px;right:6px;background:#10b981;color:#000;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px">\u2713</span>';
+function dumpRender(reset){const have=new Set(S.items.map(i=>normKey(i.url)));
+ DUMP.list.forEach((e,k)=>{e.dupe=have.has(normKey(e.url));if(e.dupe)DUMP.sel.delete(k)});
+ $('#chdp').textContent=DUMP.list.length;
  $('#dpgrid').innerHTML=DUMP.list.map((e,k)=>{const sel=DUMP.sel.has(k),cap=e.tag||(e.page?profOf(e.page):''),chip=e.type==='image'?'IMG':e.type==='video'?'VID':'POST';
-  const media=e.type==='image'?`<img src="${esc(e.url)}" data-s="${esc(e.url)}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`
+  const media=e.type==='image'?`<img src="${esc(e.url)}" data-s="${esc(e.url)}" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`
    :e.type==='video'?`<video src="${esc(e.url)}" data-s="${esc(e.url)}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block"></video>`
    :`<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:8px;box-sizing:border-box"><div style="font-weight:700;font-size:12px;color:var(--ink);word-break:break-all">${esc(dumpHost(e.url))}</div><div style="font-size:10px;color:var(--dim);word-break:break-all">${esc(dumpPath(e.url))}</div></div>`;
-  return `<div data-dk="${k}" style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:var(--field);cursor:pointer;${e.dupe?'opacity:.5;':''}${sel?'outline:3px solid #10b981;outline-offset:-3px':''}">${media}<span style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">${chip}</span>${cap?`<span style="position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">@${esc(alias(cap))}</span>`:''}${e.dupe?'<span style="position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.65);color:#ffb36b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">IN LIBRARY</span>':''}${sel?'<span style="position:absolute;top:6px;right:6px;background:#10b981;color:#000;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px">\u2713</span>':''}</div>`}).join('');
+  return `<div data-dk="${k}" style="${dpStyle(e.dupe,sel)}">${media}<span style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">${chip}</span>${cap?`<span style="position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">@${esc(alias(cap))}</span>`:''}${e.dupe?'<span style="position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.65);color:#ffb36b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">IN LIBRARY</span>':''}${sel?dpCheck:''}</div>`}).join('');
  $('#dpgrid').querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>imgFail(im))});
- dumpFillProf()}
+ dumpFillProf(reset)}
 function dumpClear(keep){dumpRestoreTaught();for(const pr of keep||[]){TAUGHT[pr.page]=TAUGHT[pr.page.replace(/\/+$/,'')]=pr.url}
- DUMP.list=[];DUMP.sel.clear();dumpRender()}
+ DUMP.list=[];DUMP.sel.clear();DUMP.defHd='';DUMP.newHd='';DUMP.prevHd='';dumpRender(true)}
 $('#dpgrid').onclick=e=>{const t=e.target.closest('[data-dk]');if(!t)return;const k=+t.dataset.dk,en=DUMP.list[k];if(!en||en.dupe)return;
- if(DUMP.sel.has(k))DUMP.sel.delete(k);else DUMP.sel.add(k);dumpRender()};
+ const on=!DUMP.sel.has(k);if(on)DUMP.sel.add(k);else DUMP.sel.delete(k);
+ t.setAttribute('style',dpStyle(en.dupe,on));const ck=t.querySelector('[data-ck]');if(on&&!ck)t.insertAdjacentHTML('beforeend',dpCheck);else if(!on&&ck)ck.remove()};
+$('#dp-prof').addEventListener('change',()=>{const v=$('#dp-prof').value;if(v!=='__new'){DUMP.prevHd=v;return}dumpAskNew()});
 $('#dpstage').onclick=stageDump;
 $('#dpta').addEventListener('paste',()=>setTimeout(stageDump,0));
 $('#dpaste').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(t){$('#dpta').value=t;stageDump()}}catch(e){toast('Clipboard unavailable \u2014 paste into the box')}};
@@ -1334,23 +1364,25 @@ $('#dpsmart').onclick=()=>{if(!DUMP.list.length){toast('Nothing staged');return}
  $('#dpstat').textContent='Smart select: '+inn+' in ('+pl(ni,'image','images')+', '+pl(nv,'video','videos')+') \u2014 '+out+' out'+(outs?' ('+outs+')':'');
  dumpRender()};
 $('#dpclear').onclick=()=>{dumpClear([]);$('#dpta').value='';$('#dpstat').textContent=''};
-$('#dpadd').onclick=()=>{const chosen=[...DUMP.sel].map(k=>DUMP.list[k]).filter(e=>e&&!e.dupe);if(!chosen.length){toast('Nothing selected');return}
- const before=new Set(S.items.map(i=>i.id));
- const total=DUMP.list.length,groups={};for(const e of chosen){const hd=e.tag||(e.page?profOf(e.page):'')||$('#dp-prof').value||'';(groups[hd]=groups[hd]||[]).push(e)}
+function dumpCommit(){if(!DUMP.sel.size){if(DUMP.list.length&&DUMP.list.every(e=>e.dupe)){$('#dpstat').textContent='Already in your library';toast('Already in your library');return}toast('Nothing selected');return}
+ const have=new Set(S.items.map(i=>normKey(i.url))),chosen=[...DUMP.sel].map(k=>DUMP.list[k]).filter(e=>e&&!have.has(normKey(e.url)));
+ if(!chosen.length){dumpRender();$('#dpstat').textContent='Already in your library';toast('Already in your library');return}
+ const pv=$('#dp-prof').value,fallback=pv==='__new'?(DUMP.newHd||''):pv;
+ if(!fallback&&chosen.some(e=>!(e.tag||(e.page?profOf(e.page):'')))){dumpAskNew(dumpCommit);return}
+ const before=new Set(S.items.map(i=>i.id)),total=DUMP.list.length,groups={};
+ for(const e of chosen){const hd=e.tag||(e.page?profOf(e.page):'')||fallback;(groups[hd]=groups[hd]||[]).push(e)}
  let n=0;const keep=[];for(const hd of Object.keys(groups)){n+=attach(groups[hd].map(e=>e.url),hd);
-  for(const e of groups[hd])if(e.page){const x=S.items.find(i=>normKey(i.url)===normKey(e.url));if(x){x.source=e.page;keep.push({page:e.page,url:e.url})}}}
- save();setDirty(true);chips();
+  for(const e of groups[hd])if(e.page){const x=S.items.find(i=>normKey(i.url)===normKey(e.url)&&!before.has(i.id));if(x&&!x.source){x.source=e.page;keep.push({page:e.page,url:e.url})}}}
  const added=S.items.filter(i=>!before.has(i.id));
- const msg='Staged '+total+' \u00b7 Added '+n+' \u00b7 Discarded '+(total-n);dumpClear(keep);$('#dpstat').textContent=msg;toast(msg);
- /* Filing is not findable on its own in a large library — new items append at
-    the tail of the default order, and a latched profile or type filter hides
-    them entirely. So a Dump add lands the feed on what it just filed: inside
-    the profile's own feed when everything added shares one profile,
-    otherwise on the first added item in the full feed (goItem's reset). */
- if(added.length){const hs=[...new Set(added.map(i=>i.handle))];
-  if(S.mode==='main'){if(hs.length===1&&hs[0]){S.prof=hs[0];S.filter='all'}V=vis()}
-  goItem(added[0].id)}
- else if(S.mode==='main'){V=vis();render();sync()}};
+ if(!added.length){dumpRender();$('#dpstat').textContent='Already in your library';toast('Already in your library');return}
+ for(const pr of keep){TAUGHT[pr.page]=TAUGHT[pr.page.replace(/\/+$/,'')]=pr.url}
+ save();setDirty(true);chips();
+ const msg='Staged '+total+' \u00b7 Added '+n+' \u00b7 Discarded '+(total-n);$('#dpta').value='';dumpClear(keep);$('#dpstat').textContent=msg;toast(msg);
+ const hs=[...new Set(added.map(i=>i.handle))];
+ leaveDisc();if(G.open){FEEDDIRTY=0;closeGrid()}
+ if(hs.length===1&&hs[0]){S.prof=hs[0];S.filter='all'}else{S.filter='all';S.sort='default';S.prof=null}
+ V=vis();S.idx=Math.max(0,V.findIndex(x=>x.id===added[0].id));FEEDDIRTY=0;render();goItem(added[0].id)}
+$('#dpadd').onclick=dumpCommit;
 
 /* Discovery (Kendall, Nov 11): a LIST, not a feed and never a grid. The
    list is the discovery home; opening an item visits that page, and the
