@@ -258,9 +258,9 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row r2">
   <button class="pill" id="px" hidden>‹ Back</button><button class="pill" id="pc" hidden></button><button class="pill" id="bmd" hidden></button><button class="pill" id="blk" hidden></button><button class="pill" id="be" hidden>Enhance</button><button class="pill" id="bv" hidden>▾</button>
   <span class="sp"></span>
-  <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>link</a>
+  <a class="pill" id="lk" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="color:inherit;text-decoration:none" hidden>link</a>
  </div>
- <div class="row r2" id="pr" hidden><button class="pill ic" id="pb" title="Back"><i data-i="back"></i></button><button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psc" title="Gather this page's posts and pick media to save">Scrape</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="psh">Shielded view</button></div>
+ <div class="row r2" id="pr" hidden><button class="pill ic" id="pb" title="Back"><i data-i="back"></i></button><button class="pill" id="pdl" hidden title="Back to the Discovery list">‹ List</button><button class="pill" id="pdz" title="Save a copied image or video link, or drop one here"><i data-i="drop"></i>Drop / Save</button><button class="pill" id="psc" title="Harvest this page's media into Dump staging">Harvest</button><button class="pill" id="pcp" title="Copy this page's link">Copy link</button><span class="lab" id="pcur" style="max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="pill on" id="pl">Paste &amp; Link</button><button class="pill" id="psh">Shielded view</button></div>
  <div class="row" id="dr" hidden>
   <button class="pill" data-l="1">1</button><button class="pill" data-l="2">2</button><button class="pill" data-l="3">3</button>
   <span class="lab">Bright</span><button class="pill" id="ed">−</button><span class="lab" id="el">100%</span><button class="pill" id="eu">+</button>
@@ -301,7 +301,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
   </div>
   <div class="row" id="gb2" hidden>
    <span id="gav" style="line-height:0"></span><span class="lab" id="gpn"></span>
-   <a class="pill" id="gpl" href="#" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none" hidden>Visit page</a>
+   <a class="pill" id="gpl" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="color:inherit;text-decoration:none" hidden>Visit page</a>
    <button class="pill" data-act="sel">Edit media</button><button class="pill" data-act="addm">Add media</button><button class="pill" data-act="ren">Rename profile</button>
   </div>
   <div class="row" id="gbs" hidden>
@@ -347,7 +347,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span><span class="lab" id="bver" style="margin-left:auto">Build Nov 12 · #7</span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span><span class="lab" id="bver" style="margin-left:auto">Build Nov 14 · #10</span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
@@ -413,12 +413,6 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="gap:8px;margin:0 0 12px"><input id="dwa" placeholder="Add a profile page link…" style="flex:1"><button class="pill on" id="dwadd">Add</button></div>
  <div class="list" id="dwlist"></div>
 </div>
-<div id="swrap" hidden style="position:fixed;inset:0;background:var(--bg);z-index:46;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 14px 24px">
- <div style="display:flex;gap:8px;align-items:center;margin:4px 0 12px"><span class="lab" id="sw-title" style="font-size:14px;color:var(--ink)">Scrape</span><span style="flex:1"></span><button class="pill" id="sw-teach">Teach</button><button class="pill" id="sw-all">All</button><button class="pill" id="sw-exit">Close</button></div>
- <p class="lab" id="sw-stat" style="margin:0 0 10px"></p>
- <div id="swgrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
- <div style="position:sticky;bottom:0;padding:10px 0 calc(8px + env(safe-area-inset-bottom));background:var(--bg);display:flex;gap:8px;align-items:center"><span class="lab">Save to</span><select id="sw-prof" style="flex:0 1 auto;max-width:45vw"></select><span style="flex:1"></span><button class="pill on" id="sw-add">Add selected</button></div>
-</div>
 <script>
 'use strict';
 const $=s=>document.querySelector(s),feed=$('#feed'),ta=$('#ta'),fhEl=$('#fh');
@@ -440,7 +434,7 @@ function decTok(tok){const p=tok.slice(4),v=[];for(const ch of p){const k=DEC[ch
  return new TextDecoder().decode(o)}
 const dt=raw=>(!raw||(!raw.includes('rf1$')&&!raw.includes('~RF1~')))?(raw||''):raw.replace(/^\s*~RF1~\s*$/gm,'').replace(/rf1\$[A-Za-z0-9_-]+/g,decTok);
 /* ---------- state ---------- */
-const S={trash:[],disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true,bproxy:'',bproxyOn:true,routes:{}},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],shuf:null,filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
+const S={trash:[],disc:[],mode:'main',mainIdx:0,discItems:[],lock:false,set:{off:0,mode:'auto',ad:true,shuf:false,sniff:false,proxy:'',proxyOn:true,bproxy:'',bproxyOn:true,routes:{},linksOnly:{}},zoom:'0',banks:{1:[],2:[],3:[],4:[],5:[]},enh:0,exp:100,sharp:0,enhOpen:false,items:[],extra:[],shuf:null,filter:'all',sort:'default',prof:null,idx:0,muted:true,loop:true,rate:1,auto:0,mask:true,dirty:false};
 const RATES=[1,1.25,1.5,2,.5,.75],AUTO=[0,3,5,8,15,30,1.5,1],FILT=['all','image','video','webpage'],FL={all:'All',image:'Img',video:'Vid',webpage:'Link'},SORT=['default','new','old','fav','az'],SL={default:'Default',new:'New',old:'Old',fav:'Favorites',az:'A–Z'};
 let V=[],AT=0,Z={on:0,s:1,x:0,y:0},inB=true;const HYD=new Set();
 const ICONS={bag:'M6 8h12l1 12H5zM9 8V6a3 3 0 016 0v2',lock:'M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z',unlock:'M7 11V8a5 5 0 019.5-2M5 11h14v9H5z',save:'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',drop:'M12 4v10m0 0l-4-4m4 4l4-4M5 19h14',link:'M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1',expand:'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',shrink:'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5',back8:'M12 5a7 7 0 11-6.5 4.4M5 4v5h5',fwd8:'M12 5a7 7 0 106.5 4.4M19 4v5h-5',up2:'M12 19V5m0 0l-5 5m5-5l5 5',down2:'M12 5v14m0 0l-5-5m5 5l5-5',image:'M4 5h16v14H4zM8 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 17l5-5 4 4 3-3 4 4',minus:'M5 12h14',back:'M19 12H5m0 0l6-6m-6 6l6 6',close:'M6 6l12 12M18 6L6 18',grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',list:'M9 6h12M9 12h12M9 18h12M4 6h.5M4 12h.5M4 18h.5',layout:'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',home:'M4 11l8-7 8 7M6 9.3V20h12V9.3M10 20v-5h4v5',crawl:'M6 5l6 6 6-6M6 12l6 6 6-6',pan:'M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3M8 11h6M11 8v6',scissors:'M6 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12',filter:'M4 6h16M7 12h10M10 18h4',sort:'M7 4v16m0 0l-3-3m3 3l3-3M17 20V4m0 0l-3 3m3-3l3 3',clock:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM12 7.5v4.8l3.2 2',shuffle:'M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5',plus:'M12 5v14M5 12h14',up:'M6 15l6-6 6 6',down:'M6 9l6 6 6-6',unmuted:'M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 010 6M19 6a8 8 0 010 12',muted:'M4 9v6h4l5 4V5L8 9H4zM17 9l4 6m0-6l-4 6',play:'M8 5v14l11-7z',pause:'M8 5v14M16 5v14',dots:'M12 5h.01M12 12h.01M12 19h.01',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z',hide:'M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 5.1A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a13 13 0 01-2.6 3.7M6.1 6.1A13 13 0 002.5 12c1 2.5 4.5 7 9.5 7 1.5 0 2.9-.4 4.1-1'};
@@ -453,7 +447,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const fmt=s=>{if(!isFinite(s)||s<0)s=0;return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
 /* ---------- url handling: direct-video resolution, pair lines, profiles (spec 3.4) ---------- */
 const IGN=new Set(['content','media','images','image','img','videos','video','vid','watch','v','e','embed','p','reel','reels','shorts','posts','post','status','photos','photo','uploads','upload','assets','static','files','file','thumb','thumbs','gallery','albums','album','u','user','users','profile','profiles','channel','c','sample','gtv-videos-bucket','commons','wikipedia','en','wiki']);
-let ALIAS={},TAUGHT={},TRIMS={},STEACH={};let PFP={};let CFGX={};const FAVP=new Set();const tk=u=>strip(u).replace(/\/+$/,'');try{TAUGHT=JSON.parse(localStorage.getItem('reelflow_taught')||'{}')||{}}catch(e){}
+let ALIAS={},TAUGHT={},TRIMS={};let PFP={};let CFGX={};const FAVP=new Set();const tk=u=>strip(u).replace(/\/+$/,'');try{TAUGHT=JSON.parse(localStorage.getItem('reelflow_taught')||'{}')||{}}catch(e){}
 const strip=u=>(u||'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]source=[^&#]*/gi,'').replace(/#$/,'').trim();
 const isDirect=u=>{if(!u)return false;const c=strip(u),p=c.split('?')[0].toLowerCase();return /\.(mp4|webm|ogg|mov|m4v|m3u8)$/.test(p)||/v\.redd\.it|googlevideo\.com\/videoplayback|mime=video|manifest\.m3u8|master\.m3u8|playlist\.m3u8/i.test(c)};
 const normKey=u=>strip(u).replace(/\/+$/,'').toLowerCase();
@@ -490,8 +484,8 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
  for(const l0 of dt(raw).split(/\r?\n/)){const l=l0.trim();
   if(!l){if(sec==='feed'&&first)blank++;else if(sec==='x'&&sub==='o')extra.push('');continue}
   if(/^#\s*\[?ACTIVE FEED/i.test(l)){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='feed';continue}
-  {const hm=l.match(/^#\s*\[([^\]]+)\]/)||l.match(/^#\s*(BANK[ _-]?[1-5]|PROFILE_ALIASES|PROFILE_DISCOVERY(?:_LINKS)?|VIDEO_THUMB_TRIMS|PROFILE_AVATARS|PROFILE_PICS|PROFILE_FAVORITES|ITEM_NAMES|APP_SETTINGS|HOUSE_B_CARDS|HOUSE_B_DELETIONS|HOUSE_B_PREFS)\b/i);
-  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='TAUGHT_VIDEOS'?'tv':nm==='SCRAPE_TEACH'?'st':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
+  {const hm=l.match(/^#\s*\[([^\]]+)\]/)||l.match(/^#\s*(BANK[ _-]?[1-5]|PROFILE_ALIASES|PROFILE_DISCOVERY(?:_LINKS)?|VIDEO_THUMB_TRIMS|PROFILE_AVATARS|PROFILE_PICS|PROFILE_FAVORITES|ITEM_NAMES|TAUGHT_VIDEOS|APP_SETTINGS|HOUSE_B_CARDS|HOUSE_B_DELETIONS|HOUSE_B_PREFS)\b/i);
+  if(hm){if(sub==='o')while(extra.length&&extra[extra.length-1]==='')extra.pop();sec='x';const nm=hm[1].trim().toUpperCase().replace(/[\s-]+/g,'_'),bm=nm.match(/^BANK_?([1-5])$/);sub=bm?'b'+bm[1]:nm==='PROFILE_ALIASES'?'al':(nm==='PROFILE_DISCOVERY_LINKS'||nm==='PROFILE_DISCOVERY')?'dc':nm==='VIDEO_THUMB_TRIMS'?'tr':nm==='PROFILE_AVATARS'?'av':nm==='PROFILE_PICS'?'pp':nm==='PROFILE_FAVORITES'?'fv':nm==='ITEM_NAMES'?'nms':nm==='TAUGHT_VIDEOS'?'tv':nm==='APP_SETTINGS'?'cf':nm==='HOUSE_B_CARDS'?'hc':nm==='HOUSE_B_DELETIONS'?'hd':nm==='HOUSE_B_PREFS'?'hp':'o';if(sub==='o')extra.push(l);continue}}
   if(sec==='x'){
    if(sub[0]==='b'){if(/^https?:\/\//i.test(l))banks[sub[1]].push(l)}
    else if(sub==='al'){if(l.includes('=')&&!l.startsWith('#')){const[a,b]=l.split('=');if(a&&b)ALIAS[a.trim().toLowerCase().replace(/^@/,'')]=b.trim().toLowerCase().replace(/^@/,'')}}
@@ -503,7 +497,6 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
    else if(sub==='nms'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=l.slice(0,x).trim(),b=l.slice(x+1).trim();if(a&&b)names[tk(a)]=b}}
    else if(sub==='fv'){if(l&&!l.startsWith('#'))favs.push(l.trim())}
    else if(sub==='tv'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=strip(l.slice(0,x)),b=strip(l.slice(x+1));if(a&&b&&isDirect(b)){TAUGHT[a]=TAUGHT[a.replace(/\/+$/,'')]=b}}}
-   else if(sub==='st'){if(l.includes('|')&&!l.startsWith('#')){const x=l.indexOf('|'),a=l.slice(0,x).trim().toLowerCase(),b=l.slice(x+1).trim();try{const r=JSON.parse(b);if(a&&r&&r.h)STEACH[a]=r}catch(e){}}}
    else if(sub==='cf'){try{cfg=JSON.parse(l)}catch(e){}}
    else extra.push(l);
    continue}
@@ -511,10 +504,10 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   if(first&&blank>=1)sess++;blank=0;first=true;
   try{
   if(l.includes('|')){const p=l.split('|').map(s=>s.trim()).filter(Boolean);
-   if(p.length>=2){const pm=p[1].match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);const v=/^(https?:|data:)/i.test(p[1])?dash(p[1].replace(/[#&]profile=[^&#]*/gi,'')):(MEDIA.test(p[1])&&!/\s/.test(p[1])?r2(p[1]):'');
-    if(v&&isDirect(v)){const pg=strip(p[0]);TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=strip(v);add(v,pm?pm[1]:profOf(pg));continue}}}
-  for(const t of l.replace(/%(?=https?:\/\/)/gi,'\n').replace(/(?<!source=)(https?:\/\/)/gi,'\n$1').split(/[\s,;|]+|(?:%20)+|%(?![0-9a-fA-F]{2})/g)){
-   const hm=t.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i),nm=t.match(/[#&]name=([^&#]+)/i);let c=t.trim().replace(/^%+/,'').replace(/%+$/,'').replace(/[);,>\]"']+$/,'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]name=[^&#]*/gi,'');
+   if(p.length>=2){const pm=p[1].match(/[#&]profile=([a-zA-Z0-9_.-]+)/i),p1=p[1].replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]name=[^&#]*/gi,'').replace(TAIL_CLEAN_RE,'');const v=/^(https?:|data:)/i.test(p1)?dash(p1).replace(TAIL_CLEAN_RE,''):(MEDIA.test(p1)&&!/\s/.test(p1)?r2(p1):'');
+    if(v&&isDirect(v)){const pg=strip(p[0]).replace(TAIL_CLEAN_RE,'');TAUGHT[pg]=TAUGHT[pg.replace(/\/+$/,'')]=strip(v);add(v,pm?pm[1]:profOf(pg));continue}}}
+  for(const t of l.replace(/%(?=https?:\/\/)/gi,'\n').replace(/(?<!source=)(https?:\/\/)/gi,'\n$1').split(/[\s|]+|[,;]+(?=\s*https?:\/\/)|(?:%20)+(?=\s|$|https?:\/\/)|%(?![0-9a-fA-F]{2})/gi)){
+   const hm=t.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i),nm=t.match(/[#&]name=([^&#]+)/i);let c=t.trim().replace(/^%+/,'').replace(/%+$/,'').replace(/[);,>\]"']+$/,'').replace(/[#&]profile=[^&#]*/gi,'').replace(/[#&]name=[^&#]*/gi,'').replace(TAIL_CLEAN_RE,'');
    let cand='';if(/^(https?:\/\/|data:image\/)/i.test(c))cand=c;
    else if(/^[a-zA-Z0-9-]+\.(?:com|org|net|io|dev|me|co|tv|gg|app|xyz|info|biz|cc|ly|to)\/\S+/i.test(c))cand='https://'+c;
    else if(MEDIA.test(c)&&!c.includes('='))cand=r2(c);
@@ -535,7 +528,6 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
  const nml=S.items.filter(i=>i.name);if(nml.length)L.push('','# [ITEM_NAMES]',...nml.map(i=>i.url+' | '+i.name));
  if(FAVP.size){const fv=[...FAVP].filter(h=>S.items.some(i=>i.handle===h));if(fv.length)L.push('','# [PROFILE_FAVORITES]',...fv)}
  {const covered=new Set();for(const i of S.items){const pg=i.type==='video'?pageOf(i):'';if(pg)covered.add(tk(pg))}const orph={};for(const[k,v]of Object.entries(TAUGHT)){if(v&&isDirect(v)&&!covered.has(tk(k)))orph[tk(k)]=v}const oe=Object.entries(orph);if(oe.length)L.push('','# [TAUGHT_VIDEOS]',...oe.map(([k,v])=>k+' | '+v))}
- {const st=Object.entries(STEACH);if(st.length)L.push('','# [SCRAPE_TEACH]',...st.map(([h,r])=>h+' | '+JSON.stringify(r)))}
  if(S.extra.length)L.push('',...S.extra);
  const tr=Object.entries(TRIMS);if(tr.length)L.push('','# [VIDEO_THUMB_TRIMS]',...tr.map(([u,t])=>u+' | '+t.startSec+','+t.loopSec));
  for(let n=1;n<=5;n++)if(S.banks[n].length)L.push('',`# [BANK_${n}]`,...S.banks[n]);
@@ -547,13 +539,27 @@ function exportText(){const L=['# [ACTIVE FEED URLS — DIRECT MP4s AUTO-SAVED]'
     cfgSet stays presence-based, so fuller blobs still apply what they
     carry; keys this build doesn't model ride along in the CFGX shadow;
     the on-device save keeps the full cfg separately. */
- L.push('','# [APP_SETTINGS]',JSON.stringify(Object.assign({},CFGX,{proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:S.set.routes||{},theme:THEME,r2base:R2})));
+ L.push('','# [APP_SETTINGS]',JSON.stringify(Object.assign({},CFGX,{proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:S.set.routes||{},linksOnly:S.set.linksOnly||{},theme:THEME,r2base:R2})));
  return['~RF1~',...L.map(l=>l.trim()?enc(l):'')].join('\n')}
 const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]++);const bk=Object.values(p.banks||{}).filter(a=>a.length).length;return`${p.items.length} items: ${c.video} video, ${c.image} image, ${c.webpage} page`+(bk?` · ${bk} bank${bk>1?'s':''} loaded`:'')};
 /* ---------- persistence ---------- */
-let svT=0,SAVERAW=null;const saveNow=()=>{try{localStorage.setItem('reelflow_v2',JSON.stringify(Object.assign({},SAVERAW||{},{items:S.items,shuf:S.shuf,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,pfp:PFP,favp:[...FAVP],cfg:cfgGet(),cfgx:CFGX,steach:STEACH})));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
+let svT=0,SAVERAW=null;const saveNow=()=>{try{const raw=Object.assign({},SAVERAW||{},{items:S.items,shuf:S.shuf,extra:S.extra,banks:S.banks,trims:TRIMS,alias:ALIAS,disc:S.disc,trash:S.trash,pfp:PFP,favp:[...FAVP],cfg:cfgGet(),cfgx:CFGX});localStorage.setItem('reelflow_v2',JSON.stringify(raw));localStorage.setItem('reelflow_taught',JSON.stringify(TAUGHT))}catch(e){}};
 const save=()=>{clearTimeout(svT);svT=setTimeout(saveNow,350)};addEventListener('pagehide',saveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(svT);saveNow()}});
-let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;if(Array.isArray(d.shuf))S.shuf=d.shuf;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};if(d.steach)STEACH=d.steach;S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
+const TAIL_CLEAN_RE=/(?:%2520|%250d|%250a|%20|%0d|%0a)+$/gi;
+let LOAD_HEAL={healed:0,dropped:0};
+function healLibraryOnLoad(){if(!Array.isArray(S.items)||!S.items.length){LOAD_HEAL={healed:0,dropped:0};return LOAD_HEAL}
+ let healed=0,dropped=0;const kept=[],seen=new Set();
+ for(const it of S.items){if(!it||typeof it.url!=='string')continue;let chg=false;
+  const u2=it.url.replace(TAIL_CLEAN_RE,''),uChg=u2!==it.url;if(uChg){it.url=u2;chg=true}
+  if(typeof it.page==='string'){const p2=it.page.replace(TAIL_CLEAN_RE,'');if(p2!==it.page){it.page=p2;chg=true}}
+  if(typeof it.source==='string'){const s2=it.source.replace(TAIL_CLEAN_RE,'');if(s2!==it.source){it.source=s2;chg=true}}
+  if(uChg){const cType=isDirect(u2)?'video':classify(u2);it.type=(cType==='video'&&!isDirect(u2))?'webpage':cType;if(!it.ch)it.handle=profOf(it.source||it.url)}
+  if(chg)healed++;
+  const k=normKey(it.url);if(seen.has(k)){dropped++;continue}
+  seen.add(k);kept.push(it)}
+ if(healed>0||dropped>0)S.items=kept;
+ LOAD_HEAL={healed,dropped};return LOAD_HEAL}
+let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;if(Array.isArray(d.shuf))S.shuf=d.shuf;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};healLibraryOnLoad();for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
 function setDirty(v){S.dirty=v;$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
 /* ---------- link-origin videos: fetch page via proxy race, extract stream, teach binding ---------- */
 const EX=new Map(),NOEX=/youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|twitch\.tv|dailymotion\.com|streamable\.com|redgifs\.com/i;
@@ -568,6 +574,7 @@ var BPX={minGap:25000,coolMs:120000,timeoutMs:40000};
 const BSTATE_KEY='rf_bstate_v1';
 const urlHost=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return''}};
 const routeFor=u=>{const h=urlHost(u),r=h&&S.set.routes?S.set.routes[h]:null;return(r==='b'||r==='p')?r:null};
+const linksOnlyFor=u=>{const h=urlHost(u);return!!(h&&S.set.linksOnly&&S.set.linksOnly[h])};
 const bstateGet=()=>{try{return JSON.parse(localStorage.getItem(BSTATE_KEY)||'{}')}catch(e){return{}}};
 const bstateSet=(h,st)=>{try{const m=bstateGet();if(st)m[h]={state:st,at:Date.now()};else delete m[h];localStorage.setItem(BSTATE_KEY,JSON.stringify(m))}catch(e){}};
 let bChain=Promise.resolve(),bLastStart=0,bCoolUntil=0;
@@ -615,17 +622,17 @@ function hyd(s,i){const it=V[i];if(!it)return;s.dataset.h=1;HYD.add(s);if(isPage
  if(it.type==='image'){NEWIMG=1;s.innerHTML=`<div class="hzw"><img class="bg" src="${u}" alt="" referrerpolicy="no-referrer"><div class="stage${S.zoom!=='0'?' z-'+S.zoom:''}"><img class="main" src="${u}" alt="" draggable="false" referrerpolicy="no-referrer"><img class="zo" src="${u}" alt="" aria-hidden="true" referrerpolicy="no-referrer"></div><button class="pill hzb" data-hz="1" aria-label="Horizontal view">${svg('expand')}</button><div class="hzc"><button class="pill" data-hzx="1" aria-label="Close horizontal view">${svg('close')}</button><button class="pill" data-ez="lv">Enhance</button><button class="pill" data-ez="d" aria-label="Darker">${svg('minus')}</button><button class="pill" data-ez="u" aria-label="Brighter">${svg('plus')}</button></div></div>`;
   s.querySelectorAll('img').forEach(im=>im.addEventListener('error',()=>{if(/^http/.test(it.url))imgFail(im,it.url)}));wireImg(s);{const st=s.querySelector('.stage'),mi=s.querySelector('.main'),f=()=>{const a=mi.naturalWidth/mi.naturalHeight,b=innerWidth/innerHeight;st.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2))};mi.complete&&mi.naturalWidth?f():mi.addEventListener('load',f,{once:true})}}
  else if(it.type==='video'&&!(it.stream||isDirect(it.url))){const pg=esc(strip(it.source||it.url));
-  s.innerHTML=`<div class="wp"><h2 style="margin:0">Loading video…</h2><b>${pg}</b><div><a class="pill" href="${pg}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">Open page</a></div></div>`;
+  s.innerHTML=`<div class="wp"><h2 style="margin:0">Loading video…</h2><b>${pg}</b><div><a class="pill" href="${pg}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="text-decoration:none;color:inherit">Open page</a></div></div>`;
   extract(it).then(st=>{if(s.dataset.h&&V[+s.dataset.i]===it){if(st){it.stream=st;delete s.dataset.h;hyd(s,+s.dataset.i);sync()}else{s.querySelector('h2').textContent="Couldn't extract a video";}}})}
  else if(it.type==='video'){const near=i===S.idx?'auto':'metadata';
-  s.innerHTML=`<div class="hzw"><div class="stage"><video class="main" src="${u}" playsinline webkit-playsinline preload="${near}" ${S.muted?'muted':''} ${S.loop?'loop':''}></video></div><div class="gl"></div>
+  s.innerHTML=`<div class="hzw"><div class="stage"><video class="main" src="${u}" referrerpolicy="no-referrer" playsinline webkit-playsinline preload="${near}" ${S.muted?'muted':''} ${S.loop?'loop':''}></video></div><div class="gl"></div>
   <button class="cp" title="Resume"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="fb l"></div><div class="fb r"></div>
   <div class="vb"><button class="pill sk" data-c="b8" aria-label="Back 8 seconds">${svg('back8')}</button><div class="mid"><button class="pill" data-c="pp" aria-label="Play / pause">${svg('pause')}</button><button class="pill" data-c="tm"><span data-t>0:00</span></button><button class="pill" data-c="end">${S.loop?'Loop':'Scroll'}</button><button class="pill" data-c="sp">${S.rate}×</button><button class="pill" data-c="hz" title="Horizontal fullscreen">${svg('expand')}</button></div><button class="pill sk" data-c="f8" aria-label="Forward 8 seconds">${svg('fwd8')}</button></div>
   <div class="sw"><input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Seek"></div></div>`;
-  const v=s.querySelector('video');
+  const v=s.querySelector('video');if(v)v.referrerPolicy='no-referrer';
   if(/\.m3u8(\?|#|$)/i.test(it.stream||it.url)&&!v.canPlayType('application/vnd.apple.mpegurl')){loadHls().then(H=>{if(H&&H.isSupported()&&s.dataset.h){const h=new H();h.loadSource((it.stream||it.url).split('#')[0]);h.attachMedia(v);s._hls=h}})}
   wireVid(s)}
- else{s.innerHTML=`<div class="wp"><h2 style="margin:0">Webpage</h2><b>${esc(it.url.split('#')[0])}</b><div><a class="pill on" href="${u}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:var(--acc)">Open</a></div></div>`}}
+ else{s.innerHTML=`<div class="wp"><h2 style="margin:0">Webpage</h2><b>${esc(it.url.split('#')[0])}</b><div><a class="pill on" href="${u}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="text-decoration:none;color:var(--acc)">Open</a></div></div>`}}
 function dehyd(s){HYD.delete(s);if(Z.sec===s)zout();if(s._hls){try{s._hls.destroy()}catch(e){}s._hls=null}
  s.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});const _it=V[+s.dataset.i];if(_it){const _g=PGO.get(_it.id);if(_g&&_g.frames)_g.frames=_g.frames.map(()=>null)}s.textContent='';delete s.dataset.h}
 let hlsP;const loadHls=()=>hlsP||(hlsP=new Promise(r=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js';sc.onload=()=>r(window.Hls);sc.onerror=()=>r(null);document.head.appendChild(sc)}));
@@ -746,7 +753,7 @@ const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='mai
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
 ta.addEventListener('input',count);
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
-$('#bmf').onclick=()=>{if(S.mode==='disc')exitDisc();else openModal()};$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
+$('#bmf').onclick=()=>{if(S.mode==='disc')exitDisc();else openModal()};$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener,noreferrer')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
 $('#mr2').onclick=()=>{closeModal();r2Flow()};
 $('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already plain text');
@@ -772,21 +779,23 @@ function applyTheme(t){THEME=THEMES.includes(t)?t:'default';document.body.datase
 /* CFGX (declared with PFP above) shadows settings keys this build doesn't
    model — e.g. from the other build's fuller blobs — and re-emits them */
 const sanRoutes=o=>{const m={};if(o&&typeof o==='object'&&!Array.isArray(o))for(const k of Object.keys(o)){const v=o[k],h=String(k).toLowerCase().replace(/^www\./,'');if(/^[a-z0-9.-]+$/.test(h)&&(v==='b'||v==='p'))m[h]=v}return m};
-const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,r2base:R2,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:Object.assign({},S.set.routes||{}),theme:THEME});
+const sanLinksOnly=o=>{const m={};if(o&&typeof o==='object'&&!Array.isArray(o))for(const k of Object.keys(o)){const v=o[k],h=String(k).toLowerCase().replace(/^www\./,'');if(/^[a-z0-9.-]+$/.test(h)&&(v===1||v===true||v==='1'))m[h]=1}return m};
+const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,r2base:R2,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:Object.assign({},S.set.routes||{}),linksOnly:Object.assign({},S.set.linksOnly||{}),theme:THEME});
 function cfgSet(c){if(!c||typeof c!=='object')return;const n=(v,a,b,d)=>typeof v==='number'&&v>=a&&v<=b?v:d,h=k=>c[k]!==undefined;
  /* Presence-based: a settings blob only changes the keys it carries, so a
     slim export never resets the view prefs already on a device, while
     fuller blobs from other builds still apply everything they carry. */
  if(h('zoom'))S.zoom=String(c.zoom);if(h('auto'))S.auto=n(c.auto,0,60,S.auto);if(h('loop'))S.loop=c.loop!==false;if(h('rate'))S.rate=RATES.includes(c.rate)?c.rate:1;if(h('muted'))S.muted=c.muted!==false;if(h('mask'))S.mask=c.mask!==false;if(h('enh'))S.enh=n(c.enh,0,3,0);if(h('exp'))S.exp=n(c.exp,50,200,100);if(h('sharp'))S.sharp=n(c.sharp,-3,6,0);
  if(h('gsize'))G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';if(h('gzoom'))G.zoom=String(c.gzoom);if(h('gebb'))G.ebb=c.gebb?1:0;if(h('gcs'))G.cs=n(c.gcs,1,3,2);if(h('gcz'))G.cz=n(c.gcz,60,220,100);
- if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('bproxy'))S.set.bproxy=typeof c.bproxy==='string'?c.bproxy:'';if(h('bpon'))S.set.bproxyOn=!!c.bpon;if(h('routes'))S.set.routes=sanRoutes(c.routes);if(h('theme'))applyTheme(c.theme);if(h('r2base')&&typeof c.r2base==='string'&&/^https?:\/\/\S{4,300}$/i.test(c.r2base))R2=c.r2base.replace(/\/+$/,'')
+ if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('bproxy'))S.set.bproxy=typeof c.bproxy==='string'?c.bproxy:'';if(h('bpon'))S.set.bproxyOn=!!c.bpon;if(h('routes'))S.set.routes=sanRoutes(c.routes);if(h('linksOnly'))S.set.linksOnly=sanLinksOnly(c.linksOnly);if(h('theme'))applyTheme(c.theme);if(h('r2base')&&typeof c.r2base==='string'&&/^https?:\/\/\S{4,300}$/i.test(c.r2base))R2=c.r2base.replace(/\/+$/,'')
  for(const k of Object.keys(c))if(!(k in cfgGet()))CFGX[k]=c[k]}
 if(CFG0){cfgSet(CFG0)}
+if(LOAD_HEAL.healed>0||LOAD_HEAL.dropped>0)saveNow();
 const host=it=>{try{return new URL(strip(it.source||it.url)).hostname.replace(/^www\./,'')}catch(e){return''}};
 const hashr=n=>{n=Math.imul(n^61,0x9e3779b1);n^=n>>>16;n=Math.imul(n,0x85ebca6b);n^=n>>>13;return(n>>>0)/4294967296};
 function thumb(it){const d=it.type==='video'&&(it.stream||isDirect(it.url));
  if(it.type==='image'){const o=it.url.split('#')[0];return`<img class="tm" data-s="${esc(o)}" alt="" decoding="async" referrerpolicy="no-referrer">`}
- if(d)return`<video class="tm" data-s="${esc((it.stream||it.url).split('#')[0])}" muted playsinline preload="metadata"></video>`;
+ if(d)return`<video class="tm" data-s="${esc((it.stream||it.url).split('#')[0])}" referrerpolicy="no-referrer" muted playsinline preload="metadata"></video>`;
  return`<div class="ph lk"><b>${it.type==='video'?'Video post':'Link'}</b><span>${esc(host(it))}</span></div>`}
 /* Profile photos: a per-profile pick (PFP, keyed by item URL — the
    library's stable identity, so picks survive export/restore) wins;
@@ -796,13 +805,13 @@ function thumb(it){const d=it.type==='video'&&(it.stream||isDirect(it.url));
 function avatarItem(h,self){const L=S.items.filter(i=>i.handle===h);const c=PFP[h]&&L.find(i=>tk(i.url)===tk(PFP[h]));if(c)return c;if(self&&(self.type==='image'||(self.type==='video'&&(self.stream||isDirect(self.url))))&&self.handle===h)return self;return L.find(i=>i.type==='image')||L.find(i=>i.type==='video'&&(i.stream||isDirect(i.url)))||null}
 function avatarHTML(h,cls,self){const it=avatarItem(h,self),c='av '+(cls||'');if(!it)return`<span class="${c}">${esc((h||'?').trim().slice(0,1).toUpperCase()||'?')}</span>`;
  if(it.type==='image'){const u=esc(it.url.split('#')[0]);return`<img class="${c}" src="${u}" data-s="${u}" alt="" referrerpolicy="no-referrer">`}
- if(it.type==='video'){const u=esc((it.stream||it.url).split('#')[0]);return`<video class="${c}" src="${u}" data-s="${u}" muted playsinline preload="metadata"></video>`}
+ if(it.type==='video'){const u=esc((it.stream||it.url).split('#')[0]);return`<video class="${c}" src="${u}" data-s="${u}" referrerpolicy="no-referrer" muted playsinline preload="metadata"></video>`}
  return`<span class="${c}">${esc((h||'?').trim().slice(0,1).toUpperCase()||'?')}</span>`}
 function tileMedia(it){const base=thumb(it);if(it.type!=='video'||!(it.stream||isDirect(it.url)))return base;const av=avatarItem(it.handle);if(!av||av.type!=='image')return base;const u=esc(av.url.split('#')[0]);return`<img class="tm bg" data-s="${u}" alt="" decoding="async" referrerpolicy="no-referrer">`+base}
 function setZs(m){if(m.classList&&m.classList.contains('bg'))return;const p=m.parentElement,w=m.naturalWidth||m.videoWidth,h=m.naturalHeight||m.videoHeight;if(!p||!w||!h)return;const r=p.getBoundingClientRect();if(!r.width)return;const a=w/h,b=r.width/r.height;
  m.dataset.ori=a<b?'p':'l';m.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2));if(p._it&&!p._it.asp){p._it.asp=a;if(G.col&&G.open)schedRel()}}
 function dropM(m){try{m.pause();m.removeAttribute('src');m.load()}catch(e){}}
-function loadM(m,t){if(m.getAttribute('src')){if(m.tagName==='VIDEO'&&m.paused)m.play().catch(()=>{});return}if(!m.dataset.s)return;m.src=m.dataset.s;
+function loadM(m,t){if(m.getAttribute('src')){if(m.tagName==='VIDEO'&&m.paused)m.play().catch(()=>{});return}if(!m.dataset.s)return;m.setAttribute('referrerpolicy','no-referrer');m.referrerPolicy='no-referrer';m.src=m.dataset.s;
  if(m.tagName==='VIDEO'){const it=t._it,k=tk(it.stream||it.url),c=TRIMS[k]||{startSec:0,loopSec:8.5};m.loop=false;m._tk=k;
   if(!m._w){m._w=1;m.addEventListener('timeupdate',()=>{const tr=TRIMS[m._tk]||{startSec:0,loopSec:8.5};if(m.currentTime>=tr.startSec+tr.loopSec)m.currentTime=tr.startSec})}
   m.addEventListener('loadedmetadata',()=>{try{m.currentTime=c.startSec}catch(e){}setZs(m)},{once:true});m.play().catch(()=>{});PLAY.push(m);if(PLAY.length>8){const vi=PLAY.findIndex(v=>v!==m&&!(v.parentElement&&v.parentElement.classList.contains('a')));dropM(PLAY.splice(vi<0?0:vi,1)[0])}}}
@@ -852,7 +861,7 @@ function applyCollage(animate){const old=new Map();if(animate)gt.querySelectorAl
   t.animate([{transform:`translate(${dx}px,${dy}px) scale(${sx},${sy})`,transformOrigin:'0 0'},{transform:'none',transformOrigin:'0 0'}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)'})});
  requestAnimationFrame(sbUpdate)}
 function schedRel(){if(rlN>=6)return;clearTimeout(rlT);rlT=setTimeout(()=>{if(!G.open||!G.col)return;rlN++;applyCollage(true)},900)}
-const probe=(L,n)=>Promise.all(L.filter(i=>i.type==='image'&&!i.asp).slice(0,n).map(it=>new Promise(r=>{const im=new Image(),t=setTimeout(r,900);im.onload=()=>{if(im.naturalWidth)it.asp=im.naturalWidth/im.naturalHeight;clearTimeout(t);r()};im.onerror=()=>{clearTimeout(t);r()};im.src=it.url.split('#')[0]})));
+const probe=(L,n)=>Promise.all(L.filter(i=>i.type==='image'&&!i.asp).slice(0,n).map(it=>new Promise(r=>{const im=new Image(),t=setTimeout(r,900);im.referrerPolicy='no-referrer';im.onload=()=>{if(im.naturalWidth)it.asp=im.naturalWidth/im.naturalHeight;clearTimeout(t);r()};im.onerror=()=>{clearTimeout(t);r()};im.src=it.url.split('#')[0]})));
 function flipLoop(t){const L=[...t.querySelectorAll('.fl')];if(L.length<2)return;let k=0;
  const step=()=>{if(!t.isConnected)return;if(!t._vis){t._ft=setTimeout(step,4000);return}const cv=L[k].querySelector('video.tm');if(cv&&!cv.getAttribute('src'))loadLayer(t,k);const it=t._pick[k],isV=!!L[k].querySelector('video');let wait=3200+Math.random()*1600;if(isV){const c=TRIMS[tk(it.stream||it.url)]||{startSec:0,loopSec:8.5};wait=Math.max(3600,c.loopSec*1000+300)}
   loadLayer(t,(k+1)%L.length);/* prefetch the next layer NOW, at schedule time: the current layer's full display window (a video's whole thumbnail loop) is the load budget, not the 650ms gate at fire time */
@@ -883,7 +892,7 @@ function picMenu(b){const h=G.prof;if(!h)return;const imgs=S.items.filter(i=>i.h
    photo you're looking at, plus the standard item actions */
 function itemMenu(b,it){const gs2=[];
  if(it.type==='image')gs2.push({t:'@'+it.handle,o:[['pic','Use as profile pic']],cur:()=>'',set:()=>{PFP[it.handle]=it.url;save();setDirty(true);toast('Profile pic set for @'+it.handle)}});
- gs2.push({t:'Item',o:[['copy','Copy link'],['open','Open original'],['del','Delete']],cur:()=>'',set:v=>{if(v==='copy'){try{const p=navigator.clipboard.writeText(it.url);if(p&&p.then)p.then(()=>toast('Link copied'),()=>toast('Copy not available here'));else toast('Link copied')}catch(e){toast('Copy not available here')}}else if(v==='open')window.open(it.url,'_blank','noopener');else if(v==='del')deleteItems([it])}});
+ gs2.push({t:'Item',o:[['copy','Copy link'],['open','Open original'],['del','Delete']],cur:()=>'',set:v=>{if(v==='copy'){try{const p=navigator.clipboard.writeText(it.url);if(p&&p.then)p.then(()=>toast('Link copied'),()=>toast('Copy not available here'));else toast('Link copied')}catch(e){toast('Copy not available here')}}else if(v==='open')window.open(it.url,'_blank','noopener,noreferrer');else if(v==='del')deleteItems([it])}});
  if(it.type==='video')gs2.push({t:'Video',o:[['thumb','Thumbnail loop']],cur:()=>'',set:()=>openTrim(b)});
  menu(b,gs2,b.getBoundingClientRect().top>innerHeight/2)}
 /* the More menu: extra functions live here, one home each — nothing in it
@@ -1016,7 +1025,7 @@ const TRS=[(a,b,d)=>{a.animate([{opacity:0},{opacity:1}],d);b.animate([{opacity:
 function slideshow(){const L=GL.filter(i=>i.type==='image'||(i.type==='video'&&(i.stream||isDirect(i.url))));if(!L.length)return toast('Nothing to play');const ss=$('#ss');ss.hidden=false;ss.innerHTML='<div class="sl"></div><div class="sl"></div>';let k=-1,cur=0,last=-1;
  const clr=el=>{el.querySelectorAll('video').forEach(dropM);el.innerHTML=''};
  const step=()=>{clearTimeout(ssT);k=(k+1)%L.length;const it=L[k],a=ss.children[cur^1],b=ss.children[cur];a.getAnimations().forEach(x=>x.cancel());b.getAnimations().forEach(x=>x.cancel());clr(a);a.style.zIndex=2;b.style.zIndex=1;ss._cur=a;
-  a.innerHTML=it.type==='image'?`<img src="${esc(it.url.split('#')[0])}" alt="" referrerpolicy="no-referrer">`:`<video src="${esc((it.stream||it.url).split('#')[0])}" muted playsinline autoplay></video>`;
+  a.innerHTML=it.type==='image'?`<img src="${esc(it.url.split('#')[0])}" alt="" referrerpolicy="no-referrer">`:`<video src="${esc((it.stream||it.url).split('#')[0])}" referrerpolicy="no-referrer" muted playsinline autoplay></video>`;
   let t;do{t=Math.floor(Math.random()*TRS.length)}while(t===last&&TRS.length>1);last=t;TRS[t](a,b,{duration:1100,easing:'cubic-bezier(.22,.8,.2,1)',fill:'both'});
   const m=a.firstElementChild;if(m&&it.type==='image'){const kb=[[1,1.14,0,0],[1.14,1,0,0],[1.08,1.16,-2,0],[1.08,1.16,2,1]][Math.random()*4|0];m.animate([{transform:`scale(${kb[0]})`},{transform:`scale(${kb[1]}) translate(${kb[2]}%,${kb[3]}%)`}],{duration:5800,easing:'ease-in-out',fill:'both'})}
   setTimeout(()=>{if(!ss.hidden)clr(b)},1400);cur^=1;
@@ -1097,7 +1106,6 @@ function applyVideo(it,full){const pg=pageUrl(it),hd=it.handle;full=strip(dash(f
 function teach(it){const pg=pageUrl(it);ask({title:'Link video',desc:pg,ph:'clip.mp4 or full URL (bare names use your R2 prefix)',ok:'Save link',extra:[['Paste',pasteInto],['Sniffed',i=>{if(SNIFF[pg])i.value=SNIFF[pg];else toast('Nothing sniffed for this page yet')}]],
  onOk:v=>{v=v.trim();if(!v){toast('Enter a filename or URL');return false}applyVideo(it,/^https?:\/\//i.test(v)?v:r2(v))}})}
 function saveMedia(u){const it=V[S.idx];if(!it)return;u=dash(u);
- if(STARM){if(isVidUrl(u)){toast('Teach needs an image link — still armed')}else{STARM=false;learnScrape(curPage(it),u);toast('Taught — saving it too')}}
  if(isVidUrl(u)){applyVideo(it,u);return}
  const hd=it.handle,n=attach([u],hd);chips();if(!n){toast('Already saved');return}
  if(S.mode==='main'){V=vis();const k=V.findIndex(x=>normKey(x.url)===normKey(u));render();if(k>=0){S.idx=k;jump(k,false);sync()}toast('Saved to @'+alias(hd))}else toast('Saved to @'+alias(hd)+' in your main feed')}
@@ -1139,16 +1147,12 @@ const dock=()=>{if(!document.body||document.getElementById('rf-dock'))return;con
  d.addEventListener('dragover',e=>{e.preventDefault();d.style.transform='scale(1.12)';d.style.background='rgba(16,185,129,.92)';d.style.color='#000'});d.addEventListener('dragleave',()=>{d.style.transform='';d.style.background='rgba(24,24,34,.88)';d.style.color='#dbeafe'});
  d.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();d.style.transform='';const dt=e.dataTransfer;let u=(dt.getData('text/uri-list')||dt.getData('text/plain')||'').split(/\s+/)[0];if(!u){const h=dt.getData('text/html')||'',m=h.match(/src=["']([^"']+)["']/i);if(m)u=m[1]}try{u=new URL(u,U).href}catch(x){}post(u,/\.(?:mp4|webm|m4v|mov|m3u8)(?:\?|#|$)/i.test(u)?'video':'image')});document.body.appendChild(d)};
 document.addEventListener('DOMContentLoaded',dock);setTimeout(dock,400);
-addEventListener('message',e=>{const d=e.data;if(d&&d.type==='RF_SCRAPE'){try{const out=[],seen=new Set(),badR=/logo|avatar|icon|sprite|blank|spacer|pixel|favicon|badge|emoji/i;
-const push=(u,kind,poster,post)=>{if(!u||!/^https?:\/\//i.test(u)||badR.test(u)||seen.has(u))return;seen.add(u);out.push({url:u,kind:kind,poster:poster||'',post:post||''})};
-document.querySelectorAll('img').forEach(im=>{const r=best(im);if(!r.u)return;if(im.naturalWidth&&im.naturalWidth<180)return;const a=im.closest&&im.closest('a[href]');let post='';if(a){try{post=new URL(a.getAttribute('href'),U).href}catch(e){}}push(r.u,'image','',post)});
-document.querySelectorAll('video').forEach(v=>{const src=v.currentSrc||v.src||'';if(!src)return;const a=v.closest&&v.closest('a[href]');let post=U;if(a){try{post=new URL(a.getAttribute('href'),U).href}catch(e){}}push(src,'video',v.poster||'',post)});
-parent.postMessage({type:'RF_SCRAPE_RESULT',items:out.slice(0,200)},'*')}catch(e){parent.postMessage({type:'RF_SCRAPE_RESULT',items:[]},'*')}}else if(d&&d.type==='RF_SCROLL'){const m=document.documentElement.scrollHeight-innerHeight;scrollTo(0,Math.max(0,m)*(d.fr!=null?d.fr:d.pct/100))}})})();`;
+addEventListener('message',e=>{const d=e.data;if(d&&d.type==='RF_HARVEST'){try{const eng=window.__RF_HARVEST_ENGINE__(U),col=eng.collectGridItems(document),mode=eng.detectMode(document,col.items),wall=eng.isLoginOrErrorWall(document,U,U),single=(!wall&&mode==='add')?eng.extractMainMediaDetailed(document,U):null,singleThumb=(!wall&&mode==='add')?eng.extractPostThumb(document,U,single&&single.url&&eng.VIDEO_EXT_RE.test(single.url)?'video':'link'):null;parent.postMessage({type:'RF_HARVEST_RESULT',pageUrl:U,mode:mode,items:col.items,selfExcludedCount:col.selfExcludedCount||0,wall:wall,single:single,singleThumb:singleThumb},'*')}catch(err){parent.postMessage({type:'RF_HARVEST_RESULT',pageUrl:U,error:String(err&&err.message||err)},'*')}}else if(d&&d.type==='RF_SCROLL'){const m=document.documentElement.scrollHeight-innerHeight;scrollTo(0,Math.max(0,m)*(d.fr!=null?d.fr:d.pct/100))}})})();`;
 function buildSrcdoc(raw,url){let c=raw.replace(/<meta[^>]+http-equiv=["']?(?:Content-Security-Policy|X-Frame-Options)["']?[^>]*>/gi,'').replace(/\btarget=["']?_blank["']?/gi,'data-rf-target="self"').replace(/\s+(?:integrity|crossorigin)=["'][^"']*["']/gi,'').replace(/type=["'][0-9a-fA-F]{16,}-text\/javascript["']/gi,'type="text/javascript"')
  .replace(/window\.top\s*!==?\s*window\.self/g,'false').replace(/window\.self\s*!==?\s*window\.top/g,'false').replace(/\btop\s*!==?\s*self\b/g,'false').replace(/\bself\s*!==?\s*top\b/g,'false').replace(/window\.top\s*===?\s*window\.self/g,'true').replace(/\btop\s*===?\s*self\b/g,'true').replace(/top\.location\.replace\s*\(/g,'void(').replace(/top\.location\.href\s*=/g,'window.__rf_noop =')
  .replace(/<(img|video|source|iframe)([^>]*?)\sdata-(?:src|original|lazy-src|lazysrc)=["'](https?:\/\/[^"']+|\/[^"']+)["']([^>]*)>/gi,(f,t,b,l,a)=>/\ssrc=["']https?:\/\//i.test(b+a)?f:`<${t}${b} src="${l}"${a}>`);
  if(S.set.ad)c=c.replace(/<script[^>]+(?:exoclick|juicyads|trafficjunky|popunder|doubleclick|googlesyndication|adsystem|adserver|popads|popcash|clickadu|hilltopads|magsrv|realsrv|tsyndicate|acscdn)[^>]*>[\s\S]*?<\/script>/gi,'');
- const inj=`<base href="${esc(url)}"><style>${GATE_CSS}</style><script>${INJ.replace('__URL__',JSON.stringify(url))}<\/script>`;return /<head[^>]*>/i.test(c)?c.replace(/<head[^>]*>/i,m=>m+inj):inj+c}
+ const engCode='window.__RF_HARVEST_ENGINE__='+createHarvestEngine.toString().replace(/<\/script/gi,'<\\/script')+';';const inj=`<base href="${esc(url)}"><style>${GATE_CSS}</style><script>${engCode}${INJ.replace('__URL__',JSON.stringify(url))}<\/script>`;return /<head[^>]*>/i.test(c)?c.replace(/<head[^>]*>/i,m=>m+inj):inj+c}
 function scrollFrame(f){const pct=S.set.off;if(!pct)return;[300,900,1800].forEach(t=>setTimeout(()=>{try{f.contentWindow.postMessage({type:'RF_SCROLL',pct},'*')}catch(e){}},t))}
 function restoreScroll(f,fr){[120,450,1100,2000].forEach(t=>setTimeout(()=>{try{f.contentWindow.postMessage({type:'RF_SCROLL',fr},'*')}catch(e){}},t))}
 const PSH=new Map();
@@ -1174,9 +1178,9 @@ function hydPage(s,it,i){const pg=curPage(it),e=esc(pg);
  delete s.dataset.pend;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)],frames:[]};PGO.set(it.id,g)}
  const f=buildFrame(s,it,pg);const edge=document.createElement('div');edge.className='edge';s.appendChild(edge);
  g.frames=g.frames||[];g.frames[g.stack.length-1]=f}
-function saveCap(u,t,pg){if(STARM&&t==='image'){STARM=false;learnScrape(pg,u);return}const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const n=attach([u],hd);toast(n?`Saved ${t} to @${alias(hd)}`:'Already saved');chips()}
-addEventListener('message',e=>{const d=e.data;if(!d||(d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA'&&d.type!=='RF_NAV'&&d.type!=='RF_SCRAPE_RESULT'))return;const cs=feed.querySelector(`.card[data-i="${S.idx}"]`),f=cs?[...cs.querySelectorAll('iframe')].find(x=>x.contentWindow===e.source):null;if(!f)return;
- if(d.type==='RF_SCRAPE_RESULT'){if(SCRAPE_RES)SCRAPE_RES(Array.isArray(d.items)?d.items:null);return}
+function saveCap(u,t,pg){const it=V[S.idx],hd=(it&&it.handle)||profOf(pg);const n=attach([u],hd);toast(n?`Saved ${t} to @${alias(hd)}`:'Already saved');chips()}
+addEventListener('message',e=>{const d=e.data;if(!d||(d.type!=='REELFLOW_CAPTURE_PROFILE_MEDIA'&&d.type!=='RF_NAV'&&d.type!=='RF_HARVEST_RESULT'))return;const cs=feed.querySelector(`.card[data-i="${S.idx}"]`),f=cs?[...cs.querySelectorAll('iframe')].find(x=>x.contentWindow===e.source):null;if(!f)return;
+ if(d.type==='RF_HARVEST_RESULT'){if(HARVEST_RES)HARVEST_RES(d);return}
  if(d.type==='RF_NAV'){const u=String(d.url||'');if(/^https?:\/\//i.test(u))pageNav(u,d.fr);return}
  const u=String(d.mediaUrl||'');if(d.mediaType==='video')saveMedia(u);else saveCap(u,'image',String(d.pageUrl||''))});
 function pageNav(url,fr){const it=V[S.idx];if(!it)return;let g=PGO.get(it.id);if(!g){g={stack:[pageUrl(it)],frames:[]};PGO.set(it.id,g)}
@@ -1217,104 +1221,2230 @@ $('#pdz').onclick=async()=>{let t='';try{t=(await navigator.clipboard.readText()
  if(/^https?:\/\//i.test(t)){saveMedia(t);return}
  ask({title:'Save media link',desc:'Paste an image or video link. A video links to this page and plays in the feed; an image is saved to the profile.',ph:'https://…',ok:'Save',extra:[['Paste',pasteInto]],onOk:v=>{v=v.trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}saveMedia(v)}})};
 $('#pdz').ondragover=e=>e.preventDefault();$('#pdz').ondrop=e=>{e.preventDefault();const t=(e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'').trim().split(/\s+/)[0];if(/^https?:\/\//i.test(t))saveMedia(t)};
-/* ---------- scrape: gather a page's posts, pick media in bulk ----------
-   Kendall, Nov 12: tapping through a creator's grid one post at a time is
-   slow, and the grid's thumbnails are not the saveable media — the
-   full-size image (or the video) lives on each post page. Scrape follows
-   the post links itself through the same fetch the webpage engine uses,
-   pulls each post's target media, and shows a native picker: everything
-   starts selected, tap to drop what you don't want, Add files the rest
-   under a profile. Videos arrive taught to their post page, exactly like
-   a Paste & Link save. */
-/* Teach scrape (Kendall, Nov 12): the generic rules once handed him a
-   completely random image, so a site can be taught. He shows it ONE
-   correct full-size image — by tapping it in the page, or by pasting
-   its link — and the learner keeps the shape of that URL (its host,
-   first path segment, extension) as the site's rule. extractImg checks
-   the rule before every generic heuristic. Rules persist on-device and
-   ride the export as SCRAPE_TEACH. */
-let STARM=false;
-function learnScrape(pg,img){try{const ph=new URL(pg).hostname.replace(/^www\./,'');const u=new URL(img);const seg=u.pathname.split('/').filter(Boolean);const ext=(u.pathname.match(/\.(jpe?g|png|webp|gif|avif)$/i)||[])[1]||'';
- STEACH[ph]={h:u.hostname.replace(/^www\./,''),s:seg.length>1?seg[0]:'',e:ext.toLowerCase()};save();setDirty(true);
- toast('Learned for '+ph+': look for '+u.hostname+(seg.length>1?'/'+seg[0]+'/…':''));return true}catch(e){toast('Could not learn from that link');return false}}
-function extractImg(html,page){try{const doc=new DOMParser().parseFromString(html,'text/html');
- const fix=c=>{if(!c)return null;c=String(c).replace(/\\u002F/g,'/').replace(/\\\//g,'/').replace(/&amp;/g,'&').trim();if(c.startsWith('//'))return 'https:'+c;try{return new URL(c,page).href}catch(e){return null}};
- const bad=u=>!u||u.startsWith('data:')||/logo|avatar|icon|sprite|blank|spacer|pixel|favicon|badge|emoji|gravatar/i.test(u);
- const imgExt=u=>/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(u||'');
- const rule=(()=>{try{return STEACH[new URL(page).hostname.replace(/^www\./,'')]}catch(e){return null}})();
- if(rule){const cand=[];
-  for(const a of doc.querySelectorAll('a[href]'))if(a.querySelector('img'))cand.push(fix(a.getAttribute('href')));
-  for(const im of doc.querySelectorAll('img')){cand.push(fix(im.getAttribute('data-full')||im.getAttribute('data-highres')||im.getAttribute('data-original')||im.getAttribute('data-large')));cand.push(fix(im.getAttribute('data-src')||im.getAttribute('src')))}
-  const og0=doc.querySelector('meta[property="og:image"]');if(og0)cand.push(fix(og0.getAttribute('content')));
-  const hit=cand.find(u=>{if(!u||bad(u)||!imgExt(u))return false;try{const x=new URL(u),sg=x.pathname.split('/').filter(Boolean);return x.hostname.replace(/^www\./,'')===rule.h&&(!rule.s||sg[0]===rule.s)&&(!rule.e||x.pathname.toLowerCase().endsWith('.'+rule.e))}catch(e){return false}});
-  if(hit)return hit}
- for(const a of doc.querySelectorAll('a[href]')){const u=fix(a.getAttribute('href'));if(u&&imgExt(u)&&!bad(u)&&a.querySelector('img'))return u}
- for(const im of doc.querySelectorAll('img')){const u=fix(im.getAttribute('data-full')||im.getAttribute('data-highres')||im.getAttribute('data-original')||im.getAttribute('data-large'));if(u&&!bad(u))return u}
- const og=doc.querySelector('meta[property="og:image"],meta[name="twitter:image"]');if(og){const u=fix(og.getAttribute('content'));if(u&&!bad(u))return u}
- let best=null,bs=0;for(const im of doc.querySelectorAll('img')){let u=fix(im.getAttribute('data-src')||im.getAttribute('src'));let sc=(+im.getAttribute('width')||0)*(+im.getAttribute('height')||0);
-  const ss=im.getAttribute('srcset');if(ss){const parts=ss.split(',').map(x=>x.trim().split(/\s+/)).filter(x=>x[0]);const last=parts[parts.length-1];if(last){const lu=fix(last[0]),lw=parseInt(last[1])||0;if(lu&&lw*lw>=sc){u=lu;sc=lw*lw}}}
-  if(u&&!bad(u)&&sc>bs){bs=sc;best=u}}
- return best}catch(e){return null}}
-function postLinks(html,page){try{const doc=new DOMParser().parseFromString(html,'text/html');const b=new URL(page);const out=[],seen=new Set();
- for(const a of doc.querySelectorAll('a[href]')){const im=a.querySelector('img');if(!im)continue;let u;try{u=new URL(a.getAttribute('href'),page).href}catch(e){continue}
-  if(!/^https?:/.test(u))continue;let x;try{x=new URL(u)}catch(e){continue}if(strip(u)===strip(page))continue;
-  const direct=/\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(u);if(!direct&&x.hostname!==b.hostname)continue;
-  const post=isVideoPostPage(u)||/\/(?:p|post|posts|video|videos|v|watch|photo|photos|album)\//i.test(x.pathname)||/\/\d{5,}(\/|$)/.test(x.pathname);
-  if(!direct&&!post)continue;const k=normKey(u);if(seen.has(k))continue;seen.add(k);
-  let thumb='';try{thumb=new URL(im.getAttribute('data-src')||im.getAttribute('src')||'',page).href}catch(e){}
-  out.push({post:direct?'':u,direct:direct?u:'',thumb});if(out.length>=48)break}
- return out}catch(e){return[]}}
-const SW={list:[],sel:new Set(),run:0,hd:''};
-let SCRAPE_RES=null;
-function scrapeScreen(){return new Promise(res=>{const s=feed.querySelector(`.card[data-i="${S.idx}"]`);if(!s)return res(null);
+/* ---------- Harvest engine (CO-14 bookmarklet engine incorporated into webpage view) ----------
+   Verbatim CO-14 engine logic adapted strictly at the four named seams:
+   - Seam 1 (Transport split): live-frame DOM collection via RF_HARVEST postMessage + app-side
+     post-page resolution via pageHtml()/fetchHtml() honoring per-site routes (Default / My proxy /
+     Browser) + DOMParser, with grid-level finalize running intact on the app side.
+   - Seam 2 (Results sink): no floating DOM panel, no clipboard write, no bookmarklet storage;
+     finalized output lines stage directly into Dump (#dpta / stageDump()) and open the Dump tab
+     with nothing pre-selected.
+   - Seam 3 (Links-only binding): bound to S.set.linksOnly[host] in APP_SETTINGS (alongside routes
+     in the Discovery per-site checklist #droutes).
+   - Seam 4 (Profile tag): uses the app's handle convention for the current page so harvested items
+     arrive in Dump with the target @profile pre-selected. */
+function createHarvestEngine(pageUrlStr, seamOpts) {
+  'use strict';
+  seamOpts = seamOpts || {};
+  var location;
+  try {
+    location = new URL(pageUrlStr);
+  } catch (e) {
+    location = window.location;
+  }
+
+  var PANEL_ID = '__harvest_bm_panel__';
+  var CONCURRENCY = 4;
+  var FETCH_TIMEOUT_MS = 12000;
+  var VARIANT_TIMEOUT_MS = 3500; // CO-12.2: <= 4s liveness check timeout for cross-host variant upgrades
+  var MIN_CONTENT_DIM = 140; // px threshold separating real content from icons/avatars/thumbnails
+  var SHELL_SUSPECT_THRESHOLD = 3; // CO-5: >= 3 distinct post fetches extracting to the identical URL
+
+  // Runtime string constants for #profile=, %, and newline so bookmarklet URL-encoding layers
+  // can never double-encode or misinterpret literal '#', '%', or '\n' tokens inside the script.
+  var HASH_CHAR = String.fromCharCode(35);
+  var PCT_CHAR = String.fromCharCode(37);
+  var NL_CHAR = String.fromCharCode(10);
+  var PROFILE_TAG_PREFIX = HASH_CHAR + 'profile=';
+
+  var MEDIA_EXT_RE = /\.(jpe?g|png|gif|webp|avif|bmp|mp4|m4v|mov|webm|ogv)($|[?\x23])/i;
+  var VIDEO_EXT_RE = /\.(mp4|m4v|mov|webm|ogv)($|[?\x23])/i;
+
+  var FURNITURE_TOKEN_RE = /(^|[\/_\-.\s])(avatar|logo|icon|sprite|placeholder|spacer|blank|emoji|badge|favicon|spinner|loader|loading|banner|header|footer|button|pixel|1x1|default[-_]?profile|profile[-_]?pic|user[-_]?pic|thumb[-_]?small|branding|site[-_]?default|og[-_]?default|error|404|403|banned|suspended|locked|private[-_]?wall|paywall|login[-_]?bg)($|[\/_\-.\s.])/i;
+  // CO-11.3: Element class/id furniture test must never disqualify lazy-load state tokens (`error`, `loading`).
+  var FURNITURE_EL_TOKEN_RE = /(^|[\/_\-.\s])(avatar|logo|icon|sprite|placeholder|spacer|blank|emoji|badge|favicon|spinner|loader|banner|header|footer|button|pixel|1x1|default[-_]?profile|profile[-_]?pic|user[-_]?pic|thumb[-_]?small|branding|site[-_]?default|og[-_]?default|404|403|banned|suspended|locked|private[-_]?wall|paywall|login[-_]?bg)($|[\/_\-.\s.])/i;
+  var FURNITURE_ANCESTOR_SEL = 'nav, header, footer, aside, [role=navigation], [role=banner], [role=contentinfo], [role=menubar], [role=complementary], [role=search], .nav, .navbar, .header, .footer, .sidebar, .aside, .menu, .menubar, .topbar, .bottombar, .subnav, .site-header, .site-footer, .site-nav, .toolbar, .avatar, .profile-pic, .user-avatar, .site-logo, .related, .related-posts, .recommended, .recommend, .recommendations, .more-posts, .suggestions, .ad, .ads, .advert, .advertisement, .sponsored, .banner-ad, [data-ad], [data-ad-slot]';
+
+  var CHROME_CONTAINER_SEL = 'nav, header, footer, aside, [role=navigation], [role=banner], [role=contentinfo], [role=menubar], [role=complementary], [role=search], .nav, .navbar, .header, .footer, .sidebar, .aside, .menu, .menubar, .topbar, .bottombar, .subnav, .site-header, .site-footer, .site-nav, .pagination, .pager, .load-more, .breadcrumbs, .cookie-banner, .modal-footer, .legal, .disclaimer, .related, .related-posts, .recommended, .recommend, .recommendations, .more-posts, .suggestions, .ad, .ads, .advert, .advertisement, .sponsored, .banner-ad, [data-ad], [data-ad-slot]';
+
+  // CO-15.1: Hover-preview clip URL tokens (thumb_vid / preview clips on a CDN are never a post's main video result)
+  var PREVIEW_VIDEO_URL_RE = /([\/_\-.]|^)(thumb[_-]?vid(s|eo)?|hover[_-]?preview|video[_-]?preview|preview[_-]?clip)([\/_\-.]|$)/i;
+
+  // CO-15.1: Section/index path tail (e.g. /videos/, /<handle>/videos/, /models/<handle>/videos) is a list/index destination, never a single post
+  var SECTION_INDEX_TAIL_RE = /(^|\/)((videos|photos|posts|clips|reels|shorts|albums|galleries|models|creators|users|channels|categories|tags|feed|likes|liked|saved|tagged|playlists|followers|following))\/?$/i;
+
+  var CONTENT_REGION_SEL = 'main, [role=main], article, .grid, .posts, .post-grid, .media-grid, .gallery, .results, .feed, .content, .items, .cards, [id=content], [id=main], [id=posts], [id=results], .grid-item, .gallery-item, .post-card, .post-item, .media-item, .card, .thumb, .thumbnail, figure';
+
+  var POST_PATH_PATTERNS = [
+    /\/(p|post|posts|status|statuses|reel|reels|tv|video|videos|photo|photos|media|pin|art|work|works|item|items|entry|entries|view|watch|clip|clips|s|v|g|gallery|album|albums)\/[^\/?\x23]+/i,
+    /\/@?[a-zA-Z0-9_.\-]+\/(post|posts|status|video|photo|reel|album)s?\/[^\/?\x23]+/i,
+    /[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i,
+    /\/(\d{5,})(\/|$|[?\x23])/
+  ];
+
+  // Plural index/grid path patterns that should NOT be classified as single-post URLs
+  // when the second segment is a pagination or filter token (e.g. /posts/page/2, /videos/latest, /photos/2)
+  var GRID_COLLECTION_PATH_RE = /\/(posts|videos|photos|reels|clips|works|items|entries|media|gallery|albums|statuses)\/(page|p|all|latest|popular|top|new|recent|index|feed|tag|category|\d{1,4})(\/|$|[?\x23])/i;
+
+  var NON_POST_PATH_RE = /^\/(login|logout|signin|signup|register|settings|account|privacy|terms|tos|dmca|2257|legal|compliance|copyright|abuse|report|about|help|faq|support|contact|search|explore|discover|trending|popular|top|leaderboard|ranking|rankings|activity|comments|discussion|discussions|forum|forums|thread|threads|uploaders|top[-_]?uploaders|top[-_]?likes|top[-_]?followers|popular[-_]?videos|daily[-_]?search[-_]?ranking|notifications|messages|inbox|bookmarks|saved|likes|following|followers|tags?|categories|category|feed|home|index(\.[a-z]+)?|cart|checkout|billing|subscribe|pricing|auth|oauth|session|verify|challenge|checkpoint)(\/|$|[?\x23])/i;
+
+  // Multi-segment utility/index/ranking/legal paths anywhere in pathname
+  var UTILITY_DEST_PATH_RE = /(^|\/)(top[-_]?uploaders|top[-_]?likes|top[-_]?followers|popular[-_]?videos|daily[-_]?search[-_]?ranking|search[-_]?ranking|leaderboard|rankings|site[-_]?activity|recent[-_]?comments|discussion(s)?|forum(s)?|2257|dmca|terms[-_]?of[-_]?service|privacy[-_]?policy|compliance|record[-_]?keeping)(\/|$|[?\x23])/i;
+
+  var PAGINATION_QUERY_RE = /[?&](page|paged|offset|cursor|after|before|max_id|since_id|start|skip|from)=[^&\x23]+/i;
+  var PAGINATION_TEXT_RE = /^\s*(load\s+more|show\s+more|view\s+more|more\s+posts|next(\s+page)?|prev(ious)?(\s+page)?|older(\s+posts)?|newer(\s+posts)?|\d+|\u00ab|\u00bb|\u2039|\u203a|\u2190|\u2192)\s*$/i;
+
+  var WALL_URL_RE = /\/(login|signin|sign-in|auth|authenticate|checkpoint|challenge|verify|suspended|banned|404|403|error|not-found|unavailable|private)(\/|$|[?\x23])/i;
+  var WALL_TITLE_RE = /(^\s*(404|403|401|500)\b|page\s+not\s+found|post\s+not\s+found|content\s+unavailable|log\s*in\s+to\s+|sign\s*in\s+to\s+|access\s+denied|account\s+suspended|verify\s+your\s+age|restricted\s+content)/i;
+
+  var RESERVED_PATH_ROOTS = {
+    p: 1, post: 1, posts: 1, status: 1, statuses: 1, reel: 1, reels: 1,
+    tv: 1, video: 1, videos: 1, photo: 1, photos: 1, media: 1, pin: 1,
+    art: 1, work: 1, works: 1, item: 1, items: 1, entry: 1, entries: 1,
+    view: 1, watch: 1, clip: 1, clips: 1, s: 1, v: 1, g: 1, gallery: 1,
+    album: 1, albums: 1,
+    u: 1, user: 1, users: 1, profile: 1, profiles: 1, creator: 1, creators: 1,
+    channel: 1, channels: 1, account: 1, accounts: 1, member: 1, members: 1,
+    model: 1, models: 1, artist: 1, artists: 1, author: 1, authors: 1,
+    login: 1, logout: 1, signin: 1, signup: 1, register: 1, settings: 1,
+    privacy: 1, terms: 1, tos: 1, dmca: 1, '2257': 1, legal: 1, about: 1,
+    help: 1, faq: 1, support: 1, contact: 1, search: 1, explore: 1, discover: 1,
+    trending: 1, popular: 1, top: 1, leaderboard: 1, ranking: 1, rankings: 1,
+    activity: 1, comments: 1, discussion: 1, discussions: 1, forum: 1, forums: 1,
+    notifications: 1, messages: 1, inbox: 1, bookmarks: 1, saved: 1, likes: 1,
+    following: 1, followers: 1, tag: 1, tags: 1, category: 1, categories: 1,
+    feed: 1, home: 1, index: 1, api: 1, static: 1, assets: 1, cdn: 1,
+    uploads: 1, files: 1, img: 1, images: 1
+  };
+
+  /**
+   * Problem 1 Fix: Decode any percent-encoded #profile= tags (%23profile= or %2523profile=),
+   * encoded line breaks (%0D%0A, %0A, %0D, or double-encoded %250A), or whole-URL percent-encoding
+   * on read and before clipboard copy so stored/transport form never leaks into output.
+   */
+  function sanitizeOutputLine(line) {
+    if (!line || typeof line !== 'string') return '';
+    var s = line.trim();
+    if (!s) return '';
+
+    // 1. Decode whole-URL percent-encoding if the scheme separator itself was encoded (https%3A%2F%2F)
+    var iter = 0;
+    while (/^https?\x253A\x252F\x252F/i.test(s) && iter < 3) {
+      try {
+        s = decodeURIComponent(s);
+      } catch (e) {
+        break;
+      }
+      iter++;
+    }
+
+    // 2. Decode single- or multi-encoded #profile= tag (%2523profile= -> %23profile= -> #profile=)
+    var tagIter = 0;
+    while (/\x2525(23|0A|0D)/i.test(s) && tagIter < 3) {
+      s = s.replace(/\x2525(23|0A|0D)/gi, PCT_CHAR + '$1');
+      tagIter++;
+    }
+    s = s.replace(/\x2523(profile=)/gi, HASH_CHAR + '$1');
+
+    // 3. Strip or split any trailing/embedded encoded line breaks (%0D%0A, %0A, %0D)
+    s = s.replace(/(\x250D\x250A|\x250A|\x250D)+$/gi, '');
+
+    // 4. If the #profile=<handle> portion still contains percent-encoded characters, decode the handle
+    var tagIdx = s.toLowerCase().lastIndexOf(PROFILE_TAG_PREFIX);
+    if (tagIdx !== -1) {
+      var basePart = s.slice(0, tagIdx);
+      var handlePart = s.slice(tagIdx + PROFILE_TAG_PREFIX.length);
+      handlePart = handlePart.replace(/(\x250D\x250A|\x250A|\x250D).*$/i, '');
+      if (/\x25[0-9A-Fa-f]{2}/.test(handlePart)) {
+        try {
+          handlePart = decodeURIComponent(handlePart);
+        } catch (e) {}
+      }
+      s = handlePart ? (basePart + PROFILE_TAG_PREFIX + handlePart) : basePart;
+    }
+
+    return s.trim();
+  }
+
+  /**
+   * Problem 1 Fix: Integrity check & normalization on any joined multi-line payload or stored array.
+   * Ensures literal '#' in #profile= tags and real '\n' line breaks with zero encoded leakage.
+   */
+  function ensurePlainPayload(input) {
+    var rawStr = Array.isArray(input) ? input.join(NL_CHAR) : String(input || '');
+    if (!rawStr) return '';
+
+    var normalized = rawStr
+      .replace(/\x25250D\x25250A|\x25250A|\x25250D/gi, NL_CHAR)
+      .replace(/\x250D\x250A|\x250A|\x250D/gi, NL_CHAR)
+      .replace(/\r\n|\r/g, NL_CHAR);
+
+    normalized = normalized
+      .replace(/\x252523(profile=)/gi, HASH_CHAR + '$1')
+      .replace(/\x2523(profile=)/gi, HASH_CHAR + '$1');
+
+    var rawLines = normalized.split(NL_CHAR);
+    var cleanLines = [];
+    for (var i = 0; i < rawLines.length; i++) {
+      var cleaned = sanitizeOutputLine(rawLines[i]);
+      if (cleaned) {
+        cleanLines.push(cleaned);
+      }
+    }
+    return cleanLines.join(NL_CHAR);
+  }
+
+  function sanitizeLinesArray(arr) {
+    if (!Array.isArray(arr)) return [];
+    var out = [];
+    for (var i = 0; i < arr.length; i++) {
+      var item = arr[i];
+      if (typeof item !== 'string') continue;
+      var payload = ensurePlainPayload(item);
+      if (!payload) continue;
+      var subLines = payload.split(NL_CHAR);
+      for (var j = 0; j < subLines.length; j++) {
+        if (subLines[j]) out.push(subLines[j]);
+      }
+    }
+    return out;
+  }
+
+  /**
+   * CO-3: A data: URI (or blob:/javascript:/about:/#) is never a candidate in any route.
+   */
+  function toAbsUrl(raw, baseHref) {
+    if (!raw || typeof raw !== 'string') return null;
+    var trimmed = raw.trim();
+    if (!trimmed || /^(javascript:|mailto:|tel:|data:|blob:|about:|\x23)/i.test(trimmed)) return null;
+    try {
+      var u = new URL(trimmed, baseHref || location.href);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+      return u.href;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function stripTag(url) {
+    var s = sanitizeOutputLine(String(url || ''));
+    return s.replace(/\x23profile=[^\x23\s]+$/i, '');
+  }
+
+  function stripFragmentAndTag(url) {
+    var s = stripTag(url);
+    var hashIdx = s.indexOf(HASH_CHAR);
+    return hashIdx === -1 ? s : s.slice(0, hashIdx);
+  }
+
+  function extractTag(url) {
+    var s = sanitizeOutputLine(String(url || ''));
+    var m = s.match(/\x23profile=([^\x23\s]+)$/i);
+    return m ? m[1] : null;
+  }
+
+  /**
+   * CO-7: Page-self exclusion.
+   * Checks whether a candidate/result URL (with fragment and #profile tag stripped)
+   * equals the current page's URL (with fragment and #profile tag stripped).
+   */
+  function isSelfPageUrl(url) {
+    if (!url) return false;
+    var cleanCand = normalizePostKey(stripFragmentAndTag(url));
+    var cleanSelf = normalizePostKey(stripFragmentAndTag(location.href));
+    return !!cleanCand && cleanCand === cleanSelf;
+  }
+
+  /**
+   * Canonicalize a media URL for deduplication and variant comparison.
+   * Strips #profile= tags, arbitrary fragments, and transient tracking query noise when comparing.
+   */
+  function canonicalMediaKey(url) {
+    var clean = stripFragmentAndTag(url);
+    try {
+      var u = new URL(clean, location.href);
+      u.hash = '';
+      ['utm_source', 'utm_medium', 'utm_campaign', 'fbclid', 'gclid', 'igsh', 'igshid'].forEach(function (k) {
+        u.searchParams.delete(k);
+      });
+      return u.href;
+    } catch (e) {
+      return clean;
+    }
+  }
+
+  function normalizePostKey(url) {
+    try {
+      var u = new URL(stripFragmentAndTag(url), location.href);
+      u.hash = '';
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid', 'igsh', 'igshid', 'ref', 's'].forEach(function (k) {
+        u.searchParams.delete(k);
+      });
+      var href = u.href;
+      if (href.length > u.origin.length + 1 && href.endsWith('/')) {
+        href = href.slice(0, -1);
+      }
+      return href;
+    } catch (e) {
+      return url;
+    }
+  }
+
+  /**
+   * Extract creator handle from a URL when clearly identifiable.
+   * Returns clean handle string (without leading @) or null.
+   */
+  function extractHandleFromUrl(urlStr) {
+    try {
+      var u = new URL(urlStr, location.href);
+      var segs = u.pathname.split('/').filter(Boolean).map(function (s) {
+        try { return decodeURIComponent(s); } catch (e) { return s; }
+      });
+      if (!segs.length) return null;
+
+      // 1. Explicit @handle segment anywhere in path (e.g. /@creator or /@creator/video/123)
+      for (var i = 0; i < segs.length; i++) {
+        if (/^@[a-zA-Z0-9_.\-]{2,64}$/.test(segs[i])) {
+          return segs[i].slice(1);
+        }
+      }
+
+      // 2. Explicit profile namespace prefix: /u/<handle>, /user/<handle>, /profile/<handle>, /creator/<handle>, /c/<handle>, /model/<handle>
+      var firstLower = segs[0].toLowerCase();
+      if (/^(u|user|users|profile|profiles|creator|creators|c|channel|model|models|artist|artists|author|authors|member|members)$/.test(firstLower)) {
+        var candidate = segs[1];
+        if (candidate && isValidHandleToken(candidate)) {
+          return candidate.replace(/^@/, '');
+        }
+        return null;
+      }
+
+      // 3. First segment is the handle:
+      //    - /<handle> (1 segment profile page, when not a multi-hyphenated post slug like /ab12-handle-photo-leaked-onlyfans)
+      //    - /<handle>/<post-or-tab> (2+ segments where segs[0] is a valid non-reserved handle and segs[1] is a post ID or post section)
+      if (!RESERVED_PATH_ROOTS[firstLower] && isValidHandleToken(segs[0])) {
+        if (segs.length === 1) {
+          if (segs[0].split('-').length >= 3 || /(photo|video|leaked|onlyfans|post|clip|media|fullsize|status)/i.test(segs[0])) {
+            return null;
+          }
+          return segs[0];
+        }
+        var secondLower = segs[1].toLowerCase();
+        if (/^(p|post|posts|status|statuses|reel|reels|video|videos|photo|photos|media|gallery|album|albums|clips|works|art|items|feed|tagged|highlights|shorts|streams)$/.test(secondLower)) {
+          return segs[0];
+        }
+        if (/^\d+$/.test(secondLower)) {
+          return segs[0];
+        }
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function isValidHandleToken(token) {
+    if (!token || typeof token !== 'string') return false;
+    var clean = token.replace(/^@/, '');
+    if (clean.length < 2 || clean.length > 50) return false;
+    if (/^\d+$/.test(clean)) return false;
+    if (/\.[a-z0-9]{2,5}$/i.test(clean)) return false;
+    if (RESERVED_PATH_ROOTS[clean.toLowerCase()]) return false;
+    if (UTILITY_DEST_PATH_RE.test('/' + clean)) return false;
+    return /^[a-zA-Z0-9_.\-]+$/.test(clean);
+  }
+
+  function resolveEffectiveHandle(pageUrl, postOrMediaUrl) {
+    return extractHandleFromUrl(pageUrl) || extractHandleFromUrl(postOrMediaUrl) || null;
+  }
+
+  function formatOutputLine(url, handle) {
+    var base = stripTag(url);
+    var line = handle ? (base + PROFILE_TAG_PREFIX + handle) : base;
+    return sanitizeOutputLine(line);
+  }
+
+  function isFurnitureUrl(url) {
+    if (!url) return true;
+    if (/^(data:|blob:|about:|javascript:)/i.test(url)) return true;
+    try {
+      var u = new URL(url, location.href);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return true;
+      var pathAndQuery = u.pathname + u.search;
+      if (FURNITURE_TOKEN_RE.test(pathAndQuery)) return true;
+      if (/\.svg($|[?\x23])/i.test(u.pathname)) return true;
+    } catch (e) {
+      if (FURNITURE_TOKEN_RE.test(url)) return true;
+    }
+    return false;
+  }
+
+  /**
+   * CO-2 & CO-6 Fix: Scope element furniture test strictly to structural signals
+   * (chrome ancestry, class, id, role, aria-label). NEVER inspect alt text!
+   */
+  function isOutboundAdAnchor(anchor, baseHref) {
+    if (!anchor || anchor.tagName !== 'A') return false;
+    var rel = (anchor.getAttribute('rel') || '').toLowerCase();
+    if (!/\b(nofollow|sponsored)\b/.test(rel)) return false;
+    var href = anchor.getAttribute('href');
+    var abs = toAbsUrl(href, baseHref || location.href);
+    if (!abs) return false;
+    try {
+      var targetHost = new URL(abs).hostname.toLowerCase();
+      var pageHost = new URL(baseHref || location.href, location.href).hostname.toLowerCase();
+      if (targetHost && pageHost && targetHost !== pageHost) {
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function isFurnitureElement(el, baseHref) {
+    if (!el || !el.closest) return false;
+    if (el.closest(FURNITURE_ANCESTOR_SEL)) return true;
+    var wrapAnchor = el.tagName === 'A' ? el : el.closest('a[href]');
+    if (wrapAnchor && isOutboundAdAnchor(wrapAnchor, baseHref)) return true;
+    var clsAndId = (
+      (el.className && typeof el.className === 'string' ? el.className : '') + ' ' +
+      (el.id || '') + ' ' +
+      (el.getAttribute('role') || '') + ' ' +
+      (el.getAttribute('aria-label') || '')
+    ).toLowerCase();
+    if (FURNITURE_EL_TOKEN_RE.test(clsAndId)) return true;
+    return false;
+  }
+
+  /**
+   * Detect whether a fetched HTML document is actually a login wall, age/access gate,
+   * or soft-404/error page so we don't extract the wall's banner/og:image as post media.
+   */
+  function isLoginOrErrorWall(doc, requestedUrl, finalUrl) {
+    if (!doc) return true;
+
+    if (finalUrl && requestedUrl) {
+      try {
+        var reqU = new URL(requestedUrl, location.href);
+        var finU = new URL(finalUrl, location.href);
+        if (reqU.pathname !== finU.pathname && WALL_URL_RE.test(finU.pathname)) {
+          return true;
+        }
+      } catch (e) {}
+    }
+
+    var canonEl = doc.querySelector('link[rel=canonical][href], meta[property="og:url"][content]');
+    if (canonEl) {
+      var canonHref = canonEl.getAttribute('href') || canonEl.getAttribute('content') || '';
+      if (requestedUrl && canonHref) {
+        try {
+          var reqPath = new URL(requestedUrl, location.href).pathname;
+          var canPath = new URL(canonHref, location.href).pathname;
+          if (reqPath !== canPath && WALL_URL_RE.test(canPath)) {
+            return true;
+          }
+        } catch (e) {}
+      }
+    }
+
+    var titleText = (doc.title || '').trim();
+    var ogTitleEl = doc.querySelector('meta[property="og:title"][content]');
+    var ogTitle = ogTitleEl ? (ogTitleEl.getAttribute('content') || '').trim() : '';
+    var h1El = doc.querySelector('h1');
+    var h1Text = h1El ? (h1El.textContent || '').trim() : '';
+
+    if (WALL_TITLE_RE.test(titleText) || WALL_TITLE_RE.test(ogTitle) || WALL_TITLE_RE.test(h1Text)) {
+      if (!doc.querySelector('article video, main video')) {
+        return true;
+      }
+    }
+
+    var hasPasswordInput = !!doc.querySelector('input[type=password]');
+    if (hasPasswordInput && !doc.querySelector('article img, article video, [itemprop=articleBody]')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Parse srcset and return { url, width, score } for the highest-resolution candidate.
+   */
+  function parseSrcsetBest(srcset, baseHref) {
+    if (!srcset) return null;
+    var bestUrl = null;
+    var bestScore = -1;
+    var bestWidth = 0;
+    var parts = srcset.split(',');
+    for (var i = 0; i < parts.length; i++) {
+      var item = parts[i].trim();
+      if (!item) continue;
+      var tokens = item.split(/\s+/);
+      var rawUrl = tokens[0];
+      var desc = tokens[1] || '';
+      var score = 1;
+      var width = 0;
+      var wMatch = desc.match(/^(\d+(\.\d+)?)w$/i);
+      var xMatch = desc.match(/^(\d+(\.\d+)?)x$/i);
+      if (wMatch) {
+        width = parseFloat(wMatch[1]);
+        score = width;
+      } else if (xMatch) {
+        score = parseFloat(xMatch[1]) * 1000;
+        width = score;
+      } else {
+        score = i + 1;
+      }
+      var abs = toAbsUrl(rawUrl, baseHref);
+      if (abs && !isFurnitureUrl(abs) && score >= bestScore) {
+        bestScore = score;
+        bestUrl = abs;
+        bestWidth = width;
+      }
+    }
+    return bestUrl ? { url: bestUrl, width: bestWidth, score: bestScore } : null;
+  }
+
+  /**
+   * Infer resolution hint from URL query params or path patterns (e.g. ?w=640, /w_1080/, _1200x800.jpg).
+   * Also detects whether a URL is a resized/cropped CDN derivative of a base image filename.
+   */
+  function inspectUrlSizing(urlStr) {
+    var info = { width: 0, height: 0, isResizedCdn: false, baseKey: '' };
+    if (!urlStr) return info;
+    try {
+      var u = new URL(urlStr, location.href);
+      var wParam = u.searchParams.get('w') || u.searchParams.get('width') || u.searchParams.get('maxwidth') || u.searchParams.get('resize');
+      var hParam = u.searchParams.get('h') || u.searchParams.get('height') || u.searchParams.get('maxheight');
+      if (wParam && /^\d+$/.test(wParam)) {
+        info.width = parseInt(wParam, 10);
+        info.isResizedCdn = true;
+      }
+      if (hParam && /^\d+$/.test(hParam)) {
+        info.height = parseInt(hParam, 10);
+        info.isResizedCdn = true;
+      }
+      if (u.searchParams.get('name') === 'small' || u.searchParams.get('name') === 'medium' || u.searchParams.get('name') === 'thumb') {
+        info.isResizedCdn = true;
+        info.width = info.width || 600;
+      } else if (u.searchParams.get('name') === 'orig' || u.searchParams.get('name') === 'large' || u.searchParams.get('format')) {
+        if (u.searchParams.get('name') === 'orig') info.width = Math.max(info.width, 4000);
+      }
+
+      var path = u.pathname;
+      var dimMatch = path.match(/([\/_\-,]|resize[:\/])(\d{2,5})x(\d{2,5})(?=[\/_\-.]|$)/i);
+      if (dimMatch) {
+        info.width = info.width || parseInt(dimMatch[2], 10);
+        info.height = info.height || parseInt(dimMatch[3], 10);
+        info.isResizedCdn = true;
+      }
+      var wPathMatch = path.match(/(\/w_|\/width_|[_-]w)(\d{2,5})(?=[\/_\-.]|$)/i);
+      if (wPathMatch) {
+        info.width = info.width || parseInt(wPathMatch[2], 10);
+        info.isResizedCdn = true;
+      }
+      if (/(\/thumb(nail)?s?\/|\/preview\/|\/small\/|\/medium\/|\/resized\/|[_-](thumb|small|medium|preview)\.)/i.test(path)) {
+        info.isResizedCdn = true;
+        info.width = info.width || 600;
+      }
+
+      var filename = (path.split('/').pop() || '').toLowerCase();
+      filename = filename
+        .replace(/[_-]\d{2,5}x\d{2,5}(?=\.[a-z0-9]+$)/i, '')
+        .replace(/[_-](w\d{2,5}|\d{2,5}w|\d{2,5}px|thumb|small|medium|large|orig|original|full|preview|scaled)(?=\.[a-z0-9]+$)/i, '')
+        .replace(/\.[a-z0-9]+$/i, '');
+      info.baseKey = filename;
+    } catch (e) {}
+    return info;
+  }
+
+  function areSameMediaAsset(urlA, urlB) {
+    if (!urlA || !urlB) return false;
+    var infoA = inspectUrlSizing(urlA);
+    var infoB = inspectUrlSizing(urlB);
+    if (infoA.baseKey && infoB.baseKey && (infoA.baseKey.length >= 4 || infoA.isResizedCdn || infoB.isResizedCdn) && infoA.baseKey === infoB.baseKey) {
+      return true;
+    }
+    try {
+      var uA = new URL(urlA, location.href);
+      var uB = new URL(urlB, location.href);
+      if (uA.origin === uB.origin && uA.pathname === uB.pathname) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  /**
+   * CO-3: Candidate URL resolution for an image element, in strict order:
+   * 1. high-res / lazy data-* attributes (`data-full-src`, `data-original`, `data-src`, `data-lazy-src`, etc.) when http(s) media URL
+   * 2. best `srcset` / `data-srcset` / `<picture><source srcset>` candidate
+   * 3. `currentSrc` (skipping `data:` placeholders)
+   * 4. `src` (skipping `data:` placeholders)
+   */
+  function getImageCandidateUrlAndSize(img, baseHref) {
+    if (!img) return null;
+
+    var domW = Math.max(
+      img.naturalWidth || 0,
+      img.width || 0,
+      parseInt(img.getAttribute('width') || '0', 10) || 0,
+      parseInt(img.getAttribute('data-width') || '0', 10) || 0,
+      parseInt(img.getAttribute('data-original-width') || '0', 10) || 0,
+      img.clientWidth || 0
+    );
+    var domH = Math.max(
+      img.naturalHeight || 0,
+      img.height || 0,
+      parseInt(img.getAttribute('height') || '0', 10) || 0,
+      parseInt(img.getAttribute('data-height') || '0', 10) || 0,
+      parseInt(img.getAttribute('data-original-height') || '0', 10) || 0,
+      img.clientHeight || 0
+    );
+
+    // 1a. Explicit high-res data-* attributes
+    var highResDataAttrs = ['data-full-src', 'data-original', 'data-large-file', 'data-src-full', 'data-highres', 'data-raw-src', 'data-max-src'];
+    for (var i = 0; i < highResDataAttrs.length; i++) {
+      var val = img.getAttribute(highResDataAttrs[i]);
+      if (val) {
+        var absData = toAbsUrl(val, baseHref);
+        if (absData && !isFurnitureUrl(absData)) {
+          var dInfo = inspectUrlSizing(absData);
+          var w = Math.max(domW, dInfo.width, 1600);
+          var h = Math.max(domH, dInfo.height, Math.round(w * 0.75));
+          return { url: absData, w: w, h: h, area: w * h, isHighResAttr: true };
+        }
+      }
+    }
+
+    // 1b. CO-3: data-src / data-lazy-src when it is an http(s) URL
+    var lazyDataAttrs = ['data-src', 'data-lazy-src', 'data-lazy', 'data-url'];
+    var lazyCandidateUrl = null;
+    for (var l = 0; l < lazyDataAttrs.length; l++) {
+      var lVal = img.getAttribute(lazyDataAttrs[l]);
+      if (lVal) {
+        var absLazy = toAbsUrl(lVal, baseHref);
+        if (absLazy && !isFurnitureUrl(absLazy)) {
+          lazyCandidateUrl = absLazy;
+          break;
+        }
+      }
+    }
+
+    // 2. Best srcset / data-srcset / <picture><source srcset> candidate
+    var bestSet = null;
+    var srcset = img.getAttribute('srcset') || img.getAttribute('data-srcset');
+    if (srcset) {
+      bestSet = parseSrcsetBest(srcset, baseHref);
+    }
+    var pic = img.parentElement && img.parentElement.tagName === 'PICTURE' ? img.parentElement : null;
+    if (pic) {
+      var sources = pic.querySelectorAll('source[srcset], source[data-srcset]');
+      for (var s = 0; s < sources.length; s++) {
+        var sAttr = sources[s].getAttribute('srcset') || sources[s].getAttribute('data-srcset');
+        var candSet = parseSrcsetBest(sAttr, baseHref);
+        if (candSet && (!bestSet || candSet.score > bestSet.score)) {
+          bestSet = candSet;
+        }
+      }
+    }
+
+    if (lazyCandidateUrl && bestSet) {
+      var lSizing = inspectUrlSizing(lazyCandidateUrl);
+      if (bestSet.width > (lSizing.width || domW || 0)) {
+        var bsw = Math.max(domW, bestSet.width);
+        var bsh = Math.max(domH, bsw ? Math.round(bsw * 0.75) : 0);
+        return { url: bestSet.url, w: bsw, h: bsh, area: (bsw && bsh) ? bsw * bsh : bsw * bsw, isSrcset: true };
+      }
+    }
+
+    if (lazyCandidateUrl) {
+      var lInfo = inspectUrlSizing(lazyCandidateUrl);
+      var rawAttrSrc = img.getAttribute('src') || '';
+      var isPlaceholderSrc = /^data:/i.test(rawAttrSrc.trim()) || (domW <= 2 && domH <= 2);
+      var lw = Math.max(isPlaceholderSrc ? 0 : domW, lInfo.width);
+      var lh = Math.max(isPlaceholderSrc ? 0 : domH, lInfo.height);
+      return {
+        url: lazyCandidateUrl,
+        w: lw,
+        h: lh,
+        area: (lw > 0 && lh > 0) ? lw * lh : (lw > 0 ? lw * lw : (lh > 0 ? lh * lh : 0)),
+        isLazyDataSrc: true
+      };
+    }
+
+    if (bestSet) {
+      var sw = Math.max(domW, bestSet.width);
+      var sh = Math.max(domH, sw ? Math.round(sw * 0.75) : 0);
+      return { url: bestSet.url, w: sw, h: sh, area: (sw && sh) ? sw * sh : sw * sw, isSrcset: true };
+    }
+
+    // 3. currentSrc -> 4. src (toAbsUrl automatically rejects data: URIs)
+    var absCurrent = toAbsUrl(img.currentSrc, baseHref);
+    var absAttrSrc = toAbsUrl(img.getAttribute('src'), baseHref);
+    var absSrc = (absCurrent && !isFurnitureUrl(absCurrent)) ? absCurrent : absAttrSrc;
+    if (!absSrc || isFurnitureUrl(absSrc)) return null;
+
+    var uInfo = inspectUrlSizing(absSrc);
+    var fw = Math.max(domW, uInfo.isResizedCdn ? 0 : uInfo.width);
+    var fh = Math.max(domH, uInfo.isResizedCdn ? 0 : uInfo.height);
+    return {
+      url: absSrc,
+      w: fw,
+      h: fh,
+      area: (fw > 0 && fh > 0) ? fw * fh : (fw > 0 ? fw * fw : (fh > 0 ? fh * fh : 0)),
+      isResizedCdn: uInfo.isResizedCdn
+    };
+  }
+
+  /**
+   * CO-2.2: Extract the best available media URL from an anchor's wrapped image/poster on the grid.
+   */
+  function extractGridSideMedia(a, baseHref) {
+    if (!a || !a.querySelector) return null;
+    var imgs = a.querySelectorAll('img');
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (isFurnitureElement(img)) continue;
+      var cand = getImageCandidateUrlAndSize(img, baseHref || location.href);
+      if (cand && cand.url && !isFurnitureUrl(cand.url)) {
+        return cand.url;
+      }
+    }
+    var picSource = a.querySelector('picture source[srcset], picture source[data-srcset]');
+    if (picSource) {
+      var sAttr = picSource.getAttribute('srcset') || picSource.getAttribute('data-srcset');
+      var best = parseSrcsetBest(sAttr, baseHref || location.href);
+      if (best && best.url && !isFurnitureUrl(best.url)) {
+        return best.url;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Extract playable video URL from a <video> element or any element carrying video data-* attributes.
+   */
+  function isPreviewVideoUrl(url) {
+    if (!url) return false;
+    return PREVIEW_VIDEO_URL_RE.test(url);
+  }
+
+  function extractVideoFromElement(vEl, baseHref) {
+    if (!vEl || isFurnitureElement(vEl)) return null;
+    if (vEl.closest && vEl.closest('a[href], [role=link][data-href], [data-post-url]')) return null;
+    var vAttrs = ['src', 'data-video-src', 'data-src', 'data-mp4', 'data-video-url', 'data-hd-src', 'data-sd-src', 'data-stream-url'];
+    for (var i = 0; i < vAttrs.length; i++) {
+      var val = vEl.getAttribute(vAttrs[i]);
+      if (val) {
+        var abs = toAbsUrl(val, baseHref);
+        if (abs && !isFurnitureUrl(abs) && !isPreviewVideoUrl(abs)) return abs;
+      }
+    }
+    if (vEl.currentSrc) {
+      var curAbs = toAbsUrl(vEl.currentSrc, baseHref);
+      if (curAbs && !isFurnitureUrl(curAbs) && !isPreviewVideoUrl(curAbs)) return curAbs;
+    }
+    var vSources = vEl.querySelectorAll('source');
+    for (var vs = 0; vs < vSources.length; vs++) {
+      var srcEl = vSources[vs];
+      for (var j = 0; j < vAttrs.length; j++) {
+        var sVal = srcEl.getAttribute(vAttrs[j]);
+        if (sVal) {
+          var sAbs = toAbsUrl(sVal, baseHref);
+          if (sAbs && !isFurnitureUrl(sAbs) && !isPreviewVideoUrl(sAbs)) return sAbs;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Extract main media from a Document (live DOM or DOMParser document).
+   */
+  function isHiddenElement(el) {
+    var cur = el;
+    while (cur && cur.nodeType === 1) {
+      if (cur.hasAttribute('hidden')) return true;
+      if ((cur.getAttribute('aria-hidden') || '').toLowerCase() === 'true') return true;
+      var styleAttr = (cur.getAttribute('style') || '').toLowerCase();
+      if (/display\s*:\s*none|visibility\s*:\s*hidden/.test(styleAttr)) return true;
+      var cls = (cur.className && typeof cur.className === 'string' ? cur.className : '').toLowerCase();
+      if (/(^|\s)(hidden|d-none|is-hidden|hide|u-hidden|visually-hidden|sr-only)(\s|$)/.test(cls)) return true;
+      if (cur.tagName === 'BODY' || cur.tagName === 'HTML') break;
+      cur = cur.parentElement;
+    }
+    return false;
+  }
+
+  function extractMainMedia(doc, baseHref) {
+    return extractMainMediaDetailed(doc, baseHref).url;
+  }
+
+  function extractMainMediaDetailed(doc, baseHref) {
+    baseHref = baseHref || location.href;
+
+    // 1A. Declared share video (meta tags)
+    var videoMetaSelectors = [
+      'meta[property="og:video:secure_url"]',
+      'meta[property="og:video:url"]',
+      'meta[property="og:video"]',
+      'meta[name="twitter:player:stream"]',
+      'meta[property="twitter:player:stream"]',
+      'meta[itemprop=contentUrl]'
+    ];
+    for (var v = 0; v < videoMetaSelectors.length; v++) {
+      var vMetas = doc.querySelectorAll(videoMetaSelectors[v]);
+      for (var vm = 0; vm < vMetas.length; vm++) {
+        var vContent = vMetas[vm].getAttribute('content');
+        var vUrl = toAbsUrl(vContent, baseHref);
+        if (vUrl && !isFurnitureUrl(vUrl)) {
+          var vType = (vMetas[vm].getAttribute('type') || '').toLowerCase();
+          var ogVTypeMeta = doc.querySelector('meta[property="og:video:type"]');
+          var ogVType = ogVTypeMeta ? (ogVTypeMeta.getAttribute('content') || '').toLowerCase() : '';
+          if (!isPreviewVideoUrl(vUrl) && vType.indexOf('text/html') === -1 && (VIDEO_EXT_RE.test(vUrl) || vType.indexOf('video/') === 0 || ogVType.indexOf('video/') === 0 || !/\.(html?|php|aspx?)($|[?\x23])/i.test(vUrl))) {
+            return { url: vUrl, videoDeclined: false, isVideo: true };
+          }
+        }
+      }
+    }
+
+    // 1B. JSON-LD VideoObject contentUrl
+    var ldScripts = doc.querySelectorAll('script[type="application/ld+json"]');
+    for (var l = 0; l < ldScripts.length; l++) {
+      try {
+        var ldData = JSON.parse(ldScripts[l].textContent || '');
+        var ldVideo = findInJsonLd(ldData, 'VideoObject');
+        if (ldVideo && ldVideo.contentUrl) {
+          var ldVUrl = toAbsUrl(ldVideo.contentUrl, baseHref);
+          if (ldVUrl && !isFurnitureUrl(ldVUrl) && !isPreviewVideoUrl(ldVUrl)) return { url: ldVUrl, videoDeclined: false, isVideo: true };
+        }
+      } catch (e) {}
+    }
+
+    var posterUrls = {};
+    var firstPlayableVideoUrl = null;
+    var hasNonDormantVideoEl = false;
+    var videoEls = doc.querySelectorAll('video');
+    for (var vp = 0; vp < videoEls.length; vp++) {
+      var vElCheck = videoEls[vp];
+      var posterAttr = vElCheck.getAttribute('poster') || vElCheck.getAttribute('data-poster');
+      var absPoster = toAbsUrl(posterAttr, baseHref);
+      if (absPoster) posterUrls[absPoster] = true;
+      var candVSrc = extractVideoFromElement(vElCheck, baseHref);
+      if (candVSrc) {
+        hasNonDormantVideoEl = true;
+        if (!firstPlayableVideoUrl) {
+          firstPlayableVideoUrl = candVSrc;
+        }
+      } else if (!isHiddenElement(vElCheck)) {
+        // CO-10.1 Clause 2: A visible source-less <video> signals a video post;
+        // a source-less <video> inside a hidden container is dormant template furniture.
+        hasNonDormantVideoEl = true;
+      }
+    }
+
+    if (!firstPlayableVideoUrl) {
+      var dataVideoEls = doc.querySelectorAll('[data-video-src], [data-mp4], [data-video-url], [data-hd-src]');
+      for (var dv = 0; dv < dataVideoEls.length; dv++) {
+        var dvUrl = extractVideoFromElement(dataVideoEls[dv], baseHref);
+        if (dvUrl && VIDEO_EXT_RE.test(dvUrl)) {
+          firstPlayableVideoUrl = dvUrl;
+          hasNonDormantVideoEl = true;
+          break;
+        }
+      }
+    }
+
+    // CO-10 & CO-10.1 Clause 2: Detect whether the document signals a video post
+    var ogTypeEl = doc.querySelector('meta[property="og:type"][content]');
+    var ogTypeVal = ogTypeEl ? (ogTypeEl.getAttribute('content') || '').toLowerCase().trim() : '';
+    var hasVideoMetaTag = !!doc.querySelector('meta[property^="og:video"], meta[name="twitter:player:stream"], meta[property="twitter:player:stream"]');
+    var isVideoSignaled = (hasNonDormantVideoEl || hasVideoMetaTag || /^video($|\.)/.test(ogTypeVal));
+
+    var linkedMediaUrl = null;
+    var linkedImgs = doc.querySelectorAll('a[href] img, a[data-src] img, a[data-fancybox] img');
+    for (var li = 0; li < linkedImgs.length; li++) {
+      var imgEl = linkedImgs[li];
+      if (isFurnitureElement(imgEl, baseHref)) continue;
+      var imgCand = getImageCandidateUrlAndSize(imgEl, baseHref);
+      if (imgCand && isFurnitureUrl(imgCand.url)) continue;
+      var anchor = imgEl.closest('a[data-src], a[data-fancybox], a[href]');
+      if (!anchor || isFurnitureElement(anchor, baseHref)) continue;
+      var rawLinkTarget = anchor.getAttribute('data-src') || anchor.getAttribute('href');
+      var hrefUrl = toAbsUrl(rawLinkTarget, baseHref);
+      if (hrefUrl && MEDIA_EXT_RE.test(hrefUrl) && !isFurnitureUrl(hrefUrl)) {
+        if (!linkedMediaUrl) {
+          linkedMediaUrl = hrefUrl;
+        } else if (areSameMediaAsset(linkedMediaUrl, hrefUrl) && inspectUrlSizing(linkedMediaUrl).isResizedCdn && !inspectUrlSizing(hrefUrl).isResizedCdn) {
+          linkedMediaUrl = hrefUrl;
+        }
+        if (!inspectUrlSizing(linkedMediaUrl).isResizedCdn) {
+          break;
+        }
+      }
+    }
+
+    if (linkedMediaUrl && VIDEO_EXT_RE.test(linkedMediaUrl) && !isPreviewVideoUrl(linkedMediaUrl)) {
+      return { url: linkedMediaUrl, videoDeclined: false, isVideo: true };
+    }
+
+    // 3. The post page's video element source (for video-signaled posts, video always takes precedence over still)
+    if (firstPlayableVideoUrl) {
+      return { url: firstPlayableVideoUrl, videoDeclined: false, isVideo: true };
+    }
+
+    // CO-10 Clause 3: If the document signals a video post but yielded no direct video file,
+    // return null so the result falls back to the post link (never the still or any in-doc image).
+    if (isVideoSignaled) {
+      return { url: null, videoDeclined: true, isVideo: true };
+    }
+
+    var bestPageImg = findLargestContentImage(doc, baseHref, posterUrls);
+
+    // 1C. Declared share image (outranks in-document images; only upgraded if a higher-res variant of the SAME asset exists)
+    var declaredImgUrl = null;
+    var declaredImgW = 0;
+    var ogWEl = doc.querySelector('meta[property="og:image:width"][content], meta[name="twitter:image:width"][content]');
+    if (ogWEl) {
+      declaredImgW = parseInt(ogWEl.getAttribute('content') || '0', 10) || 0;
+    }
+
+    var imageMetaSelectors = [
+      'meta[property="og:image:secure_url"]',
+      'meta[property="og:image:url"]',
+      'meta[property="og:image"]',
+      'meta[name="twitter:image:src"]',
+      'meta[name="twitter:image"]',
+      'meta[property="twitter:image"]',
+      'link[rel=image_src]'
+    ];
+    for (var im = 0; im < imageMetaSelectors.length; im++) {
+      var iMetas = doc.querySelectorAll(imageMetaSelectors[im]);
+      for (var imm = 0; imm < iMetas.length; imm++) {
+        var rawImgMeta = iMetas[imm].getAttribute('content') || iMetas[imm].getAttribute('href');
+        var iUrl = toAbsUrl(rawImgMeta, baseHref);
+        if (iUrl && !isFurnitureUrl(iUrl) && !posterUrls[iUrl]) {
+          declaredImgUrl = iUrl;
+          break;
+        }
+      }
+      if (declaredImgUrl) break;
+    }
+
+    if (declaredImgUrl) {
+      var ogSizing = inspectUrlSizing(declaredImgUrl);
+      var effectiveOgW = declaredImgW || ogSizing.width;
+
+      if (linkedMediaUrl && areSameMediaAsset(declaredImgUrl, linkedMediaUrl)) {
+        var linkedSizing = inspectUrlSizing(linkedMediaUrl);
+        if (ogSizing.isResizedCdn || (linkedSizing.width > effectiveOgW && effectiveOgW > 0)) {
+          return { url: linkedMediaUrl, videoDeclined: false };
+        }
+      }
+      if (bestPageImg && areSameMediaAsset(declaredImgUrl, bestPageImg.url)) {
+        var pageImgSizing = inspectUrlSizing(bestPageImg.url);
+        if ((ogSizing.isResizedCdn && !pageImgSizing.isResizedCdn) ||
+            (effectiveOgW > 0 && bestPageImg.w > effectiveOgW) ||
+            bestPageImg.isHighResAttr ||
+            (bestPageImg.isSrcset && bestPageImg.w >= 1000 && (!effectiveOgW || bestPageImg.w > effectiveOgW))) {
+          return { url: bestPageImg.url, videoDeclined: false };
+        }
+      }
+
+      return { url: declaredImgUrl, videoDeclined: false };
+    }
+
+    // 2. A full-size media file that a content image links to
+    if (linkedMediaUrl) {
+      return { url: linkedMediaUrl, videoDeclined: false };
+    }
+
+    // 4. The largest real content image on the page (declared or actual size)
+    return { url: bestPageImg ? bestPageImg.url : null, videoDeclined: false };
+  }
+
+  function findLargestContentImage(doc, baseHref, posterUrls) {
+    var allImgs = doc.querySelectorAll('img');
+    var bestCand = null;
+    var bestArea = -1;
+    var fallbackUnmeasuredCand = null;
+    var fallbackResizedCand = null;
+
+    for (var ai = 0; ai < allImgs.length; ai++) {
+      var candImg = allImgs[ai];
+      if (isFurnitureElement(candImg, baseHref)) continue;
+      var cand = getImageCandidateUrlAndSize(candImg, baseHref);
+      if (!cand || !cand.url || isFurnitureUrl(cand.url) || posterUrls[cand.url]) continue;
+
+      if ((cand.w > 0 && cand.w < MIN_CONTENT_DIM) || (cand.h > 0 && cand.h < MIN_CONTENT_DIM)) {
+        continue;
+      }
+
+      var candIsResized = !!cand.isResizedCdn || inspectUrlSizing(cand.url).isResizedCdn;
+      var inPrimary = !!candImg.closest('article, main, figure, [role=main], .post, .content, .entry, .media, .photo, .gallery-item, picture');
+      var effectiveArea = cand.area * (inPrimary ? 1.25 : 1);
+
+      if (cand.area > 0) {
+        if (bestCand && areSameMediaAsset(bestCand.url, cand.url)) {
+          var bestIsResized = !!bestCand.isResizedCdn || inspectUrlSizing(bestCand.url).isResizedCdn;
+          if (bestIsResized && !candIsResized) {
+            bestArea = effectiveArea;
+            bestCand = cand;
+            continue;
+          } else if (!bestIsResized && candIsResized) {
+            continue;
+          }
+        }
+        if (effectiveArea > bestArea) {
+          bestArea = effectiveArea;
+          bestCand = cand;
+        }
+      } else if (candIsResized) {
+        if (!fallbackResizedCand && (inPrimary || cand.isLazyDataSrc || cand.isHighResAttr || cand.isSrcset)) {
+          fallbackResizedCand = cand;
+        }
+      } else if (!fallbackUnmeasuredCand && (inPrimary || cand.isLazyDataSrc || cand.isHighResAttr || cand.isSrcset)) {
+        fallbackUnmeasuredCand = cand;
+      }
+    }
+
+    return bestCand || fallbackUnmeasuredCand || fallbackResizedCand || null;
+  }
+
+  function findInJsonLd(obj, targetType) {
+    if (!obj || typeof obj !== 'object') return null;
+    if (Array.isArray(obj)) {
+      for (var i = 0; i < obj.length; i++) {
+        var res = findInJsonLd(obj[i], targetType);
+        if (res) return res;
+      }
+      return null;
+    }
+    var t = obj['@type'];
+    if (t === targetType || (Array.isArray(t) && t.indexOf(targetType) !== -1)) return obj;
+    for (var k in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, k) && typeof obj[k] === 'object') {
+        var nested = findInJsonLd(obj[k], targetType);
+        if (nested) return nested;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Check whether the current page URL is a single-post page URL rather than a grid/collection URL.
+   */
+  function isSinglePostPageUrl(path, search) {
+    var pathAndQuery = (path || '') + (search || '');
+    if (SECTION_INDEX_TAIL_RE.test(path || '')) {
+      return false;
+    }
+    if (GRID_COLLECTION_PATH_RE.test(pathAndQuery)) {
+      return false;
+    }
+    if (PAGINATION_QUERY_RE.test(search || '') && !/[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i.test(search || '')) {
+      return false;
+    }
+    var segs = (path || '').split('/').filter(Boolean);
+    if (segs.length < 2 && !/[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i.test(search || '')) {
+      return false;
+    }
+    for (var i = 0; i < POST_PATH_PATTERNS.length; i++) {
+      if (POST_PATH_PATTERNS[i].test(pathAndQuery)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Problem 2 & CO-3 Fix: Determine whether an anchor has a real media relationship.
+   */
+  function hasMediaRelationship(a) {
+    if (!a || !a.querySelector) return false;
+    var mediaVisuals = a.querySelectorAll ? a.querySelectorAll('img, video, picture, [poster], [data-poster], [data-video-src], [data-lazy-src], [data-src], [style*=background-image]') : [];
+    for (var i = 0; i < mediaVisuals.length; i++) {
+      var mediaVisual = mediaVisuals[i];
+      if (mediaVisual.tagName === 'IMG') {
+        if (isFurnitureElement(mediaVisual)) continue;
+        var cand = getImageCandidateUrlAndSize(mediaVisual, location.href);
+        if (!cand || !cand.url || isFurnitureUrl(cand.url)) continue;
+      }
+      return true;
+    }
+    if (a.hasAttribute('data-poster') || a.hasAttribute('data-video-src') || /background-image/i.test(a.getAttribute('style') || '')) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Problem 2 & CO-6 Fix: Check if an element sits inside the page's primary results/content region
+   * (and NOT inside chrome/navigation/sidebar/footer/related/recommend).
+   */
+  function isInContentRegion(el) {
+    if (!el || !el.closest) return false;
+    if (isInsideChrome(el)) return false;
+    return !!el.closest(CONTENT_REGION_SEL);
+  }
+
+  function isInsideChrome(a) {
+    if (!a || !a.closest) return false;
+    if (a.closest(CHROME_CONTAINER_SEL)) return true;
+
+    var el = a;
+    while (el && el !== document.body && el !== document.documentElement) {
+      var tag = (el.tagName || '').toLowerCase();
+      if (tag === 'header' || tag === 'nav' || tag === 'footer' || tag === 'aside') return true;
+      var role = (el.getAttribute && el.getAttribute('role') || '').toLowerCase();
+      if (role === 'navigation' || role === 'banner' || role === 'contentinfo' || role === 'menubar' || role === 'complementary' || role === 'search') {
+        return true;
+      }
+      var tokenStr = ((el.id || '') + ' ' + (el.className && typeof el.className === 'string' ? el.className : '')).toLowerCase();
+      if (/(^|[\s_\-])(nav|navbar|navigation|header|topbar|menubar|menu|dropdown|sidebar|aside|footer|bottombar|subnav|breadcrumbs|pagination|pager|toolbar|site-header|site-footer|site-nav|cookie|legal|disclaimer|related|related-posts|recommended|recommend|recommendations|more-posts|suggestions)($|[\s_\-])/.test(tokenStr)) {
+        return true;
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  /**
+   * CO-11.2: A direct-media candidate NOT wrapped in a post anchor is furniture when it sits
+   * inside a header / profile-summary / banner / avatar / logo / cover container by structure.
+   */
+  function isHeaderOrProfileSummaryFurniture(el) {
+    var cur = el;
+    while (cur && cur !== document.body && cur !== document.documentElement) {
+      var tag = (cur.tagName || '').toLowerCase();
+      if (tag === 'header') return true;
+      var cls = (cur.className && typeof cur.className === 'string' ? cur.className : '').toLowerCase();
+      var idStr = (cur.id || '').toLowerCase();
+      var combined = cls + ' ' + idStr;
+      if (/(^|[\s_\-])(header|banner|avatar|logo|cover|summary|profile-banner|profile-logo|profile-top|profile-summary|profile-header|profile-info|profile-card|profile-pic)($|[\s_\-])/.test(combined) ||
+          /(^|\s)profile(\s|$)/.test(combined)) {
+        return true;
+      }
+      cur = cur.parentElement;
+    }
+    return false;
+  }
+
+  function isUtilityOrIndexDestination(u) {
+    if (!u) return true;
+    var path = u.pathname || '/';
+    var pathAndQuery = path + (u.search || '');
+    if (NON_POST_PATH_RE.test(path)) return true;
+    if (UTILITY_DEST_PATH_RE.test(path)) return true;
+    if (SECTION_INDEX_TAIL_RE.test(path)) return true;
+    if (GRID_COLLECTION_PATH_RE.test(pathAndQuery)) return true;
+    if (PAGINATION_QUERY_RE.test(u.search || '') && !/[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i.test(u.search || '')) {
+      return true;
+    }
+    if (/[?&](q|query|search|s|sort|filter|order|tab)=[^&\x23]+/i.test(u.search || '') && !/[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i.test(u.search || '')) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Collect candidate post links AND (per CO-6) direct media images in content containers
+   * in DOM order, deduplicated, with CO-7 page-self exclusion tracking.
+   * Returns { items: Array<{ url, isDirectMedia, gridMediaUrl }>, selfExcludedCount: number }.
+   */
+  function collectGridItems(doc) {
+    var nodes = doc.querySelectorAll('a[href], [role=link][data-href], [data-post-url], img');
+    var items = [];
+    var seenKeys = {};
+    var selfExcludedCount = 0;
+    var pageHandle = extractHandleFromUrl(location.href);
+
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.closest(HASH_CHAR + PANEL_ID)) continue;
+
+      if (node.tagName === 'IMG') {
+        // CO-6: Pass over image elements in content containers
+        var parentAnchor = node.closest('a[href], [role=link][data-href], [data-post-url]');
+        if (parentAnchor) continue;
+
+        if (isInsideChrome(node) || isFurnitureElement(node) || isHeaderOrProfileSummaryFurniture(node)) continue;
+        if (!isInContentRegion(node)) continue;
+
+        var imgCand = getImageCandidateUrlAndSize(node, location.href);
+        if (!imgCand || !imgCand.url) continue;
+        if (!MEDIA_EXT_RE.test(imgCand.url) || isFurnitureUrl(imgCand.url)) continue;
+
+        if (!imgCand.isLazyDataSrc && ((imgCand.w > 0 && imgCand.w < 60) || (imgCand.h > 0 && imgCand.h < 60))) continue;
+
+        if (isSelfPageUrl(imgCand.url)) {
+          selfExcludedCount++;
+          continue;
+        }
+
+        var imgKey = normalizePostKey(imgCand.url);
+        if (!seenKeys[imgKey]) {
+          seenKeys[imgKey] = true;
+          items.push({ url: imgCand.url, isDirectMedia: true, gridMediaUrl: imgCand.url });
+        }
+        continue;
+      }
+
+      var a = node;
+      var rawHref = a.getAttribute('href') || a.getAttribute('data-post-url') || a.getAttribute('data-href');
+      var absUrl = toAbsUrl(rawHref, location.href);
+      if (!absUrl) continue;
+
+      var candU = null;
+      try {
+        candU = new URL(absUrl);
+      } catch (e) {}
+
+      if (isNavigationOrProfileLink(a, pageHandle, candU)) continue;
+
+      if (isSelfPageUrl(absUrl)) {
+        if (isInContentRegion(a) && hasMediaRelationship(a)) {
+          selfExcludedCount++;
+        }
+        continue;
+      }
+
+      var key = normalizePostKey(absUrl);
+
+      if (MEDIA_EXT_RE.test(absUrl)) {
+        if (isFurnitureUrl(absUrl)) continue;
+        if (!hasMediaRelationship(a) && !isInContentRegion(a)) continue;
+        if (!seenKeys[key]) {
+          seenKeys[key] = true;
+          items.push({ url: absUrl, isDirectMedia: true, gridMediaUrl: absUrl });
+        }
+        continue;
+      }
+
+      var u = candU;
+      if (!u) continue;
+      if (u.origin !== location.origin) continue;
+
+      if (isUtilityOrIndexDestination(u)) continue;
+
+      if (looksLikePostLink(a, u, pageHandle)) {
+        var gridMedia = extractGridSideMedia(a, location.href);
+        var isVidCand = isVideoSignaledCandidate(a, u, gridMedia);
+        if (!seenKeys[key]) {
+          seenKeys[key] = true;
+          items.push({ url: absUrl, isDirectMedia: false, gridMediaUrl: gridMedia, isVideoCandidate: isVidCand });
+        }
+      }
+    }
+
+    return { items: items, selfExcludedCount: selfExcludedCount };
+  }
+
+  /**
+   * CO-13.1 Fence (2) & CO-14.1: Detect whether a grid candidate / tile is video-signaled
+   * (video element, video poster context, play overlay icon, duration badge, or video URL/class signal).
+   * A video-signaled candidate never falls back to its tile still on fetch failure, and under CO-14.1
+   * vouches for candidate admission when wrapped images carry only a placeholder / no http(s) URL.
+   */
+  function isVideoSignaledCandidate(a, u, gridMediaUrl) {
+    if (gridMediaUrl && /\/(videos|clips|reels|shorts)(\/|$)/i.test(location.pathname || '')) {
+      return true;
+    }
+    if (u) {
+      var pathAndQuery = (u.pathname || '') + (u.search || '');
+      if (!SECTION_INDEX_TAIL_RE.test(u.pathname || '')) {
+        if (/\/(video|videos|v|watch|reel|reels|tv|clip|clips|shorts|stream|streams)\/[^\/?\x23]+/i.test(u.pathname || '')) {
+          return true;
+        }
+        if (/[?&](v|video|video_id)=[^&\x23]+/i.test(u.search || '')) {
+          return true;
+        }
+        if (/([\/_\-])(video|videos|clip|clips|reel|reels|stream)([\/_\-.]|$)/i.test(pathAndQuery)) {
+          return true;
+        }
+      }
+    }
+    if (gridMediaUrl && /(\/posters?\/|\/stills?\/|\/vthumbs?\/|\/video[-_]?thumbs?\/|[_-](poster|still)\.)/i.test(gridMediaUrl)) {
+      return true;
+    }
+    if (!a || !a.querySelector) return false;
+    if (a.querySelector('video, [poster], [data-poster], [data-video], [data-video-src], [data-video-url], [data-mp4], [data-hd-src], [data-sd-src], [data-stream-url]')) {
+      return true;
+    }
+    if (a.hasAttribute('poster') || a.hasAttribute('data-poster') || a.hasAttribute('data-video') || a.hasAttribute('data-video-src') || a.hasAttribute('data-video-url') || a.hasAttribute('data-mp4')) {
+      return true;
+    }
+    var tileWrap = a.closest('.post-item, .grid-item, .gallery-item, .post-card, .media-item, .card, .thumb, .thumbnail, figure, li') || a;
+    var attrSig = (
+      (a.className && typeof a.className === 'string' ? a.className : '') + ' ' +
+      (a.id || '') + ' ' +
+      (a.getAttribute('data-type') || '') + ' ' +
+      (a.getAttribute('data-post-type') || '') + ' ' +
+      (a.getAttribute('data-media-type') || '') + ' ' +
+      (a.getAttribute('aria-label') || '') + ' ' +
+      (tileWrap !== a && tileWrap.className && typeof tileWrap.className === 'string' ? tileWrap.className : '') + ' ' +
+      (tileWrap !== a ? (tileWrap.getAttribute('data-type') || '') + ' ' + (tileWrap.getAttribute('data-post-type') || '') + ' ' + (tileWrap.getAttribute('data-media-type') || '') : '')
+    ).toLowerCase();
+    if (/(^|[\s_\-])(video|vid|reel|clip|play|player|duration|timecode|is-video|has-video|type-video|video-tile|video-item|video-post|video-card|video-thumb)($|[\s_\-])/.test(attrSig)) {
+      return true;
+    }
+    var subEls = a.querySelectorAll('[class], [id], [aria-label], img[src]');
+    for (var i = 0; i < subEls.length; i++) {
+      var el = subEls[i];
+      var subSig = (
+        (el.className && typeof el.className === 'string' ? el.className : '') + ' ' +
+        (el.id || '') + ' ' +
+        (el.getAttribute('aria-label') || '') + ' ' +
+        (el.tagName === 'IMG' ? (el.getAttribute('src') || '') : '')
+      ).toLowerCase();
+      if (/(^|[\/_\-.\s])(video|play[-_]?icon|icon[-_]?play|play[-_]?btn|play[-_]?button|sprite[-_]?play|video[-_]?badge|video[-_]?icon|video[-_]?overlay|duration|timecode)($|[\/_\-.\s])/.test(subSig)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function isNavigationOrProfileLink(a, pageHandle, u) {
+    if (isInsideChrome(a)) return true;
+
+    var rel = (a.getAttribute('rel') || '').toLowerCase();
+    if (/\b(author|home|prev|next|tag|category|nofollow|external|help|license|privacy-policy|terms-of-service|search)\b/.test(rel)) {
+      return true;
+    }
+    var clsAndId = ((a.className && typeof a.className === 'string' ? a.className : '') + ' ' + (a.id || '') + ' ' + (a.getAttribute('aria-label') || '')).toLowerCase();
+    if (/(^|[\s_\-])(avatar|profile|author|user-link|username|bio|logo|brand|nav-link|menu-item|tab|filter|sort|share|report|login|signup|load-more|show-more|pagination|pager|next-page|prev-page)($|[\s_\-])/.test(clsAndId)) {
+      return true;
+    }
+    var hasMedia = hasMediaRelationship(a);
+    if (!hasMedia && PAGINATION_TEXT_RE.test(a.textContent || '')) {
+      return true;
+    }
+    // CO-12.1 & CO-14.1 Gate (i): Wrapped-image furniture veto fires only when EVERY wrapped image is furniture,
+    // and is waived when the candidate is video-signaled under isVideoSignaledCandidate(a, u, null).
+    var childImgs = a.querySelectorAll ? a.querySelectorAll('img') : [];
+    if (childImgs.length > 0) {
+      var allFurniture = true;
+      for (var i = 0; i < childImgs.length; i++) {
+        var childImg = childImgs[i];
+        if (isFurnitureElement(childImg)) continue;
+        var imgCand = getImageCandidateUrlAndSize(childImg, location.href);
+        if (imgCand && imgCand.url && !isFurnitureUrl(imgCand.url)) {
+          allFurniture = false;
+          break;
+        }
+      }
+      if (allFurniture) {
+        if (isVideoSignaledCandidate(a, u, null)) {
+          return false;
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * CO-9: Check whether an anchor wraps an image whose resolved candidate URL (CO-3 order)
+   * is a non-furniture http(s) media URL, and the wrapped image is furniture neither by
+   * element test (CO-2 rules) nor by URL test.
+   */
+  function hasQualifyingWrappedMediaImage(a, baseHref) {
+    if (!a || !a.querySelectorAll) return false;
+    var imgs = a.querySelectorAll('img');
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (isFurnitureElement(img)) continue;
+      var cand = getImageCandidateUrlAndSize(img, baseHref || location.href);
+      if (cand && cand.url && MEDIA_EXT_RE.test(cand.url) && !isFurnitureUrl(cand.url)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function looksLikePostLink(a, u, pageHandle) {
+    var pathAndQuery = u.pathname + u.search;
+    var segs = u.pathname.split('/').filter(Boolean);
+    if (segs.length === 0) return false;
+
+    // CO-8, CO-9 & CO-14.1: Single-segment path handling
+    if (segs.length === 1) {
+      var s0 = segs[0];
+      var hasPostQueryId = /[?&](id|post|post_id|v|photo_id|video_id|media_id)=[^&\x23]+/i.test(u.search || '');
+      if (!hasPostQueryId) {
+        // Explicit @handle root, reserved path root, or current creator handle root is not a post
+        if (/^@/.test(s0) || RESERVED_PATH_ROOTS[s0.toLowerCase()] || (pageHandle && s0.replace(/^@/, '').toLowerCase() === pageHandle.toLowerCase())) {
+          return false;
+        }
+        // CO-9 Conditions (1), (2), and (3):
+        // (2) Not inside a chrome/rail container (CHROME_CONTAINER_SEL / FURNITURE_ANCESTOR_SEL ancestry)
+        //     and not classified as a navigation/profile link
+        if (isInsideChrome(a) || a.closest(FURNITURE_ANCESTOR_SEL) || isNavigationOrProfileLink(a, pageHandle, u)) {
+          return false;
+        }
+        // (1) & (3) + CO-14.1 Gate (ii): Anchor wraps a qualifying non-furniture media image,
+        // OR the candidate is video-signaled under isVideoSignaledCandidate(a, u, null)
+        if (!hasQualifyingWrappedMediaImage(a, location.href) && !isVideoSignaledCandidate(a, u, null)) {
+          return false;
+        }
+        return true;
+      }
+    }
+
+    if (segs.length === 2 && /^(u|user|users|profile|profiles|creator|creators|c|channel|model|models|artist|artists|author|authors|member|members)$/i.test(segs[0])) {
+      return false;
+    }
+
+    var hasMedia = hasMediaRelationship(a) || isVideoSignaledCandidate(a, u, null);
+    var inContent = isInContentRegion(a);
+
+    if (!hasMedia && !inContent) {
+      return false;
+    }
+
+    var matchesExplicitPostUrl = false;
+    for (var p = 0; p < POST_PATH_PATTERNS.length; p++) {
+      if (POST_PATH_PATTERNS[p].test(pathAndQuery)) {
+        matchesExplicitPostUrl = true;
+        break;
+      }
+    }
+
+    var matchesCreatorPostPath = false;
+    if (pageHandle && segs.length >= 2 && segs[0].replace(/^@/, '').toLowerCase() === pageHandle.toLowerCase()) {
+      var sub = segs[1].toLowerCase();
+      if (!/^(about|followers|following|likes|liked|saved|tagged|playlists|community|channels|shop|store|membership|clips|videos|photos|posts|reels|shorts|streams|feed|gallery|discussion|discussions|comments|activity|similar|related)$/.test(sub)) {
+        matchesCreatorPostPath = true;
+      }
+    }
+
+    if (hasMedia) {
+      if (matchesExplicitPostUrl || matchesCreatorPostPath || inContent) {
+        return true;
+      }
+    }
+
+    if (inContent && (matchesExplicitPostUrl || (matchesCreatorPostPath && /^\d+$/.test(segs[1])))) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * CO-15.1 (P1): Determine whether the current page is a single-post page whose main post is a video.
+   * List/grid pages (profile pages, video list pages, search/index pages) and photo post pages return null.
+   */
+  function getPinnedVideoPostExtraction(doc) {
+    if (!doc) return null;
+    var locU = null;
+    try {
+      locU = new URL(location.href);
+    } catch (e) {
+      return null;
+    }
+    var segs = (locU.pathname || '').split('/').filter(Boolean);
+    if (segs.length === 0) return null;
+    if (isUtilityOrIndexDestination(locU)) return null;
+    var firstLower = segs[0].toLowerCase();
+    if (segs.length === 1 && extractHandleFromUrl(location.href)) return null;
+    if (segs.length === 2 && /^(u|user|users|profile|profiles|creator|creators|c|channel|channels|model|models|artist|artists|author|authors|member|members)$/.test(firstLower)) {
+      return null;
+    }
+    if (isLoginOrErrorWall(doc, location.href, location.href)) return null;
+    var det = extractMainMediaDetailed(doc, location.href);
+    if (det && det.url && (det.isVideo || VIDEO_EXT_RE.test(det.url)) && !isPreviewVideoUrl(det.url)) {
+      return det;
+    }
+    return null;
+  }
+
+  /**
+   * Decide whether the current page is a Grid page or a Single Post page.
+   */
+  function detectMode(doc, gridItems) {
+    // CO-15.1 (P1): Pin single-post video pages to single-post ('add') mode; incidental grids never flip into grid mode.
+    if (getPinnedVideoPostExtraction(doc)) {
+      return 'add';
+    }
+    var isCurrentUrlPost = isSinglePostPageUrl(location.pathname, location.search);
+
+    if (gridItems.length >= 2 && !isCurrentUrlPost) {
+      return 'grid';
+    }
+    if (gridItems.length >= 4 && !doc.querySelector('meta[property="og:video"], meta[property="og:image"], article video')) {
+      return 'grid';
+    }
+    if (gridItems.length === 1 && !isCurrentUrlPost) {
+      var singleItem = gridItems[0];
+      var pageHandle = extractHandleFromUrl(location.href);
+      var segs = location.pathname.split('/').filter(Boolean);
+      var isProfileRoot = (pageHandle && segs.length <= 2 && !singleItem.isDirectMedia);
+      if (isProfileRoot) {
+        return 'grid';
+      }
+    }
+    return 'add';
+  }
+
+  function isHttpErrorWall(doc) {
+    if (!doc) return true;
+    var titleText = (doc.title || '').trim();
+    var h1El = doc.querySelector('h1');
+    var h1Text = h1El ? (h1El.textContent || '').trim() : '';
+    var errRe = /(^\s*(404|403|500|502|503|522)\b|page\s+not\s+found|post\s+not\s+found|content\s+unavailable)/i;
+    return errRe.test(titleText) || errRe.test(h1Text);
+  }
+
+  function hasUsablePageStructure(doc, rawHtml) {
+    if (!doc || !rawHtml || typeof rawHtml !== 'string') return false;
+    var trimmed = rawHtml.trim();
+    if (!trimmed || !/<[a-zA-Z][^>]*>/.test(trimmed)) return false;
+    if (isHttpErrorWall(doc)) return false;
+    if (doc.title && doc.title.trim()) return true;
+    if (doc.querySelector('article, main, [role=main], section, nav, header, footer, aside, h1, h2, h3, p, figure, img, video, picture, a[href], meta[property], meta[name], link[rel], script[type="application/ld+json"], form, input, .post, .content, .entry')) {
+      return true;
+    }
+    var bodyText = doc.body ? (doc.body.textContent || '').trim() : '';
+    if (bodyText.length > 0 && doc.body && doc.body.children && doc.body.children.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Extract presentation-only thumbnail for Dump staging (#dpgrid):
+   * - For a resolved video file (preferKind === 'video'): the poster declared on the post page
+   *   (<video poster / data-poster>, or og:image fallback).
+   * - For a post-link item (preferKind === 'link'): the og:image / twitter:image still declared
+   *   on the post page (or <video poster> fallback).
+   */
+  function extractPostThumb(doc, baseHref, preferKind) {
+    if (!doc) return null;
+    baseHref = baseHref || location.href;
+    var posterCandidate = null;
+    var vEls = doc.querySelectorAll('video[poster], video[data-poster]');
+    for (var i = 0; i < vEls.length; i++) {
+      if (isFurnitureElement(vEls[i], baseHref) || isHiddenElement(vEls[i])) continue;
+      var pRaw = vEls[i].getAttribute('poster') || vEls[i].getAttribute('data-poster');
+      var pAbs = toAbsUrl(pRaw, baseHref);
+      if (pAbs && !isFurnitureUrl(pAbs) && !isSelfPageUrl(pAbs)) {
+        posterCandidate = pAbs;
+        break;
+      }
+    }
+    var ogCandidate = null;
+    var ogSelectors = [
+      'meta[property="og:image:secure_url"]',
+      'meta[property="og:image:url"]',
+      'meta[property="og:image"]',
+      'meta[name="twitter:image:src"]',
+      'meta[name="twitter:image"]',
+      'meta[property="twitter:image"]',
+      'link[rel=image_src]'
+    ];
+    for (var j = 0; j < ogSelectors.length; j++) {
+      var metas = doc.querySelectorAll(ogSelectors[j]);
+      for (var m = 0; m < metas.length; m++) {
+        var rawMeta = metas[m].getAttribute('content') || metas[m].getAttribute('href');
+        var absMeta = toAbsUrl(rawMeta, baseHref);
+        if (absMeta && !isFurnitureUrl(absMeta) && !isSelfPageUrl(absMeta)) {
+          ogCandidate = absMeta;
+          break;
+        }
+      }
+      if (ogCandidate) break;
+    }
+    if (preferKind === 'video') {
+      return posterCandidate || ogCandidate || null;
+    }
+    return ogCandidate || posterCandidate || null;
+  }
+
+  // Seam 1: App-side post-page fetch via fetchHtml / pageHtml + DOMParser + hasUsablePageStructure + isLoginOrErrorWall
+  function fetchPostDocument(url) {
+    if (typeof seamOpts.fetchPostDocument === 'function') {
+      return seamOpts.fetchPostDocument(url, isLoginOrErrorWall, hasUsablePageStructure);
+    }
+    return Promise.resolve({ failed: true });
+  }
+
+  // Seam 3: Per-host Links-only state bound to APP_SETTINGS (S.set.linksOnly)
+  function loadLinksOnlyState() {
+    if (typeof seamOpts.isLinksOnly === 'function') {
+      return !!seamOpts.isLinksOnly(location.href);
+    }
+    return !!seamOpts.linksOnly;
+  }
+
+  // Seam 4: Resolve effective page handle using app convention when provided
+  function getEffectivePageHandle() {
+    if (seamOpts.pageHandle) return seamOpts.pageHandle;
+    return extractHandleFromUrl(location.href);
+  }
+
+  var currentRunId = 0;
+  var variantHostVerdicts = {}; // CO-12.2 / P3: host -> Promise<boolean>, cached per run for cross-host image variants
+  var videoHostVerdicts = {};   // CO-15.3 / P2: host -> Promise<boolean>, cached per run for resolved video files
+
+  function getHostKey(urlStr) {
+    try {
+      return new URL(urlStr, location.href).host.toLowerCase();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function isCrossHostVariantOfTile(tileUrl, extractedUrl) {
+    if (!tileUrl || !extractedUrl || tileUrl === extractedUrl) return false;
+    if (isFurnitureUrl(tileUrl) || isSelfPageUrl(tileUrl)) return false;
+    if (VIDEO_EXT_RE.test(extractedUrl)) return false;
+    if (!areSameMediaAsset(tileUrl, extractedUrl)) return false;
+    var tileHost = getHostKey(tileUrl);
+    var extHost = getHostKey(extractedUrl);
+    return !!(tileHost && extHost && tileHost !== extHost);
+  }
+
+  // CO-15.4 (P3): Split liveness classification by purpose:
+  // - CO-12.2 variant path (isLivenessRespOk): strict 2xx/3xx only (error/refusal/network/timeout -> keep tile image).
+  // - CO-15.3 video path (isVideoLivenessRespOk): 2xx/3xx and refusal-class (401, 403, 405, 416, 429, 501) -> alive.
+  function isLivenessRespOk(resp) {
+    if (!resp) return false;
+    if (typeof resp.status === 'number') {
+      return resp.status >= 200 && resp.status < 400;
+    }
+    return !!resp.ok;
+  }
+
+  function isVideoLivenessRespOk(resp) {
+    if (!resp) return false;
+    if (typeof resp.status === 'number') {
+      var s = resp.status;
+      if (s >= 200 && s < 400) return true;
+      if (s === 401 || s === 403 || s === 405 || s === 416 || s === 429 || s === 501) return true;
+      return false;
+    }
+    return !!resp.ok;
+  }
+
+  function probeVariantUrlOnce(targetUrl, allowRefusal) {
+    if (typeof fetch !== 'function') {
+      return Promise.resolve(!!allowRefusal);
+    }
+    var classify = allowRefusal ? isVideoLivenessRespOk : isLivenessRespOk;
+    return new Promise(function (resolve) {
+      var timedOut = false;
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timer = setTimeout(function () {
+        timedOut = true;
+        if (controller) controller.abort();
+        resolve(false);
+      }, VARIANT_TIMEOUT_MS);
+
+      function fallbackRangedGet() {
+        var timedOut2 = false;
+        var c2 = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var t2 = setTimeout(function () {
+          timedOut2 = true;
+          if (c2) c2.abort();
+          resolve(false);
+        }, VARIANT_TIMEOUT_MS);
+        fetch(targetUrl, {
+          method: 'GET',
+          signal: c2 ? c2.signal : undefined,
+          headers: { 'Range': 'bytes=0-0' }
+        }).then(function (r2) {
+          clearTimeout(t2);
+          if (c2) { try { c2.abort(); } catch (e) {} }
+          resolve(classify(r2));
+        }).catch(function (err) {
+          clearTimeout(t2);
+          var aborted2 = timedOut2 || !!(c2 && c2.signal && c2.signal.aborted) || !!(err && err.name === 'AbortError');
+          resolve(!!(allowRefusal && !aborted2));
+        });
+      }
+
+      fetch(targetUrl, {
+        method: 'HEAD',
+        signal: controller ? controller.signal : undefined
+      }).then(function (resp) {
+        clearTimeout(timer);
+        if (!allowRefusal && isLivenessRespOk(resp)) {
+          resolve(true);
+          return;
+        }
+        if (resp && (resp.status === 405 || resp.status === 501)) {
+          fallbackRangedGet();
+          return;
+        }
+        if (allowRefusal && isVideoLivenessRespOk(resp)) {
+          resolve(true);
+          return;
+        }
+        resolve(false);
+      }).catch(function (err) {
+        clearTimeout(timer);
+        var aborted = timedOut || !!(controller && controller.signal && controller.signal.aborted) || !!(err && err.name === 'AbortError');
+        resolve(!!(allowRefusal && !aborted));
+      });
+    });
+  }
+
+  function checkVariantHostLiveness(variantUrl) {
+    var host = getHostKey(variantUrl);
+    if (!host) return Promise.resolve(false);
+    if (!Object.prototype.hasOwnProperty.call(variantHostVerdicts, host)) {
+      variantHostVerdicts[host] = probeVariantUrlOnce(variantUrl, false);
+    }
+    return variantHostVerdicts[host];
+  }
+
+  // CO-15.3 (P2): Liveness check for resolved video files, cached per host for the run. Unverifiable = alive.
+  function checkVideoHostLiveness(videoUrl) {
+    if (!videoUrl || typeof fetch !== 'function') return Promise.resolve(true);
+    var host = getHostKey(videoUrl);
+    if (!host) return Promise.resolve(true);
+    if (!Object.prototype.hasOwnProperty.call(videoHostVerdicts, host)) {
+      videoHostVerdicts[host] = probeVariantUrlOnce(videoUrl, true);
+    }
+    return videoHostVerdicts[host];
+  }
+
+  function runGridMode(collectionResult, onDone) {
+    var runId = ++currentRunId;
+    var items = collectionResult.items || [];
+    var selfExcludedCount = collectionResult.selfExcludedCount || 0;
+    var total = items.length;
+    var rawEntries = new Array(total);
+    var completed = 0;
+    var nextIndex = 0;
+    var pageHandle = getEffectivePageHandle();
+    var linksOnly = loadLinksOnlyState();
+    var thumbs = {};
+    var pages = {};
+
+    var extractedFetchCounts = {};
+    var shellSuspectUrls = {};
+    var shellSuspectTriggered = false;
+    var postFetchCandidateCount = 0;
+    var distinctSuccessFetchCount = 0;
+    variantHostVerdicts = {};
+    videoHostVerdicts = {};
+
+    // CO-8 & Seam 3: If Links-only is ON for this host, perform zero fetches and stage synchronously
+    if (linksOnly) {
+      for (var k = 0; k < total; k++) {
+        var lkItem = items[k];
+        var lkHandle = pageHandle || extractHandleFromUrl(lkItem.url);
+        if (seamOpts.normalizeHandle && lkHandle) lkHandle = seamOpts.normalizeHandle(lkHandle);
+        var lkUrl = lkItem.url;
+        var lkKind = lkItem.isDirectMedia ? 'direct' : 'link';
+        rawEntries[k] = {
+          item: lkItem,
+          handle: lkHandle,
+          rawUrl: lkUrl,
+          line: formatOutputLine(lkUrl, lkHandle),
+          kind: lkKind,
+          isShellSuspect: false,
+          fetchFailedOrEmpty: false,
+          extractedPreFallback: lkUrl
+        };
+      }
+      finalizeGridRun(runId, rawEntries, total, selfExcludedCount, true, false, thumbs, pages, onDone);
+      return;
+    }
+
+    if (typeof seamOpts.onProgress === 'function') {
+      seamOpts.onProgress(0, total);
+    }
+
+    function fallbackForCandidate(item, useGridSideImage) {
+      if (useGridSideImage && !item.isVideoCandidate && item.gridMediaUrl && /^https?:\/\//i.test(item.gridMediaUrl) && !VIDEO_EXT_RE.test(item.gridMediaUrl) && !isFurnitureUrl(item.gridMediaUrl) && !isSelfPageUrl(item.gridMediaUrl)) {
+        return { url: item.gridMediaUrl, kind: 'direct' };
+      }
+      return { url: item.url, kind: 'link' };
+    }
+
+    function resolveOne(idx) {
+      if (runId !== currentRunId) return Promise.resolve();
+      var item = items[idx];
+      var handle = pageHandle || extractHandleFromUrl(item.url);
+      if (seamOpts.normalizeHandle && handle) handle = seamOpts.normalizeHandle(handle);
+
+      if (item.isDirectMedia) {
+        if (VIDEO_EXT_RE.test(item.url)) {
+          return checkVideoHostLiveness(item.url).then(function (alive) {
+            if (runId !== currentRunId) return;
+            var dUrl = alive ? item.url : (item.postUrl || item.url);
+            var dKind = alive ? 'direct' : 'link';
+            rawEntries[idx] = {
+              item: item,
+              handle: handle,
+              rawUrl: dUrl,
+              line: formatOutputLine(dUrl, handle),
+              kind: dKind,
+              isShellSuspect: false,
+              fetchFailedOrEmpty: false,
+              extractedPreFallback: alive ? item.url : null
+            };
+            onItemDone();
+          });
+        }
+        rawEntries[idx] = {
+          item: item,
+          handle: handle,
+          rawUrl: item.url,
+          line: formatOutputLine(item.url, handle),
+          kind: 'direct',
+          isShellSuspect: false,
+          fetchFailedOrEmpty: false,
+          extractedPreFallback: item.url
+        };
+        onItemDone();
+        return Promise.resolve();
+      }
+
+      postFetchCandidateCount++;
+
+      // CO-5: Once shell-suspect is triggered (>= 3 fetches extracted to the identical URL),
+      // remaining post candidates skip fetching and use shell-suspect fallback directly
+      if (shellSuspectTriggered) {
+        var fb = fallbackForCandidate(item, true);
+        rawEntries[idx] = {
+          item: item,
+          handle: handle,
+          rawUrl: fb.url,
+          line: formatOutputLine(fb.url, handle),
+          kind: fb.kind,
+          isShellSuspect: true,
+          fetchFailedOrEmpty: false,
+          extractedPreFallback: null
+        };
+        onItemDone();
+        return Promise.resolve();
+      }
+
+      return fetchPostDocument(item.url).then(function (fetched) {
+        if (runId !== currentRunId) return;
+        var extracted = null;
+        var videoDeclined = false;
+        var extractedIsVideo = false;
+        var postThumb = null;
+        var linkThumb = null;
+        if (fetched && !fetched.failed) {
+          if (fetched.directMediaUrl && !isFurnitureUrl(fetched.directMediaUrl)) {
+            extracted = fetched.directMediaUrl;
+            extractedIsVideo = VIDEO_EXT_RE.test(extracted);
+          } else if (fetched.doc) {
+            var det = extractMainMediaDetailed(fetched.doc, fetched.finalUrl || item.url);
+            extracted = det.url;
+            videoDeclined = !!det.videoDeclined;
+            extractedIsVideo = !!(det.isVideo || (extracted && VIDEO_EXT_RE.test(extracted)));
+            postThumb = extractPostThumb(fetched.doc, fetched.finalUrl || item.url, extractedIsVideo ? 'video' : 'link');
+            linkThumb = extractPostThumb(fetched.doc, fetched.finalUrl || item.url, 'link');
+          }
+        }
+
+        var livenessReady;
+        if (extracted && extractedIsVideo) {
+          // CO-15.3 (P2): Liveness check for resolved video files (dead host -> demote to post link)
+          livenessReady = checkVideoHostLiveness(extracted).then(function (alive) {
+            if (!alive) {
+              videoDeclined = true;
+              postThumb = linkThumb || postThumb;
+              return null;
+            }
+            return extracted;
+          });
+        } else if (extracted && isCrossHostVariantOfTile(item.gridMediaUrl, extracted)) {
+          // CO-12.2 / CO-15.4 (P3): Strict 2xx/3xx liveness check for cross-host image variant upgrades
+          livenessReady = checkVariantHostLiveness(extracted).then(function (alive) {
+            return alive ? extracted : item.gridMediaUrl;
+          });
+        } else {
+          livenessReady = Promise.resolve(extracted);
+        }
+
+        return livenessReady.then(function (verifiedUrl) {
+          if (runId !== currentRunId) return;
+          extracted = verifiedUrl;
+
+          if (extracted) {
+            var extKey = canonicalMediaKey(extracted);
+            extractedFetchCounts[extKey] = (extractedFetchCounts[extKey] || 0) + 1;
+
+            // CO-5: >= 3 distinct post fetches extracting to the identical URL marks fetch resolution as shell-suspect
+            if (extractedFetchCounts[extKey] >= SHELL_SUSPECT_THRESHOLD) {
+              shellSuspectTriggered = true;
+              shellSuspectUrls[extKey] = true;
+              for (var prev = 0; prev < total; prev++) {
+                var prevEntry = rawEntries[prev];
+                if (prevEntry && prevEntry.extractedPreFallback && canonicalMediaKey(prevEntry.extractedPreFallback) === extKey) {
+                  var prevFb = fallbackForCandidate(prevEntry.item, true);
+                  rawEntries[prev] = {
+                    item: prevEntry.item,
+                    handle: prevEntry.handle,
+                    rawUrl: prevFb.url,
+                    line: formatOutputLine(prevFb.url, prevEntry.handle),
+                    kind: prevFb.kind,
+                    isShellSuspect: true,
+                    fetchFailedOrEmpty: false,
+                    extractedPreFallback: extracted
+                  };
+                }
+              }
+            }
+
+            if (shellSuspectUrls[extKey]) {
+              var sFb = fallbackForCandidate(item, true);
+              rawEntries[idx] = {
+                item: item,
+                handle: handle,
+                rawUrl: sFb.url,
+                line: formatOutputLine(sFb.url, handle),
+                kind: sFb.kind,
+                isShellSuspect: true,
+                fetchFailedOrEmpty: false,
+                extractedPreFallback: extracted
+              };
+            } else {
+              distinctSuccessFetchCount++;
+              if (VIDEO_EXT_RE.test(extracted)) {
+                pages[extracted] = item.url;
+                if (postThumb) thumbs[extracted] = postThumb;
+              }
+              rawEntries[idx] = {
+                item: item,
+                handle: handle,
+                rawUrl: extracted,
+                line: formatOutputLine(extracted, handle),
+                kind: 'direct',
+                isShellSuspect: false,
+                fetchFailedOrEmpty: false,
+                extractedPreFallback: extracted
+              };
+            }
+          } else {
+            // CO-13.1: Per-candidate independent fallback on fetch failure vs Fence (1) / Fence (2)
+            if (postThumb) {
+              thumbs[item.url] = postThumb;
+            }
+            var fetchFailed = !fetched || !!fetched.failed;
+            var resolvedFb = (fetchFailed && !videoDeclined)
+              ? fallbackForCandidate(item, true)
+              : { url: item.url, kind: 'link' };
+            rawEntries[idx] = {
+              item: item,
+              handle: handle,
+              rawUrl: resolvedFb.url,
+              line: formatOutputLine(resolvedFb.url, handle),
+              kind: resolvedFb.kind,
+              isShellSuspect: false,
+              fetchFailedOrEmpty: fetchFailed && !videoDeclined,
+              isVideoDeclined: videoDeclined || !!item.isVideoCandidate,
+              extractedPreFallback: null
+            };
+          }
+          onItemDone();
+        });
+      });
+    }
+
+    function onItemDone() {
+      if (runId !== currentRunId) return;
+      completed++;
+      if (typeof seamOpts.onProgress === 'function') {
+        seamOpts.onProgress(completed, total);
+      }
+    }
+
+    function worker() {
+      if (runId !== currentRunId || nextIndex >= total) return Promise.resolve();
+      var current = nextIndex++;
+      return resolveOne(current).then(worker);
+    }
+
+    var workers = [];
+    var workerCount = Math.min(CONCURRENCY, total);
+    for (var w = 0; w < workerCount; w++) {
+      workers.push(worker());
+    }
+
+    Promise.all(workers).then(function () {
+      if (runId !== currentRunId) return;
+      finalizeGridRun(runId, rawEntries, total, selfExcludedCount, false, shellSuspectTriggered, thumbs, pages, onDone);
+    });
+  }
+
+  function finalizeGridRun(runId, rawEntries, totalCandidates, initialSelfExcluded, isLinksOnlyMode, shellSuspectTriggered, thumbs, pages, onDone) {
+    if (runId !== currentRunId) return;
+
+    // CO-4 Domination check on pre-dedupe results (and pre-fallback extracted URLs)
+    var freqMap = {};
+    var maxRepeatCount = 0;
+    for (var i = 0; i < rawEntries.length; i++) {
+      var e = rawEntries[i];
+      if (!e) continue;
+      var domKey = canonicalMediaKey(e.extractedPreFallback || e.rawUrl);
+      if (domKey) {
+        freqMap[domKey] = (freqMap[domKey] || 0) + 1;
+        if (freqMap[domKey] > maxRepeatCount) {
+          maxRepeatCount = freqMap[domKey];
+        }
+      }
+    }
+    var isDominatedHaul = (totalCandidates >= 5 && maxRepeatCount > totalCandidates / 2);
+
+    // CO-4 Dedupe by final extracted URL (fragment stripped) + CO-7 Page-self exclusion
+    var dedupedLines = [];
+    var seenFinalKeys = {};
+    var directCount = 0;
+    var linkCount = 0;
+    var droppedDupeCount = 0;
+    var selfDroppedCount = initialSelfExcluded || 0;
+
+    for (var j = 0; j < rawEntries.length; j++) {
+      var entry = rawEntries[j];
+      if (!entry || !entry.rawUrl) continue;
+
+      if (isSelfPageUrl(entry.rawUrl)) {
+        selfDroppedCount++;
+        continue;
+      }
+
+      var finalKey = canonicalMediaKey(entry.rawUrl);
+      if (seenFinalKeys[finalKey]) {
+        droppedDupeCount++;
+        continue;
+      }
+      seenFinalKeys[finalKey] = true;
+      dedupedLines.push(entry.line);
+      if (entry.kind === 'direct' || MEDIA_EXT_RE.test(stripFragmentAndTag(entry.rawUrl))) {
+        directCount++;
+      } else {
+        linkCount++;
+      }
+    }
+
+    var payload = ensurePlainPayload(dedupedLines);
+
+    function buildSummaryStatus() {
+      var parts = [];
+      if (isLinksOnlyMode) {
+        parts.push('Links only — ' + dedupedLines.length + (dedupedLines.length === 1 ? ' link' : ' links'));
+        parts.push(directCount + ' direct · ' + linkCount + (linkCount === 1 ? ' link' : ' links'));
+      } else {
+        parts.push('Staged ' + dedupedLines.length + '/' + totalCandidates + ' (' + directCount + ' direct · ' + linkCount + (linkCount === 1 ? ' link' : ' links') + ')');
+      }
+      if (droppedDupeCount > 0) {
+        parts.push(droppedDupeCount + ' dupes dropped');
+      }
+      if (selfDroppedCount > 0) {
+        parts.push(selfDroppedCount + ' self dropped');
+      }
+      if (shellSuspectTriggered) {
+        parts.push('shell fallback');
+      }
+      if (isDominatedHaul) {
+        parts.push('suspect: one file repeated ' + maxRepeatCount + 'x (looks like page furniture, not content)');
+      }
+      return parts.join(' · ');
+    }
+
+    var resultObj = {
+      mode: 'grid',
+      payload: payload,
+      lines: dedupedLines,
+      status: buildSummaryStatus(),
+      totalCandidates: totalCandidates,
+      directCount: directCount,
+      linkCount: linkCount,
+      droppedDupeCount: droppedDupeCount,
+      selfDroppedCount: selfDroppedCount,
+      shellSuspectTriggered: shellSuspectTriggered,
+      isDominatedHaul: isDominatedHaul,
+      isLinksOnlyMode: isLinksOnlyMode,
+      thumbs: thumbs,
+      pages: pages
+    };
+    if (typeof onDone === 'function') onDone(resultObj);
+  }
+
+  function runAddMode(singleInfo, onDone) {
+    var runId = ++currentRunId;
+    variantHostVerdicts = {};
+    videoHostVerdicts = {};
+    var linksOnly = loadLinksOnlyState();
+    var pageHandle = getEffectivePageHandle();
+    var mediaUrl = null;
+    var videoDeclined = false;
+    var isVideoSingle = false;
+    var singleThumb = singleInfo && singleInfo.singleThumb ? singleInfo.singleThumb : null;
+    var thumbs = {};
+    var pages = {};
+
+    if (linksOnly) {
+      mediaUrl = stripFragmentAndTag(location.href);
+    } else if (singleInfo && !singleInfo.wall) {
+      if (singleInfo.single) {
+        mediaUrl = singleInfo.single.url;
+        videoDeclined = !!singleInfo.single.videoDeclined;
+        isVideoSingle = !!(singleInfo.single.isVideo || (mediaUrl && VIDEO_EXT_RE.test(mediaUrl)));
+        if (!mediaUrl && videoDeclined) {
+          mediaUrl = stripFragmentAndTag(location.href);
+        }
+      }
+    }
+
+    var livenessStep = (!linksOnly && mediaUrl && isVideoSingle && VIDEO_EXT_RE.test(mediaUrl))
+      ? checkVideoHostLiveness(mediaUrl).then(function (alive) {
+          if (!alive) {
+            mediaUrl = stripFragmentAndTag(location.href);
+            videoDeclined = true;
+          }
+        })
+      : Promise.resolve();
+
+    livenessStep.then(function () {
+      if (runId !== currentRunId) return;
+      var lines = [];
+      var statusText = '';
+      if (mediaUrl && !linksOnly && !videoDeclined && isSelfPageUrl(mediaUrl)) {
+        statusText = 'self excluded · 1 self dropped';
+      } else if (mediaUrl) {
+        var handle = resolveEffectiveHandle(location.href, mediaUrl) || pageHandle;
+        if (seamOpts.normalizeHandle && handle) handle = seamOpts.normalizeHandle(handle);
+        var entry = formatOutputLine(mediaUrl, handle);
+        lines.push(entry);
+        if (VIDEO_EXT_RE.test(mediaUrl)) {
+          pages[mediaUrl] = location.href;
+        }
+        if (singleThumb) {
+          thumbs[mediaUrl] = singleThumb;
+        }
+        statusText = linksOnly ? 'Links only — 1 link' : 'Staged 1 item — tap to select, then Add selected.';
+      } else {
+        statusText = 'Nothing stageable found on that page.';
+      }
+
+      var payload = ensurePlainPayload(lines);
+      var resultObj = {
+        mode: 'add',
+        payload: payload,
+        lines: lines,
+        status: statusText,
+        thumbs: thumbs,
+        pages: pages
+      };
+      if (typeof onDone === 'function') onDone(resultObj);
+    });
+  }
+
+  return {
+    VIDEO_EXT_RE: VIDEO_EXT_RE,
+    MEDIA_EXT_RE: MEDIA_EXT_RE,
+    sanitizeOutputLine: sanitizeOutputLine,
+    ensurePlainPayload: ensurePlainPayload,
+    toAbsUrl: toAbsUrl,
+    stripTag: stripTag,
+    stripFragmentAndTag: stripFragmentAndTag,
+    extractTag: extractTag,
+    isSelfPageUrl: isSelfPageUrl,
+    canonicalMediaKey: canonicalMediaKey,
+    normalizePostKey: normalizePostKey,
+    extractHandleFromUrl: extractHandleFromUrl,
+    isValidHandleToken: isValidHandleToken,
+    resolveEffectiveHandle: resolveEffectiveHandle,
+    formatOutputLine: formatOutputLine,
+    isFurnitureUrl: isFurnitureUrl,
+    isOutboundAdAnchor: isOutboundAdAnchor,
+    isFurnitureElement: isFurnitureElement,
+    isLoginOrErrorWall: isLoginOrErrorWall,
+    isHttpErrorWall: isHttpErrorWall,
+    hasUsablePageStructure: hasUsablePageStructure,
+    parseSrcsetBest: parseSrcsetBest,
+    inspectUrlSizing: inspectUrlSizing,
+    areSameMediaAsset: areSameMediaAsset,
+    getImageCandidateUrlAndSize: getImageCandidateUrlAndSize,
+    extractGridSideMedia: extractGridSideMedia,
+    extractVideoFromElement: extractVideoFromElement,
+    isHiddenElement: isHiddenElement,
+    extractMainMedia: extractMainMedia,
+    extractMainMediaDetailed: extractMainMediaDetailed,
+    extractPostThumb: extractPostThumb,
+    findLargestContentImage: findLargestContentImage,
+    findInJsonLd: findInJsonLd,
+    isSinglePostPageUrl: isSinglePostPageUrl,
+    hasMediaRelationship: hasMediaRelationship,
+    isInContentRegion: isInContentRegion,
+    isInsideChrome: isInsideChrome,
+    isHeaderOrProfileSummaryFurniture: isHeaderOrProfileSummaryFurniture,
+    isUtilityOrIndexDestination: isUtilityOrIndexDestination,
+    collectGridItems: collectGridItems,
+    isVideoSignaledCandidate: isVideoSignaledCandidate,
+    isNavigationOrProfileLink: isNavigationOrProfileLink,
+    hasQualifyingWrappedMediaImage: hasQualifyingWrappedMediaImage,
+    looksLikePostLink: looksLikePostLink,
+    getPinnedVideoPostExtraction: getPinnedVideoPostExtraction,
+    detectMode: detectMode,
+    runGridMode: runGridMode,
+    runAddMode: runAddMode
+  };
+}
+
+let HARVEST_RES=null,HARVEST_RUN=0;
+function harvestScreen(){return new Promise(res=>{const s=feed.querySelector(`.card[data-i="${S.idx}"]`);if(!s)return res(null);
  const fs=[...s.querySelectorAll('iframe')].filter(f2=>f2.hasAttribute('sandbox'));const f=fs[fs.length-1];if(!f||!f.contentWindow)return res(null);
- let done=false;const fin=v=>{if(done)return;done=true;if(SCRAPE_RES===fin)SCRAPE_RES=null;res(v)};
- SCRAPE_RES=fin;setTimeout(()=>fin(null),1800);
- try{f.contentWindow.postMessage({type:'RF_SCRAPE'},'*')}catch(e){fin(null)}})}
-const swStat=t=>{$('#sw-stat').textContent=t};
-function swRender(){$('#swgrid').innerHTML=SW.list.map((c,k)=>`<div data-k="${k}" style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:var(--field);cursor:pointer;${SW.sel.has(k)?'outline:3px solid #10b981;outline-offset:-3px':''}"><img src="${esc(c.poster||c.url)}" data-s="${esc(c.poster||c.url)}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">${c.kind==='video'?'<span style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">VIDEO</span>':''}${SW.sel.has(k)?'<span style="position:absolute;top:6px;right:6px;background:#10b981;color:#000;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px">✓</span>':''}</div>`).join('');
- wireImgs($('#swgrid'));$('#sw-add').textContent='Add selected ('+SW.sel.size+')'}
-function swAddCand(c){if(SW.list.some(x=>normKey(x.url)===normKey(c.url)))return;SW.list.push(c)}
-function swFillProf(){const hs=[...new Set([SW.hd,...S.items.map(i=>i.handle)].filter(Boolean))];$('#sw-prof').innerHTML=hs.map(h=>`<option value="${esc(h)}" ${h===SW.hd?'selected':''}>@${esc(alias(h))}</option>`).join('')}
-async function scrapePage(){const it=V[S.idx];if(!it)return;const pg=curPage(it),run=++SW.run;SW.list=[];SW.sel=new Set();SW.hd=it.handle||profOf(pg);
- $('#swrap').hidden=false;$('#sw-title').textContent='Scrape — @'+alias(SW.hd);swFillProf();swStat('Reading the page on screen…');swRender();
- /* First source: the live page itself (Kendall, Nov 12) — whatever media
-    is currently loaded on screen, including everything infinite scroll
-    has pulled in. The page's own script enumerates its images at the
-    best resolution it has for them and its videos. No 24-post cap: the
-    screen is the set. Only Shielded pages can be read this way. */
- const live=await scrapeScreen();if(run!==SW.run)return;
- if(live){for(const c of live)swAddCand({kind:c.kind==='video'?'video':'image',url:c.url,poster:c.poster||c.url,post:c.post||pg});
-  swStat(live.length?('On-screen media — '+SW.list.length+' found. Scroll the page to load more, then Scrape again to gather those too.'):'Nothing usable on screen yet — scroll the page so its media loads, then Scrape again.');swRender();return}
- const html=await pageHtml(pg);if(run!==SW.run)return;if(!html){const mode=PSH.get(it.id)||(S.set.ad?'shield':'live');
-  swStat(mode==='live'?'This page is in Live view, which cannot be read. Switch it to Shielded view with the button below, let it load, then Scrape again.':'This page is showing Live because its Shielded copy could not be fetched — the proxies returned nothing, and a Live page cannot be read. When the fetch works, Scrape reads the screen directly.');swRender();return}
- const links=postLinks(html,pg),direct=links.filter(l=>l.direct),posts=links.filter(l=>!l.direct).slice(0,24);
- for(const d of direct)swAddCand({kind:'image',url:d.direct,poster:d.direct,post:pg});
- if(!posts.length){if(!direct.length){const im=extractImg(html,pg);if(im)swAddCand({kind:'image',url:im,poster:im,post:pg});swStat(im?'Not a grid page — here is its main image.':'No posts or images found on that page.')}else swStat('Found '+SW.list.length+' — tap the ones you want, then Add.');swRender();return}
- let done=0;const total=posts.length;swStat('Checking posts… 0/'+total);swRender();
- const queue=[...posts];const worker=async()=>{while(queue.length&&run===SW.run){const p=queue.shift();const h=await pageHtml(p.post);done++;if(run!==SW.run)return;
-  if(h){const vid=findStream(h,p.post),im2=extractImg(h,p.post);if(vid)swAddCand({kind:'video',url:vid,poster:im2||p.thumb,post:p.post});else if(im2)swAddCand({kind:'image',url:im2,poster:im2,post:p.post})}
-  swStat('Checking posts… '+done+'/'+total+' — '+SW.list.length+' found');swRender()}};
- await Promise.all([worker(),worker(),worker()]);if(run!==SW.run)return;
- swStat(SW.list.length?'Found '+SW.list.length+' — tap the ones you want, then Add.':'No full-size media found in those posts.');swRender()}
-$('#psc').onclick=()=>{const it=V[S.idx];if(it&&isPageCard(it))scrapePage();else toast('Open a webpage first')};
-$('#sw-exit').onclick=()=>{SW.run++;$('#swrap').hidden=true};
-$('#sw-all').onclick=()=>{if(SW.sel.size===SW.list.length)SW.sel.clear();else SW.list.forEach((c,k)=>SW.sel.add(k));swRender()};
-$('#sw-teach').onclick=()=>{const it=V[S.idx];const pg=it?curPage(it):'';let host='';try{host=new URL(pg).hostname}catch(e){}
- ask({title:'Teach scrape'+(host?' — '+host:''),desc:'If scrape picks the wrong image on this site, show it the right one once. Paste one correct full-size image link here — or tap Teach by tap, then either tap the correct image in a post, or copy its link and paste it into Drop / Save: that teaches the site and saves the image.',ph:'https://… one correct full-size image link',ok:'Teach from link',extra:[['Teach by tap',()=>{STARM=true;closeModal();$('#swrap').hidden=true;toast('Now tap the correct image in a post — or paste its link into Drop / Save')}]],
- onOk:v=>{v=(v||'').trim().split(/\s+/)[0];if(!/^https?:\/\//i.test(v)){toast('Paste a full link');return false}if(learnScrape(pg,v))$('#swrap').hidden=true}})};
-$('#swgrid').addEventListener('click',e=>{const t=e.target.closest('[data-k]');if(!t)return;const k=+t.dataset.k;if(SW.sel.has(k))SW.sel.delete(k);else SW.sel.add(k);swRender()});
-$('#sw-add').onclick=()=>{const chosen=[...SW.sel].map(k=>SW.list[k]).filter(Boolean);if(!chosen.length){toast('Nothing selected');return}
- const hd=$('#sw-prof').value||SW.hd;let n=0;const imgs=chosen.filter(c=>c.kind==='image').map(c=>c.url);if(imgs.length)n+=attach(imgs,hd);
- for(const c of chosen.filter(x=>x.kind==='video')){n+=attach([c.url],hd);const x=S.items.find(i=>normKey(i.url)===normKey(c.url));if(x&&c.post){x.source=c.post;TAUGHT[c.post]=TAUGHT[c.post.replace(/\/+$/,'')]=c.url}}
- save();setDirty(true);SW.run++;$('#swrap').hidden=true;chips();if(S.mode==='main'){V=vis();render();sync()}
- toast(n?('Added '+n+' to @'+alias(hd)):'Already in your library')};
+ let done=false;const fin=v=>{if(done)return;done=true;if(HARVEST_RES===fin)HARVEST_RES=null;res(v)};
+ HARVEST_RES=fin;setTimeout(()=>fin(null),1800);
+ try{f.contentWindow.postMessage({type:'RF_HARVEST'},'*')}catch(e){fin(null)}})}
+
+function stageHarvestIntoDump(res,defHandle){
+ if(!DUMP.thumbs)DUMP.thumbs={};if(!DUMP.pages)DUMP.pages={};
+ if(res&&res.thumbs)for(const[u,th]of Object.entries(res.thumbs))if(u&&th)DUMP.thumbs[normKey(u)]=th;
+ if(res&&res.pages)for(const[u,pg]of Object.entries(res.pages))if(u&&pg)DUMP.pages[normKey(u)]=strip(pg);
+ $('#dpta').value=(res&&res.payload)||'';
+ stageDump();
+ if(defHandle&&!DUMP.defHd){DUMP.defHd=alias(defHandle);dumpFillProf(true)}
+ if(res&&res.status)$('#dpstat').textContent=res.status;
+ openModal();
+ const db=document.querySelector('[data-tab="dump"]');if(db)db.click();
+ if(res&&res.status)$('#dpstat').textContent=res.status;
+}
+
+async function harvestPage(){const it=V[S.idx];if(!it)return;const pg=curPage(it),run=++HARVEST_RUN;
+ const navChanged=strip(pg)!==strip(pageUrl(it));
+ const eng0=createHarvestEngine(pg);
+ const navHd=eng0.extractHandleFromUrl(pg);
+ const pageHandle=navChanged?(navHd?alias(navHd):profOf(pg)):((it&&it.handle)||alias(navHd||profOf(pg)));
+ const btn=$('#psc');if(btn)btn.textContent='Harvesting…';
+ let live=await harvestScreen();if(run!==HARVEST_RUN)return;
+ if(!live||live.error){
+  const html=await pageHtml(pg);if(run!==HARVEST_RUN)return;
+  if(!html){if(btn)btn.textContent='Harvest';const mode=PSH.get(it.id)||(S.set.ad?'shield':'live');
+   toast(mode==='live'?'Switch to Shielded view so Harvest can read the page':'Could not fetch this page to harvest');return}
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const col=eng0.collectGridItems(doc),mode=eng0.detectMode(doc,col.items),wall=eng0.isLoginOrErrorWall(doc,pg,pg),single=(!wall&&mode==='add')?eng0.extractMainMediaDetailed(doc,pg):null,singleThumb=(!wall&&mode==='add')?eng0.extractPostThumb(doc,pg,single&&single.url&&eng0.VIDEO_EXT_RE.test(single.url)?'video':'link'):null;
+  live={pageUrl:pg,mode,items:col.items,selfExcludedCount:col.selfExcludedCount||0,wall,single,singleThumb};
+ }
+ const eng=createHarvestEngine(pg,{
+  pageHandle,
+  normalizeHandle:h=>alias(h),
+  isLinksOnly:u=>linksOnlyFor(u),
+  onProgress:(done,tot)=>{if(run===HARVEST_RUN&&btn)btn.textContent=`Harvest ${done}/${tot}`},
+  fetchPostDocument:async(u,wallCheck,structCheck)=>{
+   const h=await pageHtml(u);if(!h)return{failed:true};
+   try{const d=new DOMParser().parseFromString(h,'text/html');if(structCheck&&!structCheck(d,h))return{failed:true};if(wallCheck(d,u,u))return{failed:false,isWall:true,finalUrl:u};return{failed:false,doc:d,finalUrl:u}}catch(e){return{failed:true}}
+  }
+ });
+ const finish=res=>{if(run!==HARVEST_RUN)return;if(btn)btn.textContent='Harvest';stageHarvestIntoDump(res,pageHandle);toast(res.status||'Harvest staged in Dump')};
+ if(live.mode==='grid')eng.runGridMode({items:live.items||[],selfExcludedCount:live.selfExcludedCount||0},finish);
+ else eng.runAddMode(live,finish);
+}
+$('#psc').onclick=()=>{const it=V[S.idx];if(it&&isPageCard(it))harvestPage();else toast('Open a webpage first')};
+$('#pcp').onclick=()=>{const it=V[S.idx];if(!it||!isPageCard(it))return toast('Open a webpage first');const u=curPage(it)||pageUrl(it);try{const p=navigator.clipboard.writeText(u);if(p&&p.then)p.then(()=>toast('Link copied'),()=>toast('Copy not available here'));else toast('Link copied')}catch(e){toast('Copy not available here')}};
 /* ---------- Dump tab (Kendall, Nov 12): stage a pasted link list, sift it in
    a picker-style grid, and file only the tapped items through attach(). The
    staging list is ephemeral — it lives outside S, is never saved, and never
    reaches an export. Pair-line bindings a staging parse registers in TAUGHT
    are snapshotted and rolled back for anything not actually added. ---------- */
-const DUMP={list:[],sel:new Set(),snap:null,defHd:'',newHd:'',prevHd:''};
+const DUMP={list:[],sel:new Set(),snap:null,defHd:'',newHd:'',prevHd:'',thumbs:{},pages:{},thumbRun:0};
 const dumpHost=u=>{try{return new URL(u).hostname}catch(e){return u}};
 const dumpPath=u=>{try{const x=new URL(u);return (x.pathname+x.search).slice(0,90)}catch(e){return ''}};
 function dumpRestoreTaught(){if(!DUMP.snap)return;for(const k of Object.keys(TAUGHT))delete TAUGHT[k];Object.assign(TAUGHT,DUMP.snap);DUMP.snap=null}
@@ -1343,37 +3473,45 @@ function stageDump(){const raw=$('#dpta').value;
   .replace(/%23(profile|name)(?:%3D|=)([^\s&#]*)/gi,(_,k,v)=>{try{v=decodeURIComponent(v)}catch(e){}return '#'+k+'='+v})
   .replace(/%20%7C%20/gi,' | ')
   .replace(/https?%3A%2F%2F[^\s#?]*/gi,m=>{const q=m.search(/%3F/i),b=q<0?m:m.slice(0,q),r=q<0?'':m.slice(q).replace(/^%3F/i,'?');try{return decodeURIComponent(b)+r}catch(e){return b.replace(/%3A/gi,':').replace(/%2F/gi,'/')+r}});
- const lines=raw.split(/\r?\n/).flatMap(l0=>/%23profile(?:=|%3D)/i.test(l0)?l0.split(/%0d%0a|%0a|%0d/gi).map(fixEnc):[l0]);
+ const lines=raw.split(/\r?\n/).flatMap(l0=>l0.split(/%250d%250a|%250a|%250d|%0d%0a|%0a|%0d/gi).map(s=>/%23(?:profile|name)(?:=|%3D)|%26(?:profile|name)(?:=|%3D)|https?%3A%2F%2F|%20%7C%20/i.test(s)?fixEnc(s):s.replace(/(?:%2520|%250d|%250a|%20|%0d|%0a)+$/gi,'')));
  dumpRestoreTaught();DUMP.snap={...TAUGHT};
  const have=new Set(S.items.map(i=>normKey(i.url)));
  DUMP.list=[];
  for(const l0 of lines){const l=l0.trim();if(!l)continue;
   const tm=l.match(/[#&]profile=([a-zA-Z0-9_.-]+)/i);
   let p1;try{p1=parse(l)}catch(e){continue}
-  const isPair=l.includes('|')&&p1.items.length===1&&isDirect(p1.items[0].url)&&/^https?:\/\//i.test(strip(l.split('|')[0]));
-  const pg0=isPair?strip(l.split('|')[0]):'';
-  for(const it of p1.items){const k=normKey(it.url),rawTag=isPair?(tm?tm[1]:''):it.ch,tag=rawTag?alias(rawTag):'',page=pg0||((it.source&&isDirect(it.url))?strip(it.source):''),type=(it.type==='video'&&!isDirect(it.url))?'webpage':it.type;
-   DUMP.list.push({url:it.url,type,tag,page,dupe:have.has(k),rep:false})}
+  const isPair=l.includes('|')&&p1.items.length===1&&isDirect(p1.items[0].url)&&/^https?:\/\//i.test(strip(l.split('|')[0]).replace(TAIL_CLEAN_RE,''));
+  const pg0=isPair?strip(l.split('|')[0]).replace(TAIL_CLEAN_RE,''):'';
+  for(const it of p1.items){const uClean=it.url.replace(/(?:%2520|%250d|%250a|%20|%0d|%0a)+$/gi,''),k=normKey(uClean),rawTag=isPair?(tm?tm[1]:''):it.ch,tag=rawTag?alias(rawTag):'',page=pg0||((it.source&&isDirect(uClean))?strip(it.source):'')||(isDirect(uClean)&&DUMP.pages&&DUMP.pages[k]?DUMP.pages[k]:''),cType=uClean!==it.url?(isDirect(uClean)?'video':classify(uClean)):it.type,type=(cType==='video'&&!isDirect(uClean))?'webpage':cType;
+   DUMP.list.push({url:uClean,type,tag,page,dupe:have.has(k),rep:false})}
   dumpRestoreTaught();DUMP.snap={...TAUGHT}}
  dumpRestoreTaught();
  {const seen=new Set();for(const e of DUMP.list){const k=normKey(e.url);e.rep=seen.has(k);seen.add(k)}}
  {const ts=[...new Set(DUMP.list.map(e=>e.tag).filter(Boolean))];DUMP.defHd=ts.length===1?ts[0]:'';DUMP.newHd='';DUMP.prevHd=''}
+ pullDumpThumbsSync();
  DUMP.sel=new Set();dumpRender(true);
+ pullDumpThumbsAsync();
  $('#dpstat').textContent=DUMP.list.length?('Staged '+DUMP.list.length+' \u2014 tap the ones you want, then Add selected.'):'Nothing stageable in that paste.'}
+function extractThumbFromHtml(html,pg,kind){if(!html||!pg)return null;try{const eng=createHarvestEngine(pg),doc=new DOMParser().parseFromString(html,'text/html');if(eng.isLoginOrErrorWall(doc,pg,pg))return null;return eng.extractPostThumb(doc,pg,kind)}catch(e){return null}}
+function pullDumpThumbsSync(){for(const e of DUMP.list){if(e.type!=='video'&&e.type!=='webpage')continue;const k=normKey(e.url);if(DUMP.thumbs[k])continue;const pg=e.type==='webpage'?strip(e.url):(e.page||'');if(pg&&HC.has(pg)){const th=extractThumbFromHtml(HC.get(pg),pg,e.type==='video'?'video':'link');if(th)DUMP.thumbs[k]=th}}}
+function pullDumpThumbsAsync(){const run=++DUMP.thumbRun,todo=DUMP.list.filter(e=>{if(e.type!=='video'&&e.type!=='webpage')return false;const k=normKey(e.url);if(DUMP.thumbs[k])return false;const pg=e.type==='webpage'?strip(e.url):(e.page||'');return!!(pg&&!linksOnlyFor(pg))});
+ if(!todo.length)return;const q=[...todo];
+ const work=async()=>{while(q.length&&run===DUMP.thumbRun){const e=q.shift(),k=normKey(e.url);if(DUMP.thumbs[k])continue;const pg=e.type==='webpage'?strip(e.url):(e.page||'');if(!pg||linksOnlyFor(pg))continue;const h=await pageHtml(pg);if(run!==DUMP.thumbRun)return;const th=extractThumbFromHtml(h,pg,e.type==='video'?'video':'link');if(th){DUMP.thumbs[k]=th;dumpRender()}}};
+ Promise.all([work(),work(),work()])}
 const dpStyle=(dupe,sel)=>`position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/4;background:var(--field);cursor:pointer;${dupe?'opacity:.5;':''}${sel?'outline:3px solid #10b981;outline-offset:-3px':''}`;
 const dpCheck='<span data-ck="1" style="position:absolute;top:6px;right:6px;background:#10b981;color:#000;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px">\u2713</span>';
 function dumpRender(reset){const have=new Set(S.items.map(i=>normKey(i.url)));
  DUMP.list.forEach((e,k)=>{e.dupe=have.has(normKey(e.url));if(e.dupe)DUMP.sel.delete(k)});
  $('#chdp').textContent=DUMP.list.length;
- $('#dpgrid').innerHTML=DUMP.list.map((e,k)=>{const sel=DUMP.sel.has(k),cap=e.tag||(e.page?profOf(e.page):''),chip=e.type==='image'?'IMG':e.type==='video'?'VID':'POST';
+ $('#dpgrid').innerHTML=DUMP.list.map((e,k)=>{const sel=DUMP.sel.has(k),cap=e.tag||(e.page?profOf(e.page):''),chip=e.type==='image'?'IMG':e.type==='video'?'VID':'POST',th=(e.type==='video'||e.type==='webpage')?(DUMP.thumbs&&DUMP.thumbs[normKey(e.url)]):'';
   const media=e.type==='image'?`<img src="${esc(e.url)}" data-s="${esc(e.url)}" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`
-   :e.type==='video'?`<video src="${esc(e.url)}" data-s="${esc(e.url)}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block"></video>`
-   :`<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:8px;box-sizing:border-box"><div style="font-weight:700;font-size:12px;color:var(--ink);word-break:break-all">${esc(dumpHost(e.url))}</div><div style="font-size:10px;color:var(--dim);word-break:break-all">${esc(dumpPath(e.url))}</div></div>`;
+   :e.type==='video'?(th?`<img src="${esc(th)}" data-s="${esc(th)}" data-thumb-kind="video-poster" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:`<video src="${esc(e.url)}" data-s="${esc(e.url)}" referrerpolicy="no-referrer" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block"></video>`)
+   :(th?`<img src="${esc(th)}" data-s="${esc(th)}" data-thumb-kind="post-og" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:`<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:8px;box-sizing:border-box"><div style="font-weight:700;font-size:12px;color:var(--ink);word-break:break-all">${esc(dumpHost(e.url))}</div><div style="font-size:10px;color:var(--dim);word-break:break-all">${esc(dumpPath(e.url))}</div></div>`);
   return `<div data-dk="${k}" style="${dpStyle(e.dupe,sel)}">${media}<span style="position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">${chip}</span>${cap?`<span style="position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">@${esc(alias(cap))}</span>`:''}${e.dupe?'<span style="position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.65);color:#ffb36b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px">IN LIBRARY</span>':''}${sel?dpCheck:''}</div>`}).join('');
  $('#dpgrid').querySelectorAll('img').forEach(im=>{im.addEventListener('error',()=>imgFail(im))});
  dumpFillProf(reset)}
 function dumpClear(keep){dumpRestoreTaught();for(const pr of keep||[]){TAUGHT[pr.page]=TAUGHT[pr.page.replace(/\/+$/,'')]=pr.url}
- DUMP.list=[];DUMP.sel.clear();DUMP.defHd='';DUMP.newHd='';DUMP.prevHd='';dumpRender(true)}
+ DUMP.thumbRun++;DUMP.list=[];DUMP.sel.clear();DUMP.thumbs={};DUMP.pages={};DUMP.defHd='';DUMP.newHd='';DUMP.prevHd='';dumpRender(true)}
 $('#dpgrid').onclick=e=>{const t=e.target.closest('[data-dk]');if(!t)return;const k=+t.dataset.dk,en=DUMP.list[k];if(!en||en.dupe)return;
  const on=!DUMP.sel.has(k);if(on)DUMP.sel.add(k);else DUMP.sel.delete(k);
  t.setAttribute('style',dpStyle(en.dupe,on));const ck=t.querySelector('[data-ck]');if(on&&!ck)t.insertAdjacentHTML('beforeend',dpCheck);else if(!on&&ck)ck.remove()};
@@ -1441,9 +3579,9 @@ let chipsT=0;function chips(){if(chipsT)return;chipsT=requestAnimationFrame(()=>
 function chipsNow(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=S.items.filter(isR2Item).length;const cd=$('#chdup');if(cd)cd.textContent=dupGroups().reduce((n,g)=>n+g.list.length,0);profSuggest()}
 const short=u=>{try{const x=new URL(strip(u));return x.hostname.replace(/^www\./,'')+x.pathname.replace(/\/$/,'')}catch(e){return u}};
 function renderDisc(){$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';renderRoutes();chips()}
-function renderRoutes(){const el=$('#droutes');if(!el)return;const counts={};S.disc.forEach(u=>{const h=urlHost(u);if(h)counts[h]=(counts[h]||0)+1});const hs=Object.keys(counts).sort();if(!hs.length){el.innerHTML='';return}
- el.innerHTML='<p class="lab" style="margin:10px 0 4px">Site routing — how each saved site\u2019s pages are fetched. Default is the normal fetch. Browser uses the browser proxy (its address lives in Options).</p>'+hs.map(h=>{const r=(S.set.routes&&S.set.routes[h])||'d';return`<div class="li"><div class="t">${esc(h)}<small>${counts[h]} saved page${counts[h]===1?'':'s'}</small></div><button class="pill ${r==='d'?'on':''}" data-r="d" data-h="${esc(h)}">Default</button><button class="pill ${r==='p'?'on':''}" data-r="p" data-h="${esc(h)}">My proxy</button><button class="pill ${r==='b'?'on':''}" data-r="b" data-h="${esc(h)}">Browser</button></div>`}).join('')}
-$('#droutes').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const h=b.dataset.h,v=b.dataset.r;if(!S.set.routes)S.set.routes={};if(v==='d')delete S.set.routes[h];else S.set.routes[h]=v;save();renderRoutes();if(v==='b'&&!(S.set.bproxy||'').trim())toast('Routed to Browser — set the Browser proxy address in Options so it can answer');else toast(v==='d'?h+' — normal fetch':h+(v==='b'?' — pages fetch through the browser proxy':' — your proxy answers first here'))};
+function renderRoutes(){const el=$('#droutes');if(!el)return;const counts={};S.disc.forEach(u=>{const h=urlHost(u);if(h)counts[h]=(counts[h]||0)+1});for(const h of Object.keys(S.set.routes||{}))if(h&&!(h in counts))counts[h]=0;for(const h of Object.keys(S.set.linksOnly||{}))if(h&&!(h in counts))counts[h]=0;const hs=Object.keys(counts).sort();if(!hs.length){el.innerHTML='';return}
+ el.innerHTML='<p class="lab" style="margin:10px 0 4px">Site routing — how each saved site\u2019s pages are fetched. Default is the normal fetch. Browser uses the browser proxy (its address lives in Options). Links only skips post fetches during Harvest.</p>'+hs.map(h=>{const r=(S.set.routes&&S.set.routes[h])||'d',lo=!!(S.set.linksOnly&&S.set.linksOnly[h]);return`<div class="li"><div class="t">${esc(h)}<small>${counts[h]} saved page${counts[h]===1?'':'s'}</small></div><button class="pill ${r==='d'?'on':''}" data-r="d" data-h="${esc(h)}">Default</button><button class="pill ${r==='p'?'on':''}" data-r="p" data-h="${esc(h)}">My proxy</button><button class="pill ${r==='b'?'on':''}" data-r="b" data-h="${esc(h)}">Browser</button><button class="pill ${lo?'on':''}" data-lo="${esc(h)}" title="Harvest collects post links only (zero post fetches)">Links only</button></div>`}).join('')}
+$('#droutes').onclick=e=>{const loBtn=e.target.closest('[data-lo]');if(loBtn){const h=loBtn.dataset.lo;if(!S.set.linksOnly)S.set.linksOnly={};const on=!S.set.linksOnly[h];if(on)S.set.linksOnly[h]=1;else delete S.set.linksOnly[h];save();setDirty(true);renderRoutes();toast(on?h+' — Links-only harvest on':h+' — Links-only harvest off');return}const b=e.target.closest('[data-r]');if(!b)return;const h=b.dataset.h,v=b.dataset.r;if(!S.set.routes)S.set.routes={};if(v==='d')delete S.set.routes[h];else S.set.routes[h]=v;save();setDirty(true);renderRoutes();if(v==='b'&&!(S.set.bproxy||'').trim())toast('Routed to Browser — set the Browser proxy address in Options so it can answer');else toast(v==='d'?h+' — normal fetch':h+(v==='b'?' — pages fetch through the browser proxy':' — your proxy answers first here'))};
 function renderUnl(){const L=unlinked().slice(0,150);$('#ulist').innerHTML=L.map(it=>`<div class="li"><div class="t">@${esc(it.handle)}<small>${esc(short(it.url))}</small></div><button data-u="go" data-id="${it.id}">Go</button><button data-u="open" data-id="${it.id}">Open</button><button data-u="link" data-id="${it.id}">Link</button><button class="danger" data-u="del" data-id="${it.id}">Delete</button></div>`).join('')||'<p class="lab">Everything is linked.</p>';chips()}
 const ACTN=150;let delArm=null;
 function renderAct(){$('#atn').textContent=S.trash.length;$('#aem').hidden=ACTV!=='trash';$('#atr').classList.toggle('on',ACTV==='trash');$('#atr').firstChild.nodeValue=ACTV==='trash'?'Back to all ':'Recently deleted ';
@@ -1499,7 +3637,7 @@ $('#tp-prof').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
  if(b.dataset.p==='grid'){profToGrid(b.dataset.h);return}
  const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;
  if(b.dataset.p==='go')return goItem(it.id);
- if(b.dataset.p==='open')return window.open(it.source,'_blank','noopener');
+ if(b.dataset.p==='open')return window.open(it.source,'_blank','noopener,noreferrer');
  if(profArm!==it.id){profArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(profArm===it.id){profArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  profArm=null;deleteItems([it]);renderProf()};
 function goItem(id){leaveDisc();let i=V.findIndex(x=>x.id===id);if(i<0&&S.mode==='main'){S.filter='all';S.sort='default';S.prof=null;V=vis();i=V.findIndex(x=>x.id===id);render()}if(i<0)return toast('Not in the current feed');closeModal();S.idx=i;jump(i,false);sync()}
@@ -1513,14 +3651,14 @@ $('#dgo').onclick=()=>launchDisc();
 $('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));save();setDirty(true);renderDisc()}};
 let unlArm=null;
 $('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;const u=b.dataset.u;
- if(u==='go')return goItem(it.id);if(u==='open')return window.open(it.url,'_blank','noopener');if(u==='link')return teach(it);
+ if(u==='go')return goItem(it.id);if(u==='open')return window.open(it.url,'_blank','noopener,noreferrer');if(u==='link')return teach(it);
  if(unlArm!==it.id){unlArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(unlArm===it.id){unlArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  unlArm=null;deleteItems([it])};
 $('#atr').onclick=()=>{ACTV=ACTV==='trash'?'all':'trash';renderAct()};
 $('#aem').onclick=()=>ask({title:`Delete ${S.trash.length} items forever?`,desc:'This cannot be undone.',ok:'Empty',onOk:()=>{S.trash=[];LASTDEL=[];$('#upill').hidden=true;save();renderAct()}});
 $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id;if(b.dataset.a==='go')return goItem(id);
  if(b.dataset.a==='edit'){const it=S.items.find(x=>x.id===id);if(it)editLink(it);return}
- if(b.dataset.a==='open'){const it=S.items.find(x=>x.id===id);if(it&&it.source)window.open(it.source,'_blank','noopener');return}
+ if(b.dataset.a==='open'){const it=S.items.find(x=>x.id===id);if(it&&it.source)window.open(it.source,'_blank','noopener,noreferrer');return}
  if(b.dataset.a==='rest'){restoreItems([id]);return}
  if(b.dataset.a==='forever'){S.trash=S.trash.filter(t=>t.item.id!==id);LASTDEL=LASTDEL.map(x=>x.filter(e=>e.it.id!==id)).filter(x=>x.length);if(!LASTDEL.length)$('#upill').hidden=true;save();renderAct();return}
  if(delArm!==id){delArm=id;b.textContent='Confirm?';setTimeout(()=>{if(delArm===id){delArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
@@ -1529,7 +3667,7 @@ $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const 
 $('#rpc').onclick=()=>pasteInto($('#rta'));
 $('#rfl').onclick=()=>{const names=$('#rta').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length)return toast('Paste filenames or links first');r2Confirm(names)};
 $('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');leaveDisc();closeModal();G.fromHome=1;G.prof='r2';G.tab='items';openGrid()};
-$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else if(b.dataset.r==='open'){if(it.source)window.open(it.source,'_blank','noopener')}else editLink(it)};
+$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else if(b.dataset.r==='open'){if(it.source)window.open(it.source,'_blank','noopener,noreferrer')}else editLink(it)};
 /* ---------- options ---------- */
 function optUI(){$('#s-off').value=String(S.set.off);$('#s-mode').value=S.set.mode;$('#s-ad').checked=S.set.ad;$('#s-mute').checked=S.muted;$('#s-shuf').checked=S.set.shuf;$('#s-sniff').checked=S.set.sniff;$('#s-proxy').value=S.set.proxy||'';$('#s-bproxy').value=S.set.bproxy||'';const bb=$('#s-bpon');bb.textContent=S.set.bproxyOn===false?'Off':'On';bb.classList.toggle('on',S.set.bproxyOn!==false);$('#s-r2b').value=R2;const pb=$('#s-pon');pb.textContent=S.set.proxyOn===false?'Off':'On';pb.classList.toggle('on',S.set.proxyOn!==false)}
 $('#s-off').onchange=e=>{S.set.off=+e.target.value;save()};$('#s-mode').onchange=e=>{S.set.mode=e.target.value;save()};
@@ -1570,7 +3708,7 @@ function hbAdd(line){const p=line.split('|').map(s=>s.trim()),url=p[0];if(!/^htt
 function hbList(t){const c=HB.cards;let L;if(t==='deck')L=c.filter(x=>!x.deleted&&!x.kept&&!x.bought);else if(t==='keeps')L=c.filter(x=>!x.deleted&&x.kept&&!x.bought);else if(t==='bought')L=c.filter(x=>!x.deleted&&x.bought);else if(t==='grails')L=c.filter(x=>!x.deleted&&(x.grail||x.totalPrice>=200));else L=c.filter(x=>x.deleted);return L.sort((a,b)=>b.sortOrder-a.sortOrder)}
 function hbCounts(){const n={deck:0,keeps:0,grails:0,bought:0,passed:0};for(const c of HB.cards){if(c.deleted){n.passed++;continue}if(c.bought)n.bought++;else if(c.kept)n.keeps++;else n.deck++;if(c.grail||c.totalPrice>=200)n.grails++}return n}
 function hbCard(c){const rk=hbRank(c.brand),k=(c.brand||'').toLowerCase(),nt=HB_NOTE[k],lc=HB_LEGIT.has(k),u=esc(c.url);
- return`<div class="hbc">${c.photoUrl?`<a href="${u}" target="_blank" rel="noopener noreferrer"><img class="hbp" loading="lazy" referrerpolicy="no-referrer" data-s="${esc(c.photoUrl)}" src="${esc(c.photoUrl)}" alt=""></a>`:`<a class="hbp ph" href="${u}" target="_blank" rel="noopener noreferrer">${esc(c.brand||c.platform)}</a>`}
+ return`<div class="hbc">${c.photoUrl?`<a href="${u}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><img class="hbp" loading="lazy" referrerpolicy="no-referrer" data-s="${esc(c.photoUrl)}" src="${esc(c.photoUrl)}" alt=""></a>`:`<a class="hbp ph" href="${u}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">${esc(c.brand||c.platform)}</a>`}
  <div class="hbs"><button data-a="fav">${c.favorite?'Favorited':'Favorite'}</button><button data-a="bought">${c.bought?'Bought':'Mark bought'}</button><span class="rk">${rk>=0?'Rank '+rk:'Unranked'}</span></div>
  <div class="hbg">${c.totalPrice?'$'+c.totalPrice+' total':'Price not listed'} · ${esc(c.brand||'Unknown brand')}</div><div class="hbt2">${esc(c.item||'Untitled listing')}</div>
  <div class="hbm">${[c.size,c.condition,c.platform,c.category,'Found '+c.dateFound].filter(Boolean).map(esc).join(' · ')}</div>
@@ -1580,7 +3718,7 @@ function hbRender(){if(!inB)return;const L=HB.list=hbList(HB.tab),n=hbCounts();i
  $('#hbn').textContent=` ${HB.cards.length-n.passed} finds`;$('#hbtabs').innerHTML=Object.keys(TABN).map(t=>`<button data-t="${t}" class="${t===HB.tab?'on':''}">${TABN[t]}<i>${n[t]}</i></button>`).join('');
  const m=$('#hbm');
  if(!L.length){m.innerHTML=`<div class="hbe">${HB.tab==='deck'?'Your deck is empty.<br>Add links, or use Find listings.':'Nothing here yet.'}</div>`;hbReason();return}
- if(HB.view==='card'){const c=L[HB.idx];m.innerHTML=hbCard(c)+`<div class="hbpg"><i style="width:${(HB.idx+1)/L.length*100}%"></i></div><div class="hbcnt">${HB.idx+1} of ${L.length}</div><div class="hbtri"><button data-a="prev">Prev</button><a class="open" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">Open listing</a>${c.deleted?`<button data-a="restore" data-id="${c.id}">Restore</button>`:`<button data-a="keep" class="${c.kept?'on':''}">${c.kept?'Kept':'Keep'}</button><button data-a="pass" class="pass">Pass</button>`}<button data-a="next">Next</button></div>${HB.tab!=='deck'?'<div style="text-align:center;margin-top:6px"><button class="hbb" data-a="list">Back to list</button></div>':''}`;m.scrollTop=0;const hbi=m.querySelector('img.hbp');if(hbi)hbi.addEventListener('error',()=>{if(!imgFail(hbi)){const a=hbi.parentElement;if(a){a.className='hbp ph';a.textContent=c.brand||c.platform}}})}
+ if(HB.view==='card'){const c=L[HB.idx];m.innerHTML=hbCard(c)+`<div class="hbpg"><i style="width:${(HB.idx+1)/L.length*100}%"></i></div><div class="hbcnt">${HB.idx+1} of ${L.length}</div><div class="hbtri"><button data-a="prev">Prev</button><a class="open" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Open listing</a>${c.deleted?`<button data-a="restore" data-id="${c.id}">Restore</button>`:`<button data-a="keep" class="${c.kept?'on':''}">${c.kept?'Kept':'Keep'}</button><button data-a="pass" class="pass">Pass</button>`}<button data-a="next">Next</button></div>${HB.tab!=='deck'?'<div style="text-align:center;margin-top:6px"><button class="hbb" data-a="list">Back to list</button></div>':''}`;m.scrollTop=0;const hbi=m.querySelector('img.hbp');if(hbi)hbi.addEventListener('error',()=>{if(!imgFail(hbi)){const a=hbi.parentElement;if(a){a.className='hbp ph';a.textContent=c.brand||c.platform}}})}
  else m.innerHTML=L.slice(0,150).map((c,k)=>{const d=c.deleted&&hbDel(c);return`<div class="hbrow" data-a="open" data-k="${k}"><div class="t"><b>${esc(c.item||c.brand||'Listing')}</b><small>${[c.brand,c.size,c.platform,c.totalPrice?'$'+c.totalPrice:'',d&&d.reason].filter(Boolean).map(esc).join(' · ')}</small></div>${c.deleted?`<button class="hbb" data-a="restore" data-id="${c.id}">Restore</button>`:''}</div>`}).join('')+(L.length>150?`<div class="hbe">Showing 150 of ${L.length}</div>`:'');
  hbReason()}
 function hbReason(){const r=$('#hbr'),rec=HB.last;if(!rec||HB.view!=='card'){r.hidden=true;return}r.hidden=false;
@@ -1588,7 +3726,7 @@ function hbReason(){const r=$('#hbr'),rec=HB.last;if(!rec||HB.view!=='card'){r.h
 const hbCur=()=>HB.list[HB.idx];
 function hbGem(c){return`I'm considering this secondhand listing. Please give a full analysis.\n\nLink: ${c.url}\nBrand: ${c.brand||'unknown'}\nItem: ${c.item||'unknown'}\nSize: ${c.size||'unknown'}\nPrice: ${c.totalPrice?'$'+c.totalPrice+' total':'unknown'}\nPlatform: ${c.platform}\n\n1. Authenticity\n2. Fit and official sizing\n3. Pricing analysis\n4. Fabric: feel and function\n5. Season and era identification\n6. Care and condition`}
 const hbSize=()=>{const s=HB.prefs.sizes[HB.fsz]||'';return HB.fsz==='tops'||HB.fsz==='bottoms'?s.replace(/[-–]/g,' '):s};
-function hbLinks(){const b=($('#hbfb')||{}).value||'',q=encodeURIComponent((b+' '+hbSize()).trim());return[['Depop',`https://www.depop.com/search/?q=${q}`],['eBay',`https://www.ebay.com/sch/i.html?_nkw=${q}&_sop=10`],['Poshmark',`https://poshmark.com/search?query=${q}&sort_by=added_desc`],['Mercari',`https://www.mercari.com/search/?keyword=${q}`],['Grailed',`https://www.grailed.com/shop?query=${q}`]].map(([n,u])=>`<a class="hbb" href="${esc(u)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">${n}</a>`).join('')}
+function hbLinks(){const b=($('#hbfb')||{}).value||'',q=encodeURIComponent((b+' '+hbSize()).trim());return[['Depop',`https://www.depop.com/search/?q=${q}`],['eBay',`https://www.ebay.com/sch/i.html?_nkw=${q}&_sop=10`],['Poshmark',`https://poshmark.com/search?query=${q}&sort_by=added_desc`],['Mercari',`https://www.mercari.com/search/?keyword=${q}`],['Grailed',`https://www.grailed.com/shop?query=${q}`]].map(([n,u])=>`<a class="hbb" href="${esc(u)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="text-decoration:none">${n}</a>`).join('')}
 function hbBrandRows(){const q=(($('#hbbq')||{}).value||'').trim().toLowerCase(),L=HB.prefs.brands.filter(b=>!q||b.n.toLowerCase().includes(q)).sort((a,b)=>b.r-a.r||a.n.localeCompare(b.n));
  $('#hbbl').innerHTML=L.slice(0,80).map(b=>`<div class="br"><span>${esc(b.n)}${HB_LEGIT.has(b.n.toLowerCase())?' (verify)':''}</span>${[0,1,2,3].map(r=>`<button data-a="prank" data-n="${esc(b.n)}" data-r="${r}" class="${b.r===r?'on':''}">${r}</button>`).join('')}<button class="x" data-a="pdel" data-n="${esc(b.n)}" aria-label="Remove">x</button></div>`).join('')+(L.length>80?`<p>Showing 80 of ${L.length}. Search to narrow.</p>`:'')}
 function hbPanel(name){const s=$('#hbs'),b=s.firstElementChild;HB.panel=name;HB.pull=0;
