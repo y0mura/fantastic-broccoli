@@ -117,18 +117,27 @@ body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 #gs{flex:1;overflow:auto;scrollbar-width:none;overscroll-behavior:contain;padding-top:calc(env(safe-area-inset-top,0px) + 62px);touch-action:pan-x pan-y}
 #gs::-webkit-scrollbar{display:none}#grid.iscol #gs{padding-top:0}
 .gem{padding:40vh 20px;text-align:center;color:var(--dim)}
-.tile{position:relative;overflow:hidden;background:var(--panel);contain:layout paint;content-visibility:auto}
+.tile{position:relative;overflow:hidden;background:var(--panel);contain:layout paint}
 .tile.selon{outline:3px solid var(--acc);outline-offset:-3px}
 .tile .selb{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--acc);color:var(--acc-ink);font:900 13px/22px sans-serif;text-align:center;z-index:5;pointer-events:none}
 .tile .tm{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tile .ph{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;color:var(--dim);padding:8px;background:radial-gradient(120% 80% at 50% 0,var(--panel),var(--bg));font-size:11px;word-break:break-all}
-.tile .ph.lk{background:var(--field);opacity:.55}
-.tile .ph.vid-ph{background:radial-gradient(120% 90% at 50% 10%,#1d202d,var(--bg));color:var(--dim)}
-.tile .ph.vid-ph svg{width:28px;height:28px;margin:0 auto;fill:currentColor;stroke:none;opacity:.72}
-.tile .vbadge{position:absolute;right:6px;bottom:6px;z-index:2;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;display:grid;place-items:center;pointer-events:none;border:1px solid rgba(255,255,255,.18)}
-.tile .vbadge svg{width:11px;height:11px;fill:currentColor;stroke:none;margin-left:1px}
+.tile .ph.lk{background:var(--field);opacity:.78}
+.tile .vbadge,.tile .lbadge{position:absolute;right:6px;bottom:6px;z-index:3;width:21px;height:21px;border-radius:50%;background:rgba(0,0,0,.58);color:#fff;display:grid;place-items:center;pointer-events:none;border:1px solid rgba(255,255,255,.18)}
+.tile .vbadge svg{width:10px;height:10px;fill:currentColor;stroke:none;margin-left:1px}
+.tile .lbadge svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.tile.playing{outline:2px solid var(--acc);outline-offset:-2px}
 .tile.playing .vbadge{display:none}
-.tile .tap-vid{z-index:1;background:#000}
+.tile .tap-vid{z-index:2;background:#000}
+.tile .pframe{z-index:1;background:#000;pointer-events:none}
+.tile .pload,.tile .pfail{position:absolute;inset:0;display:none;place-items:center;pointer-events:none;z-index:1}
+.tile[data-pstate=wait] .pload{display:flex;align-items:center;justify-content:center;gap:5px;background:radial-gradient(120% 90% at 50% 10%,#1a1c28,var(--bg))}
+.tile .pload i{width:6px;height:6px;border-radius:50%;background:var(--dim);opacity:.35;animation:pdot 1.1s ease-in-out infinite}
+.tile .pload i:nth-child(2){animation-delay:.18s}.tile .pload i:nth-child(3){animation-delay:.36s}
+@keyframes pdot{0%,80%,100%{opacity:.25;transform:scale(.85)}40%{opacity:.9;transform:scale(1.15)}}
+.tile[data-pstate=fail] .pfail{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px;text-align:center;color:var(--dim);background:radial-gradient(120% 90% at 50% 10%,#24181c,var(--bg));font-size:10px}
+.tile .pfail svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.65}
+.tile[data-pstate=ready] .pload,.tile[data-pstate=ready] .pfail{display:none}
 .gv{width:100%}
 .cw-wrap{width:100%}
 .cw-seg{margin-bottom:0}
@@ -357,7 +366,7 @@ body.hb #top,body.hb #rail,body.hb #feed,body.hb #grid,body.hb #modal,body.hb #r
  <div class="row" style="justify-content:space-between;margin-top:0"><h2>Batch URLs</h2><span class="row" style="margin:0"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill" id="mc">✕</button></span></div>
  <div class="row" id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
  <div class="row" id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill" id="bkc" hidden style="color:#ff8d8d">Delete</button><button class="pill" id="bkx">✕</button></div>
- <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span><span class="lab" id="bver" style="margin-left:auto">Build Nov 19 · #11</span></div>
+ <div class="row tabs"><span class="seg"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></span><span class="lab" id="bver" style="margin-left:auto">Build Nov 20 · #14</span></div>
  <div id="tp-paste">
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
@@ -525,7 +534,7 @@ function parse(raw){const items=[],extra=[],seen=new Set(),banks={1:[],2:[],3:[]
   }catch(err){console.warn('skipped bad line',err)}}
  items.forEach(i=>i.handle=i.ch?alias(i.ch):profOf(i.source||i.url));
  return{items,extra,banks,trims,cfg,disc,hbc,hbd,hbp,pics,picsL,names,favs}}
-function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.names)for(const it of p.items){const nm2=p.names[tk(it.url)];if(nm2)it.name=nm2}if(p.pics)for(const[h,u]of Object.entries(p.pics))PFP[alias(h)]=u;if(p.picsL)for(const[h,id]of Object.entries(p.picsL)){const m=/^i(\d+)$/.exec(id),it=m?p.items[+m[1]-1]:null;if(it&&it.handle===alias(h))PFP[alias(h)]=it.url}if(p.favs)p.favs.forEach(h=>FAVP.add(alias(h)));if(p.cfg){cfgSet(p.cfg)}invalidateLib()}
+function applyParsed(p){S.items=p.items;if(p.extra.length)S.extra=p.extra;for(let n=1;n<=5;n++)if(p.banks[n].length){const s=new Set();S.banks[n]=p.banks[n].filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true})}Object.assign(TRIMS,p.trims);if((p.hbc&&p.hbc.length)||(p.hbd&&p.hbd.length)||p.hbp){if(p.hbc&&p.hbc.length)HB.cards=p.hbc;if(p.hbd&&p.hbd.length)HB.dels=p.hbd;if(p.hbp)HB.prefs=p.hbp;hbSave();hbRender()}if(p.disc&&p.disc.length)S.disc=[...new Set(p.disc.map(strip))];if(p.names)for(const it of p.items){const nm2=p.names[tk(it.url)];if(nm2)it.name=nm2}if(p.pics)for(const[h,u]of Object.entries(p.pics))PFP[alias(h)]=u;if(p.picsL)for(const[h,id]of Object.entries(p.picsL)){const m=/^i(\d+)$/.exec(id),it=m?p.items[+m[1]-1]:null;if(it&&it.handle===alias(h))PFP[alias(h)]=it.url}if(p.favs)p.favs.forEach(h=>FAVP.add(alias(h)));if(p.cfg){cfgSet(p.cfg)}if(typeof clearGridCache==='function')clearGridCache();invalidateLib()}
 const pageOf=it=>{const s=it.source&&strip(it.source);if(s&&s!==strip(it.url))return s;const t=Object.keys(TAUGHT).find(k=>strip(TAUGHT[k])===strip(it.url));return t&&strip(t)!==strip(it.url)?strip(t):''};
 const lineOf=it=>{const pg=it.type==='video'?pageOf(it):'';if(pg){const base=pg+' | '+it.url;return it.ch&&it.handle&&it.handle!==profOf(pg)?base+'#profile='+it.handle:base}
  return it.url+(((it.type==='video')||it.ch)&&it.handle?'#profile='+it.handle:'')+(it.name?'#name='+encodeURIComponent(it.name).replace(/%20/g,'%2520'):'')};
@@ -556,10 +565,39 @@ const tally=p=>{const c={video:0,image:0,webpage:0};p.items.forEach(i=>c[i.type]
 let LIB_REV=1,SHUF_REV=1,PROF_IDX=null,VIS_CACHE=null,DUP_CACHE=null,UNL_CACHE=null,R2_CACHE=null;
 const AZ_COLL=typeof Intl!=='undefined'&&Intl.Collator?new Intl.Collator(undefined,{sensitivity:'base'}):null;
 function invalidateLib(keepTiles){LIB_REV++;PROF_IDX=null;VIS_CACHE=null;DUP_CACHE=null;UNL_CACHE=null;R2_CACHE=null;if(!keepTiles&&typeof invalidateAllViews==='function')invalidateAllViews()}
-function invalidateItem(id,clearStill){if(id&&typeof TC!=='undefined')TC.delete(id);if(clearStill&&typeof STILL_CACHE!=='undefined'&&id){const it=S.items.find(x=>x.id===id);if(it)STILL_CACHE.delete(tk(it.stream||it.url))}invalidateLib(true);if(typeof invalidateAllViews==='function')invalidateAllViews()}
+const VPREV_KEY='reelflow_vprev_v1';let VPIC={},VPREV={};
+try{const _vp=JSON.parse(localStorage.getItem(VPREV_KEY)||'null');if(_vp&&typeof _vp==='object'){if(_vp.pic&&typeof _vp.pic==='object')VPIC=_vp.pic;if(_vp.prev&&typeof _vp.prev==='object')VPREV=_vp.prev}}catch(e){}
+function saveVPrev(){try{localStorage.setItem(VPREV_KEY,JSON.stringify({pic:VPIC,prev:VPREV}))}catch(e){}}
+const previewKeyOf=it=>tk(it.stream||it.url);
+const previewStartSec=it=>{const k=previewKeyOf(it);if(VPREV[k]&&typeof VPREV[k].startSec==='number'&&isFinite(VPREV[k].startSec)&&VPREV[k].startSec>=0)return VPREV[k].startSec;const tr=TRIMS[k];return(tr&&typeof tr.startSec==='number'&&tr.startSec>=0)?tr.startSec:0};
+const stillCacheKey=it=>previewKeyOf(it)+'@'+previewStartSec(it).toFixed(1);
+let _idbP=null;
+function openStillDB(){if(_idbP)return _idbP;if(typeof indexedDB==='undefined'||location.protocol==='about:'||location.origin==='null')return(_idbP=Promise.resolve(null));
+ _idbP=new Promise(res=>{try{const req=indexedDB.open('rf_stills_v1',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('stills'))db.createObjectStore('stills')};req.onsuccess=()=>res(req.result);req.onerror=()=>res(null)}catch(e){res(null)}});return _idbP}
+const IDB_MAX_ENTRIES=900,IDB_MAX_BYTES=30*1024*1024;let _idbPruneT=0,_idbPruneIdle=0,_idbLastPrune=0;
+function stillRecBytes(rec){if(!rec||!rec.frames)return 0;let b=0;for(let i=0;i<rec.frames.length;i++)b+=(rec.frames[i]?rec.frames[i].length:0);return b}
+async function idbGet(k){const db=await openStillDB();if(!db)return null;return new Promise(res=>{try{const tx=db.transaction('stills','readonly');const r=tx.objectStore('stills').get(k);r.onsuccess=()=>{const v=r.result||null;if(v&&(!v.at||Date.now()-v.at>300000)){v.at=Date.now();idbTouch(k,v)}res(v)};r.onerror=()=>res(null)}catch(e){res(null)}})}
+function idbTouch(k,val){openStillDB().then(db=>{if(!db)return;try{const tx=db.transaction('stills','readwrite');tx.objectStore('stills').put(val,k)}catch(e){}})}
+async function idbPut(k,val){const db=await openStillDB();if(!db)return;return new Promise(res=>{try{const tx=db.transaction('stills','readwrite');tx.objectStore('stills').put(val,k);tx.oncomplete=()=>{scheduleIdbPrune();res()};tx.onerror=()=>res()}catch(e){res()}})}
+async function idbDel(k){const db=await openStillDB();if(!db)return;return new Promise(res=>{try{const tx=db.transaction('stills','readwrite');tx.objectStore('stills').delete(k);tx.oncomplete=tx.onerror=()=>res()}catch(e){res()}})}
+function scheduleIdbPrune(){if(_idbPruneT||_idbPruneIdle)return;const wait=Math.max(1500,15000-(Date.now()-_idbLastPrune));
+ _idbPruneT=setTimeout(()=>{_idbPruneT=0;if(typeof requestIdleCallback==='function')_idbPruneIdle=requestIdleCallback(()=>{_idbPruneIdle=0;pruneStillDB()},{timeout:4000});else pruneStillDB()},wait)}
+async function pruneStillDB(){_idbLastPrune=Date.now();const db=await openStillDB();if(!db)return{pruned:0,kept:0,bytes:0};
+ const meta=await new Promise(res=>{const list=[];try{const tx=db.transaction('stills','readonly');const req=tx.objectStore('stills').openCursor();
+  req.onsuccess=()=>{const c=req.result;if(!c)return res(list);const k=String(c.key||''),v=c.value||{};list.push({k,at:v.at||0,bytes:stillRecBytes(v),cust:k.startsWith('custom:')});c.continue()};
+  req.onerror=()=>res(list)}catch(e){res(list)}});
+ let totalBytes=0;for(let i=0;i<meta.length;i++)totalBytes+=meta[i].bytes;
+ if(meta.length<=IDB_MAX_ENTRIES&&totalBytes<=IDB_MAX_BYTES)return{pruned:0,kept:meta.length,bytes:totalBytes};
+ const evictable=meta.filter(m=>!m.cust).sort((a,b)=>a.at-b.at);
+ const drop=[];let count=meta.length;
+ for(let i=0;i<evictable.length&&(count>IDB_MAX_ENTRIES||totalBytes>IDB_MAX_BYTES);i++){drop.push(evictable[i].k);count--;totalBytes-=evictable[i].bytes}
+ if(!drop.length)return{pruned:0,kept:meta.length,bytes:totalBytes};
+ await new Promise(res=>{try{const tx=db.transaction('stills','readwrite'),st=tx.objectStore('stills');for(let i=0;i<drop.length;i++){st.delete(drop[i]);STILL_CACHE.delete(drop[i])}tx.oncomplete=tx.onerror=()=>res()}catch(e){res()}});
+ return{pruned:drop.length,kept:count,bytes:totalBytes}}
+function invalidateItem(id,clearStill){if(id&&typeof TC!=='undefined')TC.delete(id);if(clearStill&&typeof STILL_CACHE!=='undefined'&&id){const it=S.items.find(x=>x.id===id);if(it){const pk=previewKeyOf(it);for(const k of [...STILL_CACHE.keys()])if(k===pk||k.startsWith(pk+'@'))STILL_CACHE.delete(k)}}invalidateLib(true);if(typeof invalidateAllViews==='function')invalidateAllViews()}
 function getProfileIndex(){if(PROF_IDX&&PROF_IDX.rev===LIB_REV)return PROF_IDX;
- const byHandle=new Map(),avatarByHandle=new Map(),profiles=[];
- for(let i=0;i<S.items.length;i++){const it=S.items[i],h=it.handle;let e=byHandle.get(h);if(!e){e={h,items:[],seq:0,firstImg:null};byHandle.set(h,e);profiles.push(e)}e.items.push(it);if(it.seq>e.seq)e.seq=it.seq;if(!e.firstImg&&it.type==='image')e.firstImg=it}
+ const byHandle=new Map(),entries=new Map(),avatarByHandle=new Map(),profiles=[];
+ for(let i=0;i<S.items.length;i++){const it=S.items[i],h=it.handle;let e=entries.get(h);if(!e){e={h,items:[],seq:0,firstImg:null};entries.set(h,e);byHandle.set(h,e.items);profiles.push(e)}e.items.push(it);if(it.seq>e.seq)e.seq=it.seq;if(!e.firstImg&&it.type==='image')e.firstImg=it}
  for(const e of profiles){const pick=PFP[e.h];let av=null;if(pick){const pk=tk(pick);av=e.items.find(i=>tk(i.url)===pk)||null}if(!av)av=e.firstImg;avatarByHandle.set(e.h,av)}
  const names=[...byHandle.keys()].sort((a,b)=>AZ_COLL?AZ_COLL.compare(a,b):a.localeCompare(b));
  PROF_IDX={rev:LIB_REV,byHandle,avatarByHandle,profiles,names};return PROF_IDX}
@@ -630,7 +668,7 @@ function extract(it){const page=strip(it.source||it.url);if(EX.has(page))return 
   try{const s=findStream(await fetchHtml(page),page);if(s){TAUGHT[page]=TAUGHT[page.replace(/\/+$/,'')]=s;save()}return s}catch(e){return null}})();
  EX.set(page,p);p.then(s=>{if(!s)setTimeout(()=>EX.delete(page),30000)});return p}
 /* ---------- feed ---------- */
-let V_INDEX=new Map(),FEED_CARDS=new Map(),FEED_WIN={s:0,e:0},F_TOP=null,F_BOT=null,FEED_H=0;
+let V_INDEX=new Map(),FEED_CARDS=new Map(),FEED_WIN={s:0,e:0},F_TOP=null,F_BOT=null;
 function vis(){if(S.mode==='disc')return S.discItems;
  const key=LIB_REV+'|'+SHUF_REV+'|'+S.filter+'|'+S.sort+'|'+(S.prof||'');
  if(VIS_CACHE&&VIS_CACHE.key===key)return VIS_CACHE.list;
@@ -643,14 +681,13 @@ function vis(){if(S.mode==='disc')return S.discItems;
  else if(S.sort==='old')a.sort((x,y)=>x.seq-y.seq);
  else if(S.sort==='fav')a.sort((x,y)=>(FAVP.has(y.handle)?1:0)-(FAVP.has(x.handle)?1:0));
  else if(S.sort==='az')a.sort((x,y)=>{const ax=x.handle||x.url,ay=y.handle||y.url;return AZ_COLL?AZ_COLL.compare(ax,ay):(ax<ay?-1:ax>ay?1:0)});
- if(S.sort==='default'&&S.shuf&&S.shuf.length){const pos=new Map(S.shuf.map((id,k)=>[id,k]));a.sort((x,y)=>{const px=pos.has(x.id)?pos.get(x.id):1e9+x.seq,py=pos.has(y.id)?pos.get(y.id):1e9+y.seq;return px-py})}
+ if(S.sort==='default'&&S.shuf&&S.shuf.length){const pos=new Map();for(let k=0;k<S.shuf.length;k++)pos.set(S.shuf[k],k);a.sort((x,y)=>{const px=pos.has(x.id)?pos.get(x.id):1e9+x.seq,py=pos.has(y.id)?pos.get(y.id):1e9+y.seq;return px-py})}
  const idxMap=new Map();for(let k=0;k<a.length;k++)idxMap.set(a[k].id,k);
  VIS_CACHE={key,list:a,idxMap};V_INDEX=idxMap;return a}
 const feedCard=i=>FEED_CARDS.get(i)||null;
 function feedCardH(){return feed.clientHeight||innerHeight||844}
 function syncFeedWindow(center){if(!V.length||!F_TOP||!F_BOT)return;
  const n=V.length,s0=Math.max(0,center-2),e0=Math.min(n,center+3),ch=feedCardH();
- FEED_H=ch;
  if(FEED_WIN.s===s0&&FEED_WIN.e===e0&&FEED_CARDS.size===e0-s0){
   F_TOP.style.height=(s0*ch)+'px';F_BOT.style.height=((n-e0)*ch)+'px';return}
  for(const[k,sec]of [...FEED_CARDS]){if(k<s0||k>=e0){if(HYD.has(sec))dehyd(sec);sec.remove();FEED_CARDS.delete(k)}}
@@ -769,7 +806,7 @@ $('#fh').onclick=()=>{const cl=document.body.classList.toggle('cl');$('#rs').hid
 $('#rm').onclick=()=>{S.muted=!S.muted;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud()};
 $('#rh').onclick=()=>{document.body.classList.add('cl');$('#rs').hidden=false};
 $('#rs').onclick=()=>{document.body.classList.remove('cl');$('#rs').hidden=true};
-addEventListener('keydown',e=>{if(inB||G.open||$('#modal').classList.contains('open')||$('#mm').classList.contains('open')||$('#gate').classList.contains('open')||pop.classList.contains('open')||(e.target&&e.target.matches&&e.target.matches('input,textarea,select,[contenteditable]')))return;if(e.key==='ArrowDown')go(1);else if(e.key==='ArrowUp')go(-1);else if(e.key===' '){e.preventDefault();const v=feed.querySelector(`.card[data-i="${S.idx}"] video`);if(v)tog(v)}else if(e.key==='Escape')zout()});
+addEventListener('keydown',e=>{if(G.open&&e.key==='Escape'&&TAP_PREVIEW){releaseTapPreview();return}if(inB||G.open||$('#modal').classList.contains('open')||$('#mm').classList.contains('open')||$('#gate').classList.contains('open')||pop.classList.contains('open')||(e.target&&e.target.matches&&e.target.matches('input,textarea,select,[contenteditable]')))return;if(e.key==='ArrowDown')go(1);else if(e.key==='ArrowUp')go(-1);else if(e.key===' '){e.preventDefault();const v=feed.querySelector(`.card[data-i="${S.idx}"] video`);if(v)tog(v)}else if(e.key==='Escape')zout()});
 /* ---------- dropdown popover, feed zoom, thumbnail trim ---------- */
 const pop=$('#pop');let POPH=null,POPB=null;
 function openPop(btn,html,hd,up){if(pop.classList.contains('open')&&POPB===btn){closePop();return}POPB=btn;pop.innerHTML=html;POPH=hd;const hz=document.body.classList.contains('hzon');pop.classList.toggle('hz',hz);pop.classList.add('open');const r=btn.getBoundingClientRect(),w=pop.offsetWidth,h=pop.offsetHeight;if(hz){pop.style.bottom='auto';pop.style.left=Math.min(innerWidth-8,Math.max(h+8,r.right+8+h))+'px';pop.style.top=Math.max(8,Math.min(innerHeight-w-8,r.top+r.height/2-w/2))+'px';pop.style.transformOrigin='top left';return}pop.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+'px';if(up){pop.style.top='auto';pop.style.bottom=(innerHeight-r.top+8)+'px';pop.style.transformOrigin='bottom left'}else{pop.style.bottom='auto';pop.style.top=(r.bottom+8)+'px';pop.style.transformOrigin='top left'}}
@@ -801,10 +838,10 @@ $('#ed').onclick=()=>{S.exp=Math.max(50,S.exp-10);applyEnh()};$('#eu').onclick=(
 $('#sd').onclick=()=>{S.sharp=Math.max(-3,S.sharp-1);applyEnh()};$('#su').onclick=()=>{S.sharp=Math.min(6,S.sharp+1);applyEnh()};
 /* ---------- batch modal ---------- */
 const modal=$('#modal');
-let cntT=0;function openModal(){ta.value=boxText();$('#dc').textContent=S.items.length+' URLs';bnk();modal.classList.add('open');chipsNow();optUI();$('#bkp').hidden=true}
+let cntT=0,taRev=-1;function openModal(){if(taRev!==LIB_REV){ta.value=boxText();taRev=LIB_REV}$('#dc').textContent=S.items.length+' URLs';bnk();modal.classList.add('open');chipsNow();optUI();$('#bkp').hidden=true}
 const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='main'&&!G.open){FEEDDIRTY=0;render()}};
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
-ta.addEventListener('input',()=>{clearTimeout(cntT);cntT=setTimeout(count,180)});
+ta.addEventListener('input',()=>{taRev=-1;clearTimeout(cntT);cntT=setTimeout(count,180)});
 function commit(){S.mode='main';S.idx=0;S.prof=null;save();setDirty(true);render()}
 $('#bmf').onclick=()=>{if(S.mode==='disc')exitDisc();else openModal()};$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener,noreferrer')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
 $('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
@@ -816,21 +853,21 @@ $('#ma').onclick=()=>{const p=post(parse(ta.value)),have=new Set(S.items.map(i=>
 $('#mp').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim())return toast('Clipboard is empty');
  const add=dt(t);ta.value=(ta.value.trim()?ta.value.replace(/\s*$/,'\n'):'')+add;count();toast('Pasted')}catch(e){toast('Clipboard blocked: long-press the box and paste')}};
 $('#my').onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);toast('Copied')}catch(e){ta.select();document.execCommand('copy');toast('Copied')}};
-$('#mx').onclick=()=>{ta.value='';count()};
+$('#mx').onclick=()=>{taRev=-1;ta.value='';count()};
 $('#mt').onclick=()=>ta.scrollTo({top:0,behavior:'smooth'});$('#mb').onclick=()=>ta.scrollTo({top:ta.scrollHeight,behavior:'smooth'});
 $('#me').onclick=()=>{if(!S.items.length&&!S.extra.length&&!HB.cards.length&&!HB.dels.length)return toast('Nothing to export');const b=new Blob([exportText()],{type:'text/plain'}),a=document.createElement('a');
  a.href=URL.createObjectURL(b);a.download='transcript.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);setDirty(false);toast('Exported transcript.txt')};
 $('#mi').onclick=()=>$('#fi').click();
 $('#fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;const p=post(parse(await f.text()));e.target.value='';
- if(!p.items.length&&!p.extra.length)return toast('No URLs found in that file');applyParsed(p);save();if(inB){toast('Imported '+tally(p));return}S.mode='main';S.idx=0;S.prof=null;setDirty(false);ta.value=boxText();count();closeModal();G.prof=null;G.tab='items';G.col=0;G.sy=0;if(G.open)gs.scrollTop=0;openGrid();toast('Imported '+tally(p))};
+ if(!p.items.length&&!p.extra.length)return toast('No URLs found in that file');applyParsed(p);save();if(inB){toast('Imported '+tally(p));return}S.mode='main';S.idx=0;S.prof=null;setDirty(false);ta.value=boxText();count();closeModal();G.prof=null;G.tab='items';G.col=0;if(G.open)gs.scrollTop=0;openGrid();toast('Imported '+tally(p))};
 /* ---------- grid, profiles, collage ---------- */
-const G={open:0,tab:'items',size:'m',prof:null,rec:0,psel:0,plist:0,sort:'default',ebb:0,crawl:0,zoom:'0',col:0,cs:2,cz:100,pan:0,bar:1,blow:{},salt:0,sy:0,thumbMode:'pic'};
-const MAX_LIVE_PLAY=3,TC_MAX=500,VIEW_CACHE_MAX=8,STILL_CACHE_MAX=300,COL_SEG=96;
+const G={open:0,tab:'items',size:'m',prof:null,rec:0,psel:0,plist:0,ebb:0,crawl:0,zoom:'0',col:0,cs:2,cz:100,pan:0,bar:1,blow:{},salt:0,prevMode:'still'};
+const MAX_LIVE_PLAY=5,MAX_PAUSED_FRAMES=6,PAUSED_SETTLE_MS=150,TC_MAX=500,VIEW_CACHE_MAX=8,STILL_CACHE_MAX=320,COL_SEG=96;
 let FROM='',GL=[],io=null,crawlRaf=0,panRaf=0,ssT=0,cl=0,ca=0,pl=0,px=0,py=0,pdx=1,pdy=1,ctp=0,spy=0,rlT=0,rlN=0;
-let TAP_PREVIEW=null,ACTIVE_VIEW=null;
-const PLAY=[],TM=new Map(),TC=new Map(),VIEW_CACHE=new Map();
+let TAP_PREVIEW=null,ACTIVE_VIEW=null,scrollActive=false,scrollSettleT=0;
+const PLAY=[],PAUSED_POOL=[],PAUSED_PENDING=new Map(),TC=new Map(),VIEW_CACHE=new Map();
 const STILL_CACHE=new Map(),STILL_CORS_BLOCKED=new Set(),STILL_QUEUE=[],STILL_ENQUEUED=new Set();
-let stillBusy=false,stillGen=0,stillVid=null,stillCan=null,stillCorsNotified=false;
+let stillBusy=false,stillGen=0,stillVid=null,stillCan=null;
 const gr=$('#grid'),gs=$('#gs'),gt=$('#gt'),gbar=$('#gbar');
 const THEMES=['default','day','pitch','slate','matcha','ember'];let THEME='default';
 function applyTheme(t){THEME=THEMES.includes(t)?t:'default';document.body.dataset.theme=THEME;document.querySelectorAll('#thumbs [data-th]').forEach(b=>b.classList.toggle('on',b.dataset.th===THEME))}
@@ -838,13 +875,13 @@ function applyTheme(t){THEME=THEMES.includes(t)?t:'default';document.body.datase
    model — e.g. from the other build's fuller blobs — and re-emits them */
 const sanRoutes=o=>{const m={};if(o&&typeof o==='object'&&!Array.isArray(o))for(const k of Object.keys(o)){const v=o[k],h=String(k).toLowerCase().replace(/^www\./,'');if(/^[a-z0-9.-]+$/.test(h)&&(v==='b'||v==='p'))m[h]=v}return m};
 const sanLinksOnly=o=>{const m={};if(o&&typeof o==='object'&&!Array.isArray(o))for(const k of Object.keys(o)){const v=o[k],h=String(k).toLowerCase().replace(/^www\./,'');if(/^[a-z0-9.-]+$/.test(h)&&(v===1||v===true||v==='1'))m[h]=1}return m};
-const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,gthumb:G.thumbMode,r2base:R2,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:Object.assign({},S.set.routes||{}),linksOnly:Object.assign({},S.set.linksOnly||{}),theme:THEME});
+const cfgGet=()=>({zoom:S.zoom,auto:S.auto,loop:S.loop,rate:S.rate,muted:S.muted,mask:S.mask,enh:S.enh,exp:S.exp,sharp:S.sharp,gsize:G.size,gzoom:G.zoom,gebb:G.ebb?1:0,gcs:G.cs,gcz:G.cz,gprev:G.prevMode,r2base:R2,padj:S.set.off,tmode:S.set.mode,ad:S.set.ad,shuf:S.set.shuf,sniff:S.set.sniff,proxy:S.set.proxy||'',pon:S.set.proxyOn===false?0:1,bproxy:S.set.bproxy||'',bpon:S.set.bproxyOn===false?0:1,routes:Object.assign({},S.set.routes||{}),linksOnly:Object.assign({},S.set.linksOnly||{}),theme:THEME});
 function cfgSet(c){if(!c||typeof c!=='object')return;const n=(v,a,b,d)=>typeof v==='number'&&v>=a&&v<=b?v:d,h=k=>c[k]!==undefined;
  /* Presence-based: a settings blob only changes the keys it carries, so a
     slim export never resets the view prefs already on a device, while
     fuller blobs from other builds still apply everything they carry. */
  if(h('zoom'))S.zoom=String(c.zoom);if(h('auto'))S.auto=n(c.auto,0,60,S.auto);if(h('loop'))S.loop=c.loop!==false;if(h('rate'))S.rate=RATES.includes(c.rate)?c.rate:1;if(h('muted'))S.muted=c.muted!==false;if(h('mask'))S.mask=c.mask!==false;if(h('enh'))S.enh=n(c.enh,0,3,0);if(h('exp'))S.exp=n(c.exp,50,200,100);if(h('sharp'))S.sharp=n(c.sharp,-3,6,0);
- if(h('gsize'))G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';if(h('gzoom'))G.zoom=String(c.gzoom);if(h('gebb'))G.ebb=c.gebb?1:0;if(h('gcs'))G.cs=n(c.gcs,1,3,2);if(h('gcz'))G.cz=n(c.gcz,60,220,100);if(h('gthumb'))G.thumbMode=['pic','live','stills'].includes(c.gthumb)?c.gthumb:'pic';
+ if(h('gsize'))G.size=['s','m','l','xl'].includes(c.gsize)?c.gsize:'m';if(h('gzoom'))G.zoom=String(c.gzoom);if(h('gebb'))G.ebb=c.gebb?1:0;if(h('gcs'))G.cs=n(c.gcs,1,3,2);if(h('gcz'))G.cz=n(c.gcz,60,220,100);if(h('gprev'))G.prevMode=['still','motion','live'].includes(c.gprev)?c.gprev:'still';else if(h('glive'))G.prevMode=c.glive?'live':'still';else if(h('gthumb'))G.prevMode=c.gthumb==='live'?'live':(c.gthumb==='stills'?'motion':'still');
  if(h('padj'))S.set.off=n(c.padj,0,100,0);if(h('tmode'))S.set.mode=['auto','video','image','webpage'].includes(c.tmode)?c.tmode:'auto';if(h('ad'))S.set.ad=c.ad!==false;if(h('shuf'))S.set.shuf=!!c.shuf;if(h('sniff'))S.set.sniff=!!c.sniff;if(h('proxy'))S.set.proxy=typeof c.proxy==='string'?c.proxy:'';if(h('pon'))S.set.proxyOn=!!c.pon;if(h('bproxy'))S.set.bproxy=typeof c.bproxy==='string'?c.bproxy:'';if(h('bpon'))S.set.bproxyOn=!!c.bpon;if(h('routes'))S.set.routes=sanRoutes(c.routes);if(h('linksOnly'))S.set.linksOnly=sanLinksOnly(c.linksOnly);if(h('theme'))applyTheme(c.theme);if(h('r2base')&&typeof c.r2base==='string'&&/^https?:\/\/\S{4,300}$/i.test(c.r2base))R2=c.r2base.replace(/\/+$/,'')
  for(const k of Object.keys(c))if(!(k in cfgGet()))CFGX[k]=c[k]}
 if(CFG0){cfgSet(CFG0)}
@@ -853,88 +890,193 @@ const host=it=>{try{return new URL(strip(it.source||it.url)).hostname.replace(/^
 const hashr=n=>{n=Math.imul(n^61,0x9e3779b1);n^=n>>>16;n=Math.imul(n,0x85ebca6b);n^=n>>>13;return(n>>>0)/4294967296};
 const isDirectVid=it=>!!(it&&it.type==='video'&&(it.stream||isDirect(it.url)));
 const PLAY_BADGE='<span class="vbadge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
-/* O(1) Profile avatar lookup backed by ProfileIndex — never scans S.items or mounts <video> in .av circles */
+const LINK_BADGE='<span class="lbadge" aria-hidden="true">'+svg('link')+'</span>';
+const WAIT_HTML='<div class="pload" aria-hidden="true"><i></i><i></i><i></i></div>';
+const FAIL_ICON='<svg viewBox="0 0 24 24"><path d="M3 3l18 18M7 5h12a2 2 0 012 2v10M17 19H5a2 2 0 01-2-2V7a2 2 0 011-1.7"/></svg>';
+/* O(1) Profile avatar lookup backed by ProfileIndex — used for profile headers/lists, NEVER as a video tile face */
 function avatarItem(h,self){if(self&&self.type==='image'&&self.handle===h)return self;const av=getProfileIndex().avatarByHandle.get(h)||null;return av&&av.type==='image'?av:null}
 function avatarHTML(h,cls,self){const it=avatarItem(h,self),c='av '+(cls||'');if(it&&it.type==='image'){const u=esc(it.url.split('#')[0]);return`<img class="${c}" src="${u}" data-s="${u}" alt="" decoding="async" referrerpolicy="no-referrer">`}
+ const list=getProfileIndex().byHandle.get(h);if(list&&STILL_CACHE.size){for(let i=0;i<list.length;i++){const v=list[i];if(isDirectVid(v)){const st=STILL_CACHE.get(stillCacheKey(v))||STILL_CACHE.get('custom:'+previewKeyOf(v));if(st&&st.frames&&st.frames.length)return`<img class="${c}" src="${st.frames[0]}" alt="" decoding="async">`}}}
  return`<span class="${c}">${esc((h||'?').trim().slice(0,1).toUpperCase()||'?')}</span>`}
-/* Pic-state tile markup: cached tiles NEVER carry a live <video> element or decoder buffer.
-   Images render <img>; direct videos render cached still (if any), else profile poster image + play badge,
-   else lightweight dark video placeholder + play badge. Players mount ONLY on visibility (Live mode) or tap (Pic mode). */
+function setTileState(t,st){if(t)t.dataset.pstate=st}
+/* Video tile markup: ALWAYS represents the video itself (never a profile image or another item's image).
+   Priority: 1) User custom image (VPIC)  2) User custom preview frame (custom:key)  3) Cached video still(s)
+   4) Per-video genuine poster (it.poster if present)  5) Waiting state (3 dots) while offscreen/onscreen capture or paused-frame resolves.
+   Videos get .vbadge; links get .lbadge; images stay completely unmarked. */
 function tileMedia(it){
  if(it.type==='image'){const o=it.url.split('#')[0];return`<img class="tm" data-s="${esc(o)}" alt="" decoding="async" referrerpolicy="no-referrer">`}
  if(isDirectVid(it)){
-  const k=tk(it.stream||it.url),st=STILL_CACHE.get(k);
+  const pk=previewKeyOf(it),customPic=VPIC[pk];
+  if(customPic){const u=esc(customPic.split('#')[0]);return`<img class="tm" data-s="${u}" data-custom="1" alt="" decoding="async" referrerpolicy="no-referrer">`+PLAY_BADGE}
+  const cSt=STILL_CACHE.get('custom:'+pk);
+  if(cSt&&cSt.frames&&cSt.frames.length)return`<img class="tm" src="${cSt.frames[0]}" data-still="1" alt="" decoding="async">`+PLAY_BADGE;
+  const st=STILL_CACHE.get(stillCacheKey(it));
   if(st&&st.frames&&st.frames.length)return`<img class="tm" src="${st.frames[0]}" data-still="1" alt="" decoding="async">`+PLAY_BADGE;
-  const av=avatarItem(it.handle);
-  if(av&&av.type==='image'){const u=esc(av.url.split('#')[0]);return`<img class="tm" data-s="${u}" alt="" decoding="async" referrerpolicy="no-referrer">`+PLAY_BADGE}
-  return`<div class="ph vid-ph"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>${esc(host(it)||'Video')}</span></div>`+PLAY_BADGE}
- return`<div class="ph lk"><b>${it.type==='video'?'Video post':'Link'}</b><span>${esc(host(it))}</span></div>`}
+  if(it.poster&&/^https?:|^data:image\//i.test(it.poster))return`<img class="tm" data-s="${esc(it.poster)}" alt="" decoding="async" referrerpolicy="no-referrer">`+PLAY_BADGE;
+  return WAIT_HTML+`<div class="pfail">${FAIL_ICON}<span>${esc(host(it)||'Preview unavailable')}</span></div>`+PLAY_BADGE}
+ return`<div class="ph lk"><b>${it.type==='video'?'Video post':'Link'}</b><span>${esc(host(it))}</span></div>`+LINK_BADGE}
 function setZs(m){if(m.classList&&m.classList.contains('bg'))return;const p=m.parentElement,w=m.naturalWidth||m.videoWidth,h=m.naturalHeight||m.videoHeight;if(!p||!w||!h)return;const r=p.getBoundingClientRect();if(!r.width)return;const a=w/h,b=r.width/r.height;
  m.dataset.ori=a<b?'p':'l';m.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2));if(p._it&&!p._it.asp){p._it.asp=a;if(G.col&&G.open)schedRel()}}
 function dropM(m){try{m.pause();m.removeAttribute('src');m.load()}catch(e){}}
-/* ---------- Video player lifecycle (Pic tap-preview cap = 1; Live preview cap = 3; Stills capture = 1 offscreen worker) ---------- */
+/* ---------- Video preview lifecycle:
+   - Press-and-hold in-tile live peek: cap 1 (TAP_PREVIEW)
+   - Grid "Live video preview" On: cap 5 (MAX_LIVE_PLAY, within 4-6)
+   - CORS-blocked paused-frame display: cap 12 (MAX_PAUSED_FRAMES), preload="metadata", never plays
+   - CORS-clean still / GIF-style flipbook capture: 1 serialized offscreen worker, persisted in IndexedDB ---------- */
 function releaseTapPreview(){if(!TAP_PREVIEW)return;const tp=TAP_PREVIEW;TAP_PREVIEW=null;
  try{dropM(tp.video);tp.video.remove()}catch(e){}
  if(tp.tile)tp.tile.classList.remove('playing')}
 function stopStillCycle(t){if(t&&t._stT){clearInterval(t._stT);t._stT=0}}
 function stripTileVideo(t){if(!t)return;if(TAP_PREVIEW&&TAP_PREVIEW.tile===t)releaseTapPreview();
  stopStillCycle(t);
- t.querySelectorAll('video').forEach(v=>{const k=PLAY.indexOf(v);if(k>=0)PLAY.splice(k,1);dropM(v);v.remove()});
+ t.querySelectorAll('video').forEach(v=>{
+  const k1=PLAY.indexOf(v);if(k1>=0)PLAY.splice(k1,1);
+  const k2=PAUSED_POOL.indexOf(v);if(k2>=0)PAUSED_POOL.splice(k2,1);
+  dropM(v);v.remove()});
  t.classList.remove('playing')}
 function stopStillsQueue(){stillGen++;STILL_QUEUE.length=0;STILL_ENQUEUED.clear();stillBusy=false;if(stillVid){try{dropM(stillVid)}catch(e){}}}
-function releaseGridVideos(){releaseTapPreview();stopStillsQueue();
+function releaseGridVideos(){releaseTapPreview();stopStillsQueue();clearTimeout(scrollSettleT);scrollSettleT=0;scrollActive=false;PAUSED_PENDING.clear();
  while(PLAY.length){const v=PLAY.pop();try{dropM(v);v.remove()}catch(e){}}
+ while(PAUSED_POOL.length){const v=PAUSED_POOL.pop();try{dropM(v);v.remove()}catch(e){}}
  gt.querySelectorAll('.pt').forEach(t=>{clearTimeout(t._ft);t._ft=0});
  gt.querySelectorAll('.tile').forEach(t=>{stopStillCycle(t);t.classList.remove('playing')})}
-function mountTileVideo(t,it,isTap){if(!t||!isDirectVid(it))return;
+function mountTileVideo(t,it,isHold){if(!t||!isDirectVid(it))return;
  const src=(it.stream||it.url).split('#')[0];
- if(isTap)releaseTapPreview();
- else{const ex=t.querySelector('video.tm');if(ex){if(ex.paused)ex.play().catch(()=>{});return}}
- const v=document.createElement('video');v.className='tm'+(isTap?' tap-vid':'');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('referrerpolicy','no-referrer');v.referrerPolicy='no-referrer';v.preload=isTap?'auto':'metadata';
- const k=tk(it.stream||it.url),c=TRIMS[k]||{startSec:0,loopSec:8.5};v._tk=k;v.loop=false;
- v.addEventListener('timeupdate',()=>{const tr=TRIMS[v._tk]||{startSec:0,loopSec:8.5};if(v.currentTime>=tr.startSec+tr.loopSec)v.currentTime=tr.startSec});
- v.addEventListener('loadedmetadata',()=>{try{if(c.startSec>0&&c.startSec<(v.duration||1e9))v.currentTime=c.startSec}catch(e){}setZs(v)},{once:true});
+ if(isHold)releaseTapPreview();
+ else{const ex=t.querySelector('video.tm:not(.pframe)');if(ex){if(ex.paused)ex.play().catch(()=>{});return}}
+ const v=document.createElement('video');v.className='tm'+(isHold?' tap-vid':'');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('referrerpolicy','no-referrer');v.referrerPolicy='no-referrer';v.preload=isHold?'auto':'metadata';
+ const pk=previewKeyOf(it),start=previewStartSec(it),loopSec=(TRIMS[pk]&&TRIMS[pk].loopSec)||8.5;v._pk=pk;v._st=start;v._lp=loopSec;v.loop=false;
+ v.addEventListener('timeupdate',()=>{if(v.currentTime>=v._st+v._lp)v.currentTime=v._st});
+ v.addEventListener('loadedmetadata',()=>{try{if(v._st>0&&v._st<(v.duration||1e9))v.currentTime=v._st}catch(e){}setZs(v)},{once:true});
+ v.addEventListener('loadeddata',()=>setTileState(t,'ready'),{once:true});
+ v.addEventListener('error',()=>{if(!t.querySelector('img.tm'))setTileState(t,'fail')},{once:true});
  v.src=src;t.appendChild(v);
- if(isTap){t.classList.add('playing');TAP_PREVIEW={tile:t,id:it.id,video:v};v.play().catch(()=>{})}
+ if(isHold){t.classList.add('playing');TAP_PREVIEW={tile:t,id:it.id,video:v};v.play().catch(()=>{})}
  else{v.play().catch(()=>{});PLAY.push(v);while(PLAY.length>MAX_LIVE_PLAY){const old=PLAY.shift();if(old&&old!==v){dropM(old);old.remove()}}}}
-/* ---------- Stills mode: honest CORS-checked client-side frame capture ---------- */
+/* Tier B (CORS-blocked hosts): metadata-only paused-frame display (no .play(), no canvas readback).
+   Honors jump-refusal guard: if #t=startSec stalls, falls back to earliest frame (0s) instead of deep buffering. */
+function flushPendingPausedFrames(){scrollSettleT=0;scrollActive=false;if(!G.open||G.prevMode==='live'||!PAUSED_PENDING.size)return;
+ const items=[...PAUSED_PENDING.values()];PAUSED_PENDING.clear();
+ for(let i=items.length-1;i>=0;i--){const{t,it}=items[i];if(t&&t.isConnected&&ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(it.id)===t)mountPausedFrameNow(t,it)}}
+function mountPausedFrame(t,it){if(!t||!isDirectVid(it))return;
+ if(t.querySelector('video.pframe')||t.querySelector('img.tm[data-still="1"],img.tm[data-custom="1"]'))return;
+ if(scrollActive){setTileState(t,'wait');PAUSED_PENDING.set(it.id,{t,it});return}
+ mountPausedFrameNow(t,it)}
+function mountPausedFrameNow(t,it){if(!t||!isDirectVid(it))return;
+ if(t.querySelector('video.pframe')||t.querySelector('img.tm[data-still="1"],img.tm[data-custom="1"]'))return;
+ const base=(it.stream||it.url).split('#')[0],start=previewStartSec(it);
+ const v=document.createElement('video');v.className='tm pframe';v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('referrerpolicy','no-referrer');v.referrerPolicy='no-referrer';v.preload='metadata';
+ setTileState(t,'wait');
+ let settled=false,fellBack=false;
+ const ok=()=>{if(settled)return;settled=true;clearTimeout(to);v.pause();setZs(v);setTileState(t,'ready')};
+ const fail=()=>{if(settled)return;settled=true;clearTimeout(to);const k=PAUSED_POOL.indexOf(v);if(k>=0)PAUSED_POOL.splice(k,1);dropM(v);v.remove();setTileState(t,'fail')};
+ const to=setTimeout(()=>{if(settled)return;if(start>0&&!fellBack){fellBack=true;v.src=base;setTimeout(()=>{if(!settled&&v.readyState<2)fail()},1800)}else if(v.readyState>=2)ok();else fail()},1600);
+ v.addEventListener('loadeddata',ok,{once:true});
+ v.addEventListener('seeked',ok,{once:true});
+ v.addEventListener('error',()=>{if(start>0&&!fellBack){fellBack=true;v.src=base}else fail()});
+ v.src=base+(start>0?'#t='+start.toFixed(1):'#t=0.001');
+ t.insertBefore(v,t.firstChild);
+ PAUSED_POOL.push(v);
+ while(PAUSED_POOL.length>MAX_PAUSED_FRAMES){const old=PAUSED_POOL.shift();if(old&&old!==v){const ot=old.parentElement;dropM(old);old.remove();if(ot&&!ot.querySelector('img.tm'))setTileState(ot,'wait')}}}
+/* Tier A (CORS-clean hosts, e.g. R2 / same-origin / blob): client-side capture of 1-4 stills (GIF-style flipbook)
+   persisted in IndexedDB scratch cache. Zero modification of S.items or localStorage! */
 function stillHostKey(u){if(!u)return'';if(u.startsWith('blob:'))return'__blob__';try{return new URL(u).host.toLowerCase()}catch(e){return''}}
-function canTryStills(it){if(!isDirectVid(it))return false;const src=(it.stream||it.url).split('#')[0];const h=stillHostKey(src);if(!h)return false;return!STILL_CORS_BLOCKED.has(h)}
 function applyStillsToTile(t,frames){if(!t||!frames||!frames.length)return;
+ t.querySelectorAll('video.pframe').forEach(v=>{const k=PAUSED_POOL.indexOf(v);if(k>=0)PAUSED_POOL.splice(k,1);dropM(v);v.remove()});
  let im=t.querySelector('img.tm');
- if(!im){const ph=t.querySelector('.ph.vid-ph');if(ph)ph.remove();im=document.createElement('img');im.className='tm';im.alt='';im.decoding='async';t.insertBefore(im,t.firstChild)}
+ if(!im){im=document.createElement('img');im.className='tm';im.alt='';im.decoding='async';t.insertBefore(im,t.firstChild)}
  im.dataset.still='1';im.src=frames[0];
+ setTileState(t,'ready');
  stopStillCycle(t);
- if(frames.length>1&&G.thumbMode==='stills'&&t._vis&&G.open){let fi=0;t._stT=setInterval(()=>{if(!t.isConnected||!t._vis||G.thumbMode!=='stills'||!G.open){stopStillCycle(t);return}fi=(fi+1)%frames.length;im.src=frames[fi]},1400)}}
-function queueStills(it,t){if(!canTryStills(it))return;const k=tk(it.stream||it.url),ex=STILL_CACHE.get(k);
- if(ex&&ex.frames&&ex.frames.length){applyStillsToTile(t,ex.frames);return}
- if(STILL_ENQUEUED.has(k))return;STILL_ENQUEUED.add(k);STILL_QUEUE.push({it,k,src:(it.stream||it.url).split('#')[0]});
- if(!stillBusy)pumpStillsQueue()}
-function pumpStillsQueue(){if(stillBusy||!G.open||G.thumbMode!=='stills'||!STILL_QUEUE.length)return;
- const job=STILL_QUEUE.shift();STILL_ENQUEUED.delete(job.k);
- const h=stillHostKey(job.src);if(!h||STILL_CORS_BLOCKED.has(h)){pumpStillsQueue();return}
- if(STILL_CACHE.has(job.k)){const t=TM.get(job.it.id);if(t)applyStillsToTile(t,STILL_CACHE.get(job.k).frames);pumpStillsQueue();return}
+ /* Still mode = 0 timers; Motion stills = lightweight pure-<img> flipbook when visible */
+ if(G.prevMode==='motion'&&frames.length>1&&t._vis&&G.open){let fi=0;t._stT=setInterval(()=>{if(!t.isConnected||!t._vis||G.prevMode!=='motion'||!G.open){stopStillCycle(t);return}fi=(fi+1)%frames.length;im.src=frames[fi]},580)}}
+function enqueueStillJob(it,sk,wantMulti){const src=(it.stream||it.url).split('#')[0],h=stillHostKey(src);
+ if(!h||STILL_CORS_BLOCKED.has(h))return false;
+ const qk=sk+(wantMulti?':m':':s');if(STILL_ENQUEUED.has(qk))return true;
+ STILL_ENQUEUED.add(qk);STILL_QUEUE.push({it,sk,qk,src,start:previewStartSec(it),wantMulti:!!wantMulti});
+ if(!stillBusy)pumpStillsQueue();return true}
+function resolveVideoPreview(it,t){if(!isDirectVid(it))return;
+ const pk=previewKeyOf(it),wantMulti=(G.prevMode==='motion');
+ /* 1. User custom image always wins */
+ if(VPIC[pk]){const im=t.querySelector('img.tm');if(im){loadM(im);setTileState(t,'ready')}return}
+ /* 2. User custom captured frame (in-memory or IDB) always wins over automatic */
+ const ck='custom:'+pk,cMem=STILL_CACHE.get(ck);
+ if(cMem&&cMem.frames&&cMem.frames.length){cMem.at=Date.now();applyStillsToTile(t,cMem.frames);return}
+ /* 3. Automatic scratch still cache (in-memory) */
+ const sk=stillCacheKey(it),sMem=STILL_CACHE.get(sk);
+ if(sMem&&sMem.frames&&sMem.frames.length){sMem.at=Date.now();applyStillsToTile(t,sMem.frames);
+  if(wantMulti&&sMem.frames.length<2&&!sMem.singleOnly)enqueueStillJob(it,sk,true);
+  return}
+ /* 4. Genuine per-video poster */
+ if(it.poster&&t.querySelector('img.tm')){loadM(t.querySelector('img.tm'));setTileState(t,'ready');return}
+ /* Check persistent IndexedDB cache before doing any network/decoder work */
+ setTileState(t,'wait');
+ const gen=stillGen;
+ Promise.all([VPREV[pk]&&VPREV[pk].hasCustom?idbGet(ck):Promise.resolve(null),idbGet(sk)]).then(([cDb,sDb])=>{
+  if(gen!==stillGen||!t.isConnected||!G.open)return;
+  if(cDb&&cDb.frames&&cDb.frames.length){cDb.at=Date.now();STILL_CACHE.set(ck,cDb);applyStillsToTile(t,cDb.frames);return}
+  if(sDb&&sDb.frames&&sDb.frames.length){sDb.at=Date.now();STILL_CACHE.set(sk,sDb);applyStillsToTile(t,sDb.frames);
+   if(wantMulti&&sDb.frames.length<2&&!sDb.singleOnly)enqueueStillJob(it,sk,true);
+   return}
+  /* Not cached yet: route by host CORS capability */
+  if(!enqueueStillJob(it,sk,wantMulti))mountPausedFrame(t,it)})}
+function pumpStillsQueue(){if(stillBusy||!G.open||!STILL_QUEUE.length)return;
+ /* Prefer tiles currently mounted in the active window (viewport-first); skip tiles scrolled away */
+ let job=null;
+ while(STILL_QUEUE.length){const cand=STILL_QUEUE.pop();STILL_ENQUEUED.delete(cand.qk);
+  const t=ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(cand.it.id);
+  if(t&&t.isConnected){job=cand;break}}
+ if(!job)return;
+ const h=stillHostKey(job.src);
+ if(!h||STILL_CORS_BLOCKED.has(h)){const t=ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(job.it.id);if(t&&G.prevMode!=='live')mountPausedFrame(t,job.it);pumpStillsQueue();return}
+ const existingRec=STILL_CACHE.get(job.sk);
+ if(existingRec&&existingRec.frames&&existingRec.frames.length&&(!job.wantMulti||existingRec.frames.length>=2||existingRec.singleOnly)){const t=ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(job.it.id);if(t)applyStillsToTile(t,existingRec.frames);pumpStillsQueue();return}
  stillBusy=true;const gen=stillGen;
  if(!stillVid){stillVid=document.createElement('video');stillVid.muted=true;stillVid.playsInline=true;stillVid.preload='metadata'}
  if(!stillCan){stillCan=document.createElement('canvas')}
- const v=stillVid;v.crossOrigin=job.src.startsWith('blob:')?null:'anonymous';if(!job.src.startsWith('blob:'))v.setAttribute('crossorigin','anonymous');else v.removeAttribute('crossorigin');
- let done=false;const finish=(frames,blocked)=>{if(done)return;done=true;clearTimeout(to);v.onloadedmetadata=v.onseeked=v.onerror=null;try{dropM(v)}catch(e){}
-  if(blocked&&h!=='__blob__'){STILL_CORS_BLOCKED.add(h);if(!stillCorsNotified&&G.open&&G.thumbMode==='stills'){stillCorsNotified=true;toast('Cross-origin host blocks Stills — showing Pic')}}
-  if(frames&&frames.length){STILL_CACHE.set(job.k,{frames});if(STILL_CACHE.size>STILL_CACHE_MAX)STILL_CACHE.delete(STILL_CACHE.keys().next().value);
-   const t=TM.get(job.it.id);if(t&&t.isConnected)applyStillsToTile(t,frames)}
-  stillBusy=false;if(gen===stillGen&&G.open&&G.thumbMode==='stills')setTimeout(pumpStillsQueue,30)};
- const to=setTimeout(()=>finish(null,false),4500);
- const frames=[];let targets=[],ti=0;
+ const v=stillVid;const isBlob=job.src.startsWith('blob:');
+ v.crossOrigin=isBlob?null:'anonymous';if(!isBlob)v.setAttribute('crossorigin','anonymous');else v.removeAttribute('crossorigin');
+ let done=false,seekTimer=0;
+ const finish=(frames,corsBlocked)=>{if(done)return;done=true;clearTimeout(to);clearTimeout(seekTimer);v.onloadedmetadata=v.onloadeddata=v.onseeked=v.onerror=null;try{dropM(v)}catch(e){}
+  const t=ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(job.it.id);
+  if(corsBlocked&&h!=='__blob__'){STILL_CORS_BLOCKED.add(h);if(t&&t.isConnected&&G.prevMode!=='live')mountPausedFrame(t,job.it)}
+  else if(frames&&frames.length){const rec={frames,at:Date.now(),singleOnly:!!(job.wantMulti&&frames.length<2)};STILL_CACHE.set(job.sk,rec);
+   if(STILL_CACHE.size>STILL_CACHE_MAX)STILL_CACHE.delete(STILL_CACHE.keys().next().value);
+   idbPut(job.sk,rec);
+   if(t&&t.isConnected)applyStillsToTile(t,frames)}
+  else if(t&&t.isConnected&&!t.querySelector('img.tm')){setTileState(t,'fail')}
+  stillBusy=false;if(gen===stillGen&&G.open)setTimeout(pumpStillsQueue,25)};
+ const to=setTimeout(()=>finish(frames.length?frames:null,false),4200);
+ const frames=[];let targets=[],ti=0,jumpBlocked=false;
+ const snap=()=>{try{const vw=v.videoWidth||220,vh=v.videoHeight||300,w=Math.min(220,vw),h2=Math.max(1,Math.round(w*vh/vw));
+  stillCan.width=w;stillCan.height=h2;const ctx=stillCan.getContext('2d');ctx.drawImage(v,0,0,w,h2);
+  return stillCan.toDataURL('image/jpeg',0.62)}catch(e){return null}};
  v.onerror=()=>finish(null,true);
  v.onloadedmetadata=()=>{if(done||gen!==stillGen)return finish(null,false);
   const d=isFinite(v.duration)&&v.duration>0?v.duration:0;
-  targets=d>2?[d*0.15,d*0.5,d*0.8]:[Math.min(0.2,d*0.5)];ti=0;
-  try{v.currentTime=targets[0]}catch(e){finish(null,false)}};
- v.onseeked=()=>{if(done||gen!==stillGen)return finish(null,false);
-  try{const vw=v.videoWidth||240,vh=v.videoHeight||320,w=Math.min(240,vw),h2=Math.max(1,Math.round(w*vh/vw));
-   stillCan.width=w;stillCan.height=h2;const ctx=stillCan.getContext('2d');ctx.drawImage(v,0,0,w,h2);
-   frames.push(stillCan.toDataURL('image/jpeg',0.65))}catch(e){return finish(null,true)}
-  ti++;if(ti<targets.length){try{v.currentTime=targets[ti]}catch(e){finish(frames,false)}}else finish(frames,false)};
+  const s0=d>0?Math.min(Math.max(0,job.start),Math.max(0,d-0.25)):0;
+  /* Still mode: 1 single frame (1 seek, 0 timers). Motion stills: frames 1-4 (or 2-4 if frame 1 already cached) */
+  if(!job.wantMulti){targets=[s0]}
+  else if(d>4){const step=Math.min(1.2,(d-s0)/4);const all=[s0,s0+step,s0+step*2,s0+step*3].filter(x=>x<d-0.1);
+   if(existingRec&&existingRec.frames&&existingRec.frames.length===1){frames.push(existingRec.frames[0]);targets=all.slice(1)}else targets=all}
+  else if(d>1){const all=[s0,Math.min(d-0.1,s0+d*0.4)];
+   if(existingRec&&existingRec.frames&&existingRec.frames.length===1){frames.push(existingRec.frames[0]);targets=all.slice(1)}else targets=all}
+  else{targets=[s0]}
+  if(!targets.length){finish(frames,false);return}
+  ti=0;
+  /* Jump-refusal guard: if first seek stalls >1.2s, grab earliest available frame instead of buffering deeply */
+  seekTimer=setTimeout(()=>{if(done||frames.length)return;jumpBlocked=true;const f0=snap();finish(f0?[f0]:null,!f0)},1200);
+  try{v.currentTime=targets[0]}catch(e){jumpBlocked=true;const f0=snap();finish(f0?[f0]:null,!f0)}};
+ v.onseeked=()=>{if(done||gen!==stillGen)return finish(null,false);clearTimeout(seekTimer);
+  const f=snap();if(!f)return finish(null,true);
+  frames.push(f);
+  /* Show first frame immediately so tile transitions wait -> ready without waiting for remaining 3 frames */
+  if(frames.length===1){const t=ACTIVE_VIEW&&ACTIVE_VIEW.mounted.get(job.it.id);if(t&&t.isConnected)applyStillsToTile(t,[f])}
+  ti++;
+  if(!jumpBlocked&&ti<targets.length){
+   seekTimer=setTimeout(()=>finish(frames,false),900);
+   try{v.currentTime=targets[ti]}catch(e){finish(frames,false)}
+  }else finish(frames,false)};
  v.src=job.src}
 function loadM(m){if(!m||m.tagName!=='IMG')return;if(m.getAttribute('src'))return;if(!m.dataset.s)return;m.setAttribute('referrerpolicy','no-referrer');m.referrerPolicy='no-referrer';m.src=m.dataset.s}
 function loadLayer(t,k){const fl=t.querySelectorAll('.fl')[k];if(!fl)return;fl.querySelectorAll('img.tm').forEach(loadM)}
@@ -942,11 +1084,12 @@ function loadTileMedia(t){
  if(t.classList.contains('pt')){const ai=[...t.querySelectorAll('.fl')].findIndex(f=>f.classList.contains('a'));if(ai>=0)loadLayer(t,ai);return}
  t.querySelectorAll('img.tm').forEach(loadM);
  const it=t._it;if(!isDirectVid(it))return;
- if(G.thumbMode==='live')mountTileVideo(t,it,false);
- else if(G.thumbMode==='stills')queueStills(it,t)}
+ if(G.prevMode==='live')mountTileVideo(t,it,false);
+ else resolveVideoPreview(it,t)}
+/* Pre-load previews just off-screen (50% viewport margin) so frames are ready before scrolling into view */
 function mkIO(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;t._vis=e.isIntersecting;
  if(e.isIntersecting){loadTileMedia(t);if(t._step&&!t._ft)t._ft=setTimeout(t._step,1200+Math.random()*2000)}
- else{if(t._ft){clearTimeout(t._ft);t._ft=0}stripTileVideo(t)}}),{root:gs,rootMargin:'25% 25%'})}
+ else{if(t._ft){clearTimeout(t._ft);t._ft=0}stripTileVideo(t)}}),{root:gs,rootMargin:'50% 20%'})}
 /* Image fallback chain, shared by grid tiles, flip layers, and the feed */
 const pxImg=(u)=>{const p=S.set.proxy;if(!p||S.set.proxyOn===false)return null;const e=encodeURIComponent(u);return p.includes('{url}')?p.split('{url}').join(e):p+e};
 const imgFailChain=(orig,tm)=>{const c=[];const px=pxImg(orig);if(px)c.push(px);c.push('https://wsrv.nl/?url='+encodeURIComponent(orig)+(tm?'&w=640&q=80':''));return c};
@@ -957,13 +1100,15 @@ function imgFail(im,orig){orig=orig||im.dataset.s;if(!orig||!/^https?:/i.test(or
 const wireImgs=t=>t.querySelectorAll('img').forEach(im=>{if(im._wired)return;im._wired=1;im.addEventListener('error',()=>imgFail(im));im.addEventListener('load',()=>setZs(im))});
 function mkTile(it,i){const t=document.createElement('div');t.className='tile';t._i=i;t._it=it;t.style.setProperty('--ad',(-(Math.random()*9)).toFixed(2)+'s');
  t.innerHTML=tileMedia(it)+`<span class="hd">@${esc(it.handle)}</span>`;
+ if(isDirectVid(it))t.dataset.pstate=t.querySelector('img.tm')?'ready':'wait';
  wireImgs(t);return t}
 const OVH='<div class="ov"><button data-o="open">'+svg('play')+'Open</button><button data-o="blow">'+svg('expand')+'Blow up</button></div>';
 function getTile(it,k){let t=TC.get(it.id);if(!t){t=mkTile(it,k);TC.set(it.id,t)}else{TC.delete(it.id);TC.set(it.id,t);t._i=k;t._it=it}return t}
 function trimTC(){if(TC.size<=TC_MAX)return;for(const[id,t]of TC){if(TC.size<=TC_MAX)break;if(!t.isConnected){stripTileVideo(t);TC.delete(id)}}}
 const gtClass=()=>G.tab!=='items'?'g'+G.size.toUpperCase()+' gz-0':G.col?'cw c'+G.cs+' gz-'+G.zoom:(G.size==='l'&&G.ebb)?'gLe gz-'+(G.zoom==='bounce-zoom'?'bounce':G.zoom):'g'+G.size.toUpperCase()+' gz-'+(G.zoom==='bounce-zoom'?'0':G.zoom);
 function activeViewEl(){return ACTIVE_VIEW?ACTIVE_VIEW.el:gt}
-function applyGridClass(){if(ACTIVE_VIEW&&ACTIVE_VIEW.kind!=='plist'&&!G.col){ACTIVE_VIEW.el.className='gv '+gtClass();ACTIVE_VIEW.sizeKey=G.size+'|'+(G.ebb?1:0);syncWindow(ACTIVE_VIEW,true)}else if(ACTIVE_VIEW&&G.col){ACTIVE_VIEW.el.querySelectorAll('.cw-seg').forEach(s=>s.className='cw cw-seg c'+G.cs+' gz-'+G.zoom)}gr.classList.toggle('inprof',!!G.prof);gbUI()}
+const gridSizeKey=()=>G.size+'|'+(G.ebb?1:0)+'|'+G.cs+'|'+G.cz+'|'+G.zoom;
+function applyGridClass(){if(ACTIVE_VIEW&&ACTIVE_VIEW.kind!=='plist'&&!G.col){ACTIVE_VIEW.el.className='gv '+gtClass();ACTIVE_VIEW.sizeKey=gridSizeKey();syncWindow(ACTIVE_VIEW,true)}else if(ACTIVE_VIEW&&G.col){ACTIVE_VIEW.sizeKey=gridSizeKey();ACTIVE_VIEW.el.querySelectorAll('.cw-seg').forEach(s=>s.className='cw cw-seg c'+G.cs+' gz-'+G.zoom)}gr.classList.toggle('inprof',!!G.prof);gbUI()}
 function anchored(fn){const el=activeViewEl(),gb=gs.getBoundingClientRect();let a=null,off=0,idx=0;
  for(const t of el.querySelectorAll('.tile')){const r=t.getBoundingClientRect();if(r.bottom>gb.top+60){a=t;off=r.top-gb.top;idx=t._i||0;break}}
  fn();
@@ -973,6 +1118,7 @@ function anchored(fn){const el=activeViewEl(),gb=gs.getBoundingClientRect();let 
 /* ---------- Per-view cache & segmented windowed grid ---------- */
 function currentViewKey(){if(G.tab!=='items')return G.plist?'profiles:list':'profiles:grid';if(G.col)return'col:'+(G.prof||'all');if(G.prof)return'prof:'+G.prof;return G.rec?'recents':'all'}
 function invalidateAllViews(){for(const v of VIEW_CACHE.values()){v.dirty=true}}
+function clearGridCache(){releaseGridVideos();if(io){io.disconnect();io=null}for(const v of VIEW_CACHE.values()){v.el.remove()}VIEW_CACHE.clear();TC.clear();STILL_CACHE.clear();STILL_CORS_BLOCKED.clear();ACTIVE_VIEW=null;gt.textContent=''}
 function getOrCreateView(key,kind){let v=VIEW_CACHE.get(key);
  if(v){VIEW_CACHE.delete(key);VIEW_CACHE.set(key,v);return v}
  const el=document.createElement('div');el.className='gv';el.hidden=true;gt.appendChild(el);
@@ -986,8 +1132,10 @@ function viewMetrics(view){const W=gs.clientWidth||innerWidth||390,H=gs.clientHe
  if(G.size==='m'){const g=4,p=4,tw=(W-p*2-g)/2,rh=tw*(12.6/9);return{cols:2,gap:g,pad:p,rowH:rh,rowPitch:rh+g,H}}
  if(G.size==='l'){const g=4,p=4,rh=H*0.73;return{cols:2,gap:g,pad:p,rowH:rh,rowPitch:rh+g,H}}
  const g=4,p=4,rh=H*0.78;return{cols:1,gap:g,pad:p,rowH:rh,rowPitch:rh+g,H}}
-function mkProfTile(e,k){const pick=[...e.items.filter(i=>i.type==='image'),...e.items.filter(i=>i.type!=='image')].slice(0,3);if(e.items.every(i=>i.type==='webpage'))pick.length=1;
- const t=document.createElement('div');t.className='tile pt'+(e.items.every(i=>i.type==='webpage')?' lnks':'');t._h=e.h;t._i=k;t._it=pick[0];t._pick=pick;
+function mkProfTile(e,k){const imgs=[],rest=[];let allLinks=true;
+ for(let i=0;i<e.items.length;i++){const it=e.items[i];if(it.type!=='webpage')allLinks=false;if(it.type==='image'){if(imgs.length<3)imgs.push(it)}else if(rest.length<3)rest.push(it);if(imgs.length===3&&!allLinks)break}
+ const pick=allLinks?[e.items[0]]:imgs.concat(rest).slice(0,3);
+ const t=document.createElement('div');t.className='tile pt'+(allLinks?' lnks':'');t._h=e.h;t._i=k;t._it=pick[0];t._pick=pick;
  t.innerHTML=pick.map((it,j)=>`<div class="fl${j?'':' a'}">${tileMedia(it)}</div>`).join('')+`<span class="avb">${avatarHTML(e.h,'sm')}</span><div class="pn"><span>@${esc(e.h)}</span>${FAVP.has(e.h)?`<span class="fv">${svg('star')}</span>`:''}<b>${e.items.length}</b></div>`;
  wireImgs(t);flipLoop(t);return t}
 function syncWindow(view,force){if(!view||!G.open)return;
@@ -996,11 +1144,14 @@ function syncWindow(view,force){if(!view||!G.open)return;
  if(!L.length){el.className='gv';el.style.paddingTop=el.style.paddingBottom='';el.innerHTML=`<div class="gem">${G.prof?'Nothing in this profile':(view.kind==='plist'?'No profiles match':'Nothing to show yet.<br>Add links with the + button.')}</div>`;view.mounted.clear();view.startRow=view.endRow=-1;return}
  if(view.kind==='plist'){syncPlistWindow(view,force);return}
  const m=viewMetrics(view),cols=m.cols,totalRows=Math.ceil(L.length/cols),overscan=Math.max(m.H*1.2,m.rowPitch*2);
- const topY=Math.max(0,gs.scrollTop-62);
+ const maxY=Math.max(0,totalRows*m.rowPitch-m.H+m.pad*2);
+ const topY=Math.min(maxY,Math.max(0,gs.scrollTop-62));
  const sRow=Math.max(0,Math.floor((topY-overscan)/m.rowPitch));
  const eRow=Math.min(totalRows,Math.ceil((topY+m.H+overscan)/m.rowPitch));
  const isEbb=(view.kind==='items'&&G.size==='l'&&G.ebb);
- if(!force&&view.startRow===sRow&&view.endRow===eRow)return;
+ if(!force&&view.startRow===sRow&&view.endRow===eRow&&view._ebb===isEbb)return;
+ if(view._ebb&&!isEbb){el.querySelectorAll('.erow').forEach(r=>r.remove())}
+ view._ebb=isEbb;
  el.style.paddingTop=(m.pad+sRow*m.rowPitch)+'px';
  el.style.paddingBottom=(m.pad+Math.max(0,totalRows-eRow)*m.rowPitch)+'px';
  const sIdx=sRow*cols,eIdx=Math.min(L.length,eRow*cols);
@@ -1008,12 +1159,12 @@ function syncWindow(view,force){if(!view||!G.open)return;
  if(view.kind==='profiles'){for(let k=sIdx;k<eIdx;k++)want.add(L[k].h)}
  else{for(let k=sIdx;k<eIdx;k++)want.add(L[k].id)}
  /* Detach leaving tiles first — stripping any live video so TC stays strictly Pic state */
- for(const[id,node]of [...view.mounted]){if(!want.has(id)){if(node._ft){clearTimeout(node._ft);node._ft=0}stripTileVideo(node);io&&io.unobserve(node);node.remove();view.mounted.delete(id);TM.delete(id)}}
+ for(const[id,node]of [...view.mounted]){if(!want.has(id)){if(node._ft){clearTimeout(node._ft);node._ft=0}stripTileVideo(node);io&&io.unobserve(node);node.remove();view.mounted.delete(id)}}
  if(isEbb){
-  el.textContent='';view.mounted.clear();TM.clear();
+  el.textContent='';view.mounted.clear();
   const f=document.createDocumentFragment();
   for(let k=sIdx;k<eIdx;k+=2){const r=document.createElement('div');r.className='erow '+((k/2)%2?'e':'o');
-   for(const j of [k,k+1])if(j<eIdx&&L[j]){const it=L[j],t=getTile(it,j);t.style.gridColumn=t.style.gridRow='';r.appendChild(t);view.mounted.set(it.id,t);TM.set(it.id,t);io&&io.observe(t)}
+   for(const j of [k,k+1])if(j<eIdx&&L[j]){const it=L[j],t=getTile(it,j);t.style.gridColumn=t.style.gridRow='';r.appendChild(t);view.mounted.set(it.id,t);io&&io.observe(t)}
    f.appendChild(r)}
   el.appendChild(f);
  }else if(view.kind==='profiles'){
@@ -1027,7 +1178,7 @@ function syncWindow(view,force){if(!view||!G.open)return;
   let pos=0;
   for(let k=sIdx;k<eIdx;k++){const it=L[k],t=getTile(it,k);t.style.gridColumn=t.style.gridRow='';
    const cur=el.children[pos];if(cur!==t)el.insertBefore(t,cur||null);
-   view.mounted.set(it.id,t);TM.set(it.id,t);io&&io.observe(t);pos++}
+   const isNew=!view.mounted.has(it.id);view.mounted.set(it.id,t);io&&io.observe(t);if(isNew&&isDirectVid(it))loadTileMedia(t);pos++}
   while(el.children.length>pos){const extra=el.lastElementChild;if(extra&&extra._it){stripTileVideo(extra);io&&io.unobserve(extra)}extra.remove()}
  }
  view.startRow=sRow;view.endRow=eRow;
@@ -1070,11 +1221,11 @@ function syncCollageWindow(view,force){if(!view||!view.segs)return;const segs=vi
  if(!force&&view.startRow===s0&&view.endRow===s1)return;
  const topEl=view.el.querySelector('.cw-top'),midEl=view.el.querySelector('.cw-mid'),botEl=view.el.querySelector('.cw-bot');
  if(!midEl)return;
- for(let i=0;i<segs.length;i++){if((i<s0||i>s1)&&segs[i].el){segs[i].el.querySelectorAll('.tile').forEach(t=>{stripTileVideo(t);io&&io.unobserve(t);TM.delete(t._it.id)});segs[i].el.remove();segs[i].el=null}}
+ for(let i=0;i<segs.length;i++){if((i<s0||i>s1)&&segs[i].el){segs[i].el.querySelectorAll('.tile').forEach(t=>{stripTileVideo(t);io&&io.unobserve(t);view.mounted.delete(t._it.id)});segs[i].el.remove();segs[i].el=null}}
  for(let i=s0;i<=s1;i++){const sg=segs[i];if(!sg.sp){const sl=view.list.slice(sg.start,sg.end);sg.sp=fillGaps(sl.map(it=>({it,...spanFor(it)})));sg.rows=sg.sp._rows||20}
   if(!sg.el){const d=document.createElement('div');d.className='cw cw-seg c'+G.cs+' gz-'+G.zoom;d.style.setProperty('--z',G.cz/100);d.style.setProperty('--u',CS[G.cs].u);
    const f=document.createDocumentFragment();
-   sg.sp.forEach(({it,c,r},j)=>{const t=getTile(it,sg.start+j);t.style.gridColumn='span '+c;t.style.gridRow='span '+r;TM.set(it.id,t);io&&io.observe(t);f.appendChild(t)});
+   sg.sp.forEach(({it,c,r},j)=>{const t=getTile(it,sg.start+j);t.style.gridColumn='span '+c;t.style.gridRow='span '+r;view.mounted.set(it.id,t);io&&io.observe(t);f.appendChild(t)});
    d.appendChild(f);sg.el=d;midEl.appendChild(d)}}
  topEl.style.height=Math.round(topPad)+'px';botEl.style.height=Math.round(botPad)+'px';
  view.startRow=s0;view.endRow=s1;requestAnimationFrame(sbUpdate)}
@@ -1084,7 +1235,7 @@ function applyCollage(animate){if(!ACTIVE_VIEW||ACTIVE_VIEW.kind!=='col'||!ACTIV
  for(const sg of segs){if(!sg.el){sg.sp=null;continue}
   const sl=ACTIVE_VIEW.list.slice(sg.start,sg.end);sg.sp=fillGaps(sl.map(it=>({it,...spanFor(it)})));sg.rows=sg.sp._rows||20;
   sg.el.className='cw cw-seg c'+G.cs+' gz-'+G.zoom;sg.el.style.setProperty('--z',G.cz/100);sg.el.style.setProperty('--u',CS[G.cs].u);
-  sg.sp.forEach(({it,c,r})=>{const t=TM.get(it.id);if(t){t.style.gridColumn='span '+c;t.style.gridRow='span '+r}})}
+  sg.sp.forEach(({it,c,r})=>{const t=ACTIVE_VIEW.mounted.get(it.id);if(t){t.style.gridColumn='span '+c;t.style.gridRow='span '+r}})}
  if(animate)ACTIVE_VIEW.el.querySelectorAll('.tile').forEach(t=>{const o=old.get(t._it.id);if(!o)return;const n=t.getBoundingClientRect();if((o.bottom<-500||o.top>innerHeight+500)&&(n.bottom<-500||n.top>innerHeight+500))return;const dx=o.left-n.left,dy=o.top-n.top,sx=o.width/(n.width||1),sy=o.height/(n.height||1);if(Math.abs(dx)+Math.abs(dy)<2&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
   t.animate([{transform:`translate(${dx}px,${dy}px) scale(${sx},${sy})`,transformOrigin:'0 0'},{transform:'none',transformOrigin:'0 0'}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)'})});
  requestAnimationFrame(sbUpdate)}
@@ -1096,7 +1247,13 @@ function flipLoop(t){const L=[...t.querySelectorAll('.fl')];if(L.length<2)return
   const wait=3400+Math.random()*1600;
   const tk2=(t._ftk=(t._ftk||0)+1);
   t._ft=setTimeout(()=>{t._ft=0;if(t._ftk!==tk2||!t.isConnected||!t._vis||!G.open)return;
-   L[k].classList.remove('a');k=nk;L[k].classList.add('a');step()},wait)};
+   const flip=()=>{if(t._ftk!==tk2||!t.isConnected||!t._vis||!G.open)return;L[k].classList.remove('a');k=nk;L[k].classList.add('a');step()};
+   const im=L[nk].querySelector('img.tm');
+   if(im&&(!im.complete||im.dataset.r)){let done=0;const go=()=>{if(!done){done=1;flip()}};
+    im.addEventListener('load',go,{once:true});im.addEventListener('error',go,{once:true});
+    if(im.dataset.r){const fin=im._fc&&im._fc[im._fc.length-1];if(fin&&im.src===fin)flip();else{let n=0;const poll=()=>{if(done||t._ftk!==tk2)return;const f2=im._fc&&im._fc[im._fc.length-1];if((f2&&im.src===f2)||++n>4){go();return}t._ft=setTimeout(poll,650)};t._ft=setTimeout(poll,650)}}
+    else t._ft=setTimeout(go,650)}
+   else flip()},wait)};
  t._step=step}
 function listItems(){return G.prof?V.filter(i=>i.handle===G.prof):V.slice()}
 let PLP=[],PLQ='';const PSELS=new Set();
@@ -1108,18 +1265,36 @@ function picMenu(b){const h=G.prof;if(!h)return;const imgs=(getProfileIndex().by
  menu(b,[{t:'Profile pic',o:[['auto','Auto'],...imgs.map((it,k)=>[it.url,'Photo '+(k+1)])],cur:()=>PFP[h]||'auto',set:v=>{if(v==='auto')delete PFP[h];else PFP[h]=v;invalidateLib();save();setDirty(true);renderGrid(1);toast('Profile pic updated')}}])}
 /* the feed card's own menu (image cards): set the creator's pic from the
    photo you're looking at, plus the standard item actions */
+function openCustomImg(it){const pk=previewKeyOf(it),cur=VPIC[pk]||'';
+ ask({title:'Set custom image',desc:'Paste an image URL to use as this video\u2019s grid face (overrides automatic preview). Leave blank to reset.',ph:'https://…',val:cur,ok:'Save image',extra:[['Paste',pasteInto],['Reset',i=>{i.value=''}]],onOk:v=>{v=v.trim();
+  if(!v){delete VPIC[pk];saveVPrev();invalidateItem(it.id,false);toast('Custom image cleared');return}
+  if(!/^https?:\/\/|^data:image\//i.test(v)){toast('Enter a valid image link');return false}
+  VPIC[pk]=v;saveVPrev();invalidateItem(it.id,false);toast('Custom image set')}})}
+function captureFeedFrame(v){if(!v||!v.videoWidth)return null;try{const c=document.createElement('canvas'),w=Math.min(260,v.videoWidth),h=Math.max(1,Math.round(w*v.videoHeight/v.videoWidth));c.width=w;c.height=h;c.getContext('2d').drawImage(v,0,0,w,h);return c.toDataURL('image/jpeg',0.72)}catch(e){return null}}
+function openCustomPreview(anchor,it){if(!it||it.type!=='video')return;const pk=previewKeyOf(it),v=feedCard(S.idx)&&feedCard(S.idx).querySelector('video');
+ const draw=()=>{const cur=previewStartSec(it),hasCust=!!(VPREV[pk]||VPIC[pk]),nowT=v&&isFinite(v.currentTime)?v.currentTime:0;
+  return`<h4>Custom preview frame</h4><div class="g"><span class="o" style="background:none">Preview @ ${cur.toFixed(1)}s</span><button class="o on" data-a="cap">Use current (${nowT.toFixed(1)}s)</button></div><div class="g"><button class="o" data-a="time">Enter time…</button>${hasCust?'<button class="o" data-a="clr">Reset to default</button>':''}</div>`};
+ openPop(anchor||$('#bmore'),draw(),o=>{const a=o.dataset.a;
+  if(a==='clr'){delete VPREV[pk];delete VPIC[pk];STILL_CACHE.delete('custom:'+pk);idbDel('custom:'+pk);saveVPrev();invalidateItem(it.id,true);closePop();toast('Preview reset to default');return}
+  if(a==='cap'){const sec=+(v&&isFinite(v.currentTime)?v.currentTime:0).toFixed(1);const frame=captureFeedFrame(v);
+   delete VPIC[pk];VPREV[pk]={startSec:sec,hasCustom:!!frame};saveVPrev();
+   if(frame){const rec={frames:[frame],at:Date.now()};STILL_CACHE.set('custom:'+pk,rec);idbPut('custom:'+pk,rec)}
+   else{STILL_CACHE.delete('custom:'+pk);idbDel('custom:'+pk)}
+   invalidateItem(it.id,false);closePop();toast(frame?`Custom preview captured at ${sec}s`:`Preview position set to ${sec}s`);return}
+  if(a==='time'){closePop();ask({title:'Set custom preview position',desc:'Enter a time in seconds (e.g. 12.5). Governs only the preview layer; the full video and real trim stay untouched.',ph:'Seconds (e.g. 12.5)',val:String(previewStartSec(it)),ok:'Set preview',onOk:val=>{const sec=parseFloat(val);if(!isFinite(sec)||sec<0){toast('Enter a valid number of seconds');return false}
+   delete VPIC[pk];VPREV[pk]={startSec:+sec.toFixed(1),hasCustom:false};STILL_CACHE.delete('custom:'+pk);idbDel('custom:'+pk);saveVPrev();invalidateItem(it.id,true);toast(`Preview position set to ${sec.toFixed(1)}s`)}})}})}
 function itemMenu(b,it){const gs2=[];
  if(it.type==='image')gs2.push({t:'@'+it.handle,o:[['pic','Use as profile pic']],cur:()=>'',set:()=>{PFP[it.handle]=it.url;invalidateLib();save();setDirty(true);toast('Profile pic set for @'+it.handle)}});
  gs2.push({t:'Item',o:[['copy','Copy link'],['open','Open original'],['del','Delete']],cur:()=>'',set:v=>{if(v==='copy'){try{const p=navigator.clipboard.writeText(it.url);if(p&&p.then)p.then(()=>toast('Link copied'),()=>toast('Copy not available here'));else toast('Link copied')}catch(e){toast('Copy not available here')}}else if(v==='open')window.open(it.url,'_blank','noopener,noreferrer');else if(v==='del')deleteItems([it])}});
- if(it.type==='video')gs2.push({t:'Video',o:[['thumb','Thumbnail loop']],cur:()=>'',set:()=>openTrim(b)});
+ if(it.type==='video')gs2.push({t:'Video',o:[['cprev','Set custom preview'],['cimg','Set custom image'],['thumb','Thumbnail loop']],cur:()=>'',set:v=>{if(v==='cprev')setTimeout(()=>openCustomPreview(b,it),0);else if(v==='cimg')setTimeout(()=>openCustomImg(it),0);else setTimeout(()=>openTrim(b),0)}});
  menu(b,gs2,b.getBoundingClientRect().top>innerHeight/2)}
-function setThumbMode(m){if(!['pic','live','stills'].includes(m)||m===G.thumbMode)return;
- G.thumbMode=m;stillCorsNotified=false;releaseGridVideos();save();
- if(G.open&&ACTIVE_VIEW){ACTIVE_VIEW.el.querySelectorAll('.tile').forEach(t=>{if(t._vis)loadTileMedia(t)})}
- toast(m==='pic'?'Video thumbnails: Pic (tap to preview)':m==='live'?'Video thumbnails: Live preview (max 3)':'Video thumbnails: Stills (CORS-clean hosts)')}
-/* the More menu: extra functions live here, one home each — including Thumbnail mode */
+function setPrevMode(m){if(!['still','motion','live'].includes(m)||m===G.prevMode)return;
+ G.prevMode=m;releaseGridVideos();save();
+ if(G.open&&ACTIVE_VIEW){let n=0;for(const t of ACTIVE_VIEW.mounted.values()){if(t._vis||n<12){t._vis=true;loadTileMedia(t);n++}}}
+ toast(m==='still'?'Previews: Still':m==='motion'?'Previews: Motion stills':'Previews: Live video (up to '+MAX_LIVE_PLAY+')')}
+/* the More menu: extra functions live here, one home each — including 3-tier Previews ladder */
 function moreMenu(b){const gs2=[];
- if(G.tab==='items')gs2.push({t:'Video thumbnails',o:[['pic','Pic'],['live','Live preview'],['stills','Stills']],cur:()=>G.thumbMode,set:setThumbMode});
+ if(G.tab==='items'){const ck=(k,l)=>[k,(G.prevMode===k?'✓ ':'')+l];gs2.push({t:'Previews',o:[ck('still','Still'),ck('motion','Motion stills'),ck('live','Live video')],cur:()=>G.prevMode,set:setPrevMode})}
  if(G.tab==='profiles')gs2.push({t:'Profiles',o:[['x',G.psel?'Exit select mode':'Select profiles']],cur:()=>'',set:()=>setPSel(G.psel?0:1)});
  else if(G.prof)gs2.push({t:'@'+G.prof,o:[['pic','Profile pic…'],['fav',FAVP.has(G.prof)?'Unfavorite':'Favorite']],cur:()=>'',set:v=>{if(v==='pic')setTimeout(()=>picMenu(b),0);else{FAVP.has(G.prof)?FAVP.delete(G.prof):FAVP.add(G.prof);invalidateLib(true);save();setDirty(true);renderGrid(1)}}});
  else gs2.push({t:'Items',o:[['x',G.sel?'Exit select mode':'Select items']],cur:()=>'',set:()=>setSel(G.sel?0:1)});
@@ -1142,7 +1317,8 @@ function renderGrid(keep){const plqF=document.activeElement&&document.activeElem
   prev.el.hidden=true;
  }else if(prev&&keep){prev.sy=gs.scrollTop;prev.sx=gs.scrollLeft}
  const view=getOrCreateView(key,kind);ACTIVE_VIEW=view;view.el.hidden=false;
- const fKey=S.mode+'|'+S.filter+'|'+(G.prof||''),sKey=S.sort+'|'+SHUF_REV+'|'+(G.rec?1:0),szKey=G.size+'|'+(G.ebb?1:0)+'|'+G.cs+'|'+G.cz+'|'+G.zoom;
+ const fKey=S.mode+'|'+S.filter+'|'+(G.prof||''),sKey=S.sort+'|'+SHUF_REV+'|'+(G.rec?1:0),szKey=gridSizeKey();
+ const orderOrFilterChanged=(view.filterKey!==''&&view.filterKey!==fKey)||(view.sortKey!==''&&view.sortKey!==sKey);
  const needsData=view.dirty||view.libRev!==LIB_REV||view.filterKey!==fKey||view.sortKey!==sKey;
  const needsLayout=needsData||view.sizeKey!==szKey;
  if(!V.length){view.list=[];GL=[];view.el.className='gv';view.el.innerHTML='<div class="gem">Nothing to show yet.<br>Add links with the + button.</div>';view.dirty=false;view.libRev=LIB_REV;gbUI();return}
@@ -1162,6 +1338,7 @@ function renderGrid(keep){const plqF=document.activeElement&&document.activeElem
    view.el.className='gv '+gtClass();
   }
  }
+ if(orderOrFilterChanged){view.sy=0;view.sx=0}
  const targetY=(prev&&prev.key!==key)?view.sy:(keep?view.sy:0);
  const targetX=(prev&&prev.key!==key)?view.sx:(keep?view.sx:0);
  gs.scrollTo(targetX,targetY);
@@ -1217,7 +1394,7 @@ gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)r
  else if(a==='pfav'){if(!PSELS.size)return toast('Tap profiles to select first');const allFav=[...PSELS].every(h=>FAVP.has(h));PSELS.forEach(h=>allFav?FAVP.delete(h):FAVP.add(h));invalidateLib(true);save();setDirty(true);renderGrid(1);toast(allFav?'Removed from favorites':'Favorited '+PSELS.size+' profile'+(PSELS.size===1?'':'s'))}
  else if(a==='pdel'){if(!PSELS.size)return toast('Tap profiles to select first');menu(b,[{t:'Delete '+PSELS.size+' profile'+(PSELS.size===1?'':'s')+' and all their media?',o:[['yes','Yes, delete'],['no','Cancel']],cur:()=>'',set:v=>{if(v==='yes'){const list=S.items.filter(i=>PSELS.has(i.handle));setPSel(0);deleteItems(list)}}}])}
 });
-function closeGrid(){if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}G.sy=gs.scrollTop;G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
+function closeGrid(){if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
  /* Immediately release ALL grid video decoders and timers so feed gets 100% decoder priority;
     cached view containers stay built in Pic state for instant return. */
  releaseGridVideos();
@@ -1226,11 +1403,11 @@ function closeGrid(){if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=
 function openFromGrid(it){const i=V_INDEX.has(it.id)?V_INDEX.get(it.id):V.indexOf(it);if(i<0)return;FROM=G.col&&G.tab==='items'?'collage':'grid';
  releaseGridVideos();
  if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}
- G.sy=gs.scrollTop;G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
+ G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
  cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();
  S.idx=i;if(FEEDDIRTY){FEEDDIRTY=0;render()}else{jump(i,false);sync()}}
 function barShow(v,force){if(G.bar===v&&!force)return;G.bar=v;gbar.classList.toggle('hid',!v);$('#gshow').hidden=!!v||(G.col&&G.tab==='items')}
-let sRaf=0;gs.addEventListener('scroll',()=>{if(sRaf)return;sRaf=requestAnimationFrame(()=>{sRaf=0;if(!G.open)return;const y=gs.scrollTop,d=y-spy;spy=y;if(y<=36||d<-12)barShow(1);else if(y>56&&d>12&&!G.crawl&&!G.col)barShow(0);if(ACTIVE_VIEW)syncWindow(ACTIVE_VIEW,false);sbPos()})},{passive:true});addEventListener('resize',()=>{if(G.open){if(ACTIVE_VIEW)syncWindow(ACTIVE_VIEW,true);sbUpdate()}});
+let sRaf=0;gs.addEventListener('scroll',()=>{if(G.open){scrollActive=true;clearTimeout(scrollSettleT);scrollSettleT=setTimeout(flushPendingPausedFrames,PAUSED_SETTLE_MS)}if(sRaf)return;sRaf=requestAnimationFrame(()=>{sRaf=0;if(!G.open)return;const y=gs.scrollTop,d=y-spy;spy=y;if(y<=36||d<-12)barShow(1);else if(y>56&&d>12&&!G.crawl&&!G.col)barShow(0);if(ACTIVE_VIEW)syncWindow(ACTIVE_VIEW,false);sbPos()})},{passive:true});addEventListener('resize',()=>{if(G.open){if(ACTIVE_VIEW)syncWindow(ACTIVE_VIEW,true);sbUpdate()}});
 $('#gshow').onclick=()=>barShow(1);
 gs.addEventListener('touchstart',()=>ctp=1,{passive:true});gs.addEventListener('touchend',()=>setTimeout(()=>ctp=0,1200),{passive:true});
 function stepCrawl(ts){if(!G.crawl||!G.open){crawlRaf=0;return}if(!cl)cl=ts;const dt=Math.min(64,ts-cl);cl=ts;if(!ctp){ca+=46*dt/1000;if(ca>=1){const s=Math.floor(ca);ca-=s;const m=gs.scrollHeight-gs.clientHeight;if(gs.scrollTop>=m-1)gs.scrollTop=0;else gs.scrollTop+=s}}crawlRaf=requestAnimationFrame(stepCrawl)}
@@ -1263,13 +1440,18 @@ gt.addEventListener('click',e=>{const r=e.target.closest('[data-plh]');if(r){if(
  if(t.classList.contains('pt')){if(G.psel){PSELS.has(t._h)?PSELS.delete(t._h):PSELS.add(t._h);pselPaint();return}G.prof=t._h;G.tab='items';renderGrid();return}
  const o=e.target.closest('[data-o]');if(o){if(o.dataset.o==='open')openFromGrid(t._it);else{const it=t._it;G.blow[it.id]=((G.blow[it.id]||0)+1)%3;G.salt++;activeViewEl().querySelectorAll('.ovon').forEach(x=>x.classList.remove('ovon'));applyCollage(true)}return}
  if(G.col){if(!t.querySelector('.ov'))t.insertAdjacentHTML('beforeend',OVH);const on=t.classList.contains('ovon');activeViewEl().querySelectorAll('.ovon').forEach(x=>x.classList.remove('ovon'));if(!on)t.classList.add('ovon');return}
- /* Pic mode: first tap on a direct video plays it in-tile (max 1 at a time); second tap opens it in the feed */
+ if(holdFired){holdFired=0;return}
  const it=t._it;
- if(G.thumbMode==='pic'&&isDirectVid(it)){
-  if(TAP_PREVIEW&&TAP_PREVIEW.id===it.id&&TAP_PREVIEW.tile===t){openFromGrid(it);return}
-  mountTileVideo(t,it,true);return}
  releaseTapPreview();
  openFromGrid(it)});
+/* Press-and-hold (~320ms) on any video tile plays the real video in-tile (max 1 at a time) */
+let holdT=0,holdFired=0,holdX=0,holdY=0;
+gt.addEventListener('pointerdown',e=>{if(G.sel||G.col||G.psel)return;const t=e.target.closest('.tile');if(!t||t.classList.contains('pt')||!isDirectVid(t._it))return;
+ clearTimeout(holdT);holdFired=0;holdX=e.clientX;holdY=e.clientY;
+ holdT=setTimeout(()=>{holdT=0;if(!G.open||!t.isConnected)return;holdFired=1;mountTileVideo(t,t._it,true)},320)},{passive:true});
+gt.addEventListener('pointermove',e=>{if(holdT&&(Math.abs(e.clientX-holdX)>10||Math.abs(e.clientY-holdY)>10)){clearTimeout(holdT);holdT=0}},{passive:true});
+const endHold=()=>{clearTimeout(holdT);holdT=0;if(holdFired){releaseTapPreview();setTimeout(()=>{holdFired=0},60)}};
+gt.addEventListener('pointerup',endHold,{passive:true});gt.addEventListener('pointercancel',endHold,{passive:true});
 function setSize(v){const was=G.size==='l'&&G.ebb;G.size=v;G.zoom=v==='l'?(G.ebb?'bounce-zoom':'dynamic'):v==='xl'?'2':'0';save();const now=v==='l'&&G.ebb;if(!G.col&&!was&&!now)anchored(applyGridClass);else renderGrid(1)}
 const gzOpts=()=>G.size==='l'&&G.ebb&&!G.col?[['0','Off'],['bounce-zoom','Bounce Zoom'],['4','Boomerang']]:[['0','Off'],['dynamic','Dynamic'],['1','In 1'],['2','In 2'],['3','In 3'],['out','Out 1'],['out-2','Out 2'],['4','Boomerang']].concat(G.size==='l'&&!G.col?[['bounce-zoom','Bounce Zoom']]:[]);
 /* slide show: ten transitions, never the same twice in a row, with a slow drift on photos */
@@ -1308,10 +1490,9 @@ function moveSelected(target){const list=S.items.filter(i=>SEL.has(i.id));const 
 let LASTDEL=[],delT=0;
 function afterDelete(){invalidateLib();save();setDirty(true);chips();V=vis();if(S.mode==='main'&&S.idx>=V.length)S.idx=Math.max(0,V.length-1);const feedShown=S.mode==='main'&&!G.open&&!modal.classList.contains('open')&&$('#dwrap').hidden;if(feedShown){FEEDDIRTY=0;render()}else FEEDDIRTY=1;if(G.open)renderGrid(1);
  if(!$('#tp-act').hidden)renderAct();if(!$('#tp-r2').hidden)renderR2();if(!$('#tp-unl').hidden)renderUnl();const tp=$('#tp-dup');if(tp&&!tp.hidden)renderDup()}
-function deleteItems(list){if(!list.length)return;const ids=new Set(list.map(i=>i.id));
- S.trash=list.map(it=>({item:it,at:Date.now(),idx:S.items.indexOf(it)})).concat(S.trash).slice(0,300);
- LASTDEL.push(list.map(it=>({it,idx:S.items.indexOf(it)})).sort((a,b)=>a.idx-b.idx));
- S.items=S.items.filter(i=>!ids.has(i.id));list.forEach(i=>{SEL.delete(i.id);TC.delete(i.id)});
+function deleteItems(list){if(!list.length)return;const ids=new Set(list.map(i=>i.id)),now=Date.now(),kept=[],tr=[],ld=[];
+ for(let i=0;i<S.items.length;i++){const it=S.items[i];if(ids.has(it.id)){tr.push({item:it,at:now,idx:i});ld.push({it,idx:i});SEL.delete(it.id);TC.delete(it.id)}else kept.push(it)}
+ if(!ld.length)return;S.trash=tr.concat(S.trash).slice(0,300);LASTDEL.push(ld);S.items=kept;
  afterDelete();
  const up=$('#upill');up.hidden=false;clearTimeout(delT);delT=setTimeout(()=>{up.hidden=true;LASTDEL=[]},9000);
  toast(`Deleted ${ids.size} item${ids.size===1?'':'s'}`)}
@@ -3863,27 +4044,28 @@ $('#duplist').onclick=e=>{const b=e.target.closest('[data-dup]');if(!b)return;co
 /* Profiles tab (batch menu): the management view — profiles A–Z, a dropdown,
    autosuggest search fed by existing profile names (the same suggestion list
    feeds the Active search), and a per-creator link list with a back button. */
-let PROFVIEW=null,profArm=null;
+let PROFVIEW=null,profArm=null,PDLIM=200;
 const profNames=()=>getProfileIndex().names;
 let profSig='';function profSuggest(){const d=$('#proflist');if(!d)return;const ns=profNames(),sig=ns.join('\u0001');if(sig===profSig)return;profSig=sig;d.innerHTML=ns.map(h=>`<option value="${esc(h)}">`).join('')}
 function renderProf(){profSuggest();const pi=getProfileIndex();
  const sel=$('#psel');sel.innerHTML='<option value="">Jump to a profile (A–Z)…</option>'+pi.names.map(h=>`<option value="${esc(h)}">@${esc(h)} · ${(pi.byHandle.get(h)||[]).length}</option>`).join('');
  if(PROFVIEW){$('#prof-list').hidden=true;$('#prof-detail').hidden=false;$('#pdname').textContent='@'+PROFVIEW;$('#pdav').innerHTML=avatarHTML(PROFVIEW,'big');wireImgs($('#pdav'));
   const L=pi.byHandle.get(PROFVIEW)||[];
-  $('#pdlist').innerHTML=L.slice(0,200).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">${esc(short(it.url))}<small>${it.type}${it.source?' · linked':''}</small></div><button data-p="go" data-id="${it.id}">Go</button>${it.source?`<button data-p="open" data-id="${it.id}">Open page</button>`:''}<button class="danger" data-p="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>200?`<p class="lab">Showing 200 of ${L.length}.</p>`:'')||'<p class="lab">No links under this profile.</p>';return}
+  $('#pdlist').innerHTML=L.slice(0,PDLIM).map(it=>`<div class="li"><span class="ico">${svg(it.type==='video'?'play':it.type==='image'?'image':'link')}</span><div class="t">${esc(short(it.url))}<small>${it.type}${it.source?' · linked':''}</small></div><button data-p="go" data-id="${it.id}">Go</button>${it.source?`<button data-p="open" data-id="${it.id}">Open page</button>`:''}<button class="danger" data-p="del" data-id="${it.id}">Delete</button></div>`).join('')+(L.length>PDLIM?`<div class="row" style="justify-content:center;margin:8px 0"><button class="pill" data-p="more">Show more (${PDLIM} of ${L.length})</button></div>`:'')||'<p class="lab">No links under this profile.</p>';return}
  $('#prof-list').hidden=false;$('#prof-detail').hidden=true;
  const q=($('#psearch').value||'').trim().toLowerCase();
  const L=pi.names.filter(h=>!q||h.toLowerCase().includes(q));
  $('#profrows').innerHTML=L.slice(0,150).map(h=>{const n=(pi.byHandle.get(h)||[]).length;return`<div class="li">${avatarHTML(h)}<div class="t">@${esc(h)}<small>${n} item${n===1?'':'s'}</small></div><button data-p="grid" data-h="${esc(h)}">Grid</button><button data-p="view" data-h="${esc(h)}">Open</button></div>`}).join('')+(L.length>150?`<p class="lab">Showing 150 of ${L.length}. Search to narrow.</p>`:'')||'<p class="lab">No profiles match.</p>';wireImgs($('#profrows'))}
-$('#psel').onchange=e=>{if(e.target.value){PROFVIEW=e.target.value;renderProf()}};
+$('#psel').onchange=e=>{if(e.target.value){PROFVIEW=e.target.value;PDLIM=200;renderProf()}};
 let psT=0;$('#psearch').addEventListener('input',()=>{clearTimeout(psT);psT=setTimeout(renderProf,60)});
 $('#pdbk').onclick=()=>{PROFVIEW=null;$('#psearch').value='';$('#psel').value='';renderProf()};
 $('#pgrid').onclick=()=>{leaveDisc();closeModal();G.prof=null;G.tab='profiles';openGrid()};
 $('#r2feed').onclick=r2Feed;$('#r2q').addEventListener('input',renderR2);
-function profToGrid(h){if(!h)return;leaveDisc();closeModal();if(G.psel){G.psel=0;PSELS.clear()}G.fromHome=0;G.prof=h;G.tab='items';G.col=0;G.sy=0;openGrid()}
+function profToGrid(h){if(!h)return;leaveDisc();closeModal();if(G.psel){G.psel=0;PSELS.clear()}G.fromHome=0;G.prof=h;G.tab='items';G.col=0;const pv=VIEW_CACHE.get('prof:'+h);if(pv){pv.sy=0;pv.sx=0}openGrid()}
 $('#pdgrid').onclick=()=>profToGrid(PROFVIEW);
 $('#tp-prof').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
- if(b.dataset.p==='view'){PROFVIEW=b.dataset.h;renderProf();return}
+ if(b.dataset.p==='more'){PDLIM+=200;renderProf();return}
+ if(b.dataset.p==='view'){PROFVIEW=b.dataset.h;PDLIM=200;renderProf();return}
  if(b.dataset.p==='grid'){profToGrid(b.dataset.h);return}
  const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;
  if(b.dataset.p==='go')return goItem(it.id);
@@ -4039,7 +4221,7 @@ function enterA(){if(!inB)return;inB=false;hbPanel('');$('#hbm').textContent='';
  openModal()}
 function enterB(){if(inB)return;leaveDisc();$('#upill').hidden=true;LASTDEL=[];clearTimeout(delT);stopAct();closeModal();$('#mm').classList.remove('open');closePop();if(G.open)closeGrid();const ss=$('#ss');ss._stop&&ss._stop();
  document.body.classList.remove('hzon','zoomed','cl');zout();clearTimeout(AT);cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);
- for(const s of [...HYD])dehyd(s);feed.querySelectorAll('video,iframe').forEach(v=>{try{v.pause&&v.pause();v.removeAttribute('src');v.load&&v.load()}catch(e){}});feed.textContent='';HYD.clear();FEED_CARDS.clear();V=[];
+ for(const s of [...HYD])dehyd(s);feed.querySelectorAll('video,iframe').forEach(v=>{try{v.pause&&v.pause();v.removeAttribute('src');v.load&&v.load()}catch(e){}});clearGridCache();feed.textContent='';HYD.clear();FEED_CARDS.clear();V=[];
  clearTimeout(svT);saveNow();inB=true;document.body.classList.add('hb');hbRender()}
 $('#bbag').onclick=enterB;$('#mlock').onclick=enterB;
 /* ---------- memory banks ---------- */
@@ -4048,7 +4230,7 @@ function bnk(){document.querySelectorAll('.bb[data-b]').forEach(b=>{const n=S.ba
 function bankPop(m){BM=m;BD=0;$('#bkp').hidden=false;$('#bkq').textContent=m==='save'?'Save to bank':'Delete bank';$('#bka').hidden=$('#bko').hidden=m!=='save';$('#bkc').hidden=m==='save';$('#bkc').textContent='Delete';bnk()}
 const bankUrls=()=>{const b=parse(ta.value).items,src=b.length?b:S.items;return src.filter(i=>!i.url.startsWith('data:')).map(lineOf)};
 document.querySelectorAll('.bb[data-b]').forEach(b=>b.onclick=()=>{const n=+b.dataset.b,l=S.banks[n];if(!l.length){BT=n;bankPop('save');return}
- const p=parse(l.join('\n'));if(!p.items.length)return toast('Bank '+n+' has no usable links');S.items=p.items;commit();setDirty(false);closeModal();toast(`Recalled Bank ${n}: ${tally(p)}`)});
+ const p=parse(l.join('\n'));if(!p.items.length)return toast('Bank '+n+' has no usable links');S.items=p.items;clearGridCache();invalidateLib();commit();setDirty(false);closeModal();toast(`Recalled Bank ${n}: ${tally(p)}`)});
 document.querySelectorAll('.bb[data-t]').forEach(b=>b.onclick=()=>{BT=+b.dataset.t;BD=0;$('#bkc').textContent='Delete';bnk()});
 $('#bks').onclick=()=>bankPop('save');$('#bkd').onclick=()=>bankPop('delete');$('#bkx').onclick=()=>$('#bkp').hidden=true;
 $('#bka').onclick=()=>{const u=bankUrls();if(!u.length)return toast('Nothing to save yet');const s=new Set(),m=S.banks[BT].concat(u).filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true});S.banks[BT]=m;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Added to Bank ${BT} (${m.length} links)`)};
