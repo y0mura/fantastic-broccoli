@@ -55,7 +55,11 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;paddin
 #dr .lab{color:rgba(246,247,249,.82);font-size:11px;font-weight:600}
 
 /* Feed Side Rail — near-transparent floating glass pill */
-#rail{position:fixed;z-index:20;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px;border-radius:999px;background:var(--ov-chrome);border:1px solid var(--ov-line);backdrop-filter:blur(16px) saturate(1.45);-webkit-backdrop-filter:blur(16px) saturate(1.45);box-shadow:0 8px 24px rgba(0,0,0,.28);transition:opacity .25s}
+#rail{position:fixed;z-index:22;right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);top:auto;transform:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px 5px;border-radius:999px;background:var(--ov-chrome);border:1px solid var(--ov-line);backdrop-filter:blur(16px) saturate(1.45);-webkit-backdrop-filter:blur(16px) saturate(1.45);box-shadow:0 8px 24px rgba(0,0,0,.28);transition:opacity .25s,box-shadow .18s}
+#rail.dragging{transition:none!important;box-shadow:0 14px 34px rgba(0,0,0,.48);cursor:grabbing}
+.rail-grip{width:34px;height:26px;display:grid;place-items:center;color:var(--ov-ink);opacity:.72;touch-action:none;cursor:grab;border-radius:999px;transition:opacity .15s,background .15s}
+.rail-grip:active,#rail.dragging .rail-grip{opacity:1;background:rgba(255,255,255,.14);cursor:grabbing}
+.rail-grip svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 #rail .pill{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;height:40px;min-width:34px;padding:0 6px;color:var(--ov-ink)}
 #rail .pill:active{background:rgba(255,255,255,.16)}
 .rail-sep{width:16px;height:1px;background:var(--ov-line);margin:2px auto}
@@ -70,7 +74,7 @@ body[data-theme="pitch"]{--bg:#000;--ink:#ececec;--dim:#8e8e94;--acc:#ffb224;--a
 body[data-theme="slate"]{--bg:#c9ccd1;--ink:#1b1d21;--dim:#545861;--acc:#0f766e;--acc-ink:#fff;--hot:#b45309;--glass:rgba(238,240,243,.86);--line:rgba(15,18,24,.14);--field:#dadde2;--panel:#d3d7dc;--card:#e2e5e9;--dock:rgba(226,229,233,.72);--ov-chrome:rgba(15,17,24,.46);--ov-glass:rgba(15,17,24,.50);--ov-line:rgba(255,255,255,.18);--bar-bg:rgba(236,238,242,.92);--sh:0 10px 28px rgba(15,18,24,.16)}
 body[data-theme="matcha"]{--bg:#0b100d;--ink:#eceee9;--dim:#959b92;--acc:#b7c46a;--acc-ink:#10170a;--hot:#e0a458;--glass:rgba(16,24,18,.76);--line:rgba(205,225,200,.12);--field:#101711;--panel:#121a14;--card:#18231b;--dock:rgba(8,14,9,.55);--ov-chrome:rgba(10,16,12,.42);--ov-glass:rgba(10,16,12,.50);--ov-line:rgba(205,225,200,.16);--bar-bg:rgba(16,24,18,.88);--sh:0 12px 32px rgba(0,0,0,.46)}
 body[data-theme="ember"]{--bg:#120e0b;--ink:#efece8;--dim:#a39a90;--acc:#ff7847;--acc-ink:#1a0b04;--hot:#ffc46b;--glass:rgba(26,19,14,.76);--line:rgba(255,205,160,.12);--field:#17110c;--panel:#1a130e;--card:#231a13;--dock:rgba(16,11,8,.55);--ov-chrome:rgba(18,13,9,.42);--ov-glass:rgba(18,13,9,.50);--ov-line:rgba(255,205,160,.16);--bar-bg:rgba(26,19,14,.88);--sh:0 12px 32px rgba(0,0,0,.48)}
-body.disc #bgd,body.disc #bh,body.disc #bf,body.disc #bbag{display:none!important}
+body.disc #bgd,body.disc #bh,body.disc #bf{display:none!important}
 body.hb{--ink:#eceae4;--dim:#9a9aa6}
 .tdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none;box-shadow:0 0 0 1px rgba(128,128,128,.25)}
 #bgd svg{transform:scale(.88)}
@@ -89,8 +93,19 @@ span.av{display:inline-grid;place-items:center}
 .pt .fv,.plrow .fv{color:#ffb224;flex:none;line-height:0}
 .tile.selp{outline:3px solid var(--acc);outline-offset:-3px}
 .plrow.selp{border-color:var(--acc)}
-body.cl #top,body.cl #rail,body.cl .vb,body.cl .sw,body.cl .rmb,body.zoomed #top,body.zoomed #rail,body.zoomed .vb,body.zoomed .sw,body.zoomed .rmb{opacity:0;pointer-events:none}
-#rs{position:fixed;z-index:58;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);opacity:.78;height:40px;padding:0 16px;background:var(--ov-chrome);border-color:var(--ov-line);color:var(--ov-ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* PART 0: Standing Two-Escapes Rule — Hide UI hides everything except #bbag and #rs in all feed states */
+body.cl #top,body.cl #rail,body.cl .vbar,body.cl .vb,body.cl .sw,body.cl .rmb,body.cl .hzb,body.cl .hzc,body.cl .pgnav,body.cl #fh,body.cl #bnav,
+body.zoomed #top,body.zoomed #rail,body.zoomed .vbar,body.zoomed .vb,body.zoomed .sw,body.zoomed .rmb,body.zoomed .hzb,body.zoomed .pgnav,body.zoomed #bnav{opacity:0!important;pointer-events:none!important}
+body.hb #ui-cluster,body.hb #bnav{display:none!important}
+body.grid-open #ui-cluster,body.disc-list #ui-cluster,body.modal-open #ui-cluster{display:none!important}
+body.hzon #bnav,body.fs #bnav,body.ss-open #bnav,body.col-open #bnav{opacity:0;pointer-events:none;transform:translate(-50%,16px)}
+#ui-cluster{position:fixed;z-index:62;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 58px);display:flex;align-items:center;gap:6px;transition:bottom .22s cubic-bezier(.2,.8,.2,1),opacity .22s ease}
+body.cl #ui-cluster,body.hzon #ui-cluster,body.fs #ui-cluster,body.zoomed #ui-cluster{bottom:calc(env(safe-area-inset-bottom,0px) + 14px)}
+body.onvid:not(.cl):not(.hzon):not(.zoomed) #ui-cluster{bottom:calc(env(safe-area-inset-bottom,0px) + 146px)}
+body.cl #rs{display:inline-flex!important}
+#rs{height:38px;padding:0 15px;opacity:.82;background:var(--ov-chrome);border-color:var(--ov-line);color:var(--ov-ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#top #lk{color:var(--ov-ink)!important}
+#bbag{height:38px;min-width:38px;padding:0 10px;background:var(--ov-chrome);border:1px solid var(--ov-line);color:var(--ov-ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 4px 16px rgba(0,0,0,.22)}
 #feed{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
 #feed::-webkit-scrollbar{display:none}
 .card{height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;touch-action:pan-y;background:#000}
@@ -106,17 +121,23 @@ video.main{background:#000}
 .cp svg{width:22px;height:22px;fill:currentColor}
 .fb{position:absolute;z-index:4;top:50%;margin-top:-18px;padding:6px 14px;border-radius:18px;background:rgba(0,0,0,.62);color:var(--ov-ink);font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s}
 .fb.l{left:22px}.fb.r{right:22px}.fb.s{opacity:1;transition:none}
-.vb{position:absolute;z-index:5;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 56px);display:flex;justify-content:space-between;align-items:flex-end;gap:8px;transition:opacity .25s}
-.vb .mid{display:flex;gap:6px}
-.vb .pill{height:34px;padding:0 11px;font-size:11px;font-weight:700;color:var(--ov-ink);background:var(--ov-chrome);border-color:var(--ov-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.vb .sk{height:40px;flex:1;max-width:112px;border-radius:16px}
-.sw{position:absolute;z-index:5;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);height:38px;display:flex;align-items:center;transition:opacity .25s}
+.vbar{position:absolute;z-index:5;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 58px);display:flex;flex-direction:column;gap:0;padding:2px 10px 6px;border-radius:20px;background:var(--ov-chrome);border:1px solid var(--ov-line);backdrop-filter:blur(14px) saturate(1.35);-webkit-backdrop-filter:blur(14px) saturate(1.35);box-shadow:0 8px 26px rgba(0,0,0,.28);color:var(--ov-ink);transition:opacity .25s}
+.sw{position:relative;height:38px;display:flex;align-items:center;padding:0 2px;transition:opacity .25s}
 .scrub{width:100%;height:38px;margin:0;background:none;-webkit-appearance:none;appearance:none;cursor:pointer;touch-action:none}
-.scrub::-webkit-slider-runnable-track{height:4px;border-radius:3px;background:linear-gradient(to right,var(--acc) var(--p,0%),rgba(255,255,255,.28) var(--p,0%))}
-.scrub::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:var(--ov-ink);box-shadow:0 1px 4px rgba(0,0,0,.55)}
-.scrub::-moz-range-track{height:4px;border-radius:3px;background:rgba(255,255,255,.28)}
-.scrub::-moz-range-progress{height:4px;border-radius:3px;background:var(--acc)}
-.scrub::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--ov-ink);box-shadow:0 1px 4px rgba(0,0,0,.55)}
+.scrub::-webkit-slider-runnable-track{height:3.5px;border-radius:3px;background:linear-gradient(to right,var(--acc) var(--p,0%),rgba(255,255,255,.26) var(--p,0%))}
+.scrub::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5.25px;border-radius:50%;background:var(--ov-ink);box-shadow:0 1px 5px rgba(0,0,0,.55);transition:transform .12s ease}
+.scrub:active::-webkit-slider-thumb{transform:scale(1.22)}
+.scrub::-moz-range-track{height:3.5px;border-radius:3px;background:rgba(255,255,255,.26)}
+.scrub::-moz-range-progress{height:3.5px;border-radius:3px;background:var(--acc)}
+.scrub::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:var(--ov-ink);box-shadow:0 1px 5px rgba(0,0,0,.55)}
+.vb{display:flex;align-items:center;justify-content:space-between;gap:4px;height:32px;transition:opacity .25s}
+.vb-l,.vb-r{display:flex;align-items:center;gap:2px}
+.vb-r{gap:4px}
+.vb .pill{height:30px;min-width:30px;padding:0 7px;font-size:11px;font-weight:700;color:var(--ov-ink);background:transparent;border:1px solid transparent;border-radius:999px;backdrop-filter:none;-webkit-backdrop-filter:none}
+.vb .pill:active{background:rgba(255,255,255,.15)}
+.vb .pill svg{width:17px;height:17px}
+.vb .pill.vchip{height:26px;padding:0 9px;background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.14);font-size:10.5px;letter-spacing:.01em}
+.vb .pill.vtm{padding:0 6px;font-size:11px;font-weight:600;opacity:.88;font-variant-numeric:tabular-nums}
 .main.e1{filter:url(#sh1) contrast(1.05) saturate(1.08) brightness(var(--b,1))}
 .main.e2{filter:url(#sh2) contrast(1.09) saturate(1.14) brightness(var(--b,1))}
 .main.e3{filter:url(#sh3) contrast(1.14) saturate(1.2) brightness(var(--b,1))}
@@ -274,7 +295,7 @@ body.hzon #top,body.hzon #rail{opacity:0;pointer-events:none}
 .mm h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}.mm h3 svg{width:18px;height:18px}.mm p{margin:0;color:var(--dim);font-size:12px;word-break:break-all}.mm textarea{height:110px;resize:none}
 
 body.cl #top>*,body.hzon #top>*,body.zoomed #top>*{pointer-events:none}
-.hzb{position:absolute;z-index:5;left:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);color:var(--ov-ink);background:var(--ov-chrome);border-color:var(--ov-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:opacity .25s}
+.hzb{position:absolute;z-index:5;left:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 104px);color:var(--ov-ink);background:var(--ov-chrome);border-color:var(--ov-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:opacity .25s}
 .hzc{display:none;position:absolute;z-index:6;top:14px;left:14px;gap:8px}.card.hz .hzc{display:flex}.card.hz .hzb{display:none}
 .hzc .pill{color:var(--ov-ink);background:var(--ov-chrome);border-color:var(--ov-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 body.cl .hzb,body.zoomed .hzb{opacity:0;pointer-events:none}
@@ -375,7 +396,7 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
 #pgbar.ind i{animation:pgind 1.2s ease-in-out infinite}
 @keyframes pgind{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
 #mm{top:var(--vvtop,0px);height:var(--vvh,100dvh);bottom:auto}
-.pgnav{position:absolute;right:10px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:8;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
+.pgnav{position:absolute;right:10px;bottom:calc(62px + env(safe-area-inset-bottom));z-index:8;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
 .pgnav .pill{width:42px;height:42px;padding:0;justify-content:center;border-radius:50%;background:var(--ov-chrome);border:1px solid var(--ov-line);color:var(--ov-ink);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 6px 18px rgba(0,0,0,.32)}
 .dp-ph{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;padding:10px;box-sizing:border-box;background:linear-gradient(155deg,color-mix(in srgb,var(--panel) 94%,var(--acc) 6%),var(--field));border:1px solid color-mix(in srgb,var(--line) 85%,transparent);color:var(--ink)}
 .dp-ph .dp-host{font-weight:700;font-size:12px;color:var(--ink);word-break:break-all;line-height:1.25}
@@ -384,13 +405,333 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
 .r2-miss{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:8px;background:rgba(245,158,11,.22);color:#fbbf24;font-size:10px;font-weight:700;vertical-align:middle}
 #dwrap{background:var(--bg);color:var(--ink)}
 #dwrap .dw-head{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;padding:8px 0 10px;margin:0 0 6px;background:var(--bg);border-bottom:1px solid var(--line)}
+
+/* PART 1: Persistent Bottom Selector (#bnav) — slim, floating, near-transparent */
+#bnav{position:fixed;z-index:48;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);transform:translateX(-50%);display:flex;align-items:center;gap:2px;padding:3px 4px;border-radius:999px;background:var(--ov-chrome);border:1px solid var(--ov-line);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 6px 22px rgba(0,0,0,.28);transition:opacity .22s ease,transform .24s cubic-bezier(.2,.8,.2,1),background .2s ease}
+body.grid-open #bnav,body.disc-list #bnav{background:var(--bar-bg);border-color:var(--line);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+#bnav button{height:34px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:rgba(246,247,249,.76);transition:background .16s ease,color .16s ease,transform .12s ease;white-space:nowrap}
+body.grid-open #bnav button,body.disc-list #bnav button{color:var(--dim)}
+#bnav button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#bnav button:active{transform:scale(.93)}
+#bnav button.on{background:color-mix(in srgb,var(--acc) 22%,transparent);color:var(--acc)}
+body.hzon .vbar,body.fs .vbar{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+
+/* PART 6: True Unified Windows-Style Top Toolbar (#top & #gbar) */
+.top-dock{border-radius:12px;padding:2px 3px;gap:0;background:var(--ov-chrome);border:1px solid var(--ov-line)}
+.top-dock .dock-scroll{gap:0}
+.top-dock .pill{height:34px;min-width:34px;padding:0 8px;border-radius:8px;border:0;background:transparent}
+.top-dock .pill:hover{background:rgba(255,255,255,.10)}
+.top-dock .pill.on{background:color-mix(in srgb,var(--acc) 24%,transparent);color:var(--acc)}
+.tb-sep{width:1px;height:18px;background:var(--ov-line);margin:0 3px;flex:none;opacity:.8}
+.tb-txt{font-size:11.5px;font-weight:700;letter-spacing:-.01em}
+
+#gb1 .gb-main{border-radius:12px;padding:2px 3px;gap:1px}
+#gb1 .gb-main .pill{height:34px;min-width:28px;padding:0 6px;border-radius:8px;border:0;font-size:11.5px}
+#gb1 .gb-main .split .pill:first-child{min-width:26px;padding:0 4px 0 7px}
+#gb1 .gb-main .split .pill:last-child{min-width:18px;padding:0 5px 0 2px}
+#gb1 .gb-main .flip-btn{padding:0 8px!important}
+#gb1 .gb-main .pill:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+#gb1 .gb-main .tb-sep{background:var(--line)}
+.flip-btn{display:inline-flex;align-items:center;gap:5px;padding:0 10px!important;background:color-mix(in srgb,var(--acc) 14%,transparent)!important;color:var(--acc)!important;border-radius:8px!important;font-weight:700!important}
+.flip-btn .flip-ic{font-size:11px;opacity:.75}
+
+/* PART 2: Collapsible 1-line Paste Box */
+.ta-wrap{position:relative;display:flex;align-items:flex-start;gap:6px;margin:8px 0}
+.ta-wrap #ta{flex:1;min-width:0;transition:height .22s cubic-bezier(.2,.8,.2,1)}
+#ta.ta-mini{height:42px!important;min-height:42px!important;padding:10px 12px;overflow:hidden;line-height:20px}
+#ta-exp{height:42px;min-width:40px;padding:0;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--ink);flex:none}
+#ta-exp.on{color:var(--acc);border-color:color-mix(in srgb,var(--acc) 55%,transparent);background:color-mix(in srgb,var(--acc) 14%,transparent)}
+
+/* PART 3: Redesigned Discovery Screen (#dwrap) */
+#dwrap{position:fixed;inset:0;z-index:45;background:var(--bg);color:var(--ink);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(10px + env(safe-area-inset-top)) 14px calc(76px + env(safe-area-inset-bottom));opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .24s ease,transform .26s cubic-bezier(.2,.8,.2,1)}
+#dwrap.open{opacity:1;transform:none;pointer-events:auto}
+.dw-head{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;padding:8px 0 10px;margin:0 0 8px;background:var(--bg);border-bottom:1px solid var(--line)}
+.dw-title{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.dw-cnt{font-size:11px;font-weight:700;color:var(--dim);padding:2px 8px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.dw-addbar{display:flex;gap:6px;align-items:center;margin:0 0 12px;padding:6px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.dw-addbar input{flex:1;min-width:0;border:0!important;background:transparent!important;padding:6px 8px!important}
+.dw-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:15px;background:var(--card);border:1px solid var(--line);transition:transform .12s ease,border-color .16s ease}
+.dw-card:active{transform:scale(.985)}
+.dw-av{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:14px;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent);flex:none;text-transform:uppercase}
+.dw-info{flex:1;min-width:0;cursor:pointer}
+.dw-handle{font-size:13.5px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dw-url{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.dw-meta{display:flex;align-items:center;gap:6px;margin-top:4px}
+.dw-rbadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--dim);cursor:pointer}
+.dw-rbadge.on{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc)}
+.dw-acts{display:flex;align-items:center;gap:5px;flex:none}
+.dw-acts button{height:32px;padding:0 11px;border-radius:10px;font-size:11.5px;font-weight:700;background:color-mix(in srgb,var(--ink) 10%,transparent);color:var(--ink)}
+.dw-acts button.go{background:color-mix(in srgb,var(--acc) 18%,transparent);color:var(--acc)}
+.dw-acts button.danger{color:#ff7b82;background:rgba(255,123,130,.11);padding:0 9px}
+
+/* PART 5: Easy Floating Export Popup (#exp-pop) */
+#exp-pop{position:fixed;z-index:135;left:50%;top:calc(env(safe-area-inset-top,0px) + 56px);transform:translate(-50%,-14px) scale(.96);display:flex;align-items:center;gap:8px;padding:8px 10px 8px 14px;border-radius:16px;background:color-mix(in srgb,var(--panel) 96%,transparent);border:1px solid color-mix(in srgb,var(--hot) 60%,var(--line));box-shadow:0 10px 30px rgba(0,0,0,.38);color:var(--ink);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .24s cubic-bezier(.2,.8,.2,1);max-width:92vw}
+#exp-pop.show{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
+#exp-pop .ep-msg{font-size:12.5px;font-weight:700;white-space:nowrap}
+#exp-pop .ep-go{height:30px;padding:0 12px;border-radius:999px;background:var(--hot);color:#1a0c00;font-size:12px;font-weight:800}
+#exp-pop .ep-x{height:28px;width:28px;border-radius:999px;color:var(--dim);font-size:13px;display:grid;place-items:center}
+
+/* PART 7: Manual Sort Picked Tile Highlight */
+.tile.manpick{outline:3px solid var(--hot)!important;outline-offset:-3px;box-shadow:0 0 0 4px color-mix(in srgb,var(--hot) 28%,transparent)}
+
+/* PART 8: Smooth GPU-Accelerated Screen & View Transitions (zero cost to grid scroll) */
+#grid{opacity:0;transform:scale(.985) translateY(10px);pointer-events:none;transition:opacity .22s ease,transform .24s cubic-bezier(.2,.8,.2,1)}
+#grid.open{opacity:1;transform:none;pointer-events:auto}
+#gs{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 64px)}
+#mm{opacity:0;transition:opacity .2s ease}
+#mm.open{opacity:1}
+#mm .mm{transform:scale(.95) translateY(8px);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+#mm.open .mm{transform:none}
+.sheet-body > div:not([hidden]){animation:tabfade .18s ease}
+@keyframes tabfade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#grid,#dwrap,#bnav,#exp-pop,#mm,#mm .mm,.sheet,#pop{transition:none!important;animation:none!important}}
+
+/* ==========================================================================
+   Build #22 — Tasteful Beauty & Craft Layer (GPU-safe, zero scroll drag)
+   ========================================================================== */
+:root{
+ --bg:#090b10;--ink:#f0eee8;--dim:#9598a6;--acc:#8fd0ff;--acc-ink:#05131f;--hot:#ffb670;
+ --panel:#12141c;--card:#181b25;--field:#0d0f15;
+ --ov-chrome:rgba(12,14,22,.44);--ov-line:rgba(255,255,255,.16);
+ --spec:rgba(255,255,255,.11);--spec-ov:rgba(255,255,255,.18);
+ --tile-ring:rgba(255,255,255,.07);
+ --amb:radial-gradient(90% 42% at 50% 0%,rgba(143,208,255,.075),transparent 70%);
+ --sh:0 16px 42px rgba(0,0,0,.48),0 2px 8px rgba(0,0,0,.22);
+}
+body[data-theme="day"]{
+ --bg:#f2eee5;--ink:#1a1c22;--dim:#626570;--acc:#2563eb;--acc-ink:#fff;--hot:#c96a12;
+ --panel:#ece7dc;--card:#faf7f1;--field:#e5e0d4;--bar-bg:rgba(250,247,241,.93);
+ --line:rgba(24,26,36,.10);--spec:rgba(255,255,255,.88);--tile-ring:rgba(24,26,36,.08);
+ --amb:radial-gradient(90% 42% at 50% 0%,rgba(37,99,235,.06),transparent 70%);
+ --sh:0 14px 36px rgba(24,26,36,.13),0 2px 8px rgba(24,26,36,.06);
+}
+body[data-theme="pitch"]{
+ --bg:#000;--ink:#f2f2f2;--dim:#8c8c93;--acc:#ffb224;--acc-ink:#140c00;--hot:#ff7847;
+ --panel:#08080a;--card:#111115;--field:#0c0c0f;--bar-bg:rgba(12,12,15,.92);
+ --spec:rgba(255,255,255,.12);--tile-ring:rgba(255,255,255,.08);
+ --amb:radial-gradient(90% 40% at 50% 0%,rgba(255,178,36,.065),transparent 70%);
+ --sh:0 18px 44px rgba(0,0,0,.72);
+}
+body[data-theme="slate"]{
+ --bg:#cfd3d8;--ink:#191c21;--dim:#535863;--acc:#0f766e;--acc-ink:#fff;--hot:#b45309;
+ --panel:#d8dce1;--card:#e7eaef;--field:#dde1e6;--bar-bg:rgba(235,238,242,.93);
+ --line:rgba(15,20,28,.12);--spec:rgba(255,255,255,.78);--tile-ring:rgba(15,20,28,.09);
+ --amb:radial-gradient(90% 42% at 50% 0%,rgba(15,118,110,.065),transparent 70%);
+ --sh:0 14px 34px rgba(15,20,28,.15),0 2px 8px rgba(15,20,28,.07);
+}
+body[data-theme="matcha"]{
+ --bg:#080e0a;--ink:#eef1ec;--dim:#929a90;--acc:#c0cf72;--acc-ink:#101809;--hot:#e2a85c;
+ --panel:#101913;--card:#162219;--field:#0c140e;--bar-bg:rgba(16,25,19,.90);
+ --spec:rgba(215,240,210,.11);--tile-ring:rgba(215,240,210,.07);
+ --amb:radial-gradient(90% 42% at 50% 0%,rgba(192,207,114,.07),transparent 70%);
+ --sh:0 16px 40px rgba(0,0,0,.48);
+}
+body[data-theme="ember"]{
+ --bg:#110c09;--ink:#f2eee9;--dim:#a69c92;--acc:#ff8252;--acc-ink:#1a0a03;--hot:#ffc670;
+ --panel:#19120d;--card:#231912;--field:#150f0a;--bar-bg:rgba(26,19,14,.90);
+ --spec:rgba(255,215,180,.11);--tile-ring:rgba(255,215,180,.07);
+ --amb:radial-gradient(90% 42% at 50% 0%,rgba(255,130,82,.075),transparent 70%);
+ --sh:0 16px 40px rgba(0,0,0,.52);
+}
+
+/* Crisp typography & optical smoothing */
+html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+.sheet h2,.dw-title,.empty h2,.mm h3{letter-spacing:-.022em}
+
+/* Atmospheric top wash on Grid, Discovery & Home surfaces */
+#grid,#dwrap{background-image:var(--amb);background-repeat:no-repeat}
+
+/* Subtle cinema-grade top & bottom edge scrims on feed media (fade out completely on Hide UI) */
+.card::before,.card::after{content:"";position:absolute;left:0;right:0;pointer-events:none;z-index:4;transition:opacity .28s ease}
+.card::before{top:0;height:108px;background:linear-gradient(to bottom,rgba(0,0,0,.38),transparent)}
+.card::after{bottom:0;height:156px;background:linear-gradient(to top,rgba(0,0,0,.44),transparent)}
+body.cl .card::before,body.cl .card::after,body.zoomed .card::before,body.zoomed .card::after,body.pgcard .card::before,body.pgcard .card::after{opacity:0}
+
+/* Luminous specular rims on floating media glass chrome */
+.top-dock{
+ box-shadow:inset 0 1px 0 var(--spec-ov),0 10px 28px rgba(0,0,0,.28);
+ border-color:rgba(255,255,255,.17);
+}
+.r2 .pill,#pr,#dr{
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 14px rgba(0,0,0,.22);
+}
+#rail{
+ box-shadow:inset 0 1px 0 var(--spec-ov),0 12px 30px rgba(0,0,0,.34);
+ border-color:rgba(255,255,255,.18);
+}
+#bbag,#rs,#fh,.pgnav .pill{
+ box-shadow:inset 0 1px 0 var(--spec-ov),0 6px 20px rgba(0,0,0,.28);
+}
+
+/* Elevated Video Toolbar (.vbar) & glowing scrubber */
+.vbar{
+ border-radius:22px;
+ padding:3px 12px 7px;
+ box-shadow:inset 0 1px 0 var(--spec-ov),0 12px 32px rgba(0,0,0,.34);
+ border-color:rgba(255,255,255,.18);
+}
+.scrub::-webkit-slider-runnable-track{height:4px;border-radius:4px}
+.scrub::-webkit-slider-thumb{
+ width:15px;height:15px;margin-top:-5.5px;
+ box-shadow:0 0 0 2px rgba(255,255,255,.18),0 0 10px color-mix(in srgb,var(--acc) 60%,transparent),0 2px 6px rgba(0,0,0,.55);
+}
+.vb .pill.vchip{
+ background:rgba(255,255,255,.10);
+ border-color:rgba(255,255,255,.16);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+.cp{
+ width:58px;height:58px;margin:-29px;
+ background:rgba(10,12,18,.48);
+ border:1px solid rgba(255,255,255,.28);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 12px 32px rgba(0,0,0,.44);
+ transition:opacity .2s ease,transform .24s cubic-bezier(.22,1.15,.36,1);
+}
+
+/* Persistent Bottom Selector (#bnav) — machined pill with luminous active highlight */
+#bnav{
+ padding:4px 5px;
+ box-shadow:inset 0 1px 0 var(--spec-ov),0 10px 30px rgba(0,0,0,.34);
+}
+body.grid-open #bnav,body.disc-list #bnav{
+ background:linear-gradient(180deg,color-mix(in srgb,var(--card) 96%,transparent),color-mix(in srgb,var(--panel) 92%,transparent));
+ box-shadow:inset 0 1px 0 var(--spec),var(--sh);
+}
+#bnav button{
+ height:34px;padding:0 13px;
+ transition:background .18s ease,color .18s ease,transform .16s cubic-bezier(.22,1.2,.36,1),box-shadow .18s ease;
+}
+#bnav button.on{
+ background:color-mix(in srgb,var(--acc) 22%,transparent);
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--acc) 40%,rgba(255,255,255,.28));
+}
+
+/* Grid Toolbar (#gb1, #gb2, #gbs, #gbc) — layered sheen without GPU-heavy backdrop-filter */
+#gb1 .gb-main,#gb2.gb-card,#gbs.gb-card,#gbp,#gbc{
+ background:linear-gradient(180deg,color-mix(in srgb,var(--card) 95%,transparent),color-mix(in srgb,var(--panel) 90%,transparent));
+ box-shadow:inset 0 1px 0 var(--spec),0 8px 24px rgba(0,0,0,.18);
+}
+body[data-theme="day"] #gb1 .gb-main,body[data-theme="slate"] #gb1 .gb-main,
+body[data-theme="day"] .gb-card,body[data-theme="slate"] .gb-card{
+ box-shadow:inset 0 1px 0 var(--spec),0 6px 20px rgba(20,24,36,.10);
+}
+#gb1 .gb-main .flip-btn{
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--acc) 30%,rgba(255,255,255,.2));
+}
+
+/* Gallery-grade Grid Tile Framing (zero scroll overhead — pure cheap border/shadow) */
+.tile{
+ box-shadow:inset 0 0 0 1px var(--tile-ring);
+}
+.tile .vbadge,.tile .lbadge{
+ width:22px;height:22px;
+ background:rgba(10,12,18,.62);
+ border:1px solid rgba(255,255,255,.22);
+ box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.pt .pn{
+ padding:34px 11px 10px;
+ background:linear-gradient(to top,rgba(0,0,0,.84) 0%,rgba(0,0,0,.42) 48%,transparent 100%);
+ letter-spacing:-.01em;
+}
+.pt .pn b{
+ background:rgba(255,255,255,.16);
+ border:1px solid rgba(255,255,255,.14);
+ font-weight:700;
+}
+.pt .fv,.plrow .fv{filter:drop-shadow(0 0 6px rgba(255,178,36,.42))}
+.tile .ph{
+ background:linear-gradient(155deg,color-mix(in srgb,var(--card) 92%,var(--acc) 8%),var(--panel));
+}
+.tile .ph b{letter-spacing:-.01em;font-weight:700}
+
+/* Home Sheet (#modal .sheet), Cards (.li), Options & Primary CTA */
+.sheet{
+ background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 98%,var(--acc) 2%),var(--panel) 180px);
+ box-shadow:inset 0 1px 0 var(--spec),var(--sh);
+}
+.sheet-head{
+ background:color-mix(in srgb,var(--panel) 94%,transparent);
+}
+.ver-chip{
+ background:color-mix(in srgb,var(--acc) 11%,transparent);
+ color:color-mix(in srgb,var(--acc) 75%,var(--dim));
+ border:1px solid color-mix(in srgb,var(--acc) 22%,transparent);
+}
+.tabs .pill{
+ transition:background .16s ease,border-color .16s ease,color .16s ease,transform .14s cubic-bezier(.22,1.2,.36,1);
+}
+.tabs .pill.on{
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--acc) 35%,rgba(255,255,255,.2));
+}
+.big{
+ box-shadow:inset 0 1px 0 var(--spec),0 2px 8px rgba(0,0,0,.10);
+}
+.big.go{
+ background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 82%,#ffffff 18%));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 18px color-mix(in srgb,var(--acc) 32%,transparent);
+}
+.li,.plrow,.dw-card{
+ box-shadow:inset 0 1px 0 var(--spec),0 2px 10px rgba(0,0,0,.08);
+}
+.opt{
+ box-shadow:inset 0 1px 0 var(--spec);
+}
+
+/* Discovery Polish */
+.dw-addbar{
+ box-shadow:inset 0 1px 0 var(--spec),0 4px 16px rgba(0,0,0,.12);
+ transition:border-color .18s ease,box-shadow .18s ease;
+}
+.dw-addbar:focus-within{
+ border-color:color-mix(in srgb,var(--acc) 65%,transparent);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 16%,transparent),0 4px 16px rgba(0,0,0,.14);
+}
+.dw-av{
+ background:linear-gradient(140deg,color-mix(in srgb,var(--acc) 22%,transparent),color-mix(in srgb,var(--hot) 14%,transparent));
+ border:1px solid color-mix(in srgb,var(--acc) 26%,transparent);
+}
+
+/* Sculptural Popovers, Dialogs, Toasts & Export Popup */
+#pop{
+ border-radius:22px;
+ box-shadow:inset 0 1px 0 var(--spec),var(--sh);
+ transition:opacity .16s ease,transform .2s cubic-bezier(.22,1.15,.36,1);
+}
+#pop .o{
+ transition:background .15s ease,color .15s ease,transform .12s ease;
+}
+#pop .o.on{
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--acc) 35%,rgba(255,255,255,.22));
+}
+.mm{
+ border-radius:24px;
+ box-shadow:inset 0 1px 0 var(--spec),var(--sh);
+}
+#toast{
+ box-shadow:inset 0 1px 0 var(--spec),var(--sh);
+ letter-spacing:-.005em;
+}
+#exp-pop{
+ box-shadow:inset 0 1px 0 var(--spec),0 14px 36px rgba(0,0,0,.42);
+}
+#exp-pop .ep-go{
+ background:linear-gradient(135deg,var(--hot),color-mix(in srgb,var(--hot) 78%,#ffffff 22%));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 12px color-mix(in srgb,var(--hot) 34%,transparent);
+}
 </style></head><body class="hb">
 <header id="top">
  <div class="top-dock">
   <div class="dock-scroll xfade" id="top-scroll">
-   <button class="pill ic" id="bbag" title="Lock and return to Finds" aria-label="Lock"><i data-i="bag"></i></button><button class="pill ic" id="bmf" title="Home — batch menu"><i data-i="home"></i></button><button class="pill ic" id="bgd" title="Grid & collage"><i data-i="grid"></i></button><button class="pill ic" id="bbk" hidden title="Back to grid"><i data-i="back"></i></button><button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button><button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
-   <button class="pill ic" id="bz" title="Feed zoom"><i data-i="zoom"></i><em id="zl"></em><s>▾</s></button>
+   <button class="pill ic" id="bmf" title="Home menu"><i data-i="home"></i></button>
+   <button class="pill ic" id="bgd" title="Grid"><i data-i="grid"></i></button>
+   <button class="pill ic" id="bbk" hidden title="Back to grid"><i data-i="back"></i></button>
+   <span class="tb-sep"></span>
+   <button class="pill ic" id="bf" title="Filter & sort"><i data-i="filter"></i><s>▾</s></button>
+   <button class="pill ic" id="bh" title="Shuffle"><i data-i="shuffle"></i></button>
    <button class="pill ic" id="ba" title="Auto-scroll"><i data-i="clock"></i><em id="au"></em><s>▾</s></button>
+   <button class="pill ic" id="bview" title="View modes — Zoom, Crawl, Slideshow, Collage"><span class="tb-txt">View</span><s>▾</s></button>
+   <button class="pill ic" id="bz" hidden title="Feed zoom"><i data-i="zoom"></i><em id="zl"></em><s>▾</s></button>
    <button class="pill ic" id="bx" hidden title="Clear filters">✕</button>
    <span class="sp"></span>
    <button class="pill ic" id="bol" title="Open link — go off-platform"><i data-i="link"></i></button>
@@ -418,6 +759,8 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
  <filter id="sh3" color-interpolation-filters="sRGB"><feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="0 -1.65 0 -1.65 7.6 -1.65 0 -1.65 0"/></filter>
 </defs></svg>
 <aside id="rail">
+ <div class="rail-grip" id="rdrag" title="Drag to move rail (double-tap to reset)" aria-label="Move rail"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></div>
+ <div class="rail-sep"></div>
  <button class="pill" id="rp" title="Previous"><i data-i="up"></i></button>
  <div class="rail-sep"></div>
  <button class="pill" id="rm" title="Mute"><i data-i="muted"></i></button>
@@ -425,29 +768,30 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
  <button class="pill" id="rh" title="Hide UI"><i data-i="hide"></i></button>
  <button class="pill" id="rn" title="Next"><i data-i="down"></i></button>
 </aside>
-<button class="pill" id="rs" hidden>Show UI</button>
+<div id="ui-cluster">
+ <button class="pill ic" id="bbag" title="Lock and return to Finds" aria-label="Lock"><i data-i="bag"></i></button>
+ <button class="pill" id="rs" hidden>Show UI</button>
+</div>
 <main id="feed"><button class="pill ic" id="fh" title="Hide UI"><i data-i="hide"></i></button></main>
 <div id="grid" hidden>
  <div id="gbar">
   <div id="gb1">
    <div class="gb-main">
-    <button class="pill" data-act="back"><i data-i="back"></i>Back</button><button class="pill ic" data-act="batch" title="Batch menu" aria-label="Batch menu"><i data-i="layout"></i></button>
-    <span class="seg"><button class="pill" data-act="tabi">All</button><button class="pill" data-act="tabp">Profiles</button></span>
+    <button class="pill ic" data-act="back" title="Back"><i data-i="back"></i></button>
+    <span class="tb-sep"></span>
+    <button class="pill flip-btn" data-act="tabflip" id="gtabflip" title="Tap to flip between All and Profiles"><span id="gtablab">All</span><span class="flip-ic">⇄</span></button>
+    <span class="tb-sep"></span>
+    <span class="seg split"><button class="pill" data-act="sizec" title="Tap to cycle grid size"><span id="gsl">M</span></button><button class="pill" data-act="size" title="Choose size"><s>▾</s></button></span>
+    <button class="pill ic" data-act="plist" title="List view" hidden><i data-i="list"></i></button>
+    <button class="pill ic" data-act="sort" title="Filter and sort"><i data-i="filter"></i><s>▾</s></button>
+    <button class="pill ic" data-act="gview" id="gbview" title="View modes — Crawl, Zoom, Slideshow, Collage"><span class="tb-txt">View</span><s>▾</s></button>
+    <button class="pill ic" data-act="shuf" title="Shuffle"><i data-i="shuffle"></i></button>
+    <button class="pill ic" data-act="ebb" title="L-grid bounce" hidden><i data-i="sort"></i></button>
     <span class="sp"></span>
     <button class="pill" data-act="sel" id="gsel-main" title="Select items">Select</button>
     <button class="pill ic" data-act="more" title="More"><i data-i="dots"></i></button>
    </div>
-   <div class="gb-sub xfade">
-    <span class="seg split"><button class="pill" data-act="sizec" title="Tap to cycle grid size"><span id="gsl">M</span></button><button class="pill" data-act="size" title="Choose size"><s>▾</s></button></span>
-    <button class="pill ic" data-act="plist" title="List view" hidden><i data-i="list"></i></button>
-    <button class="pill ic" data-act="col" title="Collage"><i data-i="grid"></i></button>
-    <button class="pill ic" data-act="sort" title="Filter and sort"><i data-i="filter"></i><s>▾</s></button>
-    <button class="pill ic" data-act="shuf" title="Shuffle"><i data-i="shuffle"></i></button>
-    <button class="pill ic" data-act="zoom" title="Grid zoom"><i data-i="zoom"></i><em id="gzl"></em><s>▾</s></button>
-    <button class="pill ic" data-act="crawl" title="Slow crawl"><i data-i="crawl"></i></button>
-    <button class="pill ic" data-act="ebb" title="L-grid bounce" hidden><i data-i="sort"></i></button>
-    <button class="pill ic" data-act="ss" title="Slide show" aria-label="Slide show"><i data-i="play"></i></button>
-   </div>
+   <span hidden><em id="gzl"></em><button data-act="tabi"></button><button data-act="tabp"></button><button data-act="col"></button><button data-act="zoom"></button><button data-act="crawl"></button><button data-act="ss"></button><button data-act="batch"></button></span>
   </div>
   <div class="gb-card" id="gb2" hidden>
    <div class="row">
@@ -511,19 +855,25 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
  <div class="sheet-head">
   <div class="sheet-grip" aria-hidden="true"></div>
   <div class="sheet-title-row">
-   <div class="sheet-title-grp"><h2>Batch URLs</h2><span class="ver-chip" id="bver">Build Nov 20 · #19</span></div>
+   <div class="sheet-title-grp"><h2>Home</h2><span class="ver-chip" id="bver">Build Nov 22 · #22</span></div>
    <div class="sheet-act"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill ic" id="mc" aria-label="Close">✕</button></div>
   </div>
-  <div class="tabs xfade" id="mtabs"><button class="pill on" data-tab="paste">Paste</button><button class="pill" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="disc">Discovery <em id="chd">0</em></button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></div>
+  <div class="tabs xfade" id="mtabs"><button class="pill on" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="paste">Paste</button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></div>
  </div>
  <div class="sheet-body">
-  <div id="bkr"><span class="lab">Banks</span><button class="pill bb" data-b="1">1</button><button class="pill bb" data-b="2">2</button><button class="pill bb" data-b="3">3</button><button class="pill bb" data-b="4">4</button><button class="pill bb" data-b="5">5</button><span class="sp"></span><button class="pill ic" id="bks" title="Save to bank"><i data-i="save"></i></button><button class="pill ic" id="bkd" title="Delete bank"><i data-i="trash"></i></button></div>
-  <div id="bkp" hidden><span id="bkq" class="lab">Save to bank</span><button class="pill bb" data-t="1">1</button><button class="pill bb" data-t="2">2</button><button class="pill bb" data-t="3">3</button><button class="pill bb" data-t="4">4</button><button class="pill bb" data-t="5">5</button><button class="pill on" id="bka">+ Add</button><button class="pill" id="bko">Overwrite</button><button class="pill danger" id="bkc" hidden>Delete</button><button class="pill ic" id="bkx" aria-label="Close bank picker">✕</button></div>
- <div id="tp-paste">
+ <div id="tp-dump">
+  <p class="lab" style="margin:8px 0">Paste links here to sift them first. Nothing is filed until you tap Add selected — the rest are discarded.</p>
+  <textarea id="dpta" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" style="width:100%" placeholder="One link per line — direct media, videos, or post pages…"></textarea>
+  <div class="row"><button class="pill" id="dpaste">Paste</button><button class="pill on" id="dpstage">Stage links</button><button class="pill" id="dpsmart">Smart select</button><span class="sp"></span><button class="pill" id="dpclear">Clear</button></div>
+  <p class="lab" id="dpstat" style="margin:8px 0"></p>
+  <div id="dpgrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
+  <div class="row" style="margin-top:10px"><button class="pill" id="dpall">All</button><button class="pill" id="dpnone">None</button><span class="lab">Save to</span><select id="dp-prof" style="flex:0 1 auto;max-width:40vw"></select><span class="sp"></span><button class="pill on" id="dpadd">Add selected</button></div>
+ </div>
+ <div id="tp-paste" hidden>
   <input type="file" id="fi" accept=".txt,.csv,.json,text/plain" hidden>
   <div class="row"><button class="big" id="mi">Import</button><button class="big" id="me">Export</button><button class="big go" id="ms">Start feed</button></div>
   <div class="row"><button class="pill" id="mp">Paste</button><button class="pill" id="my">Copy</button><button class="pill" id="mdc">Decrypt</button><button class="pill" id="ma">+ Append</button><button class="pill" id="mr2">Paste R2</button><span class="sp"></span><button class="pill" id="mt" aria-label="Top"><i data-i="up2"></i></button><button class="pill" id="mb" aria-label="Bottom"><i data-i="down2"></i></button></div>
-  <textarea id="ta" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste image, video or page links, or bare R2 filenames. One per line."></textarea>
+  <div class="ta-wrap"><textarea id="ta" class="ta-mini" rows="1" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste links or batch-paste here (tap expand for full view)…"></textarea><button class="pill ic" id="ta-exp" type="button" title="Expand paste box" aria-label="Expand paste box"><i data-i="expand"></i></button></div>
   <div class="row" style="justify-content:space-between"><span id="dc" style="color:var(--dim)">0 URLs</span><button class="pill" id="mx">Clear</button></div>
   <details class="opt"><summary>Options</summary>
    <div class="row"><span class="lab">Page offset</span><select id="s-off"><option value="0">Top</option><option value="10">10%</option><option value="25">25%</option><option value="40">40%</option><option value="50">50%</option><option value="75">75%</option></select><span class="lab">Mode</span><select id="s-mode"><option value="auto">Auto-detect</option><option value="video">Force video</option><option value="image">Force image</option><option value="webpage">Force webpage</option></select></div>
@@ -533,21 +883,6 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
    <div class="row"><span class="lab">R2 base</span><input id="s-r2b" type="text" placeholder="https://pub-….r2.dev" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:11px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text"><button class="pill" id="s-r2s" style="flex:none" title="Save the R2 bucket address — it only changes when you tap Save">Save</button></div>
    <div class="row" id="thumbs" style="flex-wrap:wrap;gap:6px"><span class="lab">Theme</span><button class="pill" data-th="default"><span class="tdot" style="background:#8fd0ff"></span>Default</button><button class="pill" data-th="day"><span class="tdot" style="background:#2563eb"></span>Daylight</button><button class="pill" data-th="pitch"><span class="tdot" style="background:#ffb224"></span>Pitch</button><button class="pill" data-th="slate"><span class="tdot" style="background:#0f766e"></span>Slate</button><button class="pill" data-th="matcha"><span class="tdot" style="background:#b7c46a"></span>Matcha</button><button class="pill" data-th="ember"><span class="tdot" style="background:#ff7847"></span>Ember</button></div>
   </details>
- </div>
- <div id="tp-dump" hidden>
-  <p class="lab" style="margin:8px 0">Paste links here to sift them first. Nothing is filed until you tap Add selected — the rest are discarded.</p>
-  <textarea id="dpta" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" style="width:100%" placeholder="One link per line — direct media, videos, or post pages…"></textarea>
-  <div class="row"><button class="pill" id="dpaste">Paste</button><button class="pill on" id="dpstage">Stage links</button><button class="pill" id="dpsmart">Smart select</button><span class="sp"></span><button class="pill" id="dpclear">Clear</button></div>
-  <p class="lab" id="dpstat" style="margin:8px 0"></p>
-  <div id="dpgrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
-  <div class="row" style="margin-top:10px"><button class="pill" id="dpall">All</button><button class="pill" id="dpnone">None</button><span class="lab">Save to</span><select id="dp-prof" style="flex:0 1 auto;max-width:40vw"></select><span class="sp"></span><button class="pill on" id="dpadd">Add selected</button></div>
- </div>
- <div id="tp-disc" hidden>
-  <p class="lab" style="margin:8px 0">Paste creator or profile pages to browse. Tap any picture inside a page to save it under that @profile.</p>
-  <textarea id="dta" rows="3" style="width:100%" placeholder="One profile page per line…"></textarea>
-  <div class="row"><button class="pill" id="dpc">Paste</button><button class="pill on" id="dsv">Save profiles</button><button class="big go" id="dgo" style="flex:none;padding:0 16px">Open discovery list</button></div>
-  <div class="list" id="dlist"></div>
-  <div id="droutes"></div>
  </div>
  <div id="tp-unl" hidden><p class="lab" style="margin:8px 0">Pages and video posts with no direct video linked yet. Tap Link to attach a video file.</p><div class="list" id="ulist"></div></div>
  <div id="tp-act" hidden><input id="asq" list="proflist" style="width:100%;margin-top:8px" placeholder="Search handle or link…"><div class="row" style="margin:8px 0 2px"><button class="pill" id="atr">Recently deleted <em id="atn">0</em></button><span class="sp"></span><button class="pill danger" id="aem" hidden>Empty trash</button></div><div class="list" id="alist"></div></div>
@@ -567,6 +902,7 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
   <div id="prof-list">
    <div class="row" style="margin:8px 0;gap:8px"><input id="psearch" list="proflist" placeholder="Search profiles…" autocomplete="off" style="flex:1"><select id="psel" style="flex:1;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px;font:inherit"></select><button class="pill on" id="pgrid" style="flex:none">Profiles grid</button></div>
    <div class="list" id="profrows"></div>
+   <div id="droutes" style="margin-top:12px"></div>
   </div>
   <div id="prof-detail" hidden>
    <div class="row" style="margin:8px 0;gap:8px"><span id="pdav" style="line-height:0"></span><button class="pill" id="pdbk">‹ Back</button><span class="lab" id="pdname" style="font-size:14px;color:var(--ink)"></span><span class="sp"></span><button class="pill" id="pdgrid">Grid</button></div>
@@ -579,12 +915,18 @@ body.pgcard #rp,body.pgcard #rn,body.pgcard .rail-sep{display:none!important}
 <div id="mm"></div>
 <div id="toast"></div>
 <button id="upill" class="pill" hidden style="position:fixed;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:96;background:var(--acc);color:var(--acc-ink);font-weight:800">Undo delete</button>
-<div id="dwrap" hidden style="position:fixed;inset:0;background:var(--bg);z-index:45;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 14px 24px">
- <div class="dw-head"><span class="lab" style="font-size:14px;font-weight:700;color:var(--ink)">Discovery — your saved profile pages</span><span style="flex:1"></span><button class="pill on" id="dw-exit">‹ Back</button></div>
- <p class="lab" style="margin:0 0 10px">Open a page to browse it and tap media inside to save it. The arrows move between list items — there is no grid here, by design.</p>
- <div class="row" style="gap:8px;margin:0 0 12px"><input id="dwa" placeholder="Add a profile page link…" style="flex:1"><button class="pill on" id="dwadd">Add</button></div>
+<div id="dwrap" hidden>
+ <div class="dw-head"><span class="dw-title">Discovery</span><span class="dw-cnt" id="dwcnt">0</span><span style="flex:1"></span><button class="pill on" id="dw-exit">‹ Feed</button></div>
+ <div class="dw-addbar"><input id="dwa" placeholder="Add a creator or profile page URL…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="pill" id="dw-paste" title="Paste link">Paste</button><button class="pill on" id="dwadd">Add</button></div>
  <div class="list" id="dwlist"></div>
 </div>
+<nav id="bnav" aria-label="Main navigation">
+ <button data-nav="feed" class="on"><i data-i="play"></i><span>Feed</span></button>
+ <button data-nav="grid"><i data-i="grid"></i><span>Grid</span></button>
+ <button data-nav="disc"><i data-i="link"></i><span>Discovery</span></button>
+ <button data-nav="home"><i data-i="home"></i><span>Home</span></button>
+</nav>
+<div id="exp-pop" role="status" aria-live="polite"><span class="ep-msg" id="ep-msg">New links saved</span><button class="ep-go" id="ep-go">Export</button><button class="ep-x" id="ep-x" aria-label="Dismiss">✕</button></div>
 <script>
 'use strict';
 const $=s=>document.querySelector(s),feed=$('#feed'),ta=$('#ta'),fhEl=$('#fh');
@@ -844,7 +1186,20 @@ function healLibraryOnLoad(){if(!Array.isArray(S.items)||!S.items.length){LOAD_H
  if(healed>0||dropped>0)S.items=kept;
  LOAD_HEAL={healed,dropped};return LOAD_HEAL}
 let CFG0=null;try{const d=JSON.parse(localStorage.getItem('reelflow_v2')||'null');if(d)SAVERAW=d;if(d&&Array.isArray(d.items)){S.items=d.items;if(Array.isArray(d.shuf))S.shuf=d.shuf;S.extra=d.extra||[];if(d.banks)for(let n=1;n<=5;n++)S.banks[n]=d.banks[n]||[];TRIMS=d.trims||{};Object.assign(ALIAS,d.alias||{});CFG0=d.cfg||null;CFGX=d.cfgx||{};S.disc=d.disc||[];S.trash=d.trash||[];PFP=d.pfp||{};healLibraryOnLoad();for(const h of Object.keys(PFP)){const v=PFP[h];if(v&&!S.items.some(i=>i.handle===h&&tk(i.url)===tk(v))){const it=S.items.find(i=>i.handle===h&&i.id===v);if(it)PFP[h]=it.url}}if(Array.isArray(d.favp))d.favp.forEach(h=>FAVP.add(h));{const o=[];let m=false;for(const l of S.extra){if(/^#\s*\[?PROFILE_DISCOVERY/i.test(l)){m=true;continue}if(/^#/.test(l))m=false;if(m){if(/^https?:/i.test(l)&&!S.disc.includes(l))S.disc.push(l)}else o.push(l)}S.extra=o}}}catch(e){}
-function setDirty(v){S.dirty=v;$('#me').classList.toggle('glow',v);$('#hb-exp').classList.toggle('glow',v)}
+let expPopT=0;
+function showExportPop(n){
+ const el=$('#exp-pop'),m=$('#ep-msg');if(!el||!m)return;
+ m.textContent=`Added ${n} new link${n===1?'':'s'}`;
+ el.classList.add('show');
+ clearTimeout(expPopT);expPopT=setTimeout(()=>el.classList.remove('show'),9000);
+}
+function hideExportPop(){clearTimeout(expPopT);const el=$('#exp-pop');if(el)el.classList.remove('show')}
+function notifyNewLinks(n){
+ if(!n||n<=0)return;
+ S.dirty=true;$('#me').classList.add('glow');
+ showExportPop(n);
+}
+function setDirty(v){S.dirty=v;if(!v){$('#me').classList.remove('glow');hideExportPop()}$('#hb-exp').classList.toggle('glow',v)}
 /* ---------- link-origin videos: fetch page via proxy race, extract stream, teach binding ---------- */
 const EX=new Map(),NOEX=/youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|twitch\.tv|dailymotion\.com|streamable\.com|redgifs\.com/i;
 /* ---------- browser proxy: per-site routed fetch via the Browser Run Worker ----------
@@ -898,7 +1253,25 @@ function extract(it){const page=strip(it.source||it.url);if(EX.has(page))return 
  EX.set(page,p);p.then(s=>{if(!s)setTimeout(()=>EX.delete(page),30000)});return p}
 /* ---------- feed ---------- */
 let V_INDEX=new Map(),FEED_CARDS=new Map(),FEED_WIN={s:0,e:0},F_TOP=null,F_BOT=null;
+let FEED_SCOPE=null,MAIN_SAVED_IDX=null;
+function exitFeedScope(restoreMain){
+ if(!FEED_SCOPE)return;
+ FEED_SCOPE=null;
+ if(restoreMain&&MAIN_SAVED_IDX!==null){
+  const ml=vis();
+  S.idx=Math.max(0,Math.min(MAIN_SAVED_IDX,Math.max(0,ml.length-1)));
+  MAIN_SAVED_IDX=null;
+ }else if(!restoreMain){
+  MAIN_SAVED_IDX=null;
+ }
+}
 function vis(){if(S.mode==='disc')return S.discItems;
+ if(FEED_SCOPE&&FEED_SCOPE.list){
+  const live=new Set(S.items.map(i=>i.id));
+  const sc=FEED_SCOPE.list.filter(i=>live.has(i.id));
+  if(sc.length!==FEED_SCOPE.list.length)FEED_SCOPE.list=sc;
+  return sc;
+ }
  const key=LIB_REV+'|'+SHUF_REV+'|'+S.filter+'|'+S.sort+'|'+(S.prof||'');
  if(VIS_CACHE&&VIS_CACHE.key===key)return VIS_CACHE.list;
  let a;
@@ -908,6 +1281,15 @@ function vis(){if(S.mode==='disc')return S.discItems;
  else{a=S.items.filter(i=>i.type===S.filter)}
  if(S.sort==='new')a.sort((x,y)=>y.seq-x.seq);
  else if(S.sort==='old')a.sort((x,y)=>x.seq-y.seq);
+ else if(S.sort==='manual'){
+  const mpos=new Map();for(let k=0;k<MANUAL_ORDER.length;k++)mpos.set(MANUAL_ORDER[k],k);
+  a.sort((x,y)=>{
+   const hx=mpos.has(x.id),hy=mpos.has(y.id);
+   if(hx&&hy)return mpos.get(x.id)-mpos.get(y.id);
+   if(hx!==hy)return hx?1:-1;
+   return y.seq-x.seq;
+  });
+ }
  else if(S.sort==='fav')a.sort((x,y)=>(FAVP.has(y.handle)?1:0)-(FAVP.has(x.handle)?1:0));
  else if(S.sort==='az')a.sort((x,y)=>{const ax=x.handle||x.url,ay=y.handle||y.url;return AZ_COLL?AZ_COLL.compare(ax,ay):(ax<ay?-1:ax>ay?1:0)});
  if(S.sort==='default'&&S.shuf&&S.shuf.length){const pos=new Map();for(let k=0;k<S.shuf.length;k++)pos.set(S.shuf[k],k);a.sort((x,y)=>{const px=pos.has(x.id)?pos.get(x.id):1e9+x.seq,py=pos.has(y.id)?pos.get(y.id):1e9+y.seq;return px-py})}
@@ -935,7 +1317,7 @@ function render(){zout();V=vis();if(S.mode==='disc'){V_INDEX=new Map();V.forEach
  feed.appendChild(F_TOP);feed.appendChild(F_BOT);
  syncFeedWindow(S.idx);jump(S.idx,false);sync()}
 function hyd(s,i){const it=V[i];if(!it)return;s.dataset.h=1;HYD.add(s);if(isPageCard(it)){hydPage(s,it,i);return}const u=esc((it.stream||it.url).split('#')[0]);
- if(it.type==='image'){NEWIMG=1;s.innerHTML=`<div class="hzw"><canvas class="bg" width="32" height="48" aria-hidden="true"></canvas><div class="stage${S.zoom!=='0'?' z-'+S.zoom:''}"><img class="main" src="${u}" alt="" draggable="false" referrerpolicy="no-referrer"><img class="zo" src="${u}" alt="" aria-hidden="true" referrerpolicy="no-referrer"></div><button class="pill hzb" data-hz="1" aria-label="Horizontal view">${svg('expand')}</button><div class="hzc"><button class="pill" data-hzx="1" aria-label="Close horizontal view">${svg('close')}</button><button class="pill" data-ez="lv">Enhance</button><button class="pill" data-ez="d" aria-label="Darker">${svg('minus')}</button><button class="pill" data-ez="u" aria-label="Brighter">${svg('plus')}</button></div></div>`;
+ if(it.type==='image'){NEWIMG=1;s.innerHTML=`<div class="hzw"><canvas class="bg" width="32" height="48" aria-hidden="true"></canvas><div class="stage${S.zoom!=='0'?' z-'+S.zoom:''}"><img class="main" src="${u}" alt="" draggable="false" referrerpolicy="no-referrer"><img class="zo" src="${u}" alt="" aria-hidden="true" referrerpolicy="no-referrer"></div><button class="pill hzb" data-hz="1" aria-label="Horizontal view">${svg('expand')}</button><div class="hzc"><button class="pill" data-hzx="1" aria-label="Close horizontal view">${svg('close')}</button><button class="pill" data-hzh="1" aria-label="Hide UI" title="Hide UI">${svg('hide')}</button><button class="pill" data-ez="lv">Enhance</button><button class="pill" data-ez="d" aria-label="Darker">${svg('minus')}</button><button class="pill" data-ez="u" aria-label="Brighter">${svg('plus')}</button></div></div>`;
   s.querySelectorAll('img').forEach(im=>im.addEventListener('error',()=>{if(/^http/.test(it.url))imgFail(im,it.url)}));wireImg(s);{const st=s.querySelector('.stage'),mi=s.querySelector('.main'),bgc=s.querySelector('canvas.bg'),f=()=>{if(!mi.naturalWidth||!mi.naturalHeight)return;const a=mi.naturalWidth/mi.naturalHeight,b=innerWidth/innerHeight;st.style.setProperty('--zs',Math.max(1.08,Math.min(2.2,Math.max(a/b,b/a))).toFixed(2));if(bgc){try{const ctx=bgc.getContext('2d');if(ctx){const bw=bgc.width,bh=bgc.height,sr=mi.naturalWidth/mi.naturalHeight,dr=bw/bh;let sx=0,sy=0,sw=mi.naturalWidth,sh=mi.naturalHeight;if(sr>dr){sw=sh*dr;sx=(mi.naturalWidth-sw)/2}else{sh=sw/dr;sy=(mi.naturalHeight-sh)/2}ctx.drawImage(mi,sx,sy,sw,sh,0,0,bw,bh)}}catch(e){}}};mi.complete&&mi.naturalWidth?f():mi.addEventListener('load',f,{once:true})}}
  else if(it.type==='video'&&!(it.stream||isDirect(it.url))){const pg=esc(strip(it.source||it.url));
   s.innerHTML=`<div class="wp"><h2 style="margin:0">Loading video…</h2><b>${pg}</b><div><a class="pill" href="${pg}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="text-decoration:none;color:inherit">Open page</a></div></div>`;
@@ -943,8 +1325,13 @@ function hyd(s,i){const it=V[i];if(!it)return;s.dataset.h=1;HYD.add(s);if(isPage
  else if(it.type==='video'){const near=i===S.idx?'auto':'metadata';
   s.innerHTML=`<div class="hzw"><div class="stage"><video class="main" src="${u}" referrerpolicy="no-referrer" playsinline webkit-playsinline preload="${near}" ${S.muted?'muted':''} ${S.loop?'loop':''}></video></div><div class="gl"></div>
   <button class="cp" title="Resume"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="fb l"></div><div class="fb r"></div>
-  <div class="vb"><button class="pill sk" data-c="b8" aria-label="Back 8 seconds">${svg('back8')}</button><div class="mid"><button class="pill" data-c="pp" aria-label="Play / pause">${svg('pause')}</button><button class="pill" data-c="tm"><span data-t>0:00</span></button><button class="pill" data-c="end">${S.loop?'Loop':'Scroll'}</button><button class="pill" data-c="sp">${S.rate}×</button><button class="pill" data-c="hz" title="Horizontal fullscreen">${svg('expand')}</button></div><button class="pill sk" data-c="f8" aria-label="Forward 8 seconds">${svg('fwd8')}</button></div>
-  <div class="sw"><input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Seek"></div></div>`;
+  <div class="vbar">
+   <div class="sw"><input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Seek"></div>
+   <div class="vb">
+    <div class="vb-l"><button class="pill" data-c="pp" aria-label="Play / pause">${svg('pause')}</button><button class="pill" data-c="b8" aria-label="Back 8 seconds">${svg('back8')}</button><button class="pill" data-c="f8" aria-label="Forward 8 seconds">${svg('fwd8')}</button><button class="pill vtm" data-c="tm"><span data-t>0:00</span></button></div>
+    <div class="vb-r"><button class="pill vchip" data-c="end">${S.loop?'Loop':'Scroll'}</button><button class="pill vchip" data-c="sp">${S.rate}×</button><button class="pill" data-c="hz" title="Horizontal fullscreen">${svg('expand')}</button></div>
+   </div>
+  </div></div>`;
   const v=s.querySelector('video');if(v)v.referrerPolicy='no-referrer';
   if(/\.m3u8(\?|#|$)/i.test(it.stream||it.url)&&!v.canPlayType('application/vnd.apple.mpegurl')){loadHls().then(H=>{if(H&&H.isSupported()&&s.dataset.h){const h=new H();h.loadSource((it.stream||it.url).split('#')[0]);h.attachMedia(v);s._hls=h}})}
   wireVid(s)}
@@ -1018,15 +1405,15 @@ function wireVid(sec){const v=sec.querySelector('video'),sc=sec.querySelector('.
 function hud(){const it=V[S.idx],act=S.filter!=='all'||S.sort!=='new'||S.prof;
  $('#bf').classList.toggle('on',S.filter!=='all'||S.sort!=='new');$('#bx').hidden=!act;$('#bgd').hidden=!!G.open;
  $('#au').textContent=S.auto?S.auto+'s':'';$('#ba').classList.toggle('on',!!S.auto);
- const h=S.prof||(it&&it.handle);$('#pc').hidden=!h;$('#pc').textContent=h?'@'+h:'';$('#pc').classList.toggle('on',!!S.prof);$('#px').hidden=!S.prof;
+ const h=S.prof||(it&&it.handle);$('#pc').hidden=!h;$('#pc').textContent=h?'@'+h:'';const inScope=!!(S.prof||FEED_SCOPE);$('#pc').classList.toggle('on',!!(S.prof||(FEED_SCOPE&&FEED_SCOPE.prof)));$('#px').hidden=!inScope;
  const lk=$('#lk');lk.hidden=!it;if(it)lk.href=(it.source||it.url).split('#')[0];
  setIc($('#rm').firstElementChild.parentNode,S.muted?'muted':'unmuted');
- const isV=it&&it.type==='video',v=isV?feed.querySelector(`.card[data-i="${S.idx}"] video`):null;applyEnh();applyZoom();pageUI(it);const bkEl=$('#bbk');if(bkEl){const discPage=S.mode==='disc'&&$('#dwrap').hidden;bkEl.hidden=!(discPage||(FROM&&!G.open&&S.mode==='main'));bkEl.title=discPage?'Back to list':(FROM==='collage'?'Back to collage':'Back to grid')}requestAnimationFrame(syncAllEdgeFades)}
-function clearFilters(){S.filter='all';S.sort='new';S.prof=null;S.shuf=null;S.idx=0;render()}
+ const isV=it&&it.type==='video',v=isV?feed.querySelector(`.card[data-i="${S.idx}"] video`):null;document.body.classList.toggle('onvid',!!(isV&&!isPageCard(it)));applyEnh();applyZoom();pageUI(it);const bkEl=$('#bbk');if(bkEl){const discPage=S.mode==='disc'&&$('#dwrap').hidden;bkEl.hidden=!(discPage||(FROM&&!G.open&&S.mode==='main'));bkEl.title=discPage?'Back to list':(FROM==='collage'?'Back to collage':'Back to grid')}requestAnimationFrame(syncAllEdgeFades)}
+function clearFilters(){exitFeedScope(false);S.filter='all';S.sort='new';S.prof=null;S.shuf=null;S.idx=0;render()}
 $('#bx').onclick=clearFilters;
 $('#bh').onclick=()=>{if(S.items.length<2)return;S.shuf=shuf(S.items.map(i=>i.id));S.sort='default';SHUF_REV++;VIS_CACHE=null;S.idx=0;save();setDirty(true);render();toast('Shuffled')};
 $('#pc').onclick=()=>{const it=V[S.idx];if(!it||!it.handle)return;G.prof=it.handle;G.tab='items';FROM='';openGrid()};
-$('#px').onclick=()=>{S.prof=null;S.idx=0;render()};
+$('#px').onclick=()=>{if(FEED_SCOPE){exitFeedScope(true);FROM='';render();return}S.prof=null;S.idx=0;render()};
 $('#bgd').onclick=()=>{FROM='';G.fromHome=0;G.prof=null;G.tab='items';openGrid()};
 $('#bbk').onclick=()=>{if(S.mode==='disc')return discList();const w=FROM;FROM='';G.fromHome=0;G.col=w==='collage';openGrid()};
 $('#bmore').onclick=e=>{const it=V[S.idx];if(it)itemMenu(e.currentTarget,it);else toast('Nothing here yet')};
@@ -1034,7 +1421,7 @@ $('#rp').onclick=()=>go(-1);$('#rn').onclick=()=>go(1);
 document.addEventListener('fullscreenchange',()=>document.body.classList.toggle('fs',!!document.fullscreenElement));
 $('#fh').onclick=()=>{const cl=document.body.classList.toggle('cl');$('#rs').hidden=!cl};
 $('#rm').onclick=()=>{S.muted=!S.muted;feed.querySelectorAll('video').forEach(v=>v.muted=S.muted);hud()};
-$('#rh').onclick=()=>{document.body.classList.add('cl');$('#rs').hidden=false};
+$('#rh').onclick=()=>{closePop();document.body.classList.add('cl');$('#rs').hidden=false};feed.addEventListener('click',e=>{if(e.target.closest('[data-hzh]')){closePop();document.body.classList.add('cl');$('#rs').hidden=false}});
 $('#rs').onclick=()=>{document.body.classList.remove('cl');$('#rs').hidden=true};
 addEventListener('keydown',e=>{if(G.open&&e.key==='Escape'&&HOLD_ENTRY){releaseHoldPeek();return}if(inB||G.open||$('#modal').classList.contains('open')||$('#mm').classList.contains('open')||$('#gate').classList.contains('open')||pop.classList.contains('open')||(e.target&&e.target.matches&&e.target.matches('input,textarea,select,[contenteditable]')))return;if(e.key==='ArrowDown')go(1);else if(e.key==='ArrowUp')go(-1);else if(e.key===' '){e.preventDefault();const v=feed.querySelector(`.card[data-i="${S.idx}"] video`);if(v)tog(v)}else if(e.key==='Escape')zout()});
 /* ---------- dropdown popover, feed zoom, thumbnail trim ---------- */
@@ -1044,7 +1431,7 @@ const closePop=()=>{pop.classList.remove('open');POPB=null};
 pop.addEventListener('click',e=>{const o=e.target.closest('[data-v],[data-a],[data-l]');if(o&&POPH)POPH(o)});
 document.addEventListener('pointerdown',e=>{if(pop.classList.contains('open')&&!pop.contains(e.target)&&!e.target.closest('.ic'))closePop()});
 function menu(btn,gs,up){openPop(btn,gs.map((g,i)=>`<h4>${g.t}</h4><div class="g">`+g.o.map(([v,l])=>`<button class="o${String(g.cur())===String(v)?' on':''}" data-v="${v}" data-g="${i}">${l}</button>`).join('')+'</div>').join(''),o=>{gs[+o.dataset.g].set(o.dataset.v);closePop()},up)}
-$('#bf').onclick=e=>menu(e.currentTarget,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;S.idx=0;render()}},{t:'Sort',o:[['new','New'],['old','Old'],['fav','Favorites'],['az','A–Z'],['default','Saved']],cur:()=>S.sort,set:v=>{S.sort=v;S.idx=0;render()}}]);
+$('#bf').onclick=e=>menu(e.currentTarget,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;S.idx=0;render()}},{t:'Sort',o:[['new','Newest'],['az','Profile A–Z'],['old','Oldest'],['manual','Manual']],cur:()=>S.sort,set:v=>{S.sort=v;if(v==='manual')ensureManualOrder();S.idx=0;save();render()}}]);
 $('#bz').onclick=e=>menu(e.currentTarget,[{t:'Feed zoom',o:[['0','Off'],['1','In 1'],['2','In 2'],['3','In 3'],['out','Out 1'],['out-2','Out 2'],['dynamic','Dynamic'],['4','Boomerang']],cur:()=>S.zoom,set:v=>{S.zoom=v;applyZoom()}}]);
 $('#ba').onclick=e=>menu(e.currentTarget,[{t:'Auto-scroll',o:AUTO.map(x=>[x,x?x+'s':'Off']),cur:()=>S.auto,set:v=>{S.auto=+v;hud();arm()}}]);
 let ZS0=null;function applyZoom(){if(ZS0!==S.zoom){ZS0=S.zoom;feed.querySelectorAll('.stage').forEach(s=>{[...s.classList].filter(c=>c.startsWith('z-')).forEach(c=>s.classList.remove(c));if(S.zoom!=='0')s.classList.add('z-'+S.zoom)})}
@@ -1068,20 +1455,19 @@ $('#ed').onclick=()=>{S.exp=Math.max(50,S.exp-10);applyEnh()};$('#eu').onclick=(
 $('#sd').onclick=()=>{S.sharp=Math.max(-3,S.sharp-1);applyEnh()};$('#su').onclick=()=>{S.sharp=Math.min(6,S.sharp+1);applyEnh()};
 /* ---------- batch modal ---------- */
 const modal=$('#modal');
-let cntT=0,taRev=-1;function openModal(){if(taRev!==LIB_REV){ta.value=boxText();taRev=LIB_REV}$('#dc').textContent=S.items.length+' URLs';bnk();modal.classList.add('open');chipsNow();optUI();$('#bkp').hidden=true;syncBanksVis(ACTIVE_MTAB);requestAnimationFrame(syncAllEdgeFades)}
-const closeModal=()=>{modal.classList.remove('open');if(FEEDDIRTY&&S.mode==='main'&&!G.open){FEEDDIRTY=0;render()}};
+let cntT=0,taRev=-1;function openModal(){if(taRev!==LIB_REV){ta.value=boxText();taRev=LIB_REV}$('#dc').textContent=S.items.length+' URLs';modal.classList.add('open');document.body.classList.add('modal-open');chipsNow();optUI();if(ACTIVE_MTAB==='dump')dumpRender();if(ACTIVE_MTAB==='prof'){renderProf();renderRoutes()}syncBottomNav();requestAnimationFrame(syncAllEdgeFades)}
+const closeModal=()=>{modal.classList.remove('open');document.body.classList.remove('modal-open');syncBottomNav();if(FEEDDIRTY&&S.mode==='main'&&!G.open){FEEDDIRTY=0;render()}};
 const count=()=>{$('#dc').textContent=parse(ta.value).items.length+' URLs'};
 ta.addEventListener('input',()=>{taRev=-1;clearTimeout(cntT);cntT=setTimeout(count,180)});
-function commit(){S.mode='main';S.idx=0;S.prof=null;S.sort=S.set.shuf?'default':'new';save();setDirty(true);render()}
+function commit(){FEED_SCOPE=null;MAIN_SAVED_IDX=null;S.mode='main';S.idx=0;S.prof=null;S.sort=S.set.shuf?'default':'new';save();setDirty(true);render()}
 $('#bmf').onclick=()=>{if(S.mode==='disc')exitDisc();else openModal()};$('#bol').onclick=()=>{const it=V[S.idx];if(!it)return toast('Nothing to open');window.open(pageUrl(it),'_blank','noopener,noreferrer')};$('#mc').onclick=closeModal;modal.addEventListener('pointerdown',e=>{if(e.target===modal)closeModal()});
-$('#ms').onclick=()=>{const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}applyParsed(p);commit();closeModal();toast('Feed started: '+tally(p))};
+$('#ms').onclick=()=>{const prev=new Set(S.items.map(i=>normKey(i.url)));const p=post(parse(ta.value));if(!p.items.length){toast('No valid URLs found');return}const addedN=p.items.filter(i=>!prev.has(normKey(i.url))).length;applyParsed(p);commit();closeModal();if(addedN>0)notifyNewLinks(addedN);toast('Feed started: '+tally(p))};
 $('#mr2').onclick=()=>{closeModal();r2Flow()};
 $('#mdc').onclick=()=>{if(!/rf1\$/.test(ta.value))return toast('Box is already plain text');
  ask({title:'Decrypt box',desc:'Enter the password to decode the obscured box text into plain text.',ph:'Password',ok:'Decrypt',onOk:v=>{if(v!=='Pie210'){toast('Wrong password');return false}ta.value=dt(ta.value);count();toast('Box decrypted — plain text')}})};
 $('#ma').onclick=()=>{const p=post(parse(ta.value)),have=new Set(S.items.map(i=>i.url));const add=p.items.filter(i=>!have.has(i.url));
- if(!add.length){toast('Nothing new to add');return}S.items=S.items.concat(add);invalidateLib();if(!S.extra.length)S.extra=p.extra;commit();ta.value=boxText();count();toast(`Added ${add.length}`)};
-$('#mp').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim())return toast('Clipboard is empty');
- const add=dt(t);ta.value=(ta.value.trim()?ta.value.replace(/\s*$/,'\n'):'')+add;count();toast('Pasted')}catch(e){toast('Clipboard blocked: long-press the box and paste')}};
+ if(!add.length){toast('Nothing new to add');return}S.items=S.items.concat(add);invalidateLib();if(!S.extra.length)S.extra=p.extra;commit();ta.value=boxText();count();notifyNewLinks(add.length);toast(`Added ${add.length}`)};
+$('#mp').onclick=()=>pasteInto(ta,()=>count());
 $('#my').onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);toast('Copied')}catch(e){ta.select();document.execCommand('copy');toast('Copied')}};
 $('#mx').onclick=()=>{taRev=-1;ta.value='';count()};
 $('#mt').onclick=()=>ta.scrollTo({top:0,behavior:'smooth'});$('#mb').onclick=()=>ta.scrollTo({top:ta.scrollHeight,behavior:'smooth'});
@@ -1557,18 +1943,34 @@ function renderGrid(keep){const plqF=document.activeElement&&document.activeElem
 const ZL={1:'In1',2:'In2',3:'In3',out:'Out1','out-2':'Out2',dynamic:'Dyn',4:'Boom','bounce-zoom':'Bnc'};
 function gbUI(){const on={tabi:G.tab==='items',tabp:G.tab==='profiles',col:G.col,crawl:G.crawl,ebb:G.ebb,pan:G.pan,zoom:G.zoom!=='0',sort:S.filter!=='all'||S.sort!=='new',sel:!!G.sel,selrng:!!G.selRng,plist:!!G.plist};
  gr.querySelectorAll('[data-act]').forEach(b=>{const a=b.dataset.act;if(a in on)b.classList.toggle('on',!!on[a]);if(a==='cs')b.classList.toggle('on',+b.dataset.v===G.cs)});
- gr.querySelector('[data-act=tabi]').textContent=G.rec?'Recents':'All';
+ const _tl=$('#gtablab');if(_tl)_tl.textContent=(G.tab==='profiles'&&!G.prof)?'Profiles':(G.rec?'Recents':'All');const _gv=$('#gbview');if(_gv)_gv.classList.toggle('on',!!(G.crawl||G.zoom!=='0'||G.col));document.body.classList.toggle('col-open',!!(G.open&&G.col));
  $('#gsl').textContent=G.size.toUpperCase();$('#gzl').textContent=$('#gzl2').textContent=ZL[G.zoom]||'';$('#gczl').textContent=G.cz+'%';$('#gcz').value=G.cz;
  gr.querySelector('[data-act=ebb]').hidden=!(G.size==='l'&&G.tab==='items'&&!G.col);gr.querySelector('[data-act=col]').hidden=G.tab!=='items';gr.querySelector('[data-act=plist]').hidden=G.tab!=='profiles';const gsm=$('#gsel-main');if(gsm)gsm.hidden=!(G.tab==='items'&&!G.prof&&!G.col);
  const gav=$('#gav'),ait=G.prof?avatarItem(G.prof):null,akey=(G.prof||'')+':'+(ait?ait.id:'');if(gav._k!==akey){gav._k=akey;gav.innerHTML=G.prof?avatarHTML(G.prof,'big'):'';wireImgs(gav)}
  $('#gpn').textContent=G.prof?'@'+G.prof:'';const a=G.prof&&(getProfileIndex().byHandle.get(G.prof)||[]).find(i=>i.source||i.type==='webpage'),l=$('#gpl');
  try{const u=new URL(strip(a.source||a.url)),s=u.pathname.split('/').filter(Boolean)[0];l.href=u.origin+(s?'/'+s+'/':'/');l.hidden=false}catch(e){l.hidden=true}requestAnimationFrame(()=>{syncGBarPad();syncAllEdgeFades()})}
-function openGrid(){if(S.mode==='disc')return toast('Discovery is a list — no grid there');V=vis();G.open=1;$('#bgd').hidden=true;gr.hidden=false;feed.querySelectorAll('video').forEach(v=>v.pause());clearTimeout(AT);renderGrid(1);barShow(1,1);if(G.crawl)startCrawl();if(G.pan&&G.col)startPan()}
+function openGrid(){if(S.mode==='disc')leaveDisc();V=vis();G.open=1;$('#bgd').hidden=true;gr.hidden=false;document.body.classList.add('grid-open');requestAnimationFrame(()=>gr.classList.add('open'));feed.querySelectorAll('video').forEach(v=>v.pause());clearTimeout(AT);renderGrid(1);barShow(1,1);if(G.crawl)startCrawl();if(G.pan&&G.col)startPan();syncBottomNav()}
 let FEEDDIRTY=0;const refreshAll=()=>{S.idx=0;V=vis();FEEDDIRTY=1;renderGrid(1)};
 /* grid bar dispatcher */
 gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
  if(a==='close')closeGrid();
  else if(a==='ss')slideshow();
+ else if(a==='tabflip'){
+  if(G.prof){G.prof=null;G.tab='profiles';renderGrid();return}
+  if(G.tab==='items'){if(G.sel){G.sel=0;SEL.clear();MANUAL_PICK=null;selPaint()}G.tab='profiles';G.prof=null}
+  else{if(G.psel){G.psel=0;PSELS.clear()}G.tab='items';G.prof=null;G.rec=0}
+  renderGrid();
+ }
+ else if(a==='gview'){
+  menu(b,[
+   {t:'View modes',o:[['crawl',G.crawl?'✓ Slow crawl':'Slow crawl'],['ss','Slideshow'],...(G.tab==='items'?[['col','Collage']]:[])],cur:()=>'',set:v=>{
+    if(v==='crawl'){G.crawl=G.crawl?0:1;if(G.crawl)startCrawl();gbUI();syncWakeLock();toast(G.crawl?'Slow crawl on':'Slow crawl off')}
+    else if(v==='ss'){slideshow()}
+    else if(v==='col'){if(G.psel){G.psel=0;PSELS.clear()}if(G.sel){G.sel=0;SEL.clear();selPaint()}G.col=1;rlN=0;document.body.classList.add('col-open');renderGrid();barShow(1)}
+   }},
+   {t:'Ambient zoom',o:[['0','Off'],['1','In 1'],['2','In 2'],['3','In 3'],['out','Out 1'],['out-2','Out 2'],['4','Breath'],['dynamic','Dynamic']],cur:()=>G.zoom,set:v=>{G.zoom=v;save();applyGridClass();gbUI()}}
+  ]);
+ }
  else if(a==='tabi'){if(G.psel){G.psel=0;PSELS.clear()}if(G.tab==='items'&&!G.prof)G.rec=G.rec?0:1;else{G.tab='items';G.prof=null;G.rec=0}renderGrid()}
  else if(a==='tabp'){if(G.sel){G.sel=0;SEL.clear();selPaint()}if(G.tab==='profiles'&&!G.prof)G.plist=G.plist?0:1;else{G.tab='profiles';G.prof=null}renderGrid()}
  else if(a==='plist'){G.plist=G.plist?0:1;renderGrid(1)}
@@ -1583,7 +1985,7 @@ gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)r
  else if(a==='crawl'){G.crawl=G.crawl?0:1;if(G.crawl)startCrawl();gbUI();syncWakeLock();toast(G.crawl?'Slow crawl on':'Slow crawl off')}
  else if(a==='ebb'){G.ebb=G.ebb?0:1;G.zoom=G.ebb?'bounce-zoom':'dynamic';save();renderGrid(1)}
  else if(a==='zoom')menu(b,[{t:G.col?'Tile zoom':'Grid zoom',o:gzOpts(),cur:()=>G.zoom,set:v=>{G.zoom=v;if(v==='bounce-zoom'&&G.size==='l'&&!G.ebb){G.ebb=1;save();renderGrid(1);return}save();applyGridClass()}}]);
- else if(a==='sort')menu(b,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;refreshAll()}},{t:'Sort',o:[['new','New'],['old','Old'],['fav','Favorites'],['az','A\u2013Z'],['default','Saved']],cur:()=>S.sort,set:v=>{S.sort=v;refreshAll()}}]);
+ else if(a==='sort')menu(b,[{t:'Show',o:[['all','All'],['image','Photos'],['video','Videos'],['webpage','Links']],cur:()=>S.filter,set:v=>{S.filter=v;refreshAll()}},{t:'Sort',o:[['new','Newest'],['az','Profile A–Z'],['old','Oldest'],['manual','Manual']],cur:()=>S.sort,set:v=>{S.sort=v;if(v==='manual')ensureManualOrder();MANUAL_PICK=null;save();refreshAll()}}]);
  else if(a==='shuf'){if(S.mode!=='main')return toast('Shuffle works on your main feed');const ids=S.items.map(x=>x.id);if(G.prof){const ix=[];ids.forEach((id,k)=>{if(S.items[k].handle===G.prof)ix.push(k)});const vals=shuf(ix.map(k=>ids[k]));ix.forEach((k,j)=>ids[k]=vals[j]);S.shuf=ids}else S.shuf=shuf(ids);S.sort='default';SHUF_REV++;VIS_CACHE=null;save();setDirty(true);refreshAll();toast('Shuffled')}
  else if(a==='ren'){ask({title:'Rename profile',desc:'Updates every item in @'+G.prof+' and is saved in transcript.txt',ph:'New profile name',val:G.prof,ok:'Save name',onOk:v=>{const n=profNorm(v);if(!n||n===G.prof)return;const old=G.prof;for(const k of Object.keys(ALIAS))if(ALIAS[k]===old)ALIAS[k]=n;ALIAS[old]=n;S.items.forEach(i=>{if(i.handle===old){i.handle=n;i.ch=n;TC.delete(i.id)}});if(S.prof===old)S.prof=n;if(PFP[old]){PFP[n]=PFP[old];delete PFP[old]}if(FAVP.has(old)){FAVP.delete(old);FAVP.add(n)}G.prof=n;invalidateLib();save();setDirty(true);V=vis();renderGrid(1);toast('Renamed to @'+n)}})}
  else if(a==='back'){if(G.fromHome){G.fromHome=0;if(G.sel){G.sel=0;SEL.clear();selPaint()}G.prof=null;closeGrid();openModal()}else if(G.prof){if(G.sel){G.sel=0;SEL.clear();selPaint()}G.prof=null;G.tab='profiles';renderGrid()}else closeGrid()}
@@ -1604,18 +2006,27 @@ gbar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)r
  else if(a==='pfav'){if(!PSELS.size)return toast('Tap profiles to select first');const allFav=[...PSELS].every(h=>FAVP.has(h));PSELS.forEach(h=>allFav?FAVP.delete(h):FAVP.add(h));invalidateLib(true);save();setDirty(true);renderGrid(1);toast(allFav?'Removed from favorites':'Favorited '+PSELS.size+' profile'+(PSELS.size===1?'':'s'))}
  else if(a==='pdel'){if(!PSELS.size)return toast('Tap profiles to select first');menu(b,[{t:'Delete '+PSELS.size+' profile'+(PSELS.size===1?'':'s')+' and all their media?',o:[['yes','Yes, delete'],['no','Cancel']],cur:()=>'',set:v=>{if(v==='yes'){const list=S.items.filter(i=>PSELS.has(i.handle));setPSel(0);deleteItems(list)}}}])}
 });
-function closeGrid(){if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.selRng=0;selAnchor=null;selLast=-1;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
+function closeGrid(){if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.selRng=0;selAnchor=null;selLast=-1;G.psel=0;PSELS.clear();SEL.clear();document.body.classList.remove('grid-open','col-open');gr.classList.remove('open');setTimeout(()=>{if(!G.open)gr.hidden=true},230);syncBottomNav();
  /* Immediately release ALL grid video decoders and timers so feed gets 100% decoder priority;
     cached view containers stay built in Pic state for instant return. */
  releaseGridVideos();
  cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();
- if(FEEDDIRTY){FEEDDIRTY=0;render()}else sync()}
-function openFromGrid(it){const i=V_INDEX.has(it.id)?V_INDEX.get(it.id):V.indexOf(it);if(i<0)return;FROM=G.col&&G.tab==='items'?'collage':'grid';
+ const hadScope=!!FEED_SCOPE;if(hadScope)exitFeedScope(true);if(FEEDDIRTY||hadScope){FEEDDIRTY=0;render()}else sync()}
+function openFromGrid(it){
+ const gList=(ACTIVE_VIEW&&ACTIVE_VIEW.list&&ACTIVE_VIEW.list.length&&G.tab==='items')?ACTIVE_VIEW.list.slice():(GL&&GL.length?GL.slice():[]);
+ let i=gList.findIndex(x=>x&&x.id===it.id);
+ const scoped=i>=0;
+ if(!scoped){i=V_INDEX.has(it.id)?V_INDEX.get(it.id):V.indexOf(it);if(i<0)return}
+ FROM=G.col&&G.tab==='items'?'collage':'grid';
+ if(scoped){
+  if(!FEED_SCOPE&&MAIN_SAVED_IDX===null)MAIN_SAVED_IDX=S.idx;
+  FEED_SCOPE={list:gList,prof:G.prof||null,rec:!!G.rec,from:FROM};
+ }
  releaseGridVideos();
  if(ACTIVE_VIEW){ACTIVE_VIEW.sy=gs.scrollTop;ACTIVE_VIEW.sx=gs.scrollLeft}
- G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.selRng=0;selAnchor=null;selLast=-1;G.psel=0;PSELS.clear();SEL.clear();gr.hidden=true;
+ G.open=0;G.fromHome=0;$('#bgd').hidden=false;G.sel=0;G.selRng=0;selAnchor=null;selLast=-1;G.psel=0;PSELS.clear();SEL.clear();document.body.classList.remove('grid-open','col-open');gr.classList.remove('open');setTimeout(()=>{if(!G.open)gr.hidden=true},230);syncBottomNav();
  cancelAnimationFrame(crawlRaf);cancelAnimationFrame(panRaf);crawlRaf=panRaf=0;const s=$('#ss');s._stop&&s._stop();
- S.idx=i;if(FEEDDIRTY){FEEDDIRTY=0;render()}else{jump(i,false);sync()}}
+ S.idx=i;FEEDDIRTY=0;render()}
 function barShow(v,force){if(G.bar===v&&!force)return;G.bar=v;gbar.classList.toggle('hid',!v);$('#gshow').hidden=!!v||(G.col&&G.tab==='items')}
 let sRaf=0;gs.addEventListener('scroll',()=>{if(G.open){
  const now=performance.now(),yNow=gs.scrollTop,dt=Math.max(1,now-lastScrollTs),vel=lastScrollTs?(Math.abs(yNow-lastScrollY)/dt*1000):0;
@@ -1684,7 +2095,7 @@ const TRS=[(a,b,d)=>{a.animate([{opacity:0},{opacity:1}],d);b.animate([{opacity:
  (a,b,d)=>{a.animate([{opacity:0,transform:'perspective(900px) rotateY(-75deg)'},{opacity:1,transform:'perspective(900px) rotateY(0)'}],d);b.animate([{opacity:1,transform:'perspective(900px) rotateY(0)'},{opacity:0,transform:'perspective(900px) rotateY(60deg)'}],d)},
  (a,b,d)=>{a.animate([{clipPath:'inset(50% 0 50% 0)'},{clipPath:'inset(0 0 0 0)'}],d)},
  (a,b,d)=>{a.animate([{opacity:0,transform:'rotate(-6deg) scale(1.2)'},{opacity:1,transform:'none'}],d);b.animate([{opacity:1},{opacity:0}],d)}];
-function slideshow(){releaseGridVideos();const L=GL.filter(i=>i.type==='image'||isDirectVid(i));if(!L.length)return toast('Nothing to play');const ss=$('#ss');ss.hidden=false;ss.innerHTML='<div class="sl"></div><div class="sl"></div>';let k=-1,cur=0,last=-1;
+function slideshow(){releaseGridVideos();const L=GL.filter(i=>i.type==='image'||isDirectVid(i));if(!L.length)return toast('Nothing to play');const ss=$('#ss');ss.hidden=false;document.body.classList.add('ss-open');ss.innerHTML='<div class="sl"></div><div class="sl"></div>';let k=-1,cur=0,last=-1;
  const clr=el=>{el.querySelectorAll('video').forEach(dropM);el.innerHTML=''};
  const step=()=>{clearTimeout(ssT);k=(k+1)%L.length;const it=L[k],a=ss.children[cur^1],b=ss.children[cur];a.getAnimations().forEach(x=>x.cancel());b.getAnimations().forEach(x=>x.cancel());clr(a);a.style.zIndex=2;b.style.zIndex=1;ss._cur=a;
   a.innerHTML=it.type==='image'?`<img src="${esc(it.url.split('#')[0])}" alt="" referrerpolicy="no-referrer">`:`<video src="${esc((it.stream||it.url).split('#')[0])}" referrerpolicy="no-referrer" muted playsinline autoplay></video>`;
@@ -1694,16 +2105,50 @@ function slideshow(){releaseGridVideos();const L=GL.filter(i=>i.type==='image'||
   if(it.type==='image'){ssT=setTimeout(step,4600)}
   else{const tr=TRIMS[tk(it.stream||it.url)];if(tr){m.addEventListener('loadedmetadata',()=>{try{m.currentTime=tr.startSec}catch(e){}},{once:true});ssT=setTimeout(step,Math.max(2500,tr.loopSec*1000))}
    else{m.addEventListener('ended',()=>{if(!ss.hidden&&ss._cur===a)step()},{once:true});m.addEventListener('error',()=>{if(!ss.hidden&&ss._cur===a)step()},{once:true});m.addEventListener('loadedmetadata',()=>{if(ss.hidden||ss._cur!==a)return;clearTimeout(ssT);ssT=setTimeout(step,m.duration&&isFinite(m.duration)?Math.min(30000,Math.max(3000,m.duration*1000+400)):12000)},{once:true});ssT=setTimeout(step,12000)}}};
- ss._resume=()=>{if(!ss.hidden)step()};ss._stop=()=>{clearTimeout(ssT);ss.querySelectorAll('video').forEach(dropM);ss.hidden=true;ss.innerHTML='';ss._stop=null;ss._resume=null;syncWakeLock()};step();syncWakeLock()}
+ ss._resume=()=>{if(!ss.hidden)step()};ss._stop=()=>{clearTimeout(ssT);ss.querySelectorAll('video').forEach(dropM);ss.hidden=true;document.body.classList.remove('ss-open');ss.innerHTML='';ss._stop=null;ss._resume=null;syncWakeLock()};step();syncWakeLock()}
 $('#ss').addEventListener('click',()=>{const s=$('#ss');s._stop&&s._stop()});
 function profNorm(n){return String(n||'').trim().replace(/^@/,'').toLowerCase().replace(/[^a-z0-9_.-]/g,'_').slice(0,28)}
 /* folder triage & A2 group selection + A1 send-to typing bar */
 const SEL=new Set();let selAnchor=null,selLast=-1;
-function selPaint(){activeViewEl().querySelectorAll('.tile').forEach(t=>{const on=!!(G.sel&&t._it&&SEL.has(t._it.id));t.classList.toggle('selon',on);t.classList.toggle('selanc',!!(G.sel&&G.selRng&&selAnchor!==null&&t._i===selAnchor));let b=t.querySelector('.selb');if(on&&!b){b=document.createElement('span');b.className='selb';b.textContent='✓';t.appendChild(b)}if(!on&&b)b.remove()});
- const bar=$('#gbs');if(bar)bar.hidden=!G.sel;const lab=$('#gsn');if(lab)lab.textContent=SEL.size+' selected'+(G.selRng&&selAnchor!==null?' · pick end':'');const rb=bar&&bar.querySelector('[data-act=selrng]');if(rb)rb.classList.toggle('on',!!G.selRng)}
+function selPaint(){activeViewEl().querySelectorAll('.tile').forEach(t=>{const on=!!(G.sel&&t._it&&SEL.has(t._it.id));t.classList.toggle('selon',on);t.classList.toggle('selanc',!!(G.sel&&G.selRng&&selAnchor!==null&&t._i===selAnchor));t.classList.toggle('manpick',!!(G.sel&&S.sort==='manual'&&MANUAL_PICK&&t._it&&t._it.id===MANUAL_PICK));let b=t.querySelector('.selb');if(on&&!b){b=document.createElement('span');b.className='selb';b.textContent='✓';t.appendChild(b)}if(!on&&b)b.remove()});
+ const bar=$('#gbs');if(bar)bar.hidden=!G.sel;const lab=$('#gsn');if(lab)lab.textContent=(S.sort==='manual'&&!G.selRng)?(MANUAL_PICK?'Tap target tile to insert':'Manual sort · tap item to move'):(SEL.size+' selected'+(G.selRng&&selAnchor!==null?' · pick end':''));const rb=bar&&bar.querySelector('[data-act=selrng]');if(rb)rb.classList.toggle('on',!!G.selRng)}
 function setSel(on){G.sel=on?1:0;if(!on){SEL.clear();G.selRng=0;selAnchor=null;selLast=-1}selPaint();gbUI()}
 function selectRangeIdx(a,b){const lo=Math.max(0,Math.min(a,b)),hi=Math.min(GL.length-1,Math.max(a,b));let c=0;for(let k=lo;k<=hi;k++){if(GL[k]){SEL.add(GL[k].id);c++}}return c}
+const MANUAL_KEY='reelflow_manual_v1';
+let MANUAL_ORDER=[];
+try{const r=localStorage.getItem(MANUAL_KEY);if(r){const a=JSON.parse(r);if(Array.isArray(a))MANUAL_ORDER=a}}catch(e){}
+let MANUAL_PICK=null;
+function saveManualOrder(){try{localStorage.setItem(MANUAL_KEY,JSON.stringify(MANUAL_ORDER))}catch(e){}}
+function ensureManualOrder(){
+ const cur=vis().map(i=>i.id);
+ const have=new Set(MANUAL_ORDER);
+ const live=new Set(S.items.map(i=>i.id));
+ MANUAL_ORDER=MANUAL_ORDER.filter(id=>live.has(id));
+ for(const id of cur){if(!have.has(id))MANUAL_ORDER.push(id)}
+ saveManualOrder();
+}
+function manualInsert(srcId,targetId){
+ ensureManualOrder();
+ const from=MANUAL_ORDER.indexOf(srcId),to=MANUAL_ORDER.indexOf(targetId);
+ if(from<0||to<0||from===to)return false;
+ MANUAL_ORDER.splice(from,1);
+ MANUAL_ORDER.splice(to,0,srcId);
+ saveManualOrder();
+ return true;
+}
 function handleSelTap(it,idx,shift){
+ if(S.sort==='manual'&&!G.selRng){
+  if(!MANUAL_PICK){
+   MANUAL_PICK=it.id;SEL.clear();SEL.add(it.id);selPaint();return;
+  }
+  if(MANUAL_PICK===it.id){
+   MANUAL_PICK=null;SEL.clear();selPaint();return;
+  }
+  const ok=manualInsert(MANUAL_PICK,it.id);
+  MANUAL_PICK=null;SEL.clear();
+  if(ok){VIS_CACHE=null;invalidateLib();V=vis();FEEDDIRTY=1;renderGrid(1);toast('Moved item')}
+  selPaint();return;
+ }
  if(typeof idx!=='number'||idx<0)idx=GL.indexOf(it);
  if(shift&&selLast>=0&&idx>=0){const c=selectRangeIdx(selLast,idx);selLast=idx;selPaint();toast('Selected '+c+' items');return}
  if(G.selRng&&idx>=0){
@@ -1757,10 +2202,25 @@ function restoreItems(ids){const set=new Set(ids),back=S.trash.filter(t=>set.has
 function ask(o){const m=$('#mm');m.innerHTML=`<div class="mm"><h3>${esc(o.title)}</h3>${o.desc?`<p>${esc(o.desc)}</p>`:''}${o.multi?`<textarea id="mmi" placeholder="${esc(o.ph||'')}"></textarea>`:`<input id="mmi" placeholder="${esc(o.ph||'')}" autocomplete="off" autocapitalize="off">`}<div class="row" style="margin:0">${(o.extra||[]).map((x,i)=>`<button class="pill" data-x="${i}">${esc(x[0])}</button>`).join('')}<span class="sp"></span><button class="pill" data-c="0">Cancel</button><button class="pill on" data-c="1">${esc(o.ok||'Save')}</button></div></div>`;
  const inp=$('#mmi');inp.value=o.val||'';m.classList.add('open');setTimeout(()=>inp.focus(),60);
  m.onclick=e=>{const b=e.target.closest('button');if(e.target===m||(b&&b.dataset.c==='0')){m.classList.remove('open');return}if(!b)return;if(b.dataset.x!==undefined){o.extra[+b.dataset.x][1](inp);return}if(b.dataset.c==='1'&&o.onOk(inp.value)!==false)m.classList.remove('open')}}
-const pasteInto=async i=>{try{const t=await navigator.clipboard.readText();i.value=t?(i.tagName==='TEXTAREA'&&i.value?i.value+'\n':'')+t:i.value}catch(e){toast('Clipboard blocked: long-press the box and paste')}};
+const pasteInto=async(i,onAfter)=>{
+ if(!i)return;
+ try{
+  const raw=await navigator.clipboard.readText();
+  if(!raw||!raw.trim())return toast('Clipboard is empty');
+  const t=(i===ta)?dt(raw):raw.trim();
+  const isTa=i.tagName==='TEXTAREA';
+  i.value=(isTa&&i.value.trim()?i.value.replace(/\s*$/,'\n'):'')+t;
+  i.dispatchEvent(new Event('input',{bubbles:true}));
+  if(typeof onAfter==='function')onAfter(t);
+  toast('Pasted');
+ }catch(e){
+  try{i.focus()}catch(_){}
+  toast('Clipboard blocked — long-press the box and paste');
+ }
+};
 function attach(list,hd){const have=new Set(S.items.map(i=>normKey(i.url)));let at=S.items.length;S.items.forEach((x,k)=>{if(x.handle===hd)at=k+1});const sess=(S.items.find(x=>x.handle===hd)||{}).sess||Date.now(),add=[];let seq=nextSeq();
  for(const raw of list){const it=mk(dash(raw),hd,sess,seq);if(bad(it.url))continue;const k=normKey(it.url);if(have.has(k))continue;have.add(k);it.handle=alias(hd);it.seq=seq++;it.id='i'+it.seq;add.push(it)}
- if(add.length){S.items.splice(at,0,...add);invalidateLib();save();setDirty(true)}return add.length}
+ if(add.length){S.items.splice(at,0,...add);invalidateLib();save();setDirty(true)}if(add.length)notifyNewLinks(add.length);return add.length}
 const r2Slash=u=>String(u||'').replace(/^(https?:\/\/[^\s/]*?\.r2\.dev)(?=[A-Za-z0-9])/i,'$1/');
 const isR2Item=i=>i.handle==='r2'||/r2\.dev/i.test(i.url||'');
 function r2Confirm(names){
@@ -5508,7 +5968,7 @@ $('#dpgrid').onclick=e=>{const t=e.target.closest('[data-dk]');if(!t)return;cons
 $('#dp-prof').addEventListener('change',()=>{const v=$('#dp-prof').value;if(v!=='__new'){DUMP.prevHd=v;return}dumpAskNew()});
 $('#dpstage').onclick=stageDump;
 $('#dpta').addEventListener('paste',()=>setTimeout(stageDump,0));
-$('#dpaste').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(t){$('#dpta').value=t;stageDump()}}catch(e){toast('Clipboard unavailable \u2014 paste into the box')}};
+$('#dpaste').onclick=()=>pasteInto($('#dpta'),()=>stageDump());
 $('#dpall').onclick=()=>{DUMP.list.forEach((e,k)=>{if(!e.dupe)DUMP.sel.add(k)});dumpRender()};
 $('#dpnone').onclick=()=>{DUMP.sel.clear();dumpRender()};
 /* Smart Select (Kendall, Nov 12): deterministic rules on the app's own
@@ -5548,28 +6008,37 @@ $('#dpadd').onclick=dumpCommit;
    list is the discovery home; opening an item visits that page, and the
    page viewer's arrows just move between list items. Its job is visiting
    pages and capturing media — no autoplay feed behavior of its own. */
-function renderDiscHome(){$('#dwlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet — add them in the batch menu\u2019s Discovery tab.</p>'}
-const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;S.prof=null;G.prof=null;render();openModal();toast('Back to the batch menu')};
-const leaveDisc=()=>{if(S.mode!=='disc')return;S.mode='main';S.lock=false;$('#dwrap').hidden=true;$('#pdl').hidden=true;document.body.classList.remove('disc')};
+function renderDiscHome(){
+ const cnt=$('#dwcnt');if(cnt)cnt.textContent=S.disc.length+' page'+(S.disc.length===1?'':'s');
+ $('#dwlist').innerHTML=S.disc.map((u,k)=>{
+  const h=profOf(u),host=urlHost(u),r=(host&&S.set.routes&&S.set.routes[host])||'d';
+  const rLab=r==='b'?'Browser':(r==='p'?'My proxy':'Default');
+  const av=(h||host||'?').replace(/^@/,'').slice(0,2);
+  return `<div class="dw-card"><div class="dw-av">${esc(av)}</div><div class="dw-info" data-w="open" data-k="${k}"><div class="dw-handle">@${esc(h||host||'page')}</div><div class="dw-url">${esc(short(u))}</div><div class="dw-meta"><span class="dw-rbadge${r!=='d'?' on':''}" data-w="route" data-h="${esc(host)}" title="Tap to cycle fetch route">${rLab}</span></div></div><div class="dw-acts"><button class="go" data-w="open" data-k="${k}">Open</button><button class="danger" data-w="del" data-k="${k}" aria-label="Remove">✕</button></div></div>`;
+ }).join('')||'<div class="empty" style="padding:18vh 16px"><h2 style="font-size:18px">No Discovery pages yet</h2><p>Paste a creator or profile URL above to start browsing and saving media.</p></div>';
+}
+const exitDisc=()=>{S.mode='main';S.idx=S.mainIdx||0;S.lock=false;closeDiscWrap();$('#pdl').hidden=true;S.prof=null;G.prof=null;render();syncBottomNav()};
+const leaveDisc=()=>{if(S.mode!=='disc')return;S.mode='main';S.lock=false;closeDiscWrap();$('#pdl').hidden=true;document.body.classList.remove('disc')};
 /* The list view is discovery's own screen (like the grid is a screen):
    backing out of a page lands on the list, and only the list's own back
    leaves discovery for the batch menu. */
-const discList=()=>{renderDiscHome();$('#dwrap').hidden=false};
+const discList=()=>{if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:true}));renderDiscHome();openDiscWrap()};
 
 $('#pdl').onclick=discList;
 $('#dw-exit').onclick=exitDisc;
 $('#dwlist').onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const k=+b.dataset.k;
- if(b.dataset.w==='open'){S.idx=k;$('#dwrap').hidden=true;render()}
- else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));if(S.idx>=S.discItems.length)S.idx=0;save();setDirty(true);chips();renderDiscHome();FEEDDIRTY=1}};
+ if(b.dataset.w==='route')return;
+ if(b.dataset.w==='open'){S.mode='disc';S.idx=k;closeDiscWrap();render()}
+ else if(b.dataset.w==='del'){S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));if(S.idx>=S.discItems.length)S.idx=0;save();setDirty(true);chips();renderDiscHome();FEEDDIRTY=1}};
 /* ---------- batch tabs: discovery, unlinked, active feed ---------- */
 function launchDisc(k){if(!S.disc.length)return toast('Save some profile pages first');if(S.mode!=='disc')S.mainIdx=S.idx;S.mode='disc';S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));closeModal();$('#pdl').hidden=false;
  if(k==null){S.idx=0;render();renderDiscHome();$('#dwrap').hidden=false}else{S.idx=k;$('#dwrap').hidden=true;render()}}
 const unlinked=()=>{if(UNL_CACHE&&UNL_CACHE.rev===LIB_REV)return UNL_CACHE.list;const list=S.items.filter(i=>i.type==='webpage'||(i.type==='video'&&!isDirect(i.url)&&!TAUGHT[strip(i.url)]));UNL_CACHE={rev:LIB_REV,list};return list};
 const r2Count=()=>{if(R2_CACHE&&R2_CACHE.rev===LIB_REV)return R2_CACHE.n;let n=0;for(let i=0;i<S.items.length;i++)if(isR2Item(S.items[i]))n++;R2_CACHE={rev:LIB_REV,n};return n};
 let chipsT=0;function chips(){if(chipsT)return;chipsT=requestAnimationFrame(()=>{chipsT=0;if(modal.classList.contains('open'))chipsNow()})}
-function chipsNow(){$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=r2Count();const cd=$('#chdup');if(cd)cd.textContent=dupGroups().reduce((n,g)=>n+g.list.length,0);profSuggest()}
+function chipsNow(){if($('#chd'))$('#chd').textContent=S.disc.length;$('#chu').textContent=unlinked().length;$('#cha').textContent=S.items.length;const c=$('#chr');if(c)c.textContent=r2Count();const cd=$('#chdup');if(cd)cd.textContent=dupGroups().reduce((n,g)=>n+g.list.length,0);profSuggest()}
 const short=u=>{try{const x=new URL(strip(u));return x.hostname.replace(/^www\./,'')+x.pathname.replace(/\/$/,'')}catch(e){return u}};
-function renderDisc(){$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';renderRoutes();chips()}
+function renderDisc(){if(!$('#dlist')){renderDiscHome();return}$('#dlist').innerHTML=S.disc.map((u,k)=>`<div class="li"><div class="t">@${esc(profOf(u))}<small>${esc(u)}</small></div><button data-d="open" data-k="${k}">Open</button><button class="danger" data-d="del" data-k="${k}">✕</button></div>`).join('')||'<p class="lab">No saved profiles yet.</p>';renderRoutes();chips()}
 function renderRoutes(){const el=$('#droutes');if(!el)return;const counts={};S.disc.forEach(u=>{const h=urlHost(u);if(h)counts[h]=(counts[h]||0)+1});for(const h of Object.keys(S.set.routes||{}))if(h&&!(h in counts))counts[h]=0;for(const h of Object.keys(S.set.linksOnly||{}))if(h&&!(h in counts))counts[h]=0;for(const h of Object.keys(cgateGet()))if(h&&!(h in counts))counts[h]=0;const hs=Object.keys(counts).sort();if(!hs.length){el.innerHTML='';return}
  el.innerHTML='<p class="lab" style="margin:10px 0 4px">Site routing — how each saved site\u2019s pages are fetched. Default is the normal fetch. Browser uses the browser proxy (its address lives in Options). Links only skips post fetches during Harvest (default for context-gated hosts).</p>'+hs.map(h=>{const r=(S.set.routes&&S.set.routes[h])||'d',lo=linksOnlyFor('https://'+h),cg=isContextGatedHost('https://'+h);return`<div class="li"><div class="t">${esc(h)}<small>${counts[h]} saved page${counts[h]===1?'':'s'}${cg?' · context-gated':''}</small></div><button class="pill ${r==='d'?'on':''}" data-r="d" data-h="${esc(h)}">Default</button><button class="pill ${r==='p'?'on':''}" data-r="p" data-h="${esc(h)}">My proxy</button><button class="pill ${r==='b'?'on':''}" data-r="b" data-h="${esc(h)}">Browser</button><button class="pill ${lo?'on':''}" data-lo="${esc(h)}" title="${cg?'Context-gated host — defaults to Links only (tap to override)':'Harvest collects post links only (zero post fetches)'}">Links only</button></div>`}).join('')}
 $('#droutes').onclick=e=>{const loBtn=e.target.closest('[data-lo]');if(loBtn){const h=loBtn.dataset.lo;if(!S.set.linksOnly)S.set.linksOnly={};const cg=isContextGatedHost('https://'+h),cur=linksOnlyFor('https://'+h),on=!cur;if(cg){if(on)delete S.set.linksOnly[h];else S.set.linksOnly[h]=0}else{if(on)S.set.linksOnly[h]=1;else delete S.set.linksOnly[h]}save();setDirty(true);renderRoutes();toast(on?h+' — Links-only harvest on':h+' — Links-only harvest off');return}const b=e.target.closest('[data-r]');if(!b)return;const h=b.dataset.h,v=b.dataset.r;if(!S.set.routes)S.set.routes={};if(v==='d')delete S.set.routes[h];else S.set.routes[h]=v;save();setDirty(true);renderRoutes();if(v==='b'&&!(S.set.bproxy||'').trim())toast('Routed to Browser — set the Browser proxy address in Options so it can answer');else toast(v==='d'?h+' — normal fetch':h+(v==='b'?' — pages fetch through the browser proxy':' — your proxy answers first here'))};
@@ -5663,12 +6132,10 @@ $('#tp-prof').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
  if(profArm!==it.id){profArm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(profArm===it.id){profArm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}
  profArm=null;deleteItems([it]);renderProf()};
 function goItem(id){leaveDisc();let i=V.findIndex(x=>x.id===id);if(i<0&&S.mode==='main'){S.filter='all';S.sort='new';S.prof=null;V=vis();i=V.findIndex(x=>x.id===id);render()}if(i<0)return toast('Not in the current feed');closeModal();S.idx=i;jump(i,false);sync()}
-const BANKS_TABS=new Set(['paste','act']);
-let ACTIVE_MTAB='paste';
-function syncBanksVis(t){ACTIVE_MTAB=t||ACTIVE_MTAB;const show=BANKS_TABS.has(ACTIVE_MTAB);const r=$('#bkr'),p=$('#bkp');if(r)r.hidden=!show;if(!show&&p)p.hidden=true}
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['paste','dump','disc','unl','act','r2','dup','prof'].forEach(k=>$('#tp-'+k).hidden=k!==t);syncBanksVis(t);b.scrollIntoView({inline:'nearest',block:'nearest',behavior:'smooth'});const sh=$('#modal .sheet');if(sh)sh.scrollTop=0;if(t==='dump')dumpRender();if(t==='disc')renderDisc();if(t==='unl')renderUnl();if(t==='act')renderAct();if(t==='r2')renderR2();if(t==='dup')renderDup();if(t==='prof'){PROFVIEW=null;renderProf()}requestAnimationFrame(syncAllEdgeFades)});
+let ACTIVE_MTAB='dump';
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;ACTIVE_MTAB=t;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b));['dump','paste','unl','act','r2','dup','prof'].forEach(k=>{const el=$('#tp-'+k);if(el)el.hidden=k!==t});b.scrollIntoView({inline:'nearest',block:'nearest',behavior:'smooth'});const sh=$('#modal .sheet');if(sh)sh.scrollTop=0;if(t==='dump')dumpRender();if(t==='unl')renderUnl();if(t==='act')renderAct();if(t==='r2')renderR2();if(t==='dup')renderDup();if(t==='prof'){PROFVIEW=null;renderProf();renderRoutes()}requestAnimationFrame(syncAllEdgeFades)});
 $('#asq').addEventListener('input',()=>{ACT_LIM=150;renderAct()});
-$('#dpc').onclick=()=>pasteInto($('#dta'));
+if($('#dpc'))$('#dpc').onclick=()=>pasteInto($('#dta'));
 function addDisc(t){const raw=dt(t||'').split(/\s+/).map(strip).filter(x=>/^https?:\/\//i.test(x));if(!raw.length)return 0;
  const have=new Set(S.disc.map(normKey)),fresh=[];
  for(const x of raw){const k=normKey(x);if(!have.has(k)){have.add(k);fresh.push(x)}}
@@ -5679,11 +6146,11 @@ function addDisc(t){const raw=dt(t||'').split(/\s+/).map(strip).filter(x=>/^http
  if(!$('#dwrap').hidden)renderDiscHome();
  renderDisc();
  return fresh.length}
-$('#dsv').onclick=()=>{const n=addDisc($('#dta').value);if(!n)return toast('No page links found');$('#dta').value='';renderDisc();toast(`Saved ${n} profile${n===1?'':'s'}`)};
+if($('#dsv'))$('#dsv').onclick=()=>{const n=addDisc($('#dta').value);if(!n)return toast('No page links found');$('#dta').value='';renderDisc();toast(`Saved ${n} profile${n===1?'':'s'}`)};
 $('#dwadd').onclick=()=>{const n=addDisc($('#dwa').value);if(!n)return toast('No page links found');$('#dwa').value='';toast(`Saved ${n} profile${n===1?'':'s'}`)};
 $('#dwa').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#dwadd').click()}});
-$('#dgo').onclick=()=>launchDisc();
-$('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));save();setDirty(true);renderDisc()}};
+if($('#dgo'))$('#dgo').onclick=()=>launchDisc();
+if($('#dlist'))$('#dlist').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const k=+b.dataset.k;if(b.dataset.d==='open')launchDisc(k);else{S.disc.splice(k,1);S.discItems=S.disc.map((u,j)=>({id:'d'+j,url:u,source:'',type:'webpage',ch:'',handle:profOf(u),seq:j,sess:0,disc:1}));save();setDirty(true);renderDisc()}};
 let unlArm=null;
 $('#ulist').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;if(b.dataset.u==='more'){UNL_LIM+=150;renderUnl();return}const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;const u=b.dataset.u;
  if(u==='go')return goItem(it.id);if(u==='open')return window.open(it.url,'_blank','noopener,noreferrer');if(u==='link')return teach(it);
@@ -5829,18 +6296,6 @@ function enterB(){if(inB)return;leaveDisc();$('#upill').hidden=true;LASTDEL=[];c
  for(const s of [...HYD])dehyd(s);feed.querySelectorAll('video,iframe').forEach(v=>{try{v.pause&&v.pause();v.removeAttribute('src');v.load&&v.load()}catch(e){}});clearGridCache();feed.textContent='';HYD.clear();FEED_CARDS.clear();V=[];
  clearTimeout(svT);saveNow();inB=true;document.body.classList.add('hb');hbRender()}
 $('#bbag').onclick=enterB;$('#mlock').onclick=enterB;
-/* ---------- memory banks ---------- */
-let BT=1,BM='save',BD=0;
-function bnk(){document.querySelectorAll('.bb[data-b]').forEach(b=>{const n=S.banks[+b.dataset.b].length;b.classList.toggle('on',n>0);b.title=n?`Bank ${b.dataset.b} · ${n} links (tap to recall)`:`Bank ${b.dataset.b} · empty`});document.querySelectorAll('.bb[data-t]').forEach(b=>b.classList.toggle('on',+b.dataset.t===BT))}
-function bankPop(m){BM=m;BD=0;$('#bkp').hidden=false;$('#bkq').textContent=m==='save'?'Save to bank':'Delete bank';$('#bka').hidden=$('#bko').hidden=m!=='save';$('#bkc').hidden=m==='save';$('#bkc').textContent='Delete';bnk()}
-const bankUrls=()=>{const b=parse(ta.value).items,src=b.length?b:S.items;return src.filter(i=>!i.url.startsWith('data:')).map(lineOf)};
-document.querySelectorAll('.bb[data-b]').forEach(b=>b.onclick=()=>{const n=+b.dataset.b,l=S.banks[n];if(!l.length){BT=n;bankPop('save');return}
- const p=parse(l.join('\n'));if(!p.items.length)return toast('Bank '+n+' has no usable links');S.items=p.items;clearGridCache();invalidateLib();commit();setDirty(false);closeModal();toast(`Recalled Bank ${n}: ${tally(p)}`)});
-document.querySelectorAll('.bb[data-t]').forEach(b=>b.onclick=()=>{BT=+b.dataset.t;BD=0;$('#bkc').textContent='Delete';bnk()});
-$('#bks').onclick=()=>bankPop('save');$('#bkd').onclick=()=>bankPop('delete');$('#bkx').onclick=()=>$('#bkp').hidden=true;
-$('#bka').onclick=()=>{const u=bankUrls();if(!u.length)return toast('Nothing to save yet');const s=new Set(),m=S.banks[BT].concat(u).filter(x=>{const k=normKey(x);if(s.has(k))return false;s.add(k);return true});S.banks[BT]=m;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Added to Bank ${BT} (${m.length} links)`)};
-$('#bko').onclick=()=>{const u=bankUrls();if(!u.length)return toast('Nothing to save yet');S.banks[BT]=u;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Saved ${u.length} links to Bank ${BT}`)};
-$('#bkc').onclick=()=>{if(!S.banks[BT].length)return toast(`Bank ${BT} is already empty`);if(!BD){BD=1;$('#bkc').textContent=`Confirm delete bank ${BT}?`;return}S.banks[BT]=[];BD=0;save();setDirty(true);bnk();$('#bkp').hidden=true;toast(`Deleted Bank ${BT}`)};
 /* ---------- Chrome v2: Edge-Fade Cues & Dynamic Grid Bar Padding ---------- */
 function syncEdgeFade(el){
  if(!el)return;
@@ -5861,6 +6316,146 @@ if(typeof ResizeObserver!=='undefined'&&gbar){
  new ResizeObserver(()=>{syncGBarPad()}).observe(gbar);
 }
 window.addEventListener('resize',()=>{syncAllEdgeFades();syncGBarPad()},{passive:true});
+/* ---------- Draggable Side Rail (#rail) with Saved Position ---------- */
+const RAIL_KEY='reelflow_rail_v1';
+const railEl=$('#rail'),rdragEl=$('#rdrag');
+function clampRailPos(x,y){
+ if(!railEl)return{x:0,y:0};
+ const vw=window.innerWidth,vh=(window.visualViewport?window.visualViewport.height:window.innerHeight);
+ const w=railEl.offsetWidth||40,h=railEl.offsetHeight||210;
+ const minX=6,maxX=Math.max(minX,vw-w-6);
+ const minY=56,maxY=Math.max(minY,vh-h-10);
+ return{x:Math.round(Math.max(minX,Math.min(maxX,x))),y:Math.round(Math.max(minY,Math.min(maxY,y)))};
+}
+function applyRailPos(pos){
+ if(!railEl)return;
+ if(!pos||typeof pos.x!=='number'||typeof pos.y!=='number'){
+  railEl.style.left='';railEl.style.top='';railEl.style.right='';railEl.style.bottom='';
+  return;
+ }
+ const c=clampRailPos(pos.x,pos.y);
+ railEl.style.left=c.x+'px';
+ railEl.style.top=c.y+'px';
+ railEl.style.right='auto';
+ railEl.style.bottom='auto';
+}
+function loadRailPos(){
+ try{const raw=localStorage.getItem(RAIL_KEY);if(raw)applyRailPos(JSON.parse(raw))}catch(e){}
+}
+function saveRailPos(x,y){
+ try{localStorage.setItem(RAIL_KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}))}catch(e){}
+}
+if(railEl&&rdragEl){
+ let rDrag=null,lastTap=0;
+ rdragEl.addEventListener('pointerdown',e=>{
+  e.preventDefault();e.stopPropagation();
+  const now=Date.now();
+  if(now-lastTap<300){
+   lastTap=0;try{localStorage.removeItem(RAIL_KEY)}catch(err){}
+   applyRailPos(null);toast('Rail reset to default');return;
+  }
+  lastTap=now;
+  const r=railEl.getBoundingClientRect();
+  rDrag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top,x:r.left,y:r.top,moved:false};
+  railEl.classList.add('dragging');
+  try{rdragEl.setPointerCapture(e.pointerId)}catch(err){}
+ });
+ rdragEl.addEventListener('pointermove',e=>{
+  if(!rDrag||e.pointerId!==rDrag.id)return;
+  e.preventDefault();
+  const c=clampRailPos(e.clientX-rDrag.dx,e.clientY-rDrag.dy);
+  if(Math.abs(c.x-rDrag.x)>2||Math.abs(c.y-rDrag.y)>2)rDrag.moved=true;
+  rDrag.x=c.x;rDrag.y=c.y;
+  applyRailPos(c);
+ });
+ const endDrag=e=>{
+  if(!rDrag||e.pointerId!==rDrag.id)return;
+  railEl.classList.remove('dragging');
+  if(rDrag.moved)saveRailPos(rDrag.x,rDrag.y);
+  try{rdragEl.releasePointerCapture(e.pointerId)}catch(err){}
+  rDrag=null;
+ };
+ rdragEl.addEventListener('pointerup',endDrag);
+ rdragEl.addEventListener('pointercancel',endDrag);
+ window.addEventListener('resize',loadRailPos,{passive:true});
+ loadRailPos();
+}
+/* ---------- Build #21 Controllers (Bottom Nav, View Menu, Collapsible TA, Discovery Routes, Export Popup) ---------- */
+function openDiscWrap(){
+ const dw=$('#dwrap');if(!dw)return;
+ dw.hidden=false;document.body.classList.add('disc-list');
+ requestAnimationFrame(()=>dw.classList.add('open'));
+ syncBottomNav();
+}
+function closeDiscWrap(){
+ const dw=$('#dwrap');if(!dw)return;
+ dw.classList.remove('open');document.body.classList.remove('disc-list');
+ setTimeout(()=>{if(!dw.classList.contains('open'))dw.hidden=true},240);
+ syncBottomNav();
+}
+function syncBottomNav(){
+ const nav=$('#bnav');if(!nav)return;
+ const isHome=modal.classList.contains('open');
+ const isDisc=document.body.classList.contains('disc-list')||S.mode==='disc';
+ const isGrid=!!G.open;
+ const cur=isHome?'home':(isGrid?'grid':(isDisc?'disc':'feed'));
+ nav.querySelectorAll('button[data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===cur));
+}
+if($('#bnav')){
+ $('#bnav').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-nav]');if(!b)return;
+  const dest=b.dataset.nav;
+  if(dest==='home'){openModal();return}
+  if(modal.classList.contains('open'))closeModal();
+  if(dest==='feed'){
+   if(G.open)closeGrid();
+   if(S.mode==='disc'||!$('#dwrap').hidden){leaveDisc();closeDiscWrap();render()}
+   syncBottomNav();
+  }else if(dest==='grid'){
+   if(S.mode==='disc'||!$('#dwrap').hidden){leaveDisc();closeDiscWrap()}
+   if(!G.open)openGrid();
+   syncBottomNav();
+  }else if(dest==='disc'){
+   if(G.open)closeGrid();
+   discList();
+   syncBottomNav();
+  }
+ });
+}
+if($('#bview')){
+ $('#bview').onclick=e=>menu(e.currentTarget,[
+  {t:'View modes',o:[['crawl','Slow crawl (Grid)'],['ss','Slideshow'],['col','Collage']],cur:()=>'',set:v=>{
+   if(v==='crawl'){openGrid();G.crawl=1;startCrawl();gbUI();syncWakeLock();toast('Slow crawl on')}
+   else if(v==='ss'){openGrid();slideshow()}
+   else if(v==='col'){openGrid();G.col=1;rlN=0;document.body.classList.add('col-open');renderGrid();barShow(1)}
+  }},
+  {t:'Ambient zoom',o:[['0','Off'],['1','In 1'],['2','In 2'],['3','In 3'],['out','Out 1'],['out-2','Out 2'],['4','Breath'],['dynamic','Dynamic']],cur:()=>S.zoom,set:v=>{S.zoom=v;applyZoom();$('#bview').classList.toggle('on',v!=='0')}}
+ ]);
+}
+if($('#ta-exp')){
+ $('#ta-exp').onclick=()=>{
+  const mini=ta.classList.toggle('ta-mini');
+  $('#ta-exp').classList.toggle('on',!mini);
+  $('#ta-exp').title=mini?'Expand paste box':'Collapse paste box';
+ };
+}
+if($('#dw-paste'))$('#dw-paste').onclick=()=>pasteInto($('#dwa'));
+if($('#dwlist')){
+ $('#dwlist').addEventListener('click',e=>{
+  const rb=e.target.closest('[data-w="route"]');
+  if(!rb)return;
+  e.stopPropagation();
+  const h=rb.dataset.h;if(!h)return;
+  const cur=(S.set.routes&&S.set.routes[h])||'d';
+  const nxt=cur==='d'?'b':(cur==='b'?'p':'d');
+  S.set.routes=S.set.routes||{};
+  if(nxt==='d')delete S.set.routes[h];else S.set.routes[h]=nxt;
+  save();renderDiscHome();renderRoutes();
+  toast(`${h}: ${nxt==='b'?'Browser proxy':(nxt==='p'?'My proxy':'Default')}`);
+ });
+}
+if($('#ep-go'))$('#ep-go').onclick=()=>{hideExportPop();$('#me').click()};
+if($('#ep-x'))$('#ep-x').onclick=hideExportPop;
 /* ---------- boot ---------- */
-bnk();chips();optUI();applyTheme(THEME);hbLoad();hbRender();
+chips();optUI();applyTheme(THEME);hbLoad();hbRender();
 </script></body></html>
