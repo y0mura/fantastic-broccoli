@@ -737,7 +737,7 @@ body.hzon .vbar,body.fs .vbar{bottom:calc(env(safe-area-inset-bottom,0px) + 14px
  <div class="sheet-head">
   <div class="sheet-grip" aria-hidden="true"></div>
   <div class="sheet-title-row">
-   <div class="sheet-title-grp"><h2>Home</h2><span class="ver-chip" id="bver">Build Nov 23 · #24</span></div>
+   <div class="sheet-title-grp"><h2>Home</h2><span class="ver-chip" id="bver">Build Nov 23 · #25</span></div>
    <div class="sheet-act"><button class="pill" id="mlock"><i data-i="lock"></i>Lock</button><button class="pill ic" id="mc" aria-label="Close">✕</button></div>
   </div>
   <div class="tabs xfade" id="mtabs"><button class="pill on" data-tab="dump">Dump <em id="chdp">0</em></button><button class="pill" data-tab="paste">Paste</button><button class="pill" data-tab="prof">Profiles</button><button class="pill" data-tab="r2">R2 <em id="chr">0</em></button><button class="pill" data-tab="act">Active <em id="cha">0</em></button><button class="pill" data-tab="unl">Unlinked <em id="chu">0</em></button><button class="pill" data-tab="dup">Dupes <em id="chdup">0</em></button></div>
@@ -771,7 +771,8 @@ body.hzon .vbar,body.fs .vbar{bottom:calc(env(safe-area-inset-bottom,0px) + 14px
  <div id="tp-r2" hidden>
   <p class="lab" style="margin:8px 0">Your personal R2 storage. Filed items live under @r2 as direct feed videos — and in the main feed too.</p>
   <textarea id="rta" rows="3" style="width:100%" placeholder="One filename or link per line…"></textarea>
-  <div class="row"><button class="pill" id="rpc">Paste</button><button class="pill on" id="rfl">Preview &amp; file under @r2</button><button class="pill on" id="r2sync" title="Sync objects from R2 bucket">Sync</button><button class="pill" id="rop">Open @r2 folder</button></div>
+  <input type="file" id="r2upf" multiple hidden>
+  <div class="row"><button class="pill" id="rpc">Paste</button><button class="pill on" id="rfl">Preview &amp; file under @r2</button><button class="pill on" id="r2sync" title="Sync objects from R2 bucket">Sync</button><button class="pill" id="r2up" title="Upload files to R2 bucket">Upload</button><button class="pill" id="rop">Open @r2 folder</button></div>
   <p class="lab" id="r2cur" style="margin:8px 0"></p>
   <div class="row" style="margin:0 0 8px"><input id="r2q" placeholder="Search R2 links…" style="flex:1"><button class="pill on" id="r2feed">R2 feed</button></div>
   <div class="list" id="rlist"></div>
@@ -5965,6 +5966,83 @@ async function syncR2Bucket(){const btn=$('#r2sync');if(btn){if(btn.disabled)ret
   renderR2();chipsNow();toast(`R2 sync: +${added} added`+(miss?`, ${miss} missing in bucket`:''))
  }catch(err){toast('R2 sync failed: '+(err&&err.message?err.message:err))}
  finally{if(btn){btn.disabled=false;btn.textContent='Sync'}}}
+const R2_PUT_BASE='https://reelflow-r2-list.kushcoma.workers.dev/put/';
+const R2_PUT_KEY='a1e2ecbe4ee261b01ebbe27e2d851f767f4d0a9c6c0f66a7';
+const R2_MAX_BYTES=64*1024*1024;
+const R2_MIME_EXT={'video/mp4':'.mp4','video/quicktime':'.mov','video/webm':'.webm','video/x-m4v':'.m4v','video/ogg':'.ogv','image/jpeg':'.jpg','image/png':'.png','image/gif':'.gif','image/webp':'.webp','image/avif':'.avif','image/heic':'.heic','image/heif':'.heif','image/bmp':'.bmp','application/vnd.apple.mpegurl':'.m3u8','application/x-mpegurl':'.m3u8'};
+function r2Uuid(){
+ if(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')return crypto.randomUUID();
+ const b=new Uint8Array(16);
+ if(typeof crypto!=='undefined'&&typeof crypto.getRandomValues==='function')crypto.getRandomValues(b);
+ else for(let i=0;i<16;i++)b[i]=Math.random()*256|0;
+ b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;
+ const h=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');
+ return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+}
+function r2UploadKey(file){
+ const raw=(file&&typeof file.name==='string'?file.name:'').replace(/^.*[\\/]/,'').replace(/[\x00-\x1f\x7f]/g,'').trim();
+ const extM=raw.match(/(\.[a-z0-9]{1,10})$/i);
+ const stem=(extM?raw.slice(0,-extM[1].length):raw).trim();
+ if(raw&&raw!=='.'&&raw!=='..'&&!/^blob$/i.test(raw)&&/[a-z0-9\u00a0-\uffff]/i.test(stem))return raw;
+ let ext=extM?extM[1].toLowerCase():'';
+ if(!ext&&file&&file.type){
+  const mt=String(file.type).split(';')[0].trim().toLowerCase();
+  ext=R2_MIME_EXT[mt]||'';
+  if(!ext){const sm=mt.match(/^[a-z0-9-]+\/([a-z0-9]{1,8})$/);if(sm)ext='.'+sm[1]}
+ }
+ return r2Uuid()+ext;
+}
+let r2Uploading=false;
+async function uploadR2Files(fileList){
+ const files=Array.from(fileList||[]).filter(Boolean);
+ if(!files.length||r2Uploading)return;
+ r2Uploading=true;
+ const btn=$('#r2up'),cur=$('#r2cur'),total=files.length;
+ if(btn){btn.disabled=true;btn.textContent='Uploading…'}
+ let ok=0;const errs=[];
+ try{
+  for(let i=0;i<total;i++){
+   const f=files[i],key=r2UploadKey(f),label=f.name||key;
+   if(btn)btn.textContent=total>1?`Uploading ${i+1}/${total}…`:'Uploading…';
+   if(cur)cur.textContent=`Base: ${R2} · Uploading ${i+1}/${total}: ${label}`;
+   try{
+    if(f.size>R2_MAX_BYTES)throw new Error(`exceeds 64 MB (${(f.size/1048576).toFixed(1)} MB)`);
+    const buf=await f.arrayBuffer();
+    if(buf.byteLength>R2_MAX_BYTES)throw new Error(`exceeds 64 MB (${(buf.byteLength/1048576).toFixed(1)} MB)`);
+    if(f.size>0&&buf.byteLength===0)throw new Error('empty file body');
+    const res=await fetch(R2_PUT_BASE+encodeURIComponent(key)+'?k='+R2_PUT_KEY,{
+     method:'PUT',
+     headers:{'Content-Type':'application/octet-stream'},
+     body:buf
+    });
+    if(!res.ok){
+     let detail='HTTP '+res.status;
+     try{const t=(await res.text()).trim();if(t)detail+=': '+t.slice(0,120)}catch(e){}
+     throw new Error(detail);
+    }
+    ok++;
+   }catch(err){
+    errs.push(`${label}: ${err&&err.message?err.message:String(err)}`);
+   }
+  }
+  if(ok>0){
+   R2_SYNC_META='';
+   await syncR2Bucket();
+   if(G.open)renderGrid(1);
+  }
+  if(errs.length){
+   const msg=errs.length===1?errs[0]:`${errs.length} failed (${errs[0]})`;
+   R2_SYNC_META=(ok>0?`Uploaded ${ok}/${total} · `:'Upload failed · ')+msg;
+   renderR2();
+   toast('R2 upload failed: '+msg);
+  }else if(ok>0&&R2_SYNC_META){
+   toast(`Uploaded ${ok} file${ok===1?'':'s'} · ${R2_SYNC_META}`);
+  }
+ }finally{
+  r2Uploading=false;
+  if(btn){btn.disabled=false;btn.textContent='Upload'}
+ }
+}
 function r2Feed(){const L=S.items.filter(isR2Item);if(!L.length)return toast('Nothing filed under @r2 yet');let dirty=0;S.items.forEach(i=>{if(isR2Item(i)&&i.handle!=='r2'&&!i.ch&&!i.source&&i.handle===profOf(i.url)){i.handle='r2';i.ch='r2';dirty=1}});if(dirty){save();setDirty(true)}leaveDisc();closeModal();if(G.open)closeGrid();S.prof='r2';S.filter='all';S.sort='new';S.idx=0;V=vis();render();sync();toast('R2 feed — @r2 only')}
 function renderR2(){$('#r2cur').textContent='Base: '+R2+(R2_SYNC_META?' · '+R2_SYNC_META:'');const q=($('#r2q').value||'').trim().toLowerCase();let all=S.items.filter(isR2Item).sort((a,b)=>{const ua=a.uploaded||0,ub=b.uploaded||0;if(ua&&ub&&ua!==ub)return ub-ua;return b.seq-a.seq});if(q)all=all.filter(i=>(i.url+' '+i.handle+' '+(i.name||'')).toLowerCase().includes(q));const L=all.slice(0,R2_LIM);
  $('#rlist').innerHTML=L.map(it=>{const miss=R2_MISSING.has(it.id);const nm=it.name?` · ${esc(it.name)}`:'';return`<div class="li"${miss?' data-r2-missing="1"':''}>${avatarHTML(it.handle,'sm',it)}<div class="t">@${esc(it.handle)}${nm}${miss?'<span class="r2-miss">MISSING IN BUCKET</span>':''}<small>${esc(short(it.url))}</small></div><button data-r="go" data-id="${it.id}">Go</button>${it.source?`<button data-r="open" data-id="${it.id}">Open page</button>`:''}<button data-r="edit" data-id="${it.id}">Edit link</button><button class="danger" data-r="del" data-id="${it.id}">Delete</button></div>`}).join('')+(all.length>R2_LIM?`<div class="row" style="justify-content:center;margin:8px 0"><button class="pill" data-r="more">Show more (${R2_LIM} of ${all.length})</button></div>`:'')||'<p class="lab">Nothing filed under @r2 yet.</p>';wireImgs($('#rlist'));chips()}
@@ -6054,6 +6132,8 @@ $('#alist').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;if(b.d
 $('#rpc').onclick=()=>pasteInto($('#rta'));
 $('#rfl').onclick=()=>{const names=$('#rta').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!names.length)return toast('Paste filenames or links first');r2Confirm(names)};
 $('#r2sync').onclick=syncR2Bucket;
+$('#r2up').onclick=()=>$('#r2upf').click();
+$('#r2upf').onchange=e=>{const f=Array.from(e.target.files||[]);e.target.value='';if(f.length)uploadR2Files(f)};
 $('#rop').onclick=()=>{if(!S.items.some(i=>i.handle==='r2'))return toast('Nothing under @r2 yet');leaveDisc();closeModal();G.fromHome=1;G.prof='r2';G.tab='items';S.sort='new';const pv=VIEW_CACHE.get('prof:r2');if(pv){pv.sy=0;pv.sx=0}openGrid()};
 let r2Arm=null;$('#rlist').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;if(b.dataset.r==='more'){R2_LIM+=150;renderR2();return}const it=S.items.find(x=>x.id===b.dataset.id);if(!it)return;if(b.dataset.r==='go')goItem(it.id);else if(b.dataset.r==='open'){if(it.source)window.open(it.source,'_blank','noopener,noreferrer')}else if(b.dataset.r==='del'){if(r2Arm!==it.id){r2Arm=it.id;b.textContent='Confirm?';setTimeout(()=>{if(r2Arm===it.id){r2Arm=null;if(b.isConnected)b.textContent='Delete'}},3000);return}r2Arm=null;deleteItems([it])}else editLink(it)};
 /* ---------- options ---------- */
